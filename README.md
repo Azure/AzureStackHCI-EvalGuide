@@ -3,7 +3,7 @@ Azure Stack HCI - Evaluation Guide
 
 In this guide, we'll walk you through deploying Azure Stack HCI, along with an accompanying management infrastructure, all in an isolated sandbox.  By following this guide, you'll lay down a solid foundation on to which you can explore additional Azure Stack HCI scenarios that will be documented as we move through the public preview program to the first release of Azure Stack HCI.
 
-As with any infrastructure technology, in order to test, validate and evaluate the technology, there's typically a requirement for hardware.  If you're fortunate enough to have multiple server-class pieces of hardware going spare (ideally hardware certified for Windows Server 2019 found on our [Windows Server Catalog](https://azure.com/hci "Azure Stack HCI Catalog")), you can certainly perform a more real-world evaluation of Azure Stack HCI.
+As with any infrastructure technology, in order to test, validate and evaluate the technology, there's typically a requirement for hardware.  If you're fortunate enough to have multiple server-class pieces of hardware going spare (ideally hardware certified for Windows Server 2019 found on our [Azure Stack HCI Catalog](https://azure.com/hci "Azure Stack HCI Catalog")), you can certainly perform a more real-world evaluation of Azure Stack HCI.
 
 For the purpose of this evaluation guide however, we'll be relying on **nested virtualization** to allow us to consolidate a full lab infrastructure, down onto a single Hyper-V host.
 
