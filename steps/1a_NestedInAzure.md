@@ -281,6 +281,11 @@ Install-WindowsFeature -Name Hyper-V -IncludeManagementTools -Restart
 
 Once the Azure VM has fully restarted, which may take a few minutes, reconnect to your VM using the previously downloaded .rdp file.  Once connected, the next step is to configure the NAT virtual switch on the VM, to enable your VMs to access the internet.
 
+#### Configure Internal NAT vSwitch ####
+Both Windows 10 Hyper-V, and Windows Server 2019 Hyper-V allow native network address translation (NAT) for a virtual network. NAT gives a virtual machine access to network resources using the host computer's IP address and a port through an internal Hyper-V Virtual Switch.  It doesn't require you to expose the sandbox VMs directly onto your physical network, or in this case, your Azure vNET.
+
+If you're not familiar, Network Address Translation (NAT) is a networking mode designed to conserve IP addresses by mapping an external IP address and port to a much larger set of internal IP addresses. Basically, a NAT uses a flow table to route traffic from an external (host) IP Address and port number to the correct internal IP address associated with an endpoint on the network (virtual machine, computer, container, etc.)
+
 To configure the network switch, open PowerShell **as an administrator** and run the following command:
 
 ```powershell

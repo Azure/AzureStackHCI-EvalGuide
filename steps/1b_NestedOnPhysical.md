@@ -17,7 +17,7 @@ From an architecture perspective, the following graphic showcases the different 
 
 Will my hardware support this?
 -----------
-If you're thinking about running this all on a laptop, it's certainly possible. Many modern laptops ship with powerful multi-core CPUs, and high-performance flash storage.  Neither of these components are likely to be a blocker to your evaluation; most likely, it'll be memory.  Most laptops today support up to 16GB memory, but many ship with less.  For the purpose of this guide, your minimum recommended hardware requirements are:
+If you're thinking about running this all on a laptop, it's certainly possible. Many modern laptops ship with powerful multi-core CPUs, and high-performance flash storage.  Neither of these components are likely to be a blocker to your evaluation; most likely memory will be the biggest consideration, but if we optimize accordingly, you can still deploy all of the key components and have a good experience.  Most laptops today support up to 16GB memory, but many ship with less.  For the purpose of this guide, your minimum recommended hardware requirements are:
 
 * 64-bit Processor with Second Level Address Translation (SLAT).
 * CPU support for VM Monitor Mode Extension (VT-x on Intel CPU's).
@@ -40,14 +40,14 @@ If you run **systeminfo** on an existing Hyper-V host, the Hyper-V Requirements 
 Hyper-V Requirements: A hypervisor has been detected. Features required for Hyper-V will not be displayed.
 ```
 
-Even with 16GB memory, running on your laptop, you'll likely be restricted with the size and number of Azure Stack HCI nodes you can deploy.  On a 16GB memory system, your Windows Server 2019 domain controller VM, and the Windows 10 Management VM, whilst optimized, will consume ~6GB memory, leaving ~10GB for your Azure Stack HCI nodes.  Realistically, this means 2 Azure Stack HCI nodes with 4GB memory each, and the remainder left for the laptop's Windows 10 host OS.
+With 16GB memory, running on a laptop, we'll need to ensure that we're taking advantage of features in Hyper-V, such as Dynamic Memory, to optimize the memory usage as much as possible, to ensure you can experience as much as possible on the system you have available.
 
-Obviously, if you have a larger physical system, such as a workstation, or server, you'll likely have a greater amount of memory available to you.
+Obviously, if you have a larger physical system, such as a workstation, or server, you'll likely have a greater amount of memory available to you, therefore you can adjust the memory levels for the different resources accordingly.
 
 If your physical system doesn't meet these recommended requirements, you're still free to test, and see if you can proceed with lower numbers, but it may be a better approach to [deploy in Azure instead](/azshci/NestedInAzure.md "Deploy in Azure")
 
 #### Reducing memory consumption ####
-To reduce the memory requirements of the configuration, you could choose not to deploy in a sandbox envinronment.  By removing the domain controller and management virtual machines, you could free up additional memory that could be used for the nested Azure Stack HCI nodes themselves.  However, this will require you to have an existing domain environment accessible, and an alternative location, potentially on the host itself, to install the Windows Admin Center.  This approach will **not** be covered as part of these guides.
+To reduce the memory requirements of the configuration, you could choose not to deploy in a sandbox envinronment.  By removing the domain controller and management virtual machines, you could free up additional memory that could be used for the nested Azure Stack HCI nodes themselves.  However, this will require you to have an existing domain environment accessible, and an alternative location, potentially on the host itself, to install the Windows Admin Center.  This approach will **not** be covered as part of these initial guides, but may be evaluated for later versions.
 
 If you do want to skip deployment of the management infrastructure, install the Windows Admin Center, and jump ahead to [deploy your nested Azure Stack HCI nodes](/steps/3_AzSHCINodes.md "deploying your Azure Stack HCI nodes").  Bear in mind, you may need to modify certain steps to account for the different management environment.
 
@@ -100,6 +100,11 @@ Install-WindowsFeature -Name Hyper-V -IncludeManagementTools -Restart
 # Install the Hyper-V role and management tools, including PowerShell
 Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
 ```
+
+### Configure Internal NAT vSwitch ###
+Both Windows 10 Hyper-V, and Windows Server 2019 Hyper-V allow native network address translation (NAT) for a virtual network. NAT gives a virtual machine access to network resources using the host computer's IP address and a port through an internal Hyper-V Virtual Switch.  It doesn't require you to expose the sandbox VMs directly onto your physical network.
+
+If you're not familiar, Network Address Translation (NAT) is a networking mode designed to conserve IP addresses by mapping an external IP address and port to a much larger set of internal IP addresses. Basically, a NAT uses a flow table to route traffic from an external (host) IP Address and port number to the correct internal IP address associated with an endpoint on the network (virtual machine, computer, container, etc.)
 
 Once rebooted and reconnected, the next step is to configure the NAT virtual switch on the Hyper-V host, to enable your VMs to access the internet from within their sandboxed environment.
 
