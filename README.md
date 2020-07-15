@@ -49,30 +49,30 @@ The general flow will be as follows:
 #### Part 1a - Deploy Hyper-V host in Azure ####
 In this step, you'll create a suitable VM in Azure using PowerShell or an Azure Resource Manager template.  This VM will run Windows Server 2019 Datacenter, with the full desktop experience.  On this system, you'll enable the Hyper-V role and accompanying management tools, and create a NAT virtual switch to enable network communication between sandbox VMs, and out to the internet.
 
-[Start your deployment into Azure](/steps/1a_NestedInAzure.md "Start your deployment into Azure")
+* [Start your deployment into Azure](/steps/1a_NestedInAzure.md "Start your deployment into Azure")
 
 #### Part 1b - Deploy Hyper-V on a physical system ####
 In this step, on your existing system, that's running Windows Server 2016/2019 or Windows 10 Pro/Enterprise/Education, you'll enable the Hyper-V role and create a NAT virtual switch to enable network communication between sandbox VMs, and out to the internet.
 
-[Start your deployment on a physical system](/steps/1b_NestedOnPhysical.md "Start your deployment on a physical system")
+* [Start your deployment on a physical system](/steps/1b_NestedOnPhysical.md "Start your deployment on a physical system")
 
 #### Part 2 - Deploy management infrastructure ####
 In this step, you'll use either the GUI, or PowerShell to deploy and configure both a Windows Server 2019 domain controller, and a Windows 10 management VM on your Hyper-V host.  You'll create a Windows Server 2019 Active Directory domain, and join the Windows 10 management VM to this domain.  You'll also install the Windows Admin Center ahead of deploying the nested Azure Stack HCI cluster.
 
 
-[Part 2a - Deploy your management infrastructure with the GUI](/steps/2a_ManagementInfra.md "Deploy your management infrastructure with the GUI")
-[Part 2b - Deploy your management infrastructure with PowerShell](/steps/2b_ManagementInfra.md "Deploy your management infrastructure with PowerShell")
+* [Part 2a - Deploy your management infrastructure with the GUI](/steps/2a_ManagementInfra.md "Deploy your management infrastructure with the GUI")
+* [Part 2b - Deploy your management infrastructure with PowerShell](/steps/2b_ManagementInfra.md "Deploy your management infrastructure with PowerShell")
 
 #### Part 3 - Deploy nested Azure Stack HCI nodes ####
 In this step, you'll use either the GUI or PowerShell to create a number of nested Azure Stack HCI nodes.
 
-[Create your nested Azure Stack HCI nodes with the GUI](/steps/3a_AzSHCINodes.md "Create your nested Azure Stack HCI nodes with the GUI")
-[Create your nested Azure Stack HCI nodes with PowerShell](/steps/3b_AzSHCINodes.md "Create your nested Azure Stack HCI nodes with PowerShell")
+* [Create your nested Azure Stack HCI nodes with the GUI](/steps/3a_AzSHCINodes.md "Create your nested Azure Stack HCI nodes with the GUI")
+* [Create your nested Azure Stack HCI nodes with PowerShell](/steps/3b_AzSHCINodes.md "Create your nested Azure Stack HCI nodes with PowerShell")
 
 #### Part 4 - Create your nested Azure Stack HCI cluster ####
 In this step, you'll use the Windows Admin Center, on the Windows 10 management VM, to create the nested Azure Stack HCI cluster, and perform some post-deployment tasks to validate the configuration.
 
-[Create your nested Azure Stack HCI cluster](/steps/4_AzSHCICluster.md "Create your nested Azure Stack HCI cluster")
+* [Create your nested Azure Stack HCI cluster](/steps/4_AzSHCICluster.md "Create your nested Azure Stack HCI cluster")
 
 #### Part 5 - Explore the management of your Azure Stack HCI environment ####
 With your deployment completed, you're now ready to explore many of the management aspects within the Windows Admin Center.  To do so, please refer to our existing documentation, which showcases some of these aspects:
