@@ -117,7 +117,7 @@ Proceed through the process, making the following selections:
 
 1. On the initial screen, select your **Language to install**, **Time and currency format**, and **Keyboard or input method**, then press **Next**
 2. Click **Install now**
-3. On the **Select the operating system** screen, choose **Windows Server 2019 Datacenter Evaluation** and click **Next**
+3. On the **Select the operating system** screen, choose **Windows Server 2019 Datacenter Evaluation (Desktop Experience)** and click **Next**
 4. On the **Applicable notices and license terms** screen, read the information, **tick I accept the license terms** and click **Next**
 5. On the **What type of installation do you want** screen, select **Custom: Install Windows only (advanced)** and click **Next**
 6. On the **Where do you want to install Windows?** screen, select the **30GB Drive 0** and click **Next**
@@ -126,13 +126,22 @@ Installation will then begin, and will take a few minutes, automatically rebooti
 
 ![Initiate setup of the Windows Server 2019 OS](/media/ws_install_complete.png)
 
-With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **C:\Users\Administrator** screen.  You can **close** the VM Connect window, as we will continue configuring the domain controller using PowerShell, from AzSHCIHost001.
+With the installation complete, you'll finish on the **Customize settings** screen.  Provide a password and click **Finish**.  Once at the login screen, click on the **Ctrl + Alt + Delete button** in the top-left-hand corner of the VM Connect window, and login to DC01.
 
 ### Configure the domain controller with AD, DNS and DHCP roles ###
-With the VM successfully deployed, you can now configure the Windows Server 2019 OS to become the core domain infrastructure for your sandbox environment. To simplify the process, you'll use PowerShell, but from the Hyper-V host, into the VM, using PowerShell Direct.
+With the VM successfully deployed, you can now configure the Windows Server 2019 OS to become the core domain infrastructure for your sandbox environment.
 
 #### Configure the networking and host name on DC01 ####
-Firstly, configure the networking inside the VM, rename, before rebooting the OS.
+Firstly, you will configure the networking inside the VM and rename the OS, before rebooting.
+
+1. In **Server Manager**, from the **Dashboard** click on **Configure this local server**
+2. In the **Properties** window, next to **Computer name** click on your current randomly generated computer name
+3. In the **System properties** window, click **Change** and change the computer name to **DC01** then click **OK**, then **OK** again to close the notification, then click **Close**, and choose **Restart Later**
+4. Back in the **Properties** window, next to **Ethernet** click on **IPv4 address assigned by DHCP, IPv6 enabled**
+5. In the **Network Connections** window, right-click on the **Ethernet** adapter and select **Properties**
+6. Click on **Internet Protocol Version 4 (TCP/IPv4)** and click **Properties**
+7. Enter the following information,. then click **OK**
+   * IP address: 192.168.0 2
 
 ```powershell
 # Provide a password for the VM that you set in the previous step
