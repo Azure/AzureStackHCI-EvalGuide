@@ -40,6 +40,9 @@ If you're running Windows Server 2019 as your Hyper-V host, it doesn't ship with
 2. On the main dashboard, click on **Configure this local server**
 3. In the **Properties** view, find the **IE Enhanced Security Configuration** item, and click on **On**
 4. In the **Internet Explorer Enhanced Security Configuration** window, under **Administrators**, click **Off** and click **OK**
+
+![Setting the Internet Explorer Enhanced Security Configuration to Off](/media/ie_enhanced.png)
+
 5. Close **Server Manager**
 
 #### Download the files ####
@@ -58,47 +61,50 @@ Create your domain controller
 -----------
 There are 3 main steps to create the virtualized domain controller on our Hyper-V host:
 
-1. Create the DC01 VM using PowerShell
+1. Create the DC01 VM using Hyper-V Manager
 2. Complete the Out of Box Experience (OOBE)
-3. Configure the domain controller with AD, DNS and DHCP roles, all using PowerShell
+3. Configure the domain controller with AD, DNS and DHCP roles
 
-For speed, we'll use PowerShell to configure as much as we can, but if you have experience with creating virtualized domain controllers using the Hyper-V Manager GUI, feel free to take that approach.
+### Create the DC01 VM using Hyper-V Manager ###
+In this step, you'll be using Hyper-V Manager to deploy a Windows Server 2019 domain controller. With this being the GUI guide, you'll be deploying Windows Server with the Desktop Experience.
 
-### Create the DC01 VM using PowerShell ###
-On your AzSHCIHost001 VM, **open PowerShell as administrator**.  Make any changes that you require, to the script below, and then run it:
+1. On your Hyper-V host, **open Hyper-V Manager**.
+2. In the top right-corner, under **Actions**, click **New**, then **Virtual Machine**. The **New Virtual Machine Wizard** should open.
+3. On the **Before you begin** page, click **Next**
+4. On the **Specify Name and Location** page, enter **DC01**
+5. Tick the box for **Store the virtual machine in a different location** and click **Browse**
+6. In the **Select Folder** window, click on **This **PC****, navigate to **C:**, click on **New Folder**, name it **VMs** then click **Select Folder** and click **Next**
 
-```powershell
-# Define the characteristics of the VM, and create
-New-VM `
-    -Name "DC01" `
-    -MemoryStartupBytes 4GB `
-    -SwitchName "InternalNAT" `
-    -Path "C:\VMs\" `
-    -NewVHDPath "C:\VMs\DC01\Virtual Hard Disks\DC01.vhdx" `
-    -NewVHDSizeBytes 30GB `
-    -Generation 2
-```
+![Specify VM name and location](/media/new_vm_name.png)
 
-To optimize the VM's use of available memory, especially on physical systems with lower physical memory, you can optionally configure the VM with Dynamic Memory, which will allow Hyper-V to allocate memory to the VM, based on it's requirements, and remove memory when idle.  This can help to free up valuable host resources in memory-constrained environments.
+7. On the **Specify Generation** page, select **Generation 2** and click **Next**
+8. On the **Assign Memory** page, assign 4GB memory by entering **4096** for Startup memory and tick the **Use Dynamic Memory for this virtual machine**, then click **Next**
 
-```powershell
-# Optionally configure the VM with Dynamic Memory
-Set-VMMemory DC01 -DynamicMemoryEnabled $true -MinimumBytes 1GB -StartupBytes 4GB -MaximumBytes 4GB
-```
-Once the VM is successfully created, you should connect the Windows Server 2019 ISO file, downloaded earlier.
+![Assign VM memory](/media/new_vm_dynamicmem.png)
 
-```powershell
-# Add the DVD drive, attach the ISO to DC01 and set the DVD as the first boot device
-$DVD = Add-VMDvdDrive -VMName DC01 -Path C:\ISO\WS2019.iso -Passthru
-Set-VMFirmware -VMName DC01 -FirstBootDevice $DVD
-```
-With the VM configured correctly, you can use the following commands to connect to the VM using VM Connect, and at the same time, start the VM.  To boot from the ISO, you'll need to click on the VM and quickly press a key to trigger the boot from the DVD inside the VM.  If you miss the prompt to press a key to boot from CD or DVD, simply reset the VM and try again.
+9. On the **Configure Networking** page, select **InternalNAT** and click **Next**
+10. On the **Connect Virtual Hard Disk** page, change **size** to **30** and click **Next**
 
-```powershell
-# Open a VM Connect window, and start the VM
-vmconnect.exe localhost DC01
-Start-VM -Name DC01
-```
+![Connect Virtual Hard Disk](/media/new_vm_vhd.png)
+
+11. On the **Installation Options** page, select **Install an operating system from a bootable image file**, and click **Browse**
+12. Navigate to **C:\ISO** and select your **WS2019.iso** file, and click **Open**.  Then click **Next**
+13. On the **Completing the New Virtual Machine Wizard** page, review the information and click **Finish**
+
+Your new DC01 virtual machine will now be created.  Once created, we need to make a few final modifications. To optimize the VM's use of available memory, especially on physical systems with lower physical memory, you can optionally configure the VM with Dynamic Memory, which will allow Hyper-V to allocate memory to the VM, based on it's requirements, and remove memory when idle.  This can help to free up valuable host resources in memory-constrained environments.
+
+1. In **Hyper-V Manager**, right-click **DC01** and click **Settings**
+2. In the **Settings** window, under **Memory**, in the **Dynamic Memory** section, enter the following figures, then click **OK**
+   * Minimum RAM: 1024
+   * Maximum RAM: 4096
+
+![Updating memory for DC01](/media/dynamicmem.png)
+
+With the VM configured correctly, in **Hyper-V Manager**, double-click DC01.  This should open the VM Connect window.
+
+![Starting up DC01](/media/startvm.png)
+
+In the center of the window, there is a message explaining the VM is currently switched off.  Click on **Start** and then quickly **press any key** inside the VM to boot from the ISO file. If you miss the prompt to press a key to boot from CD or DVD, simply reset the VM and try again.
 
 ![Booting the VM and triggering the boot from DVD](/media/boot_from_dvd.png)
 
