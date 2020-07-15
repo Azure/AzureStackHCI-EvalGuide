@@ -310,4 +310,7 @@ Set-VMhost -EnableEnhancedSessionMode $True
 
 Next Steps
 -----------
-In this step, you've successfully created your Azure VM, and configured Windows Server 2019 with the Hyper-V role, and core networking to support the nested scenario.  You're now ready to start creating your virtual machines as part of [deploying your management infrastructure](/steps/2_ManagementInfra.md "deploying your management infrastructure").
+In this step, you've successfully created your Azure VM, and configured Windows Server 2019 with the Hyper-V role, and core networking to support the nested scenario.  You're now ready to start creating your virtual machines as part of deploying your management infrastructure. You have 2 choices on how to proceed, either a more graphical way, using a GUI (Graphical User Interface, such as Hyper-V Manager, Server Manager etc), or via PowerShell.  Make your choice below:
+
+* [**Part 2a** - Deploy your management infrastructure with the GUI](/steps/2a_ManagementInfraGUI.md "Deploy your management infrastructure with the GUI")
+* [**Part 2b** - Deploy your management infrastructure with PowerShell](/steps/2b_ManagementInfraPS.md "Deploy your management infrastructure with PowerShell")
