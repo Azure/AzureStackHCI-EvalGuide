@@ -26,20 +26,22 @@ In order to deploy our nested virtual machines on AzSHCIHost001, we'll first nee
 * Azure Stack HCI Public Preview
 * Windows Admin Center
 
-Before downloading, create a new folder on your AzSHCIHost001 machine, to contain the downloaded ISO files
+Before downloading, create a new folder on your AzSHCIHost001 machine, to contain the downloaded ISO files.
 
-```powershell
-# Create a new folder to hold the downloaded ISO files
-New-Item -Path "C:\" -Name "ISO" -ItemType "directory"
-```
+1. Open **File Explorer** and navigate to **This PC** and double-click on your **C:**
+2. **Right-click** in the white-space and select **New** then **Folder**
+3. Name the folder **ISO** and close File Explorer.
+
+
 #### For Windows Server 2019 Hyper-V hosts ####
-If you're running Windows Server 2019 as your Hyper-V host, it doesn't ship with the new Microsoft Edge by default, so unless you've chosen to install an alternative web browser, you'll have to use Internet Explorer initially.  Out of the box, Windows Server 2019 also has **Internet Explorer Protected Mode** enabled, which helps to protect users when browsing the internet. To streamline the download of the ISO files, we'll disable IE Protected Mode for the administrator account, by running the following script in PowerShell **as administrator**:
+If you're running Windows Server 2019 as your Hyper-V host, it doesn't ship with the new Microsoft Edge by default, so unless you've chosen to install an alternative web browser, you'll have to use Internet Explorer initially.  Out of the box, Windows Server 2019 also has **Internet Explorer Protected Mode** enabled, which helps to protect users when browsing the internet. To streamline the download of the ISO files, we'll disable IE Protected Mode for the administrator account.
 
-```powershell
-$AdminKey = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}"
-Set-ItemProperty -Path $AdminKey -Name "IsInstalled" -Value 0
-Stop-Process -Name Explorer
-```
+1. Click **Start** and open **Server Manager**
+2. On the main dashboard, click on **Configure this local server**
+3. In the **Properties** view, find the **IE Enhanced Security Configuration** item, and click on **On**
+4. In the **Internet Explorer Enhanced Security Configuration** window, under **Administrators**, click **Off** and click **OK**
+5. Close **Server Manager**
+
 #### Download the files ####
 Next, in order to download the ISO files, **open your web browser** and follow the steps below.
 
