@@ -41,7 +41,7 @@ If you're running Windows Server 2019 as your Hyper-V host, it doesn't ship with
 3. In the **Properties** view, find the **IE Enhanced Security Configuration** item, and click on **On**
 4. In the **Internet Explorer Enhanced Security Configuration** window, under **Administrators**, click **Off** and click **OK**
 
-    ![Setting the Internet Explorer Enhanced Security Configuration to Off](/media/ie_enhanced.png)
+![Setting the Internet Explorer Enhanced Security Configuration to Off](/media/ie_enhanced.png)
 
 5. Close **Server Manager**
 
@@ -53,7 +53,7 @@ Next, in order to download the ISO files, **open your web browser** and follow t
 3. Visit --link--, complete the registration form, and download the ISO.  Save the file as **AzSHCI.iso** to C:\ISO
 4. Visit --link--, complete any necessary registration, and download the executables for the Windows Admin Center, storing them in C:\ISO
 
-    ![All files have been downloaded onto your Hyper-V host](/media/download_files.png)
+![All files have been downloaded onto your Hyper-V host](/media/download_files.png)
 
 With all files downloaded, proceed on to creating your management infrastructure.
 
@@ -75,17 +75,17 @@ In this step, you'll be using Hyper-V Manager to deploy a Windows Server 2019 do
 5. Tick the box for **Store the virtual machine in a different location** and click **Browse**
 6. In the **Select Folder** window, click on **This **PC****, navigate to **C:**, click on **New Folder**, name it **VMs** then click **Select Folder** and click **Next**
 
-    ![Specify VM name and location](/media/new_vm_name.png)
+![Specify VM name and location](/media/new_vm_name.png)
 
 7. On the **Specify Generation** page, select **Generation 2** and click **Next**
 8. On the **Assign Memory** page, assign 4GB memory by entering **4096** for Startup memory and tick the **Use Dynamic Memory for this virtual machine**, then click **Next**
 
-    ![Assign VM memory](/media/new_vm_dynamicmem.png)
+![Assign VM memory](/media/new_vm_dynamicmem.png)
 
 9. On the **Configure Networking** page, select **InternalNAT** and click **Next**
 10. On the **Connect Virtual Hard Disk** page, change **size** to **30** and click **Next**
 
-    ![Connect Virtual Hard Disk](/media/new_vm_vhd.png)
+![Connect Virtual Hard Disk](/media/new_vm_vhd.png)
 
 11. On the **Installation Options** page, select **Install an operating system from a bootable image file**, and click **Browse**
 12. Navigate to **C:\ISO** and select your **WS2019.iso** file, and click **Open**.  Then click **Next**
@@ -98,7 +98,7 @@ Your new DC01 virtual machine will now be created.  Once created, we need to mak
    * Minimum RAM: 1024
    * Maximum RAM: 4096
 
-    ![Updating memory for DC01](/media/dynamicmem.png)
+![Updating memory for DC01](/media/dynamicmem.png)
 
 With the VM configured correctly, in **Hyper-V Manager**, double-click DC01.  This should open the VM Connect window.
 
