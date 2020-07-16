@@ -75,9 +75,9 @@ If you have just 2 nodes, or if your preference is for a cluster running in a si
 ### Networking ###
 With the servers domain joined, configured with the appropriate features, updated and rebooted, you're ready to configure your network.  You have a number of different choices here, so we'll try to explain why we're making each selection, so you can better apply it to your environment further down the road.
 
-1. Firstly, Windows Admin Center will verify your networking setup - it'll tell you how many NICs are in each node, along with relevant hardware information, MAC address and status information.  Review for accuracy, and then click **Next**
+Firstly, Windows Admin Center will verify your networking setup - it'll tell you how many NICs are in each node, along with relevant hardware information, MAC address and status information.  Review for accuracy, and then click **Next**
 
-![Verify network in the Create Cluster wizard](/media/wac_verify network.png)
+![Verify network in the Create Cluster wizard](/media/wac_verify_network.png)
 
 The first key step with setting up the networking with Windows Admin Center, is to choose a management NIC that will be dedicated for management use.  You can choose either a single NIC, or two NICs for redundancy.
 
@@ -87,7 +87,3 @@ As it stands, this is the way that the Windows Admin Center approaches the netwo
 * If you are following the **Physical path in this evaluation guide**, you should have at least 2 NICs listed as available.  If you have exactly 2 NICs, you will need to choose **One physical network adapter for management**, however if you have 4 or more NICs, you can choose **Two physical network adapters teamed for management**
 
 1. On the **Select the adapters to use for management** page, select the number of NICs you wish to dedicate for magamenet using the boxes at the top of the page
-
-
-
-
