@@ -3,7 +3,7 @@ Azure Stack HCI - Evaluation Guide
 
 ## Welcome to the Azure Stack HCI Evaluation Guide ##
 
-In this guide, we'll walk you through evaluating Azure Stack HCI.
+In this guide, we'll walk you experiencing a number of the amazing capabilities within Azure Stack HCI, and set the foundation for you to explore in your own time.
 
 As part of the guide, there will be 2 main paths for evaluation that you can choose from.
 

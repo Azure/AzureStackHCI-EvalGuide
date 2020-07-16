@@ -98,6 +98,8 @@ Installation will then begin, and will take a few minutes, automatically rebooti
 
 With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **C:\Users\Administrator** screen.  If you enter **ipconfig** at the command prompt, you should find that all 4 of your network adapters have been assigned an IP from your DHCP Server.
 
+**NOTE** Take a note of the IP address for each node that you deploy - you'll use this information in the next step.
+
 ![Showing network IP addresses on AZSHCINODE01](/media/node_ipconfig.png)
 
 One additional step is to rename the AZSHCINODE01 OS, so still within the **cmd prompt**, type **PowerShell** to open the local PowerShell instance, and then run:
