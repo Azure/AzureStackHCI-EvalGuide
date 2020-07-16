@@ -172,49 +172,33 @@ First, you'll configure Active Directory:
 
 ![Active Directory Domain Services installation progress](/media/dc_install_progress.png)
 
-The installation of Active Directory Domain Services will begin, and take a few moments to complete.  Once complete, click **Promote this server to a domain controller** to continue the configuration of DC01.
+The installation of Active Directory Domain Services will begin, and take a few moments to complete.  Once complete, click **Promote this server to a domain controller** to continue the configuration of DC01. The **Active Directory Domain Services Configuration Wizard** should open.
 
+1. On the **Deployment configuration** page, select **Add a new forest**, enter **azshci.local** as the Root domain name, and click **Next**
 
+![Active Directory Domain Services configuration wizard](/media/adds_wizard.png)
 
+2. On the **Domain Controller options** page, leave the defaults, provide a **Directory Services Restore Mode (DSRM) password**, then click **Next**
+3. On the **DNS Options** page, click **Next**
+4. On the **Additional Options** page, click **Next**
+5. On the **Paths** page, leave the defaults and click **Next**
+6. On the **Review Options** page, validate your selections, then click **Next**
 
+The prerequisites will then be checked, and once completed, click **Install**. This will take a few moments.
 
-```powershell
-# Configure Active Directory on DC01
-Invoke-Command -VMName DC01 -Credential $dcCreds -ScriptBlock {
-    # Set the Directory Services Restore Mode password
-    $DSRMPWord = ConvertTo-SecureString -String "Password01" -AsPlainText -Force
-    Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools
-    Install-ADDSForest `
-        -CreateDnsDelegation:$false `
-        -DatabasePath "C:\Windows\NTDS" `
-        -DomainMode 7 `
-        -DomainName "azshci.local" `
-        -ForestMode 7 `
-        -InstallDns:$true `
-        -SafeModeAdministratorPassword $DSRMPWord `
-        -LogPath "C:\Windows\NTDS" `
-        -NoRebootOnCompletion:$true `
-        -SysvolPath "C:\Windows\SYSVOL" `
-        -Force:$true
-}
-```
+![Active Directory Domain Services configuration wizard prerequisites check](/media/adds_prereq.png)
 
-When the process is completed successfully, you should see a message similar to this below. Once validated, you should be able to reboot the domain controller and proceed on through the process.
+Once completed, DC01 should reboot automatically, but if not, ensure you reboot it yourself.
 
+#### Add additional domain administrative account ####
 
-# Set updated domain credentials based on previous credentials
-$domainName = "azshci.local"
-$domainAdmin = "$domainName\administrator"
-$domainCreds = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $domainAdmin, $dcCreds.Password
+Rather than use the main domain admin account, we'll add an additional administrative user to work with going forward. Once DC01 has finished rebooting, log in with the new domain admin account:
 
-# Test for the DC01 to be back online and responding
-while ((Invoke-Command -VMName DC01 -Credential $domainCreds {"Test"} -ErrorAction SilentlyContinue) -ne "Test") {
-    Start-Sleep -Seconds 1
-}
-Write-Verbose "DC01 is now online. Proceed to the next step...." -Verbose
-```
+* Username: azshci.local\administrator
+* Password: admin-password-you-entered-earlier
 
-With DC01 now back online and operational, we need to add an additional administrative user, aside from the core administrator account.
+1. Once logged into DC01 with the domain admin account, open **Server Manager**
+2. 
 
 ```powershell
 Write-Verbose "Creating new administrative User within the azshci.local domain." -Verbose
