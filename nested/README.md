@@ -47,7 +47,7 @@ The general flow will be as follows:
 #### Part 1a - Deploy Hyper-V host in Azure ####
 In this step, you'll create a suitable VM in Azure using PowerShell or an Azure Resource Manager template.  This VM will run Windows Server 2019 Datacenter, with the full desktop experience.  On this system, you'll enable the Hyper-V role and accompanying management tools, and create a NAT virtual switch to enable network communication between sandbox VMs, and out to the internet.
 
-* [Start your deployment into Azure](/./azshci/steps/1a_NestedInAzure.md "Start your deployment into Azure")
+* [Start your deployment into Azure](/nested/steps/1a_NestedInAzure.md "Start your deployment into Azure")
 
 #### Part 1b - Deploy Hyper-V on a physical system ####
 In this step, on your existing system, that's running Windows Server 2016/2019 or Windows 10 Pro/Enterprise/Education, you'll enable the Hyper-V role and create a NAT virtual switch to enable network communication between sandbox VMs, and out to the internet.
