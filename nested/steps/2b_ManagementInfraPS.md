@@ -235,7 +235,7 @@ With DC01 now back online and operational, we need to add an additional administ
 Write-Verbose "Creating new administrative User within the azshci.local domain." -Verbose
 $newUser = "LabAdmin"
 Invoke-Command -VMName DC01 -Credential $domainCreds -ScriptBlock {
-    param ($domainCreds)
+    param ($domainCreds, $newUser)
     Write-Verbose "Waiting for AD Web Services to be in a running state" -Verbose
     $ADWebSvc = Get-Service ADWS | Select-Object *
     while($ADWebSvc.Status -ne 'Running')
