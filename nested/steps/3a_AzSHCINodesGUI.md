@@ -78,3 +78,20 @@ In the center of the window, there is a message explaining the VM is currently s
 
 ![Booting the VM and triggering the boot from DVD](/media/boot_from_dvd.png)
 
+### Complete the Out of Box Experience (OOBE) ###
+With the VM running, and the boot process initiated, you should be in a position to start the deployment of the Azure Stack HCI OS.
+
+![Initiate setup of the Azure Stack HCI OS](/media/ws_setup.png)
+
+Proceed through the process, making the following selections:
+
+1. On the initial screen, select your **Language to install**, **Time and currency format**, and **Keyboard or input method**, then press **Next**
+2. Click **Install now**
+3. On the **Select the operating system** screen, choose **Windows Server 2019 Datacenter Evaluation (Desktop Experience)** and click **Next**
+4. On the **Applicable notices and license terms** screen, read the information, **tick I accept the license terms** and click **Next**
+5. On the **What type of installation do you want** screen, select **Custom: Install Windows only (advanced)** and click **Next**
+6. On the **Where do you want to install Windows?** screen, select the **30GB Drive 0** and click **Next**
+
+Installation will then begin, and will take a few minutes, automatically rebooting as part of the process.
+
+With the installation complete, you'll finish on the **Customize settings** screen.  Provide a password and click **Finish**.  Once at the login screen, click on the **Ctrl + Alt + Delete button** in the top-left-hand corner of the VM Connect window, and login to DC01.
