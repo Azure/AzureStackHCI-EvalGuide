@@ -156,3 +156,11 @@ Invoke-Command -VMName DC01 -Credential $domainCreds -ScriptBlock {
     } -ArgumentList $domainCreds, $newUser
  
 Write-Verbose "User: $newUser Created." -Verbose
+
+
+1..3 | ForEach-Object { Add-VMNetworkAdapter -VMName $nodeName -SwitchName InternalNAT }
+
+$dataDrives = 1..4 | ForEach-Object { New-VHD -Path "C:\VMs\$nodeName\Virtual Hard Disks\DATA0$_.vhdx" -Dynamic -Size 100GB }
+$dataDrives | ForEach-Object {
+    Add-VMHardDiskDrive -Path $_.path -VMName $nodeName
+}
