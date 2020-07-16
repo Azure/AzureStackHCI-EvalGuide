@@ -124,8 +124,6 @@ Proceed through the process, making the following selections:
 
 Installation will then begin, and will take a few minutes, automatically rebooting as part of the process.
 
-![Initiate setup of the Windows Server 2019 OS](/media/ws_install_complete.png)
-
 With the installation complete, you'll finish on the **Customize settings** screen.  Provide a password and click **Finish**.  Once at the login screen, click on the **Ctrl + Alt + Delete button** in the top-left-hand corner of the VM Connect window, and login to DC01.
 
 ### Configure the domain controller with AD, DNS and DHCP roles ###
@@ -147,7 +145,7 @@ Firstly, you will configure the networking inside the VM and rename the OS, befo
    * Preferred DNS server: 1.1.1.1
    * Alternate DNS server: 1.0.0.1
 
-![Network settings for DC01](/media/dc01_nic.png)
+![Network settings for DC01](/media/dc_nic.png)
 
 #### Optional - Update DC01 with latest Windows Updates ####
 If you'd like to ensure DC01 is fully updated, click on **Start**, search for **Updates** and select **Check for Updates** in the results.  Check for any new updates and install any that are required.  This may take a few minutes.
