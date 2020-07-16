@@ -73,7 +73,7 @@ In this step, you'll be using Hyper-V Manager to deploy a Windows Server 2019 do
 3. On the **Before you begin** page, click **Next**
 4. On the **Specify Name and Location** page, enter **DC01**
 5. Tick the box for **Store the virtual machine in a different location** and click **Browse**
-6. In the **Select Folder** window, click on **This **PC****, navigate to **C:**, click on **New Folder**, name it **VMs** then click **Select Folder** and click **Next**
+6. In the **Select Folder** window, click on **This PC**, navigate to **C:**, click on **New Folder**, name it **VMs** then click **Select Folder** and click **Next**
 
 ![Specify VM name and location](/media/new_vm_name.png)
 
