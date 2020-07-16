@@ -18,7 +18,7 @@ As mentioned above, there are 2 paths to choose from, for this evaluation guide.
 
 | Physical | Nested |
 |---|---|
-| image  | image  |
+| ![Physical path image](/media/physical.png "Physical path image")  | ![Nested path image](/media/nested.png "Physical path image")   |
 | Physical | Nested |
 
 
