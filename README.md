@@ -1,7 +1,7 @@
 Azure Stack HCI - Evaluation Guide
 ==============
 
-**Welcome to the Azure Stack HCI Evaluation Guide**
+## Welcome to the Azure Stack HCI Evaluation Guide ##
 
 In this guide, we'll walk you through evaluating Azure Stack HCI.
 
@@ -19,14 +19,11 @@ As mentioned above, there are 2 paths to choose from, for this evaluation guide.
 | Evaluate Azure Stack HCI on 2+ physical servers | Evaluate Azure Stack HCI using Nested Virtualization |
 |---|---|
 | ![Physical path image](/media/physical.png "Physical path image")  | ![Nested path image](/media/nested.png "Physical path image")   |
-| Physical | Nested |
-
-
+| To proceed along the physical path, you'll need **at least 2 physical servers**, and these servers will need to meet specific CPU, memory, networking and storage requirements.  If you think you have servers that will be suitable, you can get more details at the start of the path  | If you only have a single physical system, which could be a laptop, desktop, or server, or you have no spare hardware, using **nested virtualization** may be a better approach.  You can get more details at the start of the path |
+| **Explore the physical path** | **Explore the nested path** |
 
 ### Important Note ###
 The use of nested virtualization in this evaluation guide is aimed at providing flexibility for deploying Azure Stack HCI in a lab, or test environment. For **production** use, **Azure Stack HCI should be deployed on certified physical hardware**, of which you can find a vast array of choices on the [Azure Stack HCI Catalog](https://azure.com/hci "Azure Stack HCI Catalog").
-
-
 
 ### Contributing ###
 
@@ -41,6 +38,9 @@ provided by the bot. You will only need to do this once across all repos using o
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+### Issues ###
+If you notice something is wrong, a step isn't working, or something just doesn't make sense - help us to make this guide better!  Raise an issue in GitHub, and we'll be sure to fix this as quickly as possible!
 
 ### Legal Notices ###
 
