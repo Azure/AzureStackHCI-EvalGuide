@@ -185,7 +185,7 @@ Write-Verbose "DC01 is now online. Proceed to the next step...." -Verbose
 #### Configure the Active Directory role on DC01 ####
 With the OS configured, you can now move on to configuring the Windows Server 2019 OS with the appropriate roles and features to support the domain infrastructure.
 
-First, you'll configire Active Directory - the following code block will remotely connect to DC01, enable the Active Directory role, and apply a configuration as defined in the script block below.  Firstly, you should optionally set the Directory Services Restore Mode password, or just leave as the default below.
+First, you'll configure Active Directory - the following code block will remotely connect to DC01, enable the Active Directory role, and apply a configuration as defined in the script block below.  Firstly, you should optionally set the Directory Services Restore Mode password, or just leave as the default below.
 
 ```powershell
 # Configure Active Directory on DC01

@@ -157,7 +157,28 @@ Once complete, proceed to **reboot DC01**.
 #### Configure the Active Directory role on DC01 ####
 With the OS configured, you can now move on to configuring the Windows Server 2019 OS with the appropriate roles and features to support the domain infrastructure.
 
-First, you'll configire Active Directory - the following code block will remotely connect to DC01, enable the Active Directory role, and apply a configuration as defined in the script block below.  Firstly, you should optionally set the Directory Services Restore Mode password, or just leave as the default below.
+First, you'll configure Active Directory:
+
+1. If not already open, open **Server Manager**, and after it has finished refreshing, click on **Manage**, then **Add Roles and Features**
+2. On the **Before you begin** page, click **Next**
+3. On the **Select installation type** page, click **Next**
+4. On the **Select destination server** page, click **Next**
+5. On the **Select server roles** page, click **Active Directory Domain Services**
+6. In the **Add Roles and Features wizard** popup, click **Add Features**
+7. On the **Select server roles** page, click **DNS Server**
+8. In the **Add Roles and Features wizard** popup, click **Add Features**, then click **Next**
+9. On the **Select features** page, click **Next**
+10. On the **Active Directory Domain Services** page, click **Next**
+11. On the **DNS Server** page, click **Next**
+12. On the **Confirmation** page, review the information and click **Install**
+
+![Active Directory Domain Services installation progress](/media/dc_install_progress.png)
+
+The installation of Active Directory Domain Services will begin, and take a few moments to complete.  Once complete, click **Promote this server to a domain controller** to continue the configuration of DC01.
+
+
+
+
 
 ```powershell
 # Configure Active Directory on DC01
@@ -182,12 +203,6 @@ Invoke-Command -VMName DC01 -Credential $dcCreds -ScriptBlock {
 
 When the process is completed successfully, you should see a message similar to this below. Once validated, you should be able to reboot the domain controller and proceed on through the process.
 
-![Active Directory role successfully install and domain controller configured](/media/dc_created.png)
-
-```powershell
-Write-Verbose "Rebooting DC01 to finish installing of Active Directory" -Verbose
-Stop-VM -Name DC01
-Start-VM -Name DC01
 
 # Set updated domain credentials based on previous credentials
 $domainName = "azshci.local"
