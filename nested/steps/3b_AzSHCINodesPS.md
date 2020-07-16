@@ -111,7 +111,31 @@ Rename-Computer -NewName "AZSHCINODE01" -Restart
 The machine will reboot automatically and within a few moments, will be back online.
 
 ### Join the domain using PowerShell Direct ###
-Need to validate if this step is required
+To save a later step, you can quickly use PowerShell Direct to join your AZSHCINODE01 to the domain:
+
+```powershell
+$nodeName = "AZSHCINODE01"
+$azsHCILocalCreds = Get-Credential -UserName "Administrator" -Message "Enter the password used when you deployed the Azure Stack HCI OS"
+# Define domain-join credentials
+$domainName = "azshci.local"
+$domainAdmin = "$domainName\labadmin"
+$domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the password for the LabAdmin account"
+Invoke-Command -VMName "$nodeName" -Credential $azsHCILocalCreds -ScriptBlock {
+    param ($domainCreds, $nodeName)
+    Add-Computer –DomainName azshci.local -NewName $nodeName –Credential $domainCreds -Force
+} -ArgumentList $domainCreds, $nodeName
+
+Write-Verbose "Rebooting node for hostname change to take effect" -Verbose
+Stop-VM -Name $nodeName
+Start-VM -Name $nodeName
+
+# Test for the node to be back online and responding
+while ((Invoke-Command -VMName $nodeName -Credential $domainCreds {"Test"} -ErrorAction SilentlyContinue) -ne "Test") {
+    Start-Sleep -Seconds 1
+}
+Write-Verbose "$nodeName is now online. Proceed to the next step...." -Verbose
+```
+
 
 Repeat creation process
 -----------

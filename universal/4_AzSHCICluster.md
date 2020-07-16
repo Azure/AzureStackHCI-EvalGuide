@@ -47,22 +47,47 @@ If you have just 2 nodes, or if your preference is for a cluster running in a si
 2. Once logged into Windows Admin Center, under **All connections**, click **Add**
 3. On the **Add resources popup**, under **Windows Server cluster**, click **Create new** to open the **Cluster Creation wizard**
 
+### Get started ###
+
 ![Choose cluster type in the Create Cluster wizard](/media/wac_cluster_type.png)
 
-4. Ensure you select **Azure Stack HCI**, select **All servers in one site** and cick **Create**
-5. On the **Check the prerequisites** page, review the requirements and click **Next**
-6. On the **Add Servers** page, supply a **username**, which should be **administrator** and **password** and then one by one, enter the node names (or IP addresses if names don't resolve) of your Azure Stack HCI nodes, clicking **Add** after each one.  Each node will be validated, and given a **Ready** status when fully validated.
+1. Ensure you select **Azure Stack HCI**, select **All servers in one site** and cick **Create**
+2. On the **Check the prerequisites** page, review the requirements and click **Next**
+3. On the **Add Servers** page, supply a **username**, which should be **administrator** and **password** and then one by one, enter the node names (or IP addresses if names don't resolve) of your Azure Stack HCI nodes, clicking **Add** after each one.  Each node will be validated, and given a **Ready** status when fully validated.
 
 ![Add servers in the Create Cluster wizard](/media/add_servers.png)
 
-7. On the **Join a domain** page, enter your domain (azshci.local from the nested evaluation guide path) and your **LabAdmin credentials**, then click **Apply changes** to join these machines to the domain.
-8. Windows Admin Center will then join the nodes to the domain, ready for the next step.  Once complete, click **Next**
+4. On the **Join a domain** page, enter your domain (azshci.local from the nested path of this evaluation guide) and your **LabAdmin credentials**, then click **Apply changes** to join these machines to the domain.
+5. Windows Admin Center will then join the nodes to the domain, ready for the next step.  Once complete, click **Next**
 
 ![Joined the domain in the Create Cluster wizard](/media/wac_domain_joined.png)
 
-9. On the **Install features** page, Windows Admin Center will query the nodes for currently installed features, and will request you install required features.  Click **Install features**.  This will take a few moments - once complete, click **Next**
+6. On the **Install features** page, Windows Admin Center will query the nodes for currently installed features, and will request you install required features.  Click **Install features**.  This will take a few moments - once complete, click **Next**
 
 ![Installing required features in the Create Cluster wizard](/media/wac_installed_features.png)
 
-10. On the **Install updates** page, Windows Admin Center will query the nodes for available updates, and will request you install any that are required.  Click **Install updates**.  This will take a few moments - once complete, click **Next**
-11. 
+7. On the **Install updates** page, Windows Admin Center will query the nodes for available updates, and will request you install any that are required.  Click **Install updates**.  This will take a few moments - once complete, click **Next**
+8. On the **Solution updates** page, install any appropriate extensions (only for the physical path in this evaluation guide) and then click **Next**
+9. On the **Restart servers** page, click **Restart servers**
+
+![Restart nodes in the Create Cluster wizard](/media/wac_restart.png)
+
+### Networking ###
+With the servers domain joined, configured with the appropriate features, updated and rebooted, you're ready to configure your network.  You have a number of different choices here, so we'll try to explain why we're making each selection, so you can better apply it to your environment further down the road.
+
+1. Firstly, Windows Admin Center will verify your networking setup - it'll tell you how many NICs are in each node, along with relevant hardware information, MAC address and status information.  Review for accuracy, and then click **Next**
+
+![Verify network in the Create Cluster wizard](/media/wac_verify network.png)
+
+The first key step with setting up the networking with Windows Admin Center, is to choose a management NIC that will be dedicated for management use.  You can choose either a single NIC, or two NICs for redundancy.
+
+As it stands, this is the way that the Windows Admin Center approaches the network configuration, however, if you were not using the Windows Admin Center, through PowerShell, there are a number of different ways to configure the network adapters to meet your needs.  We will work through the Windows Admin Center approach in this guide.
+
+* If you are following the **Nested path in this evaluation guide**, you should have 4 NICs listed as available.  You should choose **Two physical network adapters teamed for management**
+* If you are following the **Physical path in this evaluation guide**, you should have at least 2 NICs listed as available.  If you have exactly 2 NICs, you will need to choose **One physical network adapter for management**, however if you have 4 or more NICs, you can choose **Two physical network adapters teamed for management**
+
+1. On the **Select the adapters to use for management** page, select the number of NICs you wish to dedicate for magamenet using the boxes at the top of the page
+
+
+
+
