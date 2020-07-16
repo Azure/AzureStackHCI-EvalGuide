@@ -339,7 +339,7 @@ Start-VM -Name MGMT01
 ![Booting the VM and triggering the boot from DVD](/media/boot_from_dvd.png)
 
 ### Complete the Out of Box Experience (OOBE) ###
-With the VM running, and the boot process initiated, you should be in a position to start the deployment of the Windows Server 2019 OS.
+With the VM running, and the boot process initiated, you should be in a position to start the deployment of the Windows 10 OS.
 
 ![Initiate setup of Windows 10](/media/w10_setup.png)
 
@@ -359,7 +359,7 @@ With the installation complete, you'll be prompted to finish the out of box expe
 
 1. On the **Sign in with Microsoft** page, select **Domain join instead**
 2. On the **Who's going to use this PC** page, enter **LocalAdmin** and click **Next**
-3. On the **Create a super memorable password** page, enter your previously used password and click **Next**
+3. On the **Create a super memorable password** page, for simplicity, enter a previously used password and click **Next**
 4. Enter your password again on the **Confirm your password** page, then click **Next**
 5. For the security questions, provide answers for 3 questions, and click **Next**
 6. On the **Choose privacy settings for your device** page, make your adjustments and click **Accept**
@@ -448,4 +448,4 @@ To install the Windows Admin Center, simply **double-click** the executable on t
 
 Next Steps
 -----------
-In this step, you've successfully created your management infrastructure, including a Windows Server 2019 domain controller and a Windows 10 management VM, complete with Windows Admin Center. You can now proceed to [deploy your nested Azure Stack HCI nodes](/steps/3_AzSHCINodes.md "deploying your Azure Stack HCI nodes").
+In this step, you've successfully created your management infrastructure, including a Windows Server 2019 domain controller and a Windows 10 management VM, complete with Windows Admin Center. You can now proceed to [create your nested Azure Stack HCI nodes with PowerShell](/steps/3b_AzSHCINodesPS.md "Create your nested Azure Stack HCI nodes with PowerShell")

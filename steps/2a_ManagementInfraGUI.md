@@ -272,52 +272,56 @@ Create your Windows 10 Management VM
 -----------
 There are 3 main steps to create the virtualized Windows 10 Management VM on our Hyper-V host:
 
-1. Create the MGMT01 VM using PowerShell
+1. Create the MGMT01 VM using Hyper-V Manager
 2. Complete the Out of Box Experience (OOBE)
 3. Join the domain, and install Windows Admin Center
 
-For speed, we'll use PowerShell to configure as much as we can, but if you prefer to create the Windows 10 Management VM using the Hyper-V Manager GUI, feel free to take that approach.
 
-### Create the MGMT01 VM using PowerShell ###
-On your AzSHCIHost001 VM, **open PowerShell as administrator**.  Make any changes that you require, to the script below, and then run it:
+### Create the DC01 VM using Hyper-V Manager ###
+In this step, you'll be using Hyper-V Manager to deploy a Windows 10 Enterprise management virtual machine.
 
-```powershell
-# Define the characteristics of the VM, and create
-New-VM `
-    -Name "MGMT01" `
-    -MemoryStartupBytes 4GB `
-    -SwitchName "InternalNAT" `
-    -Path "C:\VMs\" `
-    -NewVHDPath "C:\VMs\MGMT01\Virtual Hard Disks\MGMT01.vhdx" `
-    -NewVHDSizeBytes 30GB `
-    -Generation 2
-```
+1. On your Hyper-V host, **open Hyper-V Manager**.
+2. In the top right-corner, under **Actions**, click **New**, then **Virtual Machine**. The **New Virtual Machine Wizard** should open.
+3. On the **Before you begin** page, click **Next**
+4. On the **Specify Name and Location** page, enter **MGMT01**
+5. Tick the box for **Store the virtual machine in a different location** and click **Browse**
+6. In the **Select Folder** window, click on **This PC**, navigate to **C:**, click on **VMs**, click **Select Folder** and click **Next**
 
-To optimize the VM's use of available memory, especially on physical systems with lower physical memory, you can optionally configure the VM with Dynamic Memory, which will allow Hyper-V to allocate memory to the VM, based on it's requirements, and remove memory when idle.  This can help to free up valuable host resources in memory-constrained environments.
+![Specify VM name and location](/media/new_vm_mgmt01.png)
 
-```powershell
-# Optionally configure the VM with Dynamic Memory
-Set-VMMemory MGMT01 -DynamicMemoryEnabled $true -MinimumBytes 2GB -StartupBytes 4GB -MaximumBytes 4GB
-```
-Once the VM is successfully created, you should connect the Windows 10 Enterprise Evaluation ISO file, downloaded earlier.
+7. On the **Specify Generation** page, select **Generation 2** and click **Next**
+8. On the **Assign Memory** page, assign 4GB memory by entering **4096** for Startup memory and tick the **Use Dynamic Memory for this virtual machine**, then click **Next**
 
-```powershell
-# Add the DVD drive, attach the ISO to DC01 and set the DVD as the first boot device
-$DVD = Add-VMDvdDrive -VMName MGMT01 -Path C:\ISO\W10.iso -Passthru
-Set-VMFirmware -VMName MGMT01 -FirstBootDevice $DVD
-```
-With the VM configured correctly, you can use the following commands to connect to the VM using VM Connect, and at the same time, start the VM.  To boot from the ISO, you'll need to click on the VM and quickly press a key to trigger the boot from the DVD inside the VM.  If you miss the prompt to press a key to boot from CD or DVD, simply reset the VM and try again.
+![Assign VM memory](/media/new_vm_dynamicmem.png)
 
-```powershell
-# Open a VM Connect window, and start the VM
-vmconnect.exe localhost MGMT01
-Start-VM -Name MGMT01
-```
+9. On the **Configure Networking** page, select **InternalNAT** and click **Next**
+10. On the **Connect Virtual Hard Disk** page, change **size** to **30** and click **Next**
+
+![Connect Virtual Hard Disk](/media/new_vm_mgmt01_vhd.png)
+
+11. On the **Installation Options** page, select **Install an operating system from a bootable image file**, and click **Browse**
+12. Navigate to **C:\ISO** and select your **W10.iso** file, and click **Open**.  Then click **Next**
+13. On the **Completing the New Virtual Machine Wizard** page, review the information and click **Finish**
+
+Your new MGMT01 virtual machine will now be created.  Once created, we need to make a few final modifications. To optimize the VM's use of available memory, especially on physical systems with lower physical memory, you can optionally configure the VM with Dynamic Memory, which will allow Hyper-V to allocate memory to the VM, based on it's requirements, and remove memory when idle.  This can help to free up valuable host resources in memory-constrained environments.
+
+1. In **Hyper-V Manager**, right-click **MGMT01** and click **Settings**
+2. In the **Settings** window, under **Memory**, in the **Dynamic Memory** section, enter the following figures, then click **OK**
+   * Minimum RAM: 2048
+   * Maximum RAM: 4096
+
+![Updating memory for MGMT01](/media/dynamicmem_mgmt01.png)
+
+With the VM configured correctly, in **Hyper-V Manager**, double-click MGMT01.  This should open the VM Connect window.
+
+![Starting up MGMT01](/media/startvm_mgmt01.png)
+
+In the center of the window, there is a message explaining the VM is currently switched off.  Click on **Start** and then quickly **press any key** inside the VM to boot from the ISO file. If you miss the prompt to press a key to boot from CD or DVD, simply reset the VM and try again.
 
 ![Booting the VM and triggering the boot from DVD](/media/boot_from_dvd.png)
 
 ### Complete the Out of Box Experience (OOBE) ###
-With the VM running, and the boot process initiated, you should be in a position to start the deployment of the Windows Server 2019 OS.
+With the VM running, and the boot process initiated, you should be in a position to start the deployment of the Windows 10 OS.
 
 ![Initiate setup of Windows 10](/media/w10_setup.png)
 
@@ -337,7 +341,7 @@ With the installation complete, you'll be prompted to finish the out of box expe
 
 1. On the **Sign in with Microsoft** page, select **Domain join instead**
 2. On the **Who's going to use this PC** page, enter **LocalAdmin** and click **Next**
-3. On the **Create a super memorable password** page, enter your previously used password and click **Next**
+3. On the **Create a super memorable password** page, for simplicity, enter a previously used password and click **Next**
 4. Enter your password again on the **Confirm your password** page, then click **Next**
 5. For the security questions, provide answers for 3 questions, and click **Next**
 6. On the **Choose privacy settings for your device** page, make your adjustments and click **Accept**
@@ -357,55 +361,43 @@ It's a good idea to ensure your OS is running the latest security updates and pa
 You can then **close** the VM Connect window, as we will continue configuring the domain controller using PowerShell, from AzSHCIHost001.
 
 ### Join your Windows 10 VM to the domain ###
-To simplify the domain join of the machine to your sandbox domain environment, use the following PowerShell script:
+Before installing the Windows Admin Center, you'll join MGMT01 to the azshci.local domain. The easiest way to do this, and rename the PC in one step with the GUI, is to use **sysdm.cpl**
 
-```powershell
-# Define local Windows 10 credentials
-$w10Creds = Get-Credential -UserName "LocalAdmin" -Message "Enter the password used when you deployed Windows 10"
-# Define domain-join credentials
-$domainName = "azshci.local"
-$domainAdmin = "$domainName\labadmin"
-$domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the password for the LabAdmin account"
-Invoke-Command -VMName "MGMT01" -Credential $w10Creds -ScriptBlock {
-    param ($domainCreds)
-    # Update Hostname to MGMT01
-    Write-Verbose "Updating Hostname for MGMT01" -Verbose
-    Rename-Computer -NewName "MGMT01"
-    Add-Computer –DomainName azshci.local -NewName "MGMT01" –Credential $domainCreds -Force
-} -ArgumentList $domainCreds
+1. Click on **Start** and enter **sysdm.cpl**, then in the results, select **sysdm.cpl**
 
-Write-Verbose "Rebooting MGMT01 for hostname change to take effect" -Verbose
-Stop-VM -Name MGMT01
-Start-VM -Name MGMT01
+![Open the System Properties dialog box](/media/sysdm.cpl.png)
 
-# Test for the MGMT01 to be back online and responding
-while ((Invoke-Command -VMName MGMT01 -Credential $domainCreds {"Test"} -ErrorAction SilentlyContinue) -ne "Test") {
-    Start-Sleep -Seconds 1
-}
-Write-Verbose "MGMT01 is now online. Proceed to the next step...." -Verbose
-```
+2. In the **System Properties** window, click on **Change**, then enter the following details, then click **OK**
+
+    * Computer name: **MGMT01**
+    * Member of: **Domain:** **azshci.local**
+
+3. When prompted for credentials, enter the following, and click **OK**
+
+    * Username: **azshci\labadmin**
+    * Password: **LabAdmin-password-you-entered-earlier**
+
+This may take a few moments, but should then join the machine to the domain.  **Reboot** the machine when prompted.
 
 ### Install Windows Admin Center on Windows 10 ###
 With the Windows 10 VM now deployed and configured, the final step in the infrastructure preparation, is to install and configure the Windows Admin Center. Earlier in this guide, you should have downloaded the Windows Admin Center files, along with other ISOs.
 
 Firstly, navigate to C:\ISO, or wherever you chose to store your ISOs and Windows Admin Center executable.  Select the Windows Admin Center executable, **right-click** and select **copy**.
 
-Once located, open a PowerShell console **as administrator** and run the following:
-
-```powershell
-vmconnect.exe localhost MGMT01
-```
-
-This will open the VM Connect window.  You should be presented with a **Connect to MGMT01** screen.  Ensure that the display size is set to **Full Screen** and using the **Show Options** dropdown, ensure that **Save my settings for future connections to this virtual machine** is ticked, then click **Connect**.
+Navigate to **Hyper-V Manager**, locate **MGMT01** and double-click the VM.  This will open the VM Connect window.  If you haven't set this already. you should be presented with a **Connect to MGMT01** screen.  Ensure that the display size is set to **Full Screen** and using the **Show Options** dropdown, ensure that **Save my settings for future connections to this virtual machine** is ticked, then click **Connect**.
 
 ![Establish a VM Connect session to MGMT01](/media/connect_to_mgmt01.png)
+
+**NOTE** if you don't see the prompt for **Enhanced Session Mode**, simply click on the **Enhanced Session** button in the VM Connect window to activate it, and define your default settings.
+
+![Enhanced Session Mode button](/media/connect_to_mgmt01.png)
 
 When prompted, enter your Lab Admin credentials to log into MGMT01.  When on the desktop, **right-click** and select **paste** to transfer the Windows Admin Center executable onto the desktop of MGMT01.
 
 To install the Windows Admin Center, simply **double-click** the executable on the desktop, and follow the installation steps, making the following selections:
 
 1. Read the license terms, then tick the box next to **I accept these terms**, then click **Next**
-2. On the **Use Microsoft update** screen, select to **Use Microsoft Update when i check for updates (recommended)** and click **Next**
+2. On the **Use Microsoft update** screen, select to **Use Microsoft Update when i check for updates (recommended)**, and click **Next**
 3. On the **Install Windows Admin Center on Windows 10** screen, read the installation information, then click **Next**
 4. On the **Installing Windows Admin Center** screen, tick the **Create a desktop shortcut...** box, and click **Install**. The install process will take a few minutes, and once completed, you should be presented with some certificate information.
 
@@ -426,4 +418,4 @@ To install the Windows Admin Center, simply **double-click** the executable on t
 
 Next Steps
 -----------
-In this step, you've successfully created your management infrastructure, including a Windows Server 2019 domain controller and a Windows 10 management VM, complete with Windows Admin Center. You can now proceed to [deploy your nested Azure Stack HCI nodes](/steps/3_AzSHCINodes.md "deploying your Azure Stack HCI nodes").
+In this step, you've successfully created your management infrastructure, including a Windows Server 2019 domain controller and a Windows 10 management VM, complete with Windows Admin Center. You can now proceed to [create your nested Azure Stack HCI nodes with the GUI](/steps/3a_AzSHCINodesGUI.md "Create your nested Azure Stack HCI nodes with the GUI").
