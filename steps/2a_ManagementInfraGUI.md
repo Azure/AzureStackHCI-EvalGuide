@@ -140,64 +140,19 @@ Firstly, you will configure the networking inside the VM and rename the OS, befo
 4. Back in the **Properties** window, next to **Ethernet** click on **IPv4 address assigned by DHCP, IPv6 enabled**
 5. In the **Network Connections** window, right-click on the **Ethernet** adapter and select **Properties**
 6. Click on **Internet Protocol Version 4 (TCP/IPv4)** and click **Properties**
-7. Enter the following information,. then click **OK**
-   * IP address: 192.168.0 2
+7. Enter the following information,. then click **OK**, and then click **Close**
+   * IP address: 192.168.0.2
+   * Subnet mask: 255.255.255.0
+   * Default gateway: 192.168.0.1
+   * Preferred DNS server: 1.1.1.1
+   * Alternate DNS server: 1.0.0.1
 
-```powershell
-# Provide a password for the VM that you set in the previous step
-$dcCreds = Get-Credential -UserName "Administrator" -Message "Enter the password used when you deployed Windows Server 2019"
-Invoke-Command -VMName "DC01" -Credential $dcCreds -ScriptBlock {
-    # Configure new IP address for DC01 NIC
-    New-NetIPAddress -IPAddress "192.168.0.2" -DefaultGateway "192.168.0.1" -InterfaceAlias "Ethernet" -PrefixLength "24" | Out-Null
-    Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses ("1.1.1.1")
-    $dcIP = Get-NetIPAddress -AddressFamily IPv4 -InterfaceAlias "Ethernet" | Select-Object IPAddress
-    Write-Verbose "The currently assigned IPv4 address for DC01 is $($dcIP.IPAddress)" -Verbose 
-    # Update Hostname to DC01
-    Write-Verbose "Updating Hostname for DC01" -Verbose
-    Rename-Computer -NewName "DC01"
-}
-
-Write-Verbose "Rebooting DC01 for hostname change to take effect" -Verbose
-Stop-VM -Name DC01
-Start-VM -Name DC01
-
-# Test for the DC01 to be back online and responding
-while ((Invoke-Command -VMName DC01 -Credential $dcCreds {"Test"} -ErrorAction SilentlyContinue) -ne "Test") {
-    Start-Sleep -Seconds 1
-}
-Write-Verbose "DC01 is now online. Proceed to the next step...." -Verbose
-```
-
-Once the DC01 VM is back online and responding, we will move on to configuring the domain controller.
+![Network settings for DC01](/media/dc01_nic.png)
 
 #### Optional - Update DC01 with latest Windows Updates ####
-If you'd like to ensure DC01 is fully updated, you can run the following PowerShell command that will invoke Windows Update using WMI/CIM methods. The alternative is to connect to the VM via vmconnect.exe, launch **sconfig** and run the update manually from that interface.  Whilst you're free to do that, going via PowerShell Direct is straightforward and quick, however the update process may take a few minutes.
+If you'd like to ensure DC01 is fully updated, click on **Start**, search for **Updates** and select **Check for Updates** in the results.  Check for any new updates and install any that are required.  This may take a few minutes.
 
-**NOTE** the code below is specific to Windows Server 2019.
-
-```powershell
-$dcCreds = Get-Credential -UserName "Administrator" -Message "Enter the password used when you deployed Windows Server 2019"
-Invoke-Command -VMName "DC01" -Credential $dcCreds -ScriptBlock {
-    # Scane for updates
-    $ScanResult = Invoke-CimMethod -Namespace "root/Microsoft/Windows/WindowsUpdate" -ClassName "MSFT_WUOperations" `
-    -MethodName ScanForUpdates -Arguments @{SearchCriteria = "IsInstalled=0" }
-    # Apply updates (if not empty)
-    if ($ScanResult.Updates) {
-        Invoke-CimMethod -Namespace "root/Microsoft/Windows/WindowsUpdate" -ClassName "MSFT_WUOperations" `
-        -MethodName InstallUpdates -Arguments @{Updates = $ScanResult.Updates }
-    }
-}
-
-Write-Verbose "Rebooting DC01 to finish installing updates" -Verbose
-Stop-VM -Name DC01
-Start-VM -Name DC01
-
-# Test for the DC01 to be back online and responding
-while ((Invoke-Command -VMName DC01 -Credential $dcCreds {"Test"} -ErrorAction SilentlyContinue) -ne "Test") {
-    Start-Sleep -Seconds 1
-}
-Write-Verbose "DC01 is now online. Proceed to the next step...." -Verbose
-```
+Once complete, proceed to **reboot DC01**.
 
 #### Configure the Active Directory role on DC01 ####
 With the OS configured, you can now move on to configuring the Windows Server 2019 OS with the appropriate roles and features to support the domain infrastructure.
