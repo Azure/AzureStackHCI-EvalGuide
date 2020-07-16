@@ -384,13 +384,13 @@ With the Windows 10 VM now deployed and configured, the final step in the infras
 
 Firstly, navigate to C:\ISO, or wherever you chose to store your ISOs and Windows Admin Center executable.  Select the Windows Admin Center executable, **right-click** and select **copy**.
 
-Navigate to **Hyper-V Manager**, locate **MGMT01** and double-click the VM.  This will open the VM Connect window.  If you haven't set this already. you should be presented with a **Connect to MGMT01** screen.  Ensure that the display size is set to **Full Screen** and using the **Show Options** dropdown, ensure that **Save my settings for future connections to this virtual machine** is ticked, then click **Connect**.
+Navigate to **Hyper-V Manager**, locate **MGMT01** and double-click the VM.  This will open the VM Connect window.  If you haven't set this already, you should be presented with a **Connect to MGMT01** screen.  Ensure that the display size is set to **Full Screen** and using the **Show Options** dropdown, ensure that **Save my settings for future connections to this virtual machine** is ticked, then click **Connect**.
 
 ![Establish a VM Connect session to MGMT01](/media/connect_to_mgmt01.png)
 
 **NOTE** if you don't see the prompt for **Enhanced Session Mode**, simply click on the **Enhanced Session** button in the VM Connect window to activate it, and define your default settings.
 
-![Enhanced Session Mode button](/media/connect_to_mgmt01.png)
+![Enhanced Session Mode button](/media/enhanced_session.png)
 
 When prompted, enter your Lab Admin credentials to log into MGMT01.  When on the desktop, **right-click** and select **paste** to transfer the Windows Admin Center executable onto the desktop of MGMT01.
 
