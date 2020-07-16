@@ -95,4 +95,17 @@ As it stands, this is the way that the Windows Admin Center approaches the netwo
 ![Select management adapters in the Create Cluster wizard](/media/wac_nic_selection.png)
 
 3. Windows Admin Center will then apply the configuration to your NIC(s) and when complete, click **Next**
-4. On the **Define networks** page, this is where you can define the specific networks 
+4. On the **Define networks** page, this is where you can define the specific networks, separate subnets, and apply VLANs.
+
+If you have DHCP setup in your environment, which you do if you followed the **nested path in this evaluation guide**, you'll see IP address and subnet information already populated, and no VLANs in use.  When you click **Apply and test**, Windows Admin Center validates network connectivity between the adapters in the same VLAN and subnet, which may take a few moments.
+
+If you are following the **physical path in this evaluation guide, apply your VLANs as appropriate at this point**
+
+For the purpose of this evaluation, if you're following the **nested path**, you should be able to leave the default DHCP supplied values, then click **Apply and test**.  If you're following the physical path, apply appropriate IP addresses, subnet masks and VLANs to match your environment, and click **Apply and test**.
+
+Whilst having a simple, flat network across management, compute and storage isn't recommended for production, for the purposes of evaluation, this configuration is fine.
+
+5. Once the networks have been verified, click **Next**
+6. On the **Virtual Switch** page, you have a number of options
+
+![Select vSwitch in the Create Cluster wizard](/media/wac_vSwitch.png)
