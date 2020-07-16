@@ -1,7 +1,7 @@
 Evaluate Azure Stack HCI using Nested Virtualization
 ==============
 
-As with any infrastructure technology, in order to test, validate and evaluate the technology, there's typically a requirement for hardware.  If you're fortunate enough to have multiple server-class pieces of hardware going spare (ideally hardware certified for Windows Server 2019 found on our [Azure Stack HCI Catalog](https://azure.com/hci "Azure Stack HCI Catalog")), you can certainly perform a more real-world evaluation of Azure Stack HCI, and you should follow the [guide for deploying on multiple nodes of physical hardware](../physical/README.md)
+As with any infrastructure technology, in order to test, validate and evaluate the technology, there's typically a requirement for hardware.  If you're fortunate enough to have multiple server-class pieces of hardware going spare (ideally hardware certified for Azure Stack HCI, found on our [!Azure Stack HCI Catalog](https://azure.com/hci "Azure Stack HCI Catalog")), you can certainly perform a more real-world evaluation of Azure Stack HCI, and you should follow the [guide for deploying on multiple nodes of physical hardware](../physical/README.md)
 
 For the purpose of this evaluation guide however, we'll be relying on **nested virtualization** to allow us to consolidate a full lab infrastructure, down onto a single Hyper-V host.
 

@@ -56,5 +56,13 @@ If you have just 2 nodes, or if your preference is for a cluster running in a si
 ![Add servers in the Create Cluster wizard](/media/add_servers.png)
 
 7. On the **Join a domain** page, enter your domain (azshci.local from the nested evaluation guide path) and your **LabAdmin credentials**, then click **Apply changes** to join these machines to the domain.
-8. Windows Admin Center will then join the nodes to the domain, ready for the next step.
+8. Windows Admin Center will then join the nodes to the domain, ready for the next step.  Once complete, click **Next**
 
+![Joined the domain in the Create Cluster wizard](/media/wac_domain_joined.png)
+
+9. On the **Install features** page, Windows Admin Center will query the nodes for currently installed features, and will request you install required features.  Click **Install features**.  This will take a few moments - once complete, click **Next**
+
+![Installing required features in the Create Cluster wizard](/media/wac_installed_features.png)
+
+10. On the **Install updates** page, Windows Admin Center will query the nodes for available updates, and will request you install any that are required.  Click **Install updates**.  This will take a few moments - once complete, click **Next**
+11. 
