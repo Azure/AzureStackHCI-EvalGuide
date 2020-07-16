@@ -79,11 +79,21 @@ Firstly, Windows Admin Center will verify your networking setup - it'll tell you
 
 ![Verify network in the Create Cluster wizard](/media/wac_verify_network.png)
 
-The first key step with setting up the networking with Windows Admin Center, is to choose a management NIC that will be dedicated for management use.  You can choose either a single NIC, or two NICs for redundancy.
+The first key step with setting up the networking with Windows Admin Center, is to choose a management NIC that will be dedicated for management use.  You can choose either a single NIC, or two NICs for redundancy.  This step specifically designates 1 or 2 adapters that will be used by the Windows Admin Center to orchestrate the cluster creation flow.  It's mandatory to select at least one of the adapters for management, and in a physical deployment, the 1GbE NICs are usually good candidates for this.
 
 As it stands, this is the way that the Windows Admin Center approaches the network configuration, however, if you were not using the Windows Admin Center, through PowerShell, there are a number of different ways to configure the network adapters to meet your needs.  We will work through the Windows Admin Center approach in this guide.
 
-* If you are following the **Nested path in this evaluation guide**, you should have 4 NICs listed as available.  You should choose **Two physical network adapters teamed for management**
+* If you are following the **Nested path in this evaluation guide**, you should have 4 NICs listed as available.  You can choose **Two physical network adapters teamed for management**
 * If you are following the **Physical path in this evaluation guide**, you should have at least 2 NICs listed as available.  If you have exactly 2 NICs, you will need to choose **One physical network adapter for management**, however if you have 4 or more NICs, you can choose **Two physical network adapters teamed for management**
 
+
 1. On the **Select the adapters to use for management** page, select the number of NICs you wish to dedicate for magamenet using the boxes at the top of the page
+
+![Select management adapters in the Create Cluster wizard](/media/wac_management_nic.png)
+
+2. Select 1 or 2 adapters, depending on how management management adapters you chose to use, then scroll down the page, and click **Apply and test**
+
+![Select management adapters in the Create Cluster wizard](/media/wac_nic_selection.png)
+
+3. Windows Admin Center will then apply the configuration to your NIC(s) and when complete, click **Next**
+4. On the **Define networks** page, this is where you can define the specific networks 
