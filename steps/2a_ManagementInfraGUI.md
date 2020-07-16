@@ -266,10 +266,6 @@ Now that the DHCP Server role is installed, there's some additional config requi
 
 You have now successfully configured DC01 to distribute IP addresses to connecting clients in the azshci.local domain.  Clients will be given an IP address, along with the correct DNS Server, and default gateway to access external resources.
 
-When the process is completed successfully, you should see a message similar to this below.
-
-![DHCP role successfully configured on DC01](/media/dhcp_enabled.png)
-
 With Active Directory, DNS and DHCP all configured, you can now move on to deploying the Windows 10 Enterprise VM, that will be used to run the Windows Admin Center.
 
 Create your Windows 10 Management VM
