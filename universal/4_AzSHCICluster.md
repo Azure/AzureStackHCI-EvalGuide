@@ -55,7 +55,7 @@ If you have just 2 nodes, or if your preference is for a cluster running in a si
 2. On the **Check the prerequisites** page, review the requirements and click **Next**
 3. On the **Add Servers** page, supply a **username**, which should be **administrator** and **password** and then one by one, enter the node names (or IP addresses if names don't resolve) of your Azure Stack HCI nodes, clicking **Add** after each one.  Each node will be validated, and given a **Ready** status when fully validated.
 
-![Add servers in the Create Cluster wizard](/media/add_servers.png)
+![Add servers in the Create Cluster wizard](/media/add_nodes.png)
 
 4. On the **Join a domain** page, enter your domain (azshci.local from the nested path of this evaluation guide) and your **LabAdmin credentials**, then click **Apply changes** to join these machines to the domain.
 5. Windows Admin Center will then join the nodes to the domain, ready for the next step.  Once complete, click **Next**
