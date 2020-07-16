@@ -197,34 +197,24 @@ Rather than use the main domain admin account, we'll add an additional administr
 * Username: azshci.local\administrator
 * Password: admin-password-you-entered-earlier
 
-1. Once logged into DC01 with the domain admin account, open **Server Manager**
-2. 
+1. Once logged into DC01 with the domain admin account, click **Start** and search for "users"
+2. In the results, click on **Active Directory Users and Computers**
+3. In the **Active Directory Users and Computers** window, expand the **azshci.local domain** right-click on the **Users** OU, select **New** then **User**.  Enter the following details, then click **Next**
+   * First name: Lab
+   * Last name: Admin
+   * Full name: Lab Admin
+   * User logon name: labadmin
 
-```powershell
-Write-Verbose "Creating new administrative User within the azshci.local domain." -Verbose
-$newUser = "LabAdmin"
-Invoke-Command -VMName DC01 -Credential $domainCreds -ScriptBlock {
-    param ($domainCreds)
-    Write-Verbose "Waiting for AD Web Services to be in a running state" -Verbose
-    $ADWebSvc = Get-Service ADWS | Select-Object *
-    while($ADWebSvc.Status -ne 'Running')
-            {
-            Start-Sleep -Seconds 1
-            }
-    Do {
-    Start-Sleep -Seconds 30
-    Write-Verbose "Waiting for AD to be Ready for User Creation" -Verbose
-    New-ADUser -Name "$newUser" -AccountPassword $domainCreds.Password -Enabled $True
-    $ADReadyCheck = Get-ADUser -Identity "$newUser"
-    }
-    Until ($ADReadyCheck.Enabled -eq "True")
-    Add-ADGroupMember -Identity "Domain Admins" -Members "$newUser"
-    Add-ADGroupMember -Identity "Enterprise Admins" -Members $newUser
-    Add-ADGroupMember -Identity "Schema Admins" -Members $newUser
-    } -ArgumentList $domainCreds, $newUser
- 
-Write-Verbose "User: $newUser created." -Verbose
-```
+![Active Directory Domain Services New Object wizard - adding a user](/media/adds_new_user.png)
+
+4. Provide a password for this new account, and **tick the Password never expires** box, then click **Next**, then click **Finish**
+5. Click on the **Users** OU, and find the new **Lab Admin** account
+6. Right-click the **Lab Admin** account, and click **Add to a group...**
+7. In the **Select Groups** window, in the **Enter the object names to select** box, enter **Domain Admins**, **Schema Admins** and **Enterprise Admins**, clicking **Check Names** after each one, then click **OK**, then **OK** to close the confirmation popup
+
+![Active Directory Domain Services New Object wizard - adding a user to groups](/media/adds_group.png)
+
+8. Close the **Active Directory Users and Computers** window
 
 You can move on to the next step - enabling the DHCP role.
 
