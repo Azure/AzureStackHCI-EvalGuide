@@ -376,7 +376,7 @@ It's a good idea to ensure your OS is running the latest security updates and pa
 3. In the Updates window within Settings, click **Check for updates**. If any are required, ensure they are downloaded and installed.  This will take a few minutes.
 4. Restart if required
 
-You can then **close** the VM Connect window, as we will continue configuring the domain controller using PowerShell, from AzSHCIHost001.
+You can then **close** the VM Connect window, as we will continue configuring MGMT01 using PowerShell, from your Hyper-V host.
 
 ### Join your Windows 10 VM to the domain ###
 To simplify the domain join of the machine to your sandbox domain environment, use the following PowerShell script:

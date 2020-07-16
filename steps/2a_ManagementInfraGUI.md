@@ -246,6 +246,7 @@ Now that the DHCP Server role is installed, there's some additional config requi
 2. Expand **dc01.azshci.local**, then **right-click on IPv4** and select **New Scope**
 3. In the **New Scope Wizard**, click **Next**, and enter the name as **ManagementScope** then click **Next**
 4. On the **IP Address Range** page, enter the following information, then click **Next**
+   
     * Start IP address: 192.168.0.3
     * End IP address: 192.168.0.100
     * Length: 24
@@ -253,11 +254,11 @@ Now that the DHCP Server role is installed, there's some additional config requi
 
 ![DHCP scope configuration](/media/dhcp_complete.png)
 
-5. On the **Add Exclusions and Delay** page, click **Next**
-6. On the **Lease Duration** page, click **Next**
-7. On the **Configure DHCP Options** page, ensure that **Yes, I want to configure these options now** radio button is selected, then click **Next**
-8. On the **Router (Default Gateway)** page, enter **192.168.0.1** and click **Add**, then click **Next**
-9. On the **Domain Name and DNS Servers** page, enter **DC01** in the **Server name** box, and click **Resolve**, then click **Next**
+1. On the **Add Exclusions and Delay** page, click **Next**
+2. On the **Lease Duration** page, click **Next**
+3. On the **Configure DHCP Options** page, ensure that **Yes, I want to configure these options now** radio button is selected, then click **Next**
+4. On the **Router (Default Gateway)** page, enter **192.168.0.1** and click **Add**, then click **Next**
+5. On the **Domain Name and DNS Servers** page, enter **DC01** in the **Server name** box, and click **Resolve**, then click **Next**
 
 ![DHCP setting for DNS Server](/media/dhcp_dns.png)
 
@@ -307,6 +308,7 @@ Your new MGMT01 virtual machine will now be created.  Once created, we need to m
 
 1. In **Hyper-V Manager**, right-click **MGMT01** and click **Settings**
 2. In the **Settings** window, under **Memory**, in the **Dynamic Memory** section, enter the following figures, then click **OK**
+
    * Minimum RAM: 2048
    * Maximum RAM: 4096
 
@@ -358,14 +360,12 @@ It's a good idea to ensure your OS is running the latest security updates and pa
 3. In the Updates window within Settings, click **Check for updates**. If any are required, ensure they are downloaded and installed.  This will take a few minutes.
 4. Restart if required
 
-You can then **close** the VM Connect window, as we will continue configuring the domain controller using PowerShell, from AzSHCIHost001.
-
 ### Join your Windows 10 VM to the domain ###
 Before installing the Windows Admin Center, you'll join MGMT01 to the azshci.local domain. The easiest way to do this, and rename the PC in one step with the GUI, is to use **sysdm.cpl**
 
-1. Click on **Start** and enter **sysdm.cpl**, then in the results, select **sysdm.cpl**
+1. Ensure you're logged into MGMT01, then click on **Start** and enter **sysdm.cpl**, then in the results, select **sysdm.cpl**
 
-![Open the System Properties dialog box](/media/sysdm.cpl.png)
+![Open the System Properties dialog box](/media/sysdm.png)
 
 2. In the **System Properties** window, click on **Change**, then enter the following details, then click **OK**
 
