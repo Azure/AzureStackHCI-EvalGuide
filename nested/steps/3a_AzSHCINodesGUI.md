@@ -37,6 +37,9 @@ In this step, you'll be using Hyper-V Manager to deploy an Azure Stack HCI node.
 
 ![Assign VM memory](/media/new_vm_node_memory.png)
 
+#### Dynamic Memory and Runtime Memory Resize ####
+When Hyper-V is running inside a virtual machine, the virtual machine must be turned off to adjust its memory. This means that even if dynamic memory is enabled, **the amount of memory will not fluctuate**. For virtual machines without dynamic memory enabled, any attempt to adjust the amount of memory while it's on will fail.  Note that simply enabling nested virtualization will have no effect on dynamic memory or runtime memory resize. The incompatibility only occurs while Hyper-V is running in the VM.
+
 **NOTE** If you have additional capacity, feel free to allocate higher levels of memory to your AZSHCINODE01 VM.
 
 9. On the **Configure Networking** page, select **InternalNAT** and click **Next**
@@ -55,12 +58,25 @@ Your new AZSHCINODE01 virtual machine will now be created.  Once created, we nee
 3. In the **Network Adapter** window, under **Virtual Switch**, use the drop down to select **InternalNAT**, then click **Apply**
 4. Repeat **Steps 2-3** to create an **additional** 2 network adapters all attached to **InternalNAT**
 5. Once you have **4 network adapters**, click on **Processor**
-6. For **Number of virtual processors**, choose a number appropriate to your underlying hardware. In this case, we'll choose **4** but we can adjust this later
+6. For **Number of virtual processors**, choose a number appropriate to your underlying hardware. In this case, we'll choose **4** but we can adjust this later, then click **Apply**
 
-![Configuring the final settings](/media/new_vm_node_settings.png)
+![Configuring the vm settings](/media/new_vm_node_settings.png)
 
-#### Dynamic Memory and Runtime Memory Resize ####
-When Hyper-V is running inside a virtual machine, the virtual machine must be turned off to adjust its memory. This means that even if dynamic memory is enabled, **the amount of memory will not fluctuate**. For virtual machines without dynamic memory enabled, any attempt to adjust the amount of memory while it's on will fail.  Note that simply enabling nested virtualization will have no effect on dynamic memory or runtime memory resize. The incompatibility only occurs while Hyper-V is running in the VM.
+You now need to add additional hard drives to support the Azure Stack HCI nodes and cluster.  You need to add a minimum of 2 data disks, but we will add 4 data disks to each node.
+
+7. Still within **AZSHCINODE01 settings**, click on **SCSI Controller**, then **Hard Drive** and click **Add**
+8. In the **Hard Drive** window, click **New**.  The **New Virtual Hard Disk** wizard opens, then click **Next**
+9. On the **Choose Disk Type** page, ensure **Dynamically expanding** is selected, then click **Next**
+10. On the **Specify Name and Location** page, enter **DATA01.vhdx**, and change the location to **C:\VMs\AZSHCINODE01\Virtual Hard Disks**, then click **Next**
+
+![Adding additional hard drives to AzSHCINode01](/media/azshci_data_disk.png)
+
+11. On the **Configure Disk** page, ensure **Create a blank virtual hard disk** is selected, set size to **100**, then click **Next**
+12. On the **Completing the New Virtual Hard Disk Wizard** page, review your settings and click **Finish**
+13. Back in the **AZSHCINODE01 settings**, click **Apply**
+14. **Repeat steps 7-13** to add **at least 3 more data disks**
+
+![Finished adding additional hard drives to AzSHCINode01](/media/azshci_disks_added.png)
 
 Before starting the VM, in order to enable Hyper-V to function inside the AZSHCINODE01 virtual machine, we need to run a quick PowerShell command to facilitate this.  Open **PowerShell as administrator** and run the following:
 
@@ -99,12 +115,20 @@ With the installation complete, you'll be prompted to change the password before
 
 ![Showing network IP addresses on AZSHCINODE01](/media/node_ipconfig.png)
 
+One additional step is to rename the AZSHCINODE01 OS, so still within the **cmd prompt**, type **PowerShell** to open the local PowerShell instance, and then run:
+
+```powershell
+Rename-Computer -NewName "AZSHCINODE01" -Restart
+```
+
+The machine will reboot automatically and within a few moments, will be back online.
+
 ### Join the domain using SConfig ###
 Need to validate if this step is required
 
 Repeat creation process
 -----------
-You have now created your first Azure Stack HCI node, inside a VM, running nested on Hyper-V.  You need a minimum of 2 nodes for deployment of an Azure Stack HCI cluster, so **repeat the creation process** to add at least one additional node.
+You have now created your first Azure Stack HCI node, inside a VM, running nested on Hyper-V.  You need a minimum of 2 nodes for deployment of an Azure Stack HCI cluster, so **repeat the creation process** to add at least one additional node, or more, depending on your Hyper-V host resources.  Use AZSHCINODE0x for your node names.
 
 Next Steps
 -----------
