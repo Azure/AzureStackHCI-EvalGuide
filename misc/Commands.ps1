@@ -164,3 +164,33 @@ $dataDrives = 1..4 | ForEach-Object { New-VHD -Path "C:\VMs\$nodeName\Virtual Ha
 $dataDrives | ForEach-Object {
     Add-VMHardDiskDrive -Path $_.path -VMName $nodeName
 }
+
+$nodeName = "AZSHCINODE01"
+New-VM `
+    -Name $nodeName  `
+    -MemoryStartupBytes 4GB `
+    -SwitchName "InternalNAT" `
+    -Path "C:\VMs\" `
+    -NewVHDPath "C:\VMs\$nodeName\Virtual Hard Disks\$nodeName.vhdx" `
+    -NewVHDSizeBytes 30GB `
+    -Generation 2
+
+# Add the DVD drive, attach the ISO to DC01 and set the DVD as the first boot device
+$DVD = Add-VMDvdDrive -VMName $nodeName -Path C:\ISO\AzSHCI.iso -Passthru
+Set-VMFirmware -VMName $nodeName -FirstBootDevice $DVD
+
+# Set the VM processor count for the VM
+Set-VM -VMname $nodeName -ProcessorCount 4
+# Add the virtual network adapters to the VM
+1..3 | ForEach-Object { Add-VMNetworkAdapter -VMName $nodeName -SwitchName InternalNAT }
+# Create the DATA virtual hard disks and attach them
+$dataDrives = 1..4 | ForEach-Object { New-VHD -Path "C:\VMs\$nodeName\Virtual Hard Disks\DATA0$_.vhdx" -Dynamic -Size 100GB }
+$dataDrives | ForEach-Object {
+    Add-VMHardDiskDrive -Path $_.path -VMName $nodeName
+}
+# Enable nested virtualization
+Set-VMProcessor -VMName $nodeName -ExposeVirtualizationExtensions $true -Verbose
+
+# Open a VM Connect window, and start the VM
+vmconnect.exe localhost $nodeName
+Start-VM -Name $nodeName

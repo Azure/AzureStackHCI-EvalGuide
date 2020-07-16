@@ -64,6 +64,9 @@ $dataDrives | ForEach-Object {
 # Enable nested virtualization
 Set-VMProcessor -VMName $nodeName -ExposeVirtualizationExtensions $true -Verbose
 ```
+
+When those commands have completed, this is what you would see in Hyper-V Manager, in the settings view:
+
 ![Finished settings for the AZSHCINODE01 node](/media/azshci_settings_ps.png)
 
 With the VM configured correctly, you can use the following commands to connect to the VM using VM Connect, and at the same time, start the VM.  To boot from the ISO, you'll need to click on the VM and quickly press a key to trigger the boot from the DVD inside the VM.  If you miss the prompt to press a key to boot from CD or DVD, simply reset the VM and try again.
@@ -115,3 +118,39 @@ You have now created your first Azure Stack HCI node, inside a VM, running neste
 Next Steps
 -----------
 In this step, you've successfully created your nested Azure Stack HCI nodes.  You can now proceed to [create your Azure Stack HCI cluster](/universal/4_AzSHCICluster.md "Create your Azure Stack HCI cluster")
+
+Full script
+-----------
+If you wish to run the full script from one place, here it is:
+
+```powershell
+$nodeName = "AZSHCINODE01"
+New-VM `
+    -Name $nodeName  `
+    -MemoryStartupBytes 4GB `
+    -SwitchName "InternalNAT" `
+    -Path "C:\VMs\" `
+    -NewVHDPath "C:\VMs\$nodeName\Virtual Hard Disks\$nodeName.vhdx" `
+    -NewVHDSizeBytes 30GB `
+    -Generation 2
+
+# Add the DVD drive, attach the ISO to DC01 and set the DVD as the first boot device
+$DVD = Add-VMDvdDrive -VMName $nodeName -Path C:\ISO\AzSHCI.iso -Passthru
+Set-VMFirmware -VMName $nodeName -FirstBootDevice $DVD
+
+# Set the VM processor count for the VM
+Set-VM -VMname $nodeName -ProcessorCount 4
+# Add the virtual network adapters to the VM
+1..3 | ForEach-Object { Add-VMNetworkAdapter -VMName $nodeName -SwitchName InternalNAT }
+# Create the DATA virtual hard disks and attach them
+$dataDrives = 1..4 | ForEach-Object { New-VHD -Path "C:\VMs\$nodeName\Virtual Hard Disks\DATA0$_.vhdx" -Dynamic -Size 100GB }
+$dataDrives | ForEach-Object {
+    Add-VMHardDiskDrive -Path $_.path -VMName $nodeName
+}
+# Enable nested virtualization
+Set-VMProcessor -VMName $nodeName -ExposeVirtualizationExtensions $true -Verbose
+
+# Open a VM Connect window, and start the VM
+vmconnect.exe localhost $nodeName
+Start-VM -Name $nodeName
+```
