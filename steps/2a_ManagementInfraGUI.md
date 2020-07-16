@@ -132,13 +132,15 @@ With the VM successfully deployed, you can now configure the Windows Server 2019
 #### Configure the networking and host name on DC01 ####
 Firstly, you will configure the networking inside the VM and rename the OS, before rebooting.
 
-1. In **Server Manager**, from the **Dashboard** click on **Configure this local server**
-2. In the **Properties** window, next to **Computer name** click on your current randomly generated computer name
-3. In the **System properties** window, click **Change** and change the computer name to **DC01** then click **OK**, then **OK** again to close the notification, then click **Close**, and choose **Restart Later**
-4. Back in the **Properties** window, next to **Ethernet** click on **IPv4 address assigned by DHCP, IPv6 enabled**
-5. In the **Network Connections** window, right-click on the **Ethernet** adapter and select **Properties**
-6. Click on **Internet Protocol Version 4 (TCP/IPv4)** and click **Properties**
-7. Enter the following information,. then click **OK**, and then click **Close**
+1. In **Server Manager**, from the **Dashboard**, click on **Configure this local server**
+2. In the **Properties** window, next to **Computer name**, click on your current randomly generated computer name
+3. In the **System properties** window, click **Change** and change the computer name to **DC01**, then click **OK**
+4. Click **OK** again to close the notification, then click **Close**, and choose **Restart Later**
+5. Back in the **Properties** window, next to **Ethernet**, click on **IPv4 address assigned by DHCP, IPv6 enabled**
+6. In the **Network Connections** window, right-click on the **Ethernet** adapter and select **Properties**
+7. Click on **Internet Protocol Version 4 (TCP/IPv4)**, and click **Properties**
+8. Enter the following information, then click **OK**, and then **Close**
+
    * IP address: 192.168.0.2
    * Subnet mask: 255.255.255.0
    * Default gateway: 192.168.0.1
@@ -200,6 +202,7 @@ Rather than use the main domain admin account, we'll add an additional administr
 1. Once logged into DC01 with the domain admin account, click **Start** and search for "users"
 2. In the results, click on **Active Directory Users and Computers**
 3. In the **Active Directory Users and Computers** window, expand the **azshci.local domain** right-click on the **Users** OU, select **New** then **User**.  Enter the following details, then click **Next**
+
    * First name: Lab
    * Last name: Admin
    * Full name: Lab Admin
