@@ -83,9 +83,8 @@ The first key step with setting up the networking with Windows Admin Center, is 
 
 As it stands, this is the way that the Windows Admin Center approaches the network configuration, however, if you were not using the Windows Admin Center, through PowerShell, there are a number of different ways to configure the network adapters to meet your needs.  We will work through the Windows Admin Center approach in this guide.
 
-* If you are following the **Nested path in this evaluation guide**, you should have 4 NICs listed as available.  You can choose **Two physical network adapters teamed for management**
-* If you are following the **Physical path in this evaluation guide**, you should have at least 2 NICs listed as available.  If you have exactly 2 NICs, you will need to choose **One physical network adapter for management**, however if you have 4 or more NICs, you can choose **Two physical network adapters teamed for management**
-
+   * If you are following the **Nested path in this evaluation guide**, you should have 4 NICs listed as available.  You can choose **Two physical network adapters teamed for management**
+   * If you are following the **Physical path in this evaluation guide**, you should have at least 2 NICs listed as available.  If you have exactly 2 NICs, you will need to choose **One physical network adapter for management**, however if you have 4 or more NICs, you can choose **Two physical network adapters teamed for management**
 
 1. On the **Select the adapters to use for management** page, select the number of NICs you wish to dedicate for magamenet using the boxes at the top of the page
 
