@@ -93,6 +93,7 @@ Proceed through the process, making the following selections:
 
 Installation will then begin, and will take a few minutes, automatically rebooting as part of the process.
 
-![Completed setup of the Azure Stack HCI OS](/media/ws_install_complete.png)
+![Completed setup of the Azure Stack HCI OS](/media/azshci_setup_complete.png)
 
-With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **C:\Users\Administrator** screen.  You can **close** the VM Connect window, as we will continue configuring the domain controller using PowerShell, from AzSHCIHost001.
+With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **C:\Users\Administrator** screen.
+

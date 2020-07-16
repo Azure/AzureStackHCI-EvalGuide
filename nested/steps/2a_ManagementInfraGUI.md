@@ -339,7 +339,7 @@ Installation will then begin, and will take a few minutes, automatically rebooti
 
 With the installation complete, you'll be prompted to finish the out of box experience, including **choosing your region**, **keyboard layout** and finally, setting a username and password.
 
-![Initiate setup of the Windows Server 2019 OS](/media/w10_install_complete.png)
+![Initiate setup of the Windows 10 OS](/media/w10_install_complete.png)
 
 1. On the **Sign in with Microsoft** page, select **Domain join instead**
 2. On the **Who's going to use this PC** page, enter **LocalAdmin** and click **Next**
