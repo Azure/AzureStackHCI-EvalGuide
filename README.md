@@ -1,15 +1,25 @@
 Azure Stack HCI - Evaluation Guide
 ==============
 
-In this guide, we'll walk you through evaluating Azure Stack HCI. As part of the guide, there will be 2 main paths for evaluation that you can choose from.  The first path makes an assumption that you have **at least 2 suitable physical servers** that you could use for the evaluation, and that you have an Active Directory domain already in place.  If that's not the case, and you'd prefer to test, validate and evaluate Azure Stack HCI in an isolated sandbox, the second path may be for you.  The second path guides you through standing up a sandboxed, isolated environment using **nested virtualization**, and can run on a **single physical system**, such as a workstation, laptop, or server of you have one, or alternatively, you can run the whole configuration in Azure.  We'll go into more details for these paths, shortly.
+**Welcome to the Azure Stack HCI Evaluation Guide**
 
- Regardless of which path you choose, by following this guide, you'll lay down a solid foundation on to which you can explore additional Azure Stack HCI scenarios that will be documented as we move through the public preview program to the first release of Azure Stack HCI.
+In this guide, we'll walk you through evaluating Azure Stack HCI.
+
+As part of the guide, there will be 2 main paths for evaluation that you can choose from.
+
+* The first path makes an assumption that you have **at least 2 suitable physical servers** that you could use for the evaluation, and that you have an Active Directory domain already in place.  If that's not the case, and you'd prefer to test, validate and evaluate Azure Stack HCI in an isolated sandbox, the second path may be for you.
+* The second path guides you through standing up a sandboxed, isolated environment using **nested virtualization**, and can run on a **single physical system**, such as a workstation, laptop, or server of you have one, or alternatively, you can run the whole configuration in Azure.  We'll go into more details for these paths, shortly.
+
+Regardless of which path you choose, by following this guide, you'll lay down a solid foundation on to which you can explore additional Azure Stack HCI scenarios that will be documented as we move through the public preview program to the first release of Azure Stack HCI.
 
 Choose your path
 -----------
 As mentioned above, there are 2 paths to choose from, for this evaluation guide.  At a high level, one of these paths will require 2 or more physical servers for the configuration, along with an Active Directory domain. The second path, uses nested virtualization, and can be deployed more flexibly, either on-premises or in Azure.
 
-
+| Physical | Nested |
+|---|---|
+| image  | image  |
+| Physical | Nested |
 
 
 
