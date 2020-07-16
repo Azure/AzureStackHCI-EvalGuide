@@ -16,7 +16,7 @@ Choose your path
 -----------
 As mentioned above, there are 2 paths to choose from, for this evaluation guide.  At a high level, one of these paths will require 2 or more physical servers for the configuration, along with an Active Directory domain. The second path, uses nested virtualization, and can be deployed more flexibly, either on-premises or in Azure.
 
-| Physical | Nested |
+| Evaluate Azure Stack HCI on 2+ physical servers | Evaluate Azure Stack HCI using Nested Virtualization |
 |---|---|
 | ![Physical path image](/media/physical.png "Physical path image")  | ![Nested path image](/media/nested.png "Physical path image")   |
 | Physical | Nested |
