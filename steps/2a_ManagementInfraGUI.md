@@ -221,27 +221,47 @@ You can move on to the next step - enabling the DHCP role.
 #### Configure the DHCP role on DC01 ####
 In order to simplify network management in the sandboxed environment, you will now enable DHCP on DC01.
 
-```powershell
-# Set updated domain credentials based on new credentials
-$domainName = "azshci.local"
-$domainAdmin = "$domainName\labadmin"
-$domainCreds = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $domainAdmin, $dcCreds.Password
+1. If not already open, open **Server Manager**, and after it has finished refreshing, click on **Manage**, then **Add Roles and Features**
+2. On the **Before you begin** page, click **Next**
+3. On the **Select installation type** page, click **Next**
+4. On the **Select destination server** page, click **Next**
+5. On the **Select server roles** page, click **DHCP Server**
+6. In the **Add Roles and Features wizard** popup, click **Add Features**, then click **Next**
+7. On the **Select features** page, click **Next**
+8. On the **DHCP Server** page, read the information, then click **Next**
+9. On the **Confirmation** page, review the information and click **Install**
 
-# Configure the DHCP role on DC01
-Invoke-Command -VMName DC01 -Credential $domainCreds -ScriptBlock {
-    # Install DHCP Server
-    Install-WindowsFeature -Name DHCP -IncludeManagementTools
-    # Authorize
-    Add-DhcpServerInDC -DnsName DC01
-    # Add DHCP scope
-    Add-DhcpServerv4Scope -StartRange "192.168.0.3" -EndRange "192.168.0.100" -Name ManagementScope `
-    -LeaseDuration "00:08:00" -SubnetMask "255.255.255.0" -State Active
-    # Add DHCP scope options
-    Set-DhcpServerv4OptionValue -OptionId 6 -Value "192.168.0.2" -ScopeId "192.168.0.0"
-    Set-DhcpServerv4OptionValue -OptionId 3 -Value "192.168.0.1" -ScopeId "192.168.0.0"
-    Set-DhcpServerv4OptionValue -OptionId 15 -Value "azshci.local" -ScopeId "192.168.0.0"
-}
-```
+The installation of DHCP should take a few moments.  Once complete, click on **Complete DHCP configuration**.
+
+![DHCP Server installation complete](/media/dhcp_complete.png)
+
+The DHCP Post-Install configuration wizard should now be open.  Read the information, then click **Next**, then accept the defaults by clicking **Commit**, then **Close**.  You can then **Close** the **Add Roles and Features Wizard**
+
+Now that the DHCP Server role is installed, there's some additional config required.
+
+1. Click **Start** and search for "DHCP".  In the results, click on **DHCP**
+2. Expand **dc01.azshci.local**, then **right-click on IPv4** and select **New Scope**
+3. In the **New Scope Wizard**, click **Next**, and enter the name as **ManagementScope** then click **Next**
+4. On the **IP Address Range** page, enter the following information, then click **Next**
+    * Start IP address: 192.168.0.3
+    * End IP address: 192.168.0.100
+    * Length: 24
+    * Subnet mask: 255.255.255.0
+
+![DHCP scope configuration](/media/dhcp_complete.png)
+
+5. On the **Add Exclusions and Delay** page, click **Next**
+6. On the **Lease Duration** page, click **Next**
+7. On the **Configure DHCP Options** page, ensure that **Yes, I want to configure these options now** radio button is selected, then click **Next**
+8. On the **Router (Default Gateway)** page, enter **192.168.0.1** and click **Add**, then click **Next**
+9. On the **Domain Name and DNS Servers** page, enter **DC01** in the **Server name** box, and click **Resolve**, then click **Next**
+
+![DHCP setting for DNS Server](/media/dhcp_dns.png)
+
+10. On the **WINS Servers** page, click **Next**
+11. On the **Activate Scope** page, ensure the **Yes, I want to activate this scope now** radio button is selected, then click **Next**, then click **Finish**
+
+You have now successfully configured DC01 to distribute IP addresses to connecting clients in the azshci.local domain.  Clients will be given an IP address, along with the correct DNS Server, and default gateway to access external resources.
 
 When the process is completed successfully, you should see a message similar to this below.
 
