@@ -95,5 +95,17 @@ Installation will then begin, and will take a few minutes, automatically rebooti
 
 ![Completed setup of the Azure Stack HCI OS](/media/azshci_setup_complete.png)
 
-With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **C:\Users\Administrator** screen.
+With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **C:\Users\Administrator** screen.  If you enter **ipconfig** at the command prompt, you should find that all 4 of your network adapters have been assigned an IP from your DHCP Server.
 
+![Showing network IP addresses on AZSHCINODE01](/media/node_ipconfig.png)
+
+### Join the domain using SConfig ###
+Need to validate if this step is required
+
+Repeat creation process
+-----------
+You have now created your first Azure Stack HCI node, inside a VM, running nested on Hyper-V.  You need a minimum of 2 nodes for deployment of an Azure Stack HCI cluster, so **repeat the creation process** to add at least one additional node.
+
+Next Steps
+-----------
+In this step, you've successfully created your nested Azure Stack HCI nodes.  You can now proceed to [create your Azure Stack HCI cluster](/universal/4_AzSHCICluster.md "Create your Azure Stack HCI cluster")
