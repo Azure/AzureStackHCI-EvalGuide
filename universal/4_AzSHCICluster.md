@@ -97,7 +97,7 @@ Again, this is just one **example** network configuration for the simple purpose
 
 1. Then, for each node, **select the highlighted NIC** that will be dedicated for management.  The reason only one NIC is highlighted, is because this is the only one that has an IP address assigned from a previous step. Once you've finished your selections, scroll to the bottom, then click **Apply and test**
 
-![Select management adapters in the Create Cluster wizard](/media/wac_singlemgmt_nic.png)
+![Select management adapters in the Create Cluster wizard](/media/wac_singlemgmt.png)
 
 3. Windows Admin Center will then apply the configuration to your NIC. When complete and successful, click **Next**
 4. On the **Define networks** page, this is where you can define the specific networks, separate subnets, and optionally apply VLANs.  In the **nested environment**, we now have 3 NICs remaining.  Configure your remaining NICs as follows:
@@ -119,17 +119,17 @@ Again, this is just one **example** network configuration for the simple purpose
 
 When you click **Apply and test**, Windows Admin Center validates network connectivity between the adapters in the same VLAN and subnet, which may take a few moments.  Once complete, your configuration should look similar to this:
 
-![Define networks in the Create Cluster wizard](/media/wac_define_networks.png)
+![Define networks in the Create Cluster wizard](/media/wac_define_network.png)
 
 1. Once the networks have been verified, click **Next**
 2. On the **Virtual Switch** page, you have a number of options
 
 ![Select vSwitch in the Create Cluster wizard](/media/wac_vswitches.png)
 
-* **Create one virtual switch for compute and storage together** - in this configuration, your Azure Stack HCI nodes will create a vSwitch, comprised of multiple NICs, and the bandwidth available across these NICs will be shared by the Azure Stack HCI nodes themselves, for storage traffic, and in addition, any VMs you deploy on top, will also share this bandwidth.
+* **Create one virtual switch for compute and storage together** - in this configuration, your Azure Stack HCI nodes will create a vSwitch, comprised of multiple NICs, and the bandwidth available across these NICs will be shared by the Azure Stack HCI nodes themselves, for storage traffic, and in addition, any VMs you deploy on top of the nodes, will also share this bandwidth.
 * **Create one virtual switch for compute only** - in this configuration, you would leave some NICs dedicated to storage traffic, and have a set of NICs attached to a vSwitch, to which your VMs traffic would be dedicated.
 * **Create two virtual switches** - in this configuration, you can create separate vSwitches, each attached to different sets of underlying NICs.  This may be useful if you wish to dedicate a set of underlying NICs to VM traffic, and another set to storage traffic, but wish to have vNICs used for storage communication instead of the underlying NICs.
 * **Skip virtual switch creation** - if you want to define things later, that's fine too
 
-7. Select the appropriate switch configuration for your environment - for the **nested path**, with 2 remaining NICs available, you could choose to just create a single vSwitch with 1 underlying NIC, and use the other dedicated NIC for storage, or alternatively, you could create a single vSwitch comprised of the 2 remaining NICs, and use vNICs to separate traffic.  For the physical path, your choices are largely determined by your physical hardware configuration.  For nested, we'll go with creating a single vSwitch for compute and storage together, then click **Apply and test**
+7. Select the **Create one virtual switch for compute only**,  then click **Apply and test**
 8. 
