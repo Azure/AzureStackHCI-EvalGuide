@@ -22,7 +22,7 @@ Download artifacts
 In order to deploy our nested virtual machines on AzSHCIHost001, we'll first need to download the appropriate ISOs and files for the following operating systems:
 
 * Windows Server 2019 Evaluation
-* Windows 10 Enterprise Evaluation
+* Windows 10 Enterprise Evaluation (x64)
 * Azure Stack HCI Public Preview
 * Windows Admin Center
 
@@ -44,7 +44,7 @@ Stop-Process -Name Explorer
 Next, in order to download the ISO files, **open your web browser** and follow the steps below.
 
 1. Visit https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2019, complete the registration form, and download the ISO.  Save the file as **WS2019.iso** to C:\ISO
-2. Visit https://www.microsoft.com/en-us/evalcenter/evaluate-windows-10-enterprise, complete the registration form, and download the ISO.  Save the file as **W10.iso** to C:\ISO
+2. Visit https://www.microsoft.com/en-us/evalcenter/evaluate-windows-10-enterprise, complete the registration form, and download the x64 ISO.  Save the file as **W10.iso** to C:\ISO
 3. Visit --link--, complete the registration form, and download the ISO.  Save the file as **AzSHCI.iso** to C:\ISO
 4. Visit --link--, complete any necessary registration, and download the executables for the Windows Admin Center, storing them in C:\ISO
 
@@ -236,26 +236,16 @@ Write-Verbose "Creating new administrative User within the azshci.local domain."
 $newUser = "LabAdmin"
 Invoke-Command -VMName DC01 -Credential $domainCreds -ScriptBlock {
     param ($domainCreds, $newUser)
-    Write-Verbose "Waiting for AD Web Services to be in a running state" -Verbose
-    $ADWebSvc = Get-Service ADWS | Select-Object *
-    while($ADWebSvc.Status -ne 'Running')
-            {
-            Start-Sleep -Seconds 1
-            }
-    Do {
-    Start-Sleep -Seconds 30
-    Write-Verbose "Waiting for AD to be Ready for User Creation" -Verbose
     New-ADUser -Name "$newUser" -AccountPassword $domainCreds.Password -Enabled $True
     $ADReadyCheck = Get-ADUser -Identity "$newUser"
-    }
-    Until ($ADReadyCheck.Enabled -eq "True")
     Add-ADGroupMember -Identity "Domain Admins" -Members "$newUser"
     Add-ADGroupMember -Identity "Enterprise Admins" -Members $newUser
     Add-ADGroupMember -Identity "Schema Admins" -Members $newUser
     } -ArgumentList $domainCreds, $newUser
- 
 Write-Verbose "User: $newUser created." -Verbose
 ```
+
+**NOTE** - if you receive warnings or errors creating new users, wait a few moments, as your DC01 machine may need more time to start new services.
 
 With Active Directory and DNS configured, you can now move on to deploying the Windows 10 Enterprise VM, that will be used to run the Windows Admin Center.
 

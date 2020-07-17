@@ -22,7 +22,7 @@ Download artifacts
 In order to deploy our nested virtual machines on AzSHCIHost001, we'll first need to download the appropriate ISOs and files for the following operating systems:
 
 * Windows Server 2019 Evaluation
-* Windows 10 Enterprise Evaluation
+* Windows 10 Enterprise Evaluation (x64)
 * Azure Stack HCI Public Preview
 * Windows Admin Center
 
@@ -49,7 +49,7 @@ If you're running Windows Server 2019 as your Hyper-V host, it doesn't ship with
 Next, in order to download the ISO files, **open your web browser** and follow the steps below.
 
 1. Visit https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2019, complete the registration form, and download the ISO.  Save the file as **WS2019.iso** to C:\ISO
-2. Visit https://www.microsoft.com/en-us/evalcenter/evaluate-windows-10-enterprise, complete the registration form, and download the ISO.  Save the file as **W10.iso** to C:\ISO
+2. Visit https://www.microsoft.com/en-us/evalcenter/evaluate-windows-10-enterprise, complete the registration form, and download the x64 ISO.  Save the file as **W10.iso** to C:\ISO
 3. Visit --link--, complete the registration form, and download the ISO.  Save the file as **AzSHCI.iso** to C:\ISO
 4. Visit --link--, complete any necessary registration, and download the executables for the Windows Admin Center, storing them in C:\ISO
 
