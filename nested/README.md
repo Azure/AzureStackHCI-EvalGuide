@@ -70,7 +70,7 @@ In this step, you'll use **either the GUI or PowerShell** to create a number of 
 #### Part 4 - Create your nested Azure Stack HCI cluster ####
 In this step, you'll use the Windows Admin Center, on the Windows 10 management VM, to create the nested Azure Stack HCI cluster, and perform some post-deployment tasks to validate the configuration.
 
-* [Create your nested Azure Stack HCI cluster](/universal/steps/4_AzSHCICluster.md "Create your nested Azure Stack HCI cluster")
+* [Create your nested Azure Stack HCI cluster](/universal/4_AzSHCICluster.md "Create your nested Azure Stack HCI cluster")
 
 #### Part 5 - Explore the management of your Azure Stack HCI environment ####
 With your deployment completed, you're now ready to explore many of the management aspects within the Windows Admin Center.  To do so, please refer to our existing documentation, which showcases some of these aspects:
