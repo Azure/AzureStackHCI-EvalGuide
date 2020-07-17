@@ -83,12 +83,23 @@ The first key step with setting up the networking with Windows Admin Center, is 
 
 As it stands, this is the way that the Windows Admin Center approaches the network configuration, however, if you were not using the Windows Admin Center, through PowerShell, there are a number of different ways to configure the network adapters to meet your needs.  We will work through the Windows Admin Center approach in this guide.
 
-   * If you are following the **Nested path in this evaluation guide**, you should have 4 NICs listed as available.  You can choose **Two physical network adapters teamed for management**
-   * If you are following the **Physical path in this evaluation guide**, you should have at least 2 NICs listed as available.  If you have exactly 2 NICs, you will need to choose **One physical network adapter for management**, however if you have 4 or more NICs, you can choose **Two physical network adapters teamed for management**
+#### Nested Path - Network Setup ####
+If you are following the **Nested path in this evaluation guide**, each of your Azure Stack HCI nodes should have 4 NICs.  For this simple evaluation, you'll dedicate the NICs in the following way:
 
-1. On the **Select the adapters to use for management** page, select the number of NICs you wish to dedicate for magamenet using the boxes at the top of the page
+* 1 NIC will be dedicated to management.  It will reside on the 192.168.0.0/24 subnet. No virtual switch will be attached to this NIC.
+* 1 NIC will be dedicated to VM traffic.  A virtual switch will be attached to this NIC
+* 2 NICs will be dedicated to storage traffic.  They will reside on 2 separate subnets, 10.10.10.0/24 and 10.10.11.0/24. No virtual switches will be attached to these NICs.
 
-![Select management adapters in the Create Cluster wizard](/media/wac_management_nic.png)
+
+
+
+   * If you are following the **Physical path in this evaluation guide**, you should have at least 2 NICs listed as available.  If you have exactly 2 NICs, you will need to choose **One physical network adapter for management**, however if you have 4 NICs, you can choose **Two physical network adapters teamed for management**
+
+#### Physical Path - Network Setup ####
+
+1. On the **Select the adapters to use for management** page, select the number of NICs you wish to dedicate for management using the boxes at the top of the page
+
+![Select management adapter in the Create Cluster wizard](/media/wac_singlemgmt_nic.png)
 
 2. Select 1 or 2 adapters, depending on how management management adapters you chose to use, then scroll down the page, and click **Apply and test**
 
@@ -96,6 +107,8 @@ As it stands, this is the way that the Windows Admin Center approaches the netwo
 
 3. Windows Admin Center will then apply the configuration to your NIC(s) and when complete, click **Next**
 4. On the **Define networks** page, this is where you can define the specific networks, separate subnets, and apply VLANs.
+
+![Define networks in the Create Cluster wizard](/media/wac_define_networks.png)
 
 If you have DHCP setup in your environment, which you do if you followed the **nested path in this evaluation guide**, you'll see IP address and subnet information already populated, and no VLANs in use.  When you click **Apply and test**, Windows Admin Center validates network connectivity between the adapters in the same VLAN and subnet, which may take a few moments.
 
@@ -105,7 +118,15 @@ For the purpose of this evaluation, if you're following the **nested path**, you
 
 Whilst having a simple, flat network across management, compute and storage isn't recommended for production, for the purposes of evaluation, this configuration is fine.
 
-5. Once the networks have been verified, click **Next**
-6. On the **Virtual Switch** page, you have a number of options
+1. Once the networks have been verified, click **Next**
+2. On the **Virtual Switch** page, you have a number of options
 
 ![Select vSwitch in the Create Cluster wizard](/media/wac_vSwitch.png)
+
+* **Create one virtual switch for compute and storage together** - in this configuration, your Azure Stack HCI nodes will create a vSwitch, comprised of multiple NICs, and the bandwidth available across these NICs will be shared by the Azure Stack HCI nodes themselves, for storage traffic, and in addition, any VMs you deploy on top, will also share this bandwidth.
+* **Create one virtual switch for compute only** - in this configuration, you would leave some NICs dedicated to storage traffic, and have a set of NICs attached to a vSwitch, to which your VMs traffic would be dedicated.
+* **Create two virtual switches** - in this configuration, you can create separate vSwitches, each attached to different sets of underlying NICs.  This may be useful if you wish to dedicate a set of underlying NICs to VM traffic, and another set to storage traffic, but wish to have vNICs used for storage communication instead of the underlying NICs.
+* **Skip virtual switch creation** - if you want to define things later, that's fine too
+
+7. Select the appropriate switch configuration for your environment - for the **nested path**, with 2 remaining NICs available, you could choose to just create a single vSwitch with 1 underlying NIC, and use the other dedicated NIC for storage, or alternatively, you could create a single vSwitch comprised of the 2 remaining NICs, and use vNICs to separate traffic.  For the physical path, your choices are largely determined by your physical hardware configuration.  For nested, we'll go with creating a single vSwitch for compute and storage together, then click **Apply and test**
+8. 

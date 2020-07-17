@@ -58,7 +58,7 @@ There are 3 main steps to create the virtualized domain controller on our Hyper-
 
 1. Create the DC01 VM using PowerShell
 2. Complete the Out of Box Experience (OOBE)
-3. Configure the domain controller with AD, DNS and DHCP roles, all using PowerShell
+3. Configure the domain controller with AD and DNS roles, all using PowerShell
 
 For speed, we'll use PowerShell to configure as much as we can, but if you have experience with creating virtualized domain controllers using the Hyper-V Manager GUI, feel free to take that approach.
 
@@ -120,7 +120,7 @@ Installation will then begin, and will take a few minutes, automatically rebooti
 
 With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **C:\Users\Administrator** screen.  You can **close** the VM Connect window, as we will continue configuring the domain controller using PowerShell, from AzSHCIHost001.
 
-### Configure the domain controller with AD, DNS and DHCP roles ###
+### Configure the domain controller with AD and DNS roles ###
 With the VM successfully deployed, you can now configure the Windows Server 2019 OS to become the core domain infrastructure for your sandbox environment. To simplify the process, you'll use PowerShell, but from the Hyper-V host, into the VM, using PowerShell Direct.
 
 #### Configure the networking and host name on DC01 ####
@@ -257,38 +257,7 @@ Invoke-Command -VMName DC01 -Credential $domainCreds -ScriptBlock {
 Write-Verbose "User: $newUser created." -Verbose
 ```
 
-You can move on to the next step - enabling the DHCP role.
-
-#### Configure the DHCP role on DC01 ####
-In order to simplify network management in the sandboxed environment, you will now enable DHCP on DC01.
-
-```powershell
-# Set updated domain credentials based on new credentials
-$domainName = "azshci.local"
-$domainAdmin = "$domainName\labadmin"
-$domainCreds = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $domainAdmin, $dcCreds.Password
-
-# Configure the DHCP role on DC01
-Invoke-Command -VMName DC01 -Credential $domainCreds -ScriptBlock {
-    # Install DHCP Server
-    Install-WindowsFeature -Name DHCP -IncludeManagementTools
-    # Authorize
-    Add-DhcpServerInDC -DnsName DC01
-    # Add DHCP scope
-    Add-DhcpServerv4Scope -StartRange "192.168.0.3" -EndRange "192.168.0.100" -Name ManagementScope `
-    -LeaseDuration "00:08:00" -SubnetMask "255.255.255.0" -State Active
-    # Add DHCP scope options
-    Set-DhcpServerv4OptionValue -OptionId 6 -Value "192.168.0.2" -ScopeId "192.168.0.0"
-    Set-DhcpServerv4OptionValue -OptionId 3 -Value "192.168.0.1" -ScopeId "192.168.0.0"
-    Set-DhcpServerv4OptionValue -OptionId 15 -Value "azshci.local" -ScopeId "192.168.0.0"
-}
-```
-
-When the process is completed successfully, you should see a message similar to this below.
-
-![DHCP role successfully configured on DC01](/media/dhcp_enabled.png)
-
-With Active Directory, DNS and DHCP all configured, you can now move on to deploying the Windows 10 Enterprise VM, that will be used to run the Windows Admin Center.
+With Active Directory and DNS configured, you can now move on to deploying the Windows 10 Enterprise VM, that will be used to run the Windows Admin Center.
 
 Create your Windows 10 Management VM
 -----------
@@ -355,7 +324,7 @@ Installation will then begin, and will take a few minutes, automatically rebooti
 
 With the installation complete, you'll be prompted to finish the out of box experience, including **choosing your region**, **keyboard layout** and finally, setting a username and password.
 
-![Initiate setup of the Windows Server 2019 OS](/media/w10_install_complete.png)
+![Initiate setup of the Windows 10 OS](/media/w10_install_complete.png)
 
 1. On the **Sign in with Microsoft** page, select **Domain join instead**
 2. On the **Who's going to use this PC** page, enter **LocalAdmin** and click **Next**
@@ -366,6 +335,21 @@ With the installation complete, you'll be prompted to finish the out of box expe
 7. On the next few screens, make your desired selections for the services, and the install process will finish.  This will take a few minutes.
 
 Once complete, you should be logged in on the Windows 10 machine.
+
+### Configure MGMT01 networking ###
+With MGMT01 up and running, it's time to configure the networking so it can communicate with DC01.
+
+```powershell
+# Define local Windows 10 credentials
+$w10Creds = Get-Credential -UserName "LocalAdmin" -Message "Enter the password used when you deployed Windows 10"
+Invoke-Command -VMName "MGMT01" -Credential $w10Creds -ScriptBlock {
+    # Set Static IP on MGMT01
+    New-NetIPAddress -IPAddress "192.168.0.3" -DefaultGateway "192.168.0.1" -InterfaceAlias "Ethernet" -PrefixLength "24" | Out-Null
+    Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses ("192.168.0.2")
+    $mgmtIP = Get-NetIPAddress -AddressFamily IPv4 -InterfaceAlias "Ethernet" | Select-Object IPAddress
+    Write-Verbose "The currently assigned IPv4 address for MGMT01 is $($mgmtIP.IPAddress)" -Verbose 
+}
+```
 
 #### Optional - Update your Windows 10 OS ####
 

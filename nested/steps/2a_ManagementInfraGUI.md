@@ -63,7 +63,7 @@ There are 3 main steps to create the virtualized domain controller on our Hyper-
 
 1. Create the DC01 VM using Hyper-V Manager
 2. Complete the Out of Box Experience (OOBE)
-3. Configure the domain controller with AD, DNS and DHCP roles
+3. Configure the domain controller with AD and DNS roles
 
 ### Create the DC01 VM using Hyper-V Manager ###
 In this step, you'll be using Hyper-V Manager to deploy a Windows Server 2019 domain controller. With this being the GUI guide, you'll be deploying Windows Server with the Desktop Experience.
@@ -126,7 +126,7 @@ Installation will then begin, and will take a few minutes, automatically rebooti
 
 With the installation complete, you'll finish on the **Customize settings** screen.  Provide a password and click **Finish**.  Once at the login screen, click on the **Ctrl + Alt + Delete button** in the top-left-hand corner of the VM Connect window, and login to DC01.
 
-### Configure the domain controller with AD, DNS and DHCP roles ###
+### Configure the domain controller with AD and DNS roles ###
 With the VM successfully deployed, you can now configure the Windows Server 2019 OS to become the core domain infrastructure for your sandbox environment.
 
 #### Configure the networking and host name on DC01 ####
@@ -219,55 +219,7 @@ Rather than use the main domain admin account, we'll add an additional administr
 
 8. Close the **Active Directory Users and Computers** window
 
-You can move on to the next step - enabling the DHCP role.
-
-#### Configure the DHCP role on DC01 ####
-In order to simplify network management in the sandboxed environment, you will now enable DHCP on DC01.
-
-1. If not already open, open **Server Manager**, and after it has finished refreshing, click on **Manage**, then **Add Roles and Features**
-2. On the **Before you begin** page, click **Next**
-3. On the **Select installation type** page, click **Next**
-4. On the **Select destination server** page, click **Next**
-5. On the **Select server roles** page, click **DHCP Server**
-6. In the **Add Roles and Features wizard** popup, click **Add Features**, then click **Next**
-7. On the **Select features** page, click **Next**
-8. On the **DHCP Server** page, read the information, then click **Next**
-9. On the **Confirmation** page, review the information and click **Install**
-
-The installation of DHCP should take a few moments.  Once complete, click on **Complete DHCP configuration**.
-
-![DHCP Server installation complete](/media/dhcp_complete.png)
-
-The DHCP Post-Install configuration wizard should now be open.  Read the information, then click **Next**, then accept the defaults by clicking **Commit**, then **Close**.  You can then **Close** the **Add Roles and Features Wizard**
-
-Now that the DHCP Server role is installed, there's some additional config required.
-
-1. Click **Start** and search for "DHCP".  In the results, click on **DHCP**
-2. Expand **dc01.azshci.local**, then **right-click on IPv4** and select **New Scope**
-3. In the **New Scope Wizard**, click **Next**, and enter the name as **ManagementScope** then click **Next**
-4. On the **IP Address Range** page, enter the following information, then click **Next**
-   
-    * Start IP address: 192.168.0.3
-    * End IP address: 192.168.0.100
-    * Length: 24
-    * Subnet mask: 255.255.255.0
-
-![DHCP scope configuration](/media/dhcp_complete.png)
-
-1. On the **Add Exclusions and Delay** page, click **Next**
-2. On the **Lease Duration** page, click **Next**
-3. On the **Configure DHCP Options** page, ensure that **Yes, I want to configure these options now** radio button is selected, then click **Next**
-4. On the **Router (Default Gateway)** page, enter **192.168.0.1** and click **Add**, then click **Next**
-5. On the **Domain Name and DNS Servers** page, enter **DC01** in the **Server name** box, and click **Resolve**, then click **Next**
-
-![DHCP setting for DNS Server](/media/dhcp_dns.png)
-
-10. On the **WINS Servers** page, click **Next**
-11. On the **Activate Scope** page, ensure the **Yes, I want to activate this scope now** radio button is selected, then click **Next**, then click **Finish**
-
-You have now successfully configured DC01 to distribute IP addresses to connecting clients in the azshci.local domain.  Clients will be given an IP address, along with the correct DNS Server, and default gateway to access external resources.
-
-With Active Directory, DNS and DHCP all configured, you can now move on to deploying the Windows 10 Enterprise VM, that will be used to run the Windows Admin Center.
+With Active Directory and DNS configured, you can now move on to deploying the Windows 10 Enterprise VM, that will be used to run the Windows Admin Center.
 
 Create your Windows 10 Management VM
 -----------
@@ -276,7 +228,6 @@ There are 3 main steps to create the virtualized Windows 10 Management VM on our
 1. Create the MGMT01 VM using Hyper-V Manager
 2. Complete the Out of Box Experience (OOBE)
 3. Join the domain, and install Windows Admin Center
-
 
 ### Create the DC01 VM using Hyper-V Manager ###
 In this step, you'll be using Hyper-V Manager to deploy a Windows 10 Enterprise management virtual machine.
@@ -351,9 +302,27 @@ With the installation complete, you'll be prompted to finish the out of box expe
 
 Once complete, you should be logged in on the Windows 10 machine.
 
+### Configure MGMT01 networking ###
+With MGMT01 up and running, it's time to configure the networking so it can communicate with DC01.
+
+1. In the bottom-right corner, right-click the NIC icon, and select **Open Network & Internet settings**
+
+![Select NIC](/media/nic_adapter.png)
+
+2. In the **Settings** window, click on **Ethernet** and then click on the **Ethernet adapter** shown in the central window
+3. Under **IP settings**, click **Edit**, then enter the following information, then click **Save** and close **Settings**
+   * Manual
+   * IPv4: On
+   * IP address: 192.168.0.3
+   * Subnet prefix length: 24
+   * Gateway: 192.168.0.1
+   * Preferred DNS: 192.168.0.2
+
+![Setting static NIC settings](/media/ip_settings.png)
+
 #### Optional - Update your Windows 10 OS ####
 
-It's a good idea to ensure your OS is running the latest security updates and patches.
+With the networking all configured and up and running, it's a good idea to ensure your OS is running the latest security updates and patches.
 
 1. On the **Taskbar**, click into the **search box** and enter **Update**
 2. In the results, select **Check for Updates**
