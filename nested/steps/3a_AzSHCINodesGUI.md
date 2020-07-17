@@ -111,22 +111,38 @@ Installation will then begin, and will take a few minutes, automatically rebooti
 
 ![Completed setup of the Azure Stack HCI OS](/media/azshci_setup_complete.png)
 
-With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **C:\Users\Administrator** screen.  If you enter **ipconfig** at the command prompt, you should find that all 4 of your network adapters have been assigned an IP from your DHCP Server.
+With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **C:\Users\Administrator** screen.
 
-**NOTE** Take a note of the IP address for each node that you deploy - you'll use this information in the next step.
+#### Configure Azure Stack HCI node networking using SConfig ####
+With the node up and running, it's time to configure the networking with SConfig, a useful local administrative interface.
 
-![Showing network IP addresses on AZSHCINODE01](/media/node_ipconfig.png)
+1. To launch SConfig, first, run **PowerShell** from the command line
+2. Then, when PowerShell is open, run **Invoke-SConfig** to launch this new admin interface
+3. Enter **8** then press **Enter** to select **Network Settings**
+4. Choose one of the interfaces by typing the corresponding number, and pressing **Enter**
 
-One additional step is to rename the AZSHCINODE01 OS, so still within the **cmd prompt**, type **PowerShell** to open the local PowerShell instance, and then run:
+![Showing NICs using SConfig](/media/sconfig_nic.png)
 
-```powershell
-Rename-Computer -NewName "AZSHCINODE01" -Restart
-```
-
-The machine will reboot automatically and within a few moments, will be back online.
+5. On the **Network Adapter Settings** screen, press **1**, then **Enter**
+6. Enter **S** for **Static IP** and press **Enter**
+7. Enter **192.168.0.4** for the static IP address and press **Enter**
+8. For **Subnet mask**, press **Enter** for the default (255.255.255.0)
+9. For **Default Gateway**, enter **192.168.0.1** and press **Enter**
+10. Back in the **Network Adapter Settings** screen, press **2**, then **Enter**
+11. For the **DNS Server**, enter **192.168.0.2** and press **Enter**, then click **OK** in the **Network Settings** notification
+12. For the **alternate DNS Server**, press **Enter** for none
+13. Press **4** to return to the main menu.
 
 ### Join the domain using SConfig ###
-Need to validate if this step is required
+While in SConfig, it is quick a easy to rename the OS, and join a domain.
+
+1. In SConfig, enter **1** to join the domain, press **D** to select domain, then press **Enter**
+2. Enter your domain name: **azshci.local** and press **Enter**
+3. When prompted, enter your credentials: **azshci\labadmin** and accompanying password, then press **Enter**
+4. You are presented with an option to rename the computer, so click **Yes** and provide the new name **AZSHCINODE01**
+5. When prompted to reboot the machine, click **Yes**
+
+The machine will now reboot, and you've successfully set up your Azure Stack HCI node.
 
 Repeat creation process
 -----------
