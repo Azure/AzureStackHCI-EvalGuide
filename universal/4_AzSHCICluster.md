@@ -131,5 +131,14 @@ When you click **Apply and test**, Windows Admin Center validates network connec
 * **Create two virtual switches** - in this configuration, you can create separate vSwitches, each attached to different sets of underlying NICs.  This may be useful if you wish to dedicate a set of underlying NICs to VM traffic, and another set to storage traffic, but wish to have vNICs used for storage communication instead of the underlying NICs.
 * **Skip virtual switch creation** - if you want to define things later, that's fine too
 
-7. Select the **Create one virtual switch for compute only**,  then click **Apply and test**
-8. 
+7. Select the **Create one virtual switch for compute only**, and select your NIC labelled with **VMs**, on each node, then click **Apply and test**
+
+![Create single vSwitch for Compute in the Create Cluster wizard](/media/wac_compute_vswitch.png)
+
+8. Once changes have been successfully applied, click **Next: Clustering**
+
+### Clustering ###
+With the network configured for the evaluation environment, it's time to construct the local cluster.
+
+1. At the start of the **Cluster** wizard, on the **Validate the cluster** page, click **Validate**.  
+2. 
