@@ -47,12 +47,12 @@ The general flow will be as follows:
 #### Part 1a - Deploy Hyper-V host in Azure ####
 In this step, you'll create a suitable VM in Azure using PowerShell or an Azure Resource Manager template.  This VM will run Windows Server 2019 Datacenter, with the full desktop experience.  On this system, you'll enable the Hyper-V role and accompanying management tools, and create a NAT virtual switch to enable network communication between sandbox VMs, and out to the internet.
 
-* [Start your deployment into Azure](/nested/steps/1a_NestedInAzure.md "Start your deployment into Azure")
+* [**Part 1a** - Start your deployment into Azure](/nested/steps/1a_NestedInAzure.md "Start your deployment into Azure")
 
 #### Part 1b - Deploy Hyper-V on a physical system ####
 In this step, on your existing system, that's running Windows Server 2016/2019 or Windows 10 Pro/Enterprise/Education, you'll enable the Hyper-V role and create a NAT virtual switch to enable network communication between sandbox VMs, and out to the internet.
 
-* [Start your deployment on a physical system](/nested/steps/1b_NestedOnPhysical.md "Start your deployment on a physical system")
+* [**Part 1b** - Start your deployment on a physical system](/nested/steps/1b_NestedOnPhysical.md "Start your deployment on a physical system")
 
 #### Part 2 - Deploy management infrastructure ####
 In this step, you'll use **either the GUI, or PowerShell** to deploy and configure both a Windows Server 2019 domain controller, and a Windows 10 management VM on your Hyper-V host.  You'll create a Windows Server 2019 Active Directory domain, and join the Windows 10 management VM to this domain.  You'll also install the Windows Admin Center ahead of deploying the nested Azure Stack HCI cluster.
