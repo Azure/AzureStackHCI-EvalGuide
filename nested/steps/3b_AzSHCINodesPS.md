@@ -96,19 +96,24 @@ Installation will then begin, and will take a few minutes, automatically rebooti
 
 ![Completed setup of the Azure Stack HCI OS](/media/azshci_setup_complete.png)
 
-With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **C:\Users\Administrator** screen.  If you enter **ipconfig** at the command prompt, you should find that all 4 of your network adapters have been assigned an IP from your DHCP Server.
+With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **C:\Users\Administrator** screen.
 
-**NOTE** Take a note of the IP address for each node that you deploy - you'll use this information in the next step.
-
-![Showing network IP addresses on AZSHCINODE01](/media/node_ipconfig.png)
-
-One additional step is to rename the AZSHCINODE01 OS, so still within the **cmd prompt**, type **PowerShell** to open the local PowerShell instance, and then run:
+#### Configure Azure Stack HCI node networking ####
+With the node up and running, it's time to configure the networking so it can communicate with the rest of the environment.
 
 ```powershell
-Rename-Computer -NewName "AZSHCINODE01" -Restart
+$nodeName = "AZSHCINODE01"
+$newIP = "192.168.0.4"
+# Define local credentials
+$azsHCILocalCreds = Get-Credential -UserName "Administrator" -Message "Enter the password used when you deployed the Azure Stack HCI OS"
+Invoke-Command -VMName "$nodeName" -Credential $azsHCILocalCreds -ScriptBlock {
+    # Set Static IP
+    New-NetIPAddress -IPAddress "$newIP" -DefaultGateway "192.168.0.1" -InterfaceAlias "Ethernet" -PrefixLength "24" | Out-Null
+    Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses ("192.168.0.2")
+    $nodeIP = Get-NetIPAddress -AddressFamily IPv4 -InterfaceAlias "Ethernet" | Select-Object IPAddress
+    Write-Verbose "The currently assigned IPv4 address for MGMT01 is $($nodeIP.IPAddress)" -Verbose 
+}
 ```
-
-The machine will reboot automatically and within a few moments, will be back online.
 
 ### Join the domain using PowerShell Direct ###
 To save a later step, you can quickly use PowerShell Direct to join your AZSHCINODE01 to the domain:
@@ -122,10 +127,12 @@ $domainAdmin = "$domainName\labadmin"
 $domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the password for the LabAdmin account"
 Invoke-Command -VMName "$nodeName" -Credential $azsHCILocalCreds -ScriptBlock {
     param ($domainCreds, $nodeName)
+    Write-Verbose "Updating Hostname" -Verbose
+    Rename-Computer -NewName $nodeName
     Add-Computer –DomainName azshci.local -NewName $nodeName –Credential $domainCreds -Force
 } -ArgumentList $domainCreds, $nodeName
 
-Write-Verbose "Rebooting node for hostname change to take effect" -Verbose
+Write-Verbose "Rebooting node for changes to take effect" -Verbose
 Stop-VM -Name $nodeName
 Start-VM -Name $nodeName
 
@@ -135,7 +142,6 @@ while ((Invoke-Command -VMName $nodeName -Credential $domainCreds {"Test"} -Erro
 }
 Write-Verbose "$nodeName is now online. Proceed to the next step...." -Verbose
 ```
-
 
 Repeat creation process
 -----------
