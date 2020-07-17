@@ -58,17 +58,16 @@ If you have just 2 nodes, or if your preference is for a cluster running in a si
 ![Add servers in the Create Cluster wizard](/media/add_nodes.png)
 
 4. On the **Join a domain** page, details should already be in place, as we joined domain previously, so click **Next**
-5. 
 
 ![Joined the domain in the Create Cluster wizard](/media/wac_domain_joined.png)
 
-6. On the **Install features** page, Windows Admin Center will query the nodes for currently installed features, and will request you install required features.  Click **Install features**.  This will take a few moments - once complete, click **Next**
+1. On the **Install features** page, Windows Admin Center will query the nodes for currently installed features, and will request you install required features.  Click **Install features**.  This will take a few moments - once complete, click **Next**
 
 ![Installing required features in the Create Cluster wizard](/media/wac_installed_features.png)
 
-7. On the **Install updates** page, Windows Admin Center will query the nodes for available updates, and will request you install any that are required.  Click **Install updates**.  This will take a few moments - once complete, click **Next**
-8. On the **Solution updates** page, install any appropriate extensions (only for the physical path in this evaluation guide) and then click **Next**
-9. On the **Restart servers** page, click **Restart servers**
+7. On the **Install updates** page, Windows Admin Center will query the nodes for available updates, and will request you install any that are required.  Optionally, click **Install updates**.  This will take a few moments - once complete, click **Next**
+8. On the **Solution updates** page, install any appropriate extensions, and then click **Next**
+9. On the **Restart servers** page, if required, click **Restart servers**
 
 ![Restart nodes in the Create Cluster wizard](/media/wac_restart.png)
 
@@ -81,7 +80,7 @@ Firstly, Windows Admin Center will verify your networking setup - it'll tell you
 
 The first key step with setting up the networking with Windows Admin Center, is to choose a management NIC that will be dedicated for management use.  You can choose either a single NIC, or two NICs for redundancy.  This step specifically designates 1 or 2 adapters that will be used by the Windows Admin Center to orchestrate the cluster creation flow.  It's mandatory to select at least one of the adapters for management, and in a physical deployment, the 1GbE NICs are usually good candidates for this.
 
-As it stands, this is the way that the Windows Admin Center approaches the network configuration, however, if you were not using the Windows Admin Center, through PowerShell, there are a number of different ways to configure the network adapters to meet your needs.  We will work through the Windows Admin Center approach in this guide.
+As it stands, this is the way that the Windows Admin Center approaches the network configuration, however, if you were not using the Windows Admin Center, through PowerShell, there are a number of different ways to configure the network to meet your needs.  We will work through the Windows Admin Center approach in this guide.
 
 #### Network Setup Overview ####
 As part of the **nested path in this evaluation guide**, each of your Azure Stack HCI nodes should have 4 NICs.  For this simple evaluation, you'll dedicate the NICs in the following way:
@@ -90,13 +89,13 @@ As part of the **nested path in this evaluation guide**, each of your Azure Stac
 * 1 NIC will be dedicated to VM traffic.  A virtual switch will be attached to this NIC and the Azure Stack HCI host will no longer use this NIC for it's own traffic.
 * 2 NICs will be dedicated to storage traffic.  They will reside on 2 separate subnets, 10.10.10.0/24 and 10.10.11.0/24. No virtual switches will be attached to these NICs.
 
-Again, this is just one **example** network configuration for the purpose of evaluation.
+Again, this is just one **example** network configuration for the simple purpose of evaluation.
 
-1. Back in the Windows Admin Center, on the **Select the adapters to use for management** page, select the number of NICs you wish to dedicate for management using the boxes at the top of the page
+1. Back in the Windows Admin Center, on the **Select the adapters to use for management** page, ensure you select the **One physical network adapter for management** box
 
-![Select management adapter in the Create Cluster wizard](/media/wac_singlemgmt_nic.png)
+![Select management adapter in the Create Cluster wizard](/media/wac_management_nic.png)
 
-2. Select 1 or 2 adapters, depending on how management management adapters you chose to use, then scroll down the page, and click **Apply and test**
+1. Then, for each node, **select the highlighted NIC** that will be dedicated for management.  The reason only one NIC is highlighted, is because this is the only one that has an IP address assigned from a previous step. Once you've finished your selections, click **Apply and test**
 
 ![Select management adapters in the Create Cluster wizard](/media/wac_nic_selection.png)
 
