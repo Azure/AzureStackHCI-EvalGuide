@@ -3,7 +3,7 @@ Create Azure Stack HCI cluster with Windows Admin Center
 Overview
 -----------
 
-So far, you've deployed your Azure Stack HCI nodes, either in a nested virtualization sandbox, or on existing physical hardware.  In the case of the sandboxed environment, you've also stood up an Active Directory infrastructure with DNS and DHCP services running.  In a physical deployment, it was assumed these kind of dependencies were already in place.  Finally, in both cases, you've deployed the Windows Admin Center, which we'll be using to configure the Azure Stack HCI cluster.
+So far, you've deployed your Azure Stack HCI nodes, either in a nested virtualization sandbox, or on existing physical hardware.  In the case of the sandboxed environment, you've also stood up an Active Directory infrastructure with DNS.  In a physical deployment, it was assumed these kind of dependencies were already in place.  Finally, in both cases, you've deployed the Windows Admin Center, which we'll be using to configure the Azure Stack HCI cluster.
 
 Architecture
 -----------
@@ -32,18 +32,18 @@ Here are the major steps in the Create Cluster wizard in Windows Admin Center:
 After the wizard completes, you set up the cluster witness, optionally register with Azure (to integrate additional services, like Azure Backup, Azure Monitor etc), and then create volumes (which also sets up replication between sites if you're creating a stretched cluster).
 
 ### Decide on cluster type ###
-Not only does Azure Stack HCI support a local cluster, consisting of between 2 and 16 nodes, but, also supports a **Stretch Cluster**, where a single cluster can have nodes distrubuted across two sites.
+Not only does Azure Stack HCI support a cluster in a single site (or a **local cluster** as i'll refer to it going forward) consisting of between 2 and 16 nodes, but, also supports a **Stretch Cluster**, where a single cluster can have nodes distrubuted across two sites.
 
 * If you have 2 Azure Stack HCI nodes, you will be able to create a **local cluster**
 * If you have 4 Azure Stack HCI nodes, you will have a choice of creating either a **local cluster** or a **stretch cluster**
 
-The steps below will be separated for creating a local cluster, and creating a stretched cluster. Choose which cluster type is most appropriate for your needs and proceed.
+In this first release of the guide, we'll be focusing on deploying a **local cluster** but guidance for stretch clustering will be added soon, so check back later!
 
 Creating a (local) cluster
 -----------
 If you have just 2 nodes, or if your preference is for a cluster running in a single site, this section will walk through the key steps for you to set up the Azure Stack HCI cluster with the Windows Admin Center
 
-1. Access your **Windows Admin Center** instance.  Those of you running on the **nested** path, you'll need to open **MGMT01** and access Windows Admin Center from there.
+1. Connect to **MGMT01**, and open your **Windows Admin Center** instance.
 2. Once logged into Windows Admin Center, under **All connections**, click **Add**
 3. On the **Add resources popup**, under **Windows Server cluster**, click **Create new** to open the **Cluster Creation wizard**
 
@@ -83,21 +83,16 @@ The first key step with setting up the networking with Windows Admin Center, is 
 
 As it stands, this is the way that the Windows Admin Center approaches the network configuration, however, if you were not using the Windows Admin Center, through PowerShell, there are a number of different ways to configure the network adapters to meet your needs.  We will work through the Windows Admin Center approach in this guide.
 
-#### Nested Path - Network Setup ####
-If you are following the **Nested path in this evaluation guide**, each of your Azure Stack HCI nodes should have 4 NICs.  For this simple evaluation, you'll dedicate the NICs in the following way:
+#### Network Setup Overview ####
+As part of the **nested path in this evaluation guide**, each of your Azure Stack HCI nodes should have 4 NICs.  For this simple evaluation, you'll dedicate the NICs in the following way:
 
 * 1 NIC will be dedicated to management.  It will reside on the 192.168.0.0/24 subnet. No virtual switch will be attached to this NIC.
-* 1 NIC will be dedicated to VM traffic.  A virtual switch will be attached to this NIC
+* 1 NIC will be dedicated to VM traffic.  A virtual switch will be attached to this NIC and the Azure Stack HCI host will no longer use this NIC for it's own traffic.
 * 2 NICs will be dedicated to storage traffic.  They will reside on 2 separate subnets, 10.10.10.0/24 and 10.10.11.0/24. No virtual switches will be attached to these NICs.
 
+Again, this is just one **example** network configuration for the purpose of evaluation.
 
-
-
-   * If you are following the **Physical path in this evaluation guide**, you should have at least 2 NICs listed as available.  If you have exactly 2 NICs, you will need to choose **One physical network adapter for management**, however if you have 4 NICs, you can choose **Two physical network adapters teamed for management**
-
-#### Physical Path - Network Setup ####
-
-1. On the **Select the adapters to use for management** page, select the number of NICs you wish to dedicate for management using the boxes at the top of the page
+1. Back in the Windows Admin Center, on the **Select the adapters to use for management** page, select the number of NICs you wish to dedicate for management using the boxes at the top of the page
 
 ![Select management adapter in the Create Cluster wizard](/media/wac_singlemgmt_nic.png)
 
