@@ -95,27 +95,36 @@ Again, this is just one **example** network configuration for the simple purpose
 
 ![Select management adapter in the Create Cluster wizard](/media/wac_management_nic.png)
 
-1. Then, for each node, **select the highlighted NIC** that will be dedicated for management.  The reason only one NIC is highlighted, is because this is the only one that has an IP address assigned from a previous step. Once you've finished your selections, click **Apply and test**
+1. Then, for each node, **select the highlighted NIC** that will be dedicated for management.  The reason only one NIC is highlighted, is because this is the only one that has an IP address assigned from a previous step. Once you've finished your selections, scroll to the bottom, then click **Apply and test**
 
 ![Select management adapters in the Create Cluster wizard](/media/wac_singlemgmt_nic.png)
 
-3. Windows Admin Center will then apply the configuration to your NIC(s) and when complete, click **Next**
-4. On the **Define networks** page, this is where you can define the specific networks, separate subnets, and apply VLANs.
+3. Windows Admin Center will then apply the configuration to your NIC. When complete and successful, click **Next**
+4. On the **Define networks** page, this is where you can define the specific networks, separate subnets, and optionally apply VLANs.  In the **nested environment**, we now have 3 NICs remaining.  Configure your remaining NICs as follows:
+
+| Node | Name | IP Address | Subnet Mask
+| :-- | :-- | :-- | :-- |
+| AZSHCINODE01 | VMs | 192.168.0.101 | 24
+| AZSHCINODE01 | Storage 1 | 10.10.10.1 | 24
+| AZSHCINODE01 | Storage 2 | 10.10.11.1 | 24
+| AZSHCINODE02 | VMs | 192.168.0.102 | 24
+| AZSHCINODE02 | Storage 1 | 10.10.10.2 | 24
+| AZSHCINODE02 | Storage 2 | 10.10.11.2 | 24
+| AZSHCINODE03 | VMs | 192.168.0.103 | 24
+| AZSHCINODE03 | Storage 1 | 10.10.10.3 | 24
+| AZSHCINODE03 | Storage 2 | 10.10.11.3 | 24
+| AZSHCINODE04 | VMs | 192.168.0.104 | 24
+| AZSHCINODE04 | Storage 1 | 10.10.10.4 | 24
+| AZSHCINODE04 | Storage 2 | 10.10.11.4 | 24
+
+When you click **Apply and test**, Windows Admin Center validates network connectivity between the adapters in the same VLAN and subnet, which may take a few moments.  Once complete, your configuration should look similar to this:
 
 ![Define networks in the Create Cluster wizard](/media/wac_define_networks.png)
-
-If you have DHCP setup in your environment, which you do if you followed the **nested path in this evaluation guide**, you'll see IP address and subnet information already populated, and no VLANs in use.  When you click **Apply and test**, Windows Admin Center validates network connectivity between the adapters in the same VLAN and subnet, which may take a few moments.
-
-If you are following the **physical path in this evaluation guide, apply your VLANs as appropriate at this point**
-
-For the purpose of this evaluation, if you're following the **nested path**, you should be able to leave the default DHCP supplied values, then click **Apply and test**.  If you're following the physical path, apply appropriate IP addresses, subnet masks and VLANs to match your environment, and click **Apply and test**.
-
-Whilst having a simple, flat network across management, compute and storage isn't recommended for production, for the purposes of evaluation, this configuration is fine.
 
 1. Once the networks have been verified, click **Next**
 2. On the **Virtual Switch** page, you have a number of options
 
-![Select vSwitch in the Create Cluster wizard](/media/wac_vSwitch.png)
+![Select vSwitch in the Create Cluster wizard](/media/wac_vswitches.png)
 
 * **Create one virtual switch for compute and storage together** - in this configuration, your Azure Stack HCI nodes will create a vSwitch, comprised of multiple NICs, and the bandwidth available across these NICs will be shared by the Azure Stack HCI nodes themselves, for storage traffic, and in addition, any VMs you deploy on top, will also share this bandwidth.
 * **Create one virtual switch for compute only** - in this configuration, you would leave some NICs dedicated to storage traffic, and have a set of NICs attached to a vSwitch, to which your VMs traffic would be dedicated.
