@@ -97,7 +97,7 @@ Again, this is just one **example** network configuration for the simple purpose
 
 1. Then, for each node, **select the highlighted NIC** that will be dedicated for management.  The reason only one NIC is highlighted, is because this is the only one that has an IP address assigned from a previous step. Once you've finished your selections, click **Apply and test**
 
-![Select management adapters in the Create Cluster wizard](/media/wac_nic_selection.png)
+![Select management adapters in the Create Cluster wizard](/media/wac_singlemgmt_nic.png)
 
 3. Windows Admin Center will then apply the configuration to your NIC(s) and when complete, click **Next**
 4. On the **Define networks** page, this is where you can define the specific networks, separate subnets, and apply VLANs.
