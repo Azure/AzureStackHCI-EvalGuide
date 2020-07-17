@@ -1,4 +1,4 @@
-Create Azure Stack HCI cluster with Windows Admin Center
+Create nested Azure Stack HCI cluster with Windows Admin Center
 ==============
 Overview
 -----------
