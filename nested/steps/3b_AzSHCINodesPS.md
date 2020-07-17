@@ -145,7 +145,7 @@ Write-Verbose "$nodeName is now online. Proceed to the next step...." -Verbose
 
 Repeat creation process
 -----------
-You have now created your first Azure Stack HCI node, inside a VM, running nested on Hyper-V.  You need a minimum of 2 nodes for deployment of an Azure Stack HCI cluster, so **repeat the creation process** to add at least one additional node, or more, depending on your Hyper-V host resources.  Use AZSHCINODE0x for your node names - you should only have to change the **$nodeName** and then rerun the PowerShell commands.
+You have now created your first Azure Stack HCI node, inside a VM, running nested on Hyper-V.  You need a minimum of 2 nodes for deployment of an Azure Stack HCI cluster, so **repeat the creation process** to add at least one additional node, or more, depending on your Hyper-V host resources.  Use AZSHCINODE0x for your node names and increment your IP addresses by 1 for each node you add, so 192.168.0.5, 192.168.0.6 and so on. - you should only have to change the **nodeName** and **newIP** parameters and then rerun the PowerShell commands.
 
 Next Steps
 -----------
