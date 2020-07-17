@@ -230,7 +230,7 @@ As part of this guide, we're going to set up cluster quorum, using **Windows Adm
 
 16. On the left-hand navigation, under Settings, click **Properties** and make a note of your **blob service endpoint**.
 
-![Blob Service endpoint in Azure](/media/azure_key.png "Blob Service endpoint in Azure")
+![Blob Service endpoint in Azure](/media/azure_blob.png "Blob Service endpoint in Azure")
 
 **NOTE** - The required service endpoint is the section of the Blob service URL **after blob.**, i.e. for our configuration, **core.windows.net**
 
