@@ -172,7 +172,7 @@ With the cluster successfully created, you're now good to proceed on to configur
 
 3. Storage Spaces Direct validation tests will then automatically run, which will take a few moments.
 
-![Verifying Storage Spaces Direct in the Create Cluster wizard](/media/wac_verify_storage.png)
+![Verifying Storage Spaces Direct in the Create Cluster wizard](/media/wac_validate_storage.png)
 
 4. Once completed, you should see a successful confirmation.  You can scroll through the brief list of tests, or alternatively, click to **Download report** to view more detailed information, then click **Next**
 
@@ -180,3 +180,35 @@ With the cluster successfully created, you're now good to proceed on to configur
 
 5. The final step with storage, is to **Enable Storage Spaces Direct**, so click **Enable**.  This will take a few moments.
 
+![Storage Spaces Direct enabled in the Create Cluster wizard](/media/wac_s2d_enabled.png)
+
+6. With Storage Spaces Direct enabled, click **Finish**, then **Go to connections list**
+
+Configuring the cluster witness
+-----------
+By deploying an Azure Stack HCI cluster, you're providing high availability for workloads. These resources are considered highly available if the nodes that host resources are up; however, the cluster generally requires more than half the nodes to be running, which is known as having quorum.
+
+Quorum is designed to prevent split-brain scenarios which can happen when there is a partition in the network and subsets of nodes cannot communicate with each other. This can cause both subsets of nodes to try to own the workload and write to the same disk which can lead to numerous problems. However, this is prevented with Failover Clustering's concept of quorum which forces only one of these groups of nodes to continue running, so only one of these groups will stay online.
+
+In this step, we're going to utilize a **Cloud witness** to help provide quorum.  If you want to learn more about quorum, [check out the official documentation.](https://docs.microsoft.com/en-us/azure-stack/hci/concepts/quorum "Official documentation about Cluster quorum")
+
+As part of this guide, we're going to set up cluster quorum, using **Windows Admin Center**.
+
+1. If you're not already, ensure you're logged into your **Windows Admin Center** instance, and click on your **azshciclus** cluster that you created earlier
+
+![Connect to your cluster with Windows Admin Center](/media/wac_azshciclus.png "Connect to your cluster with Windows Admin Center")
+
+2. You may be prompted for credentials, so log in with your **azshci\labadmin** credentials and tick the **Use these credentials for all connections** box. You should then be connected to your **azshciclus cluster**
+3. After a few moments of verification, the **cluster dashboard** will open. 
+4. On the **cluster dashboard**, at the very bottom-left of the window, click on **Settings**
+5. In the **Settings** window, click on **Witness** and under **Witness type**, use the drop-down to select **Cloud witness**
+
+![Set up cloud witness in Windows Admin Center](/media/wac_azshciclus.png "Set up cloud witness in Windows Admin Center")
+
+6. Open a new tab in your browser, and navigate to **https://portal.azure.com** and login with your Azure credentials
+7. You should already have a subscription from an earlier step, but if not, you should [review those steps and create one](/)
+
+
+Next Steps
+-----------
+In this step, you've successfully created a nested Azure Stack HCI cluster using Windows Admin Center.  With this complete, you can now [Explore the management of your Azure Stack HCI environment](/nested/steps/3b_AzSHCINodesPS.md "Create your nested Azure Stack HCI nodes with PowerShell")
