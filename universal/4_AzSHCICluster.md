@@ -140,5 +140,43 @@ When you click **Apply and test**, Windows Admin Center validates network connec
 ### Clustering ###
 With the network configured for the evaluation environment, it's time to construct the local cluster.
 
-1. At the start of the **Cluster** wizard, on the **Validate the cluster** page, click **Validate**.  
-2. 
+1. At the start of the **Cluster** wizard, on the **Validate the cluster** page, click **Validate**.  You should be prompted with a **Credential Security Service Provider (CredSSP)** box - read the information, then click **Yes**
+
+![Validate cluster in the Create Cluster wizard](/media/wac_credssp.png)
+
+2. Cluster validation will then start, and will take a few moments to complete - once completed, you should see a successful message.
+
+![Validation complete in the Create Cluster wizard](/media/wac_validated.png)
+
+3. Optionally, if you want to review the validation report, click on **Download report** and open the file in your browser.
+4. Back in the **Validate the cluster** screen, click **Next**
+5. On the **Create the cluster** page, enter your **cluster name** as **AZSHCICLUS** and select **Advanced**
+6. Under **IP addresses**, click **Specify one or more static addresses**, and enter **192.168.0.10** (assuming you've deployed less than 10 nodes, otherwise adjust accordingly), and click **Add**
+
+![Finalize cluster creation in the Create Cluster wizard](/media/wac_create_clus.png)
+
+7. With all settings confirmed, click **Create cluster**. This will take a few moments.  Once complete, click **Next: Storage**
+
+![Cluster creation successful in the Create Cluster wizard](/media/wac_cluster_success.png)
+
+### Clustering ###
+With the cluster successfully created, you're now good to proceed on to configuring your storage.  Whilst less important in a fresh nested environment, it's always good to start from a clean slate, so first, you'll clean the drives before configuring storage.
+
+1. On the storage landing page within the Create Cluster wizard, click **Clean Drives**, and when prompted, with **Continue** to **Really clean and reset drives**.  Once complete, you should have a successful confirmation message:
+
+![Cleaning drives in the Create Cluster wizard](/media/wac_clean_drives.png)
+
+2. On the **Verify drives** page, validate that all your drives have been detected, and show correctly.  As these are virtual disks in a nested environment, they won't display as SSD or HDD etc. You should have **4 data drives** per node.  Once verified, click **Next**
+
+![Verified drives in the Create Cluster wizard](/media/wac_verify_drives.png)
+
+3. Storage Spaces Direct validation tests will then automatically run, which will take a few moments.
+
+![Verifying Storage Spaces Direct in the Create Cluster wizard](/media/wac_verify_storage.png)
+
+4. Once completed, you should see a successful confirmation.  You can scroll through the brief list of tests, or alternatively, click to **Download report** to view more detailed information, then click **Next**
+
+![Storage verified in the Create Cluster wizard](/media/wac_storage_validated.png)
+
+5. The final step with storage, is to **Enable Storage Spaces Direct**, so click **Enable**.  This will take a few moments.
+
