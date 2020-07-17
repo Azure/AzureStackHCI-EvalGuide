@@ -254,7 +254,7 @@ Select **RDP**. On the newly opened Connect blade, ensure the **Public IP** is s
 
 ![Configure RDP settings for Azure VM](/media/connect_to_vm_properties.png)
 
-Once downloaded, locate the .rdp file on your local machine, and double-click to open it. Click **connecr** and when prompted, enter the credentials you supplied when creating the VM earlier. Accept any certificate prompts, and within a few moments, you should be successfully logged into the Windows Server 2019 VM.
+Once downloaded, locate the .rdp file on your local machine, and double-click to open it. Click **connect** and when prompted, enter the credentials you supplied when creating the VM earlier. Accept any certificate prompts, and within a few moments, you should be successfully logged into the Windows Server 2019 VM.
 
 Now that you're successfully connected to the VM, it's a good idea to ensure your OS is running the latest security updates and patches. VMs deployed from marketplace images in Azure, should already contain most of the latest updates, however it's worthwhile checking for any additional updates, and applying them as necessary.
 
