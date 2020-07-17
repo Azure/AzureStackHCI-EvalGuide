@@ -70,15 +70,9 @@ In this step, you'll use **either the GUI or PowerShell** to create a number of 
 #### Part 4 - Create your nested Azure Stack HCI cluster ####
 In this step, you'll use the Windows Admin Center, on the Windows 10 management VM, to create the nested Azure Stack HCI cluster, and perform some post-deployment tasks to validate the configuration.
 
-* [**Part 4** - Create your nested Azure Stack HCI cluster](/universal/4_AzSHCICluster.md "Create your nested Azure Stack HCI cluster")
+* [**Part 4** - Create your nested Azure Stack HCI cluster](/nested/steps/4_AzSHCICluster.md "Create your nested Azure Stack HCI cluster")
 
 #### Part 5 - Explore the management of your Azure Stack HCI environment ####
-With your deployment completed, you're now ready to explore many of the management aspects within the Windows Admin Center.  To do so, please refer to our existing documentation, which showcases some of these aspects:
+With your deployment completed, you're now ready to explore many of the management aspects within the Windows Admin Center.
 
-* [Explore Windows Admin Center](https://docs.microsoft.com/en-us/azure-stack/hci/get-started)
-* [Manage virtual machines](https://docs.microsoft.com/en-us/azure-stack/hci/manage/vm)
-* [Add servers for management](https://docs.microsoft.com/en-us/azure-stack/hci/manage/add-cluster)
-* [Manage clusters](https://docs.microsoft.com/en-us/azure-stack/hci/manage/cluster)
-* [Create storage volumes](https://docs.microsoft.com/en-us/azure-stack/hci/manage/create-volumes)
-* [Monitor with with Azure Monitor](https://docs.microsoft.com/en-us/azure-stack/hci/manage/azure-monitor)
-* [Integrate with Azure Site Recovery](https://docs.microsoft.com/en-us/azure-stack/hci/manage/azure-site-recovery)
+* [**Part 5** - Explore the management of your Azure Stack HCI environment](/nested/steps/5_ExploreAzSHCI.md "Explore the management of your Azure Stack HCI environment")

@@ -149,4 +149,4 @@ You have now created your first Azure Stack HCI node, inside a VM, running neste
 
 Next Steps
 -----------
-In this step, you've successfully created your nested Azure Stack HCI nodes.  You can now proceed to [create your Azure Stack HCI cluster](/universal/4_AzSHCICluster.md "Create your Azure Stack HCI cluster")
+In this step, you've successfully created your nested Azure Stack HCI nodes.  You can now proceed to [create your Azure Stack HCI cluster](/nested/steps/4_AzSHCICluster.md "Create your Azure Stack HCI cluster")
