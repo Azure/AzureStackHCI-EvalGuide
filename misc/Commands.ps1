@@ -198,3 +198,13 @@ $azshciNodeCreds = Get-Credential -UserName "azshci\labadmin" -Message "Enter th
 Invoke-Command -ComputerName AZSHCINODE01 -Credential $azshciNodeCreds -ScriptBlock {
     Install-WindowsFeature RSAT-Azure-Stack-HCI
 }
+
+$azshciNodeCreds = Get-Credential -UserName "azshci\labadmin" -Message "Enter the Lab Admin password"
+Register-AzStackHCI  `
+    -SubscriptionId "your-subscription-ID-here" `
+    -ResourceName "azshciclus" `
+    -ResourceGroupName "AzureStackHCIRegistration" `
+    -Region "EastUS" `
+    -EnvironmentName "AzureCloud" `
+    -ComputerName "AZSHCINODE01.azshci.local" `
+    –Credential $azshciNodeCreds
