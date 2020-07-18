@@ -38,25 +38,25 @@ New-AzVM `
     -SecurityGroupName "AzSHCILabSG" `
     -PublicIpAddressName "AzSHCILabPubIP" `
     -DomainNameLabel "$dnsName"
-    -OpenPorts 3389 `
+-OpenPorts 3389 `
     -ImageName Win2019Datacenter `
     -Size Standard_D16s_v3 `
     -Credential (Get-Credential) `
     -Verbose
 
-    New-VM `
-        -Name "DC01" `
-        -MemoryStartupBytes 4GB `
-        -SwitchName "InternalNAT" `
-        -Path "C:\VMs\DC01\" `
-        -NewVHDPath "C:\VMs\DC01\VHD\DC01.vhdx" `
-        -NewVHDSizeBytes 30GB `
-        -Generation 2
+New-VM `
+    -Name "DC01" `
+    -MemoryStartupBytes 4GB `
+    -SwitchName "InternalNAT" `
+    -Path "C:\VMs\DC01\" `
+    -NewVHDPath "C:\VMs\DC01\VHD\DC01.vhdx" `
+    -NewVHDSizeBytes 30GB `
+    -Generation 2
 
-        $DVD = Add-VMDvdDrive -VMName DC01 -Path C:\ISO\WS2019.iso -Passthru
-        Set-VMFirmware -VMName DC01 -FirstBootDevice $DVD
-        Start-VM -Name DC01
-        vmconnect.exe localhost DC01
+$DVD = Add-VMDvdDrive -VMName DC01 -Path C:\ISO\WS2019.iso -Passthru
+Set-VMFirmware -VMName DC01 -FirstBootDevice $DVD
+Start-VM -Name DC01
+vmconnect.exe localhost DC01
 
 
 $dcCreds = Get-Credential -UserName "Administrator" -Message "Enter the password used when you deployed Windows Server 2019"
@@ -139,20 +139,72 @@ Invoke-Command -VMName DC01 -Credential $domainCreds -ScriptBlock {
     param ($domainCreds)
     Write-Verbose "Waiting for AD Web Services to be in a running state" -Verbose
     $ADWebSvc = Get-Service ADWS | Select-Object *
-    while($ADWebSvc.Status -ne 'Running')
-            {
-            Start-Sleep -Seconds 1
-            }
+    while ($ADWebSvc.Status -ne 'Running') {
+        Start-Sleep -Seconds 1
+    }
     Do {
-    Start-Sleep -Seconds 30
-    Write-Verbose "Waiting for AD to be Ready for User Creation" -Verbose
-    New-ADUser -Name "$newUser" -AccountPassword $domainCreds.Password -Enabled $True
-    $ADReadyCheck = Get-ADUser -Identity "$newUser"
+        Start-Sleep -Seconds 30
+        Write-Verbose "Waiting for AD to be Ready for User Creation" -Verbose
+        New-ADUser -Name "$newUser" -AccountPassword $domainCreds.Password -Enabled $True
+        $ADReadyCheck = Get-ADUser -Identity "$newUser"
     }
     Until ($ADReadyCheck.Enabled -eq "True")
     Add-ADGroupMember -Identity "Domain Admins" -Members "$newUser"
     Add-ADGroupMember -Identity "Enterprise Admins" -Members $newUser
     Add-ADGroupMember -Identity "Schema Admins" -Members $newUser
-    } -ArgumentList $domainCreds, $newUser
+} -ArgumentList $domainCreds, $newUser
  
 Write-Verbose "User: $newUser Created." -Verbose
+
+
+1..3 | ForEach-Object { Add-VMNetworkAdapter -VMName $nodeName -SwitchName InternalNAT }
+
+$dataDrives = 1..4 | ForEach-Object { New-VHD -Path "C:\VMs\$nodeName\Virtual Hard Disks\DATA0$_.vhdx" -Dynamic -Size 100GB }
+$dataDrives | ForEach-Object {
+    Add-VMHardDiskDrive -Path $_.path -VMName $nodeName
+}
+
+$nodeName = "AZSHCINODE01"
+New-VM `
+    -Name $nodeName  `
+    -MemoryStartupBytes 4GB `
+    -SwitchName "InternalNAT" `
+    -Path "C:\VMs\" `
+    -NewVHDPath "C:\VMs\$nodeName\Virtual Hard Disks\$nodeName.vhdx" `
+    -NewVHDSizeBytes 30GB `
+    -Generation 2
+
+# Add the DVD drive, attach the ISO to DC01 and set the DVD as the first boot device
+$DVD = Add-VMDvdDrive -VMName $nodeName -Path C:\ISO\AzSHCI.iso -Passthru
+Set-VMFirmware -VMName $nodeName -FirstBootDevice $DVD
+
+# Set the VM processor count for the VM
+Set-VM -VMname $nodeName -ProcessorCount 4
+# Add the virtual network adapters to the VM
+1..3 | ForEach-Object { Add-VMNetworkAdapter -VMName $nodeName -SwitchName InternalNAT }
+# Create the DATA virtual hard disks and attach them
+$dataDrives = 1..4 | ForEach-Object { New-VHD -Path "C:\VMs\$nodeName\Virtual Hard Disks\DATA0$_.vhdx" -Dynamic -Size 100GB }
+$dataDrives | ForEach-Object {
+    Add-VMHardDiskDrive -Path $_.path -VMName $nodeName
+}
+# Enable nested virtualization
+Set-VMProcessor -VMName $nodeName -ExposeVirtualizationExtensions $true -Verbose
+
+# Open a VM Connect window, and start the VM
+vmconnect.exe localhost $nodeName
+Start-VM -Name $nodeName
+
+$azshciNodeCreds = Get-Credential -UserName "azshci\labadmin" -Message "Enter the Lab Admin password"
+Invoke-Command -ComputerName AZSHCINODE01 -Credential $azshciNodeCreds -ScriptBlock {
+    Install-WindowsFeature RSAT-Azure-Stack-HCI
+}
+
+$azshciNodeCreds = Get-Credential -UserName "azshci\labadmin" -Message "Enter the Lab Admin password"
+Register-AzStackHCI  `
+    -SubscriptionId "your-subscription-ID-here" `
+    -ResourceName "azshciclus" `
+    -ResourceGroupName "AzureStackHCIRegistration" `
+    -Region "EastUS" `
+    -EnvironmentName "AzureCloud" `
+    -ComputerName "AZSHCINODE01.azshci.local" `
+    –Credential $azshciNodeCreds

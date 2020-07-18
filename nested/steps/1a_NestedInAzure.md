@@ -1,4 +1,4 @@
-Azure Stack HCI - Nested in Azure
+Evaluate Azure Stack HCI using Nested Virtualization in Azure
 ==============
 Overview
 -----------
@@ -254,7 +254,7 @@ Select **RDP**. On the newly opened Connect blade, ensure the **Public IP** is s
 
 ![Configure RDP settings for Azure VM](/media/connect_to_vm_properties.png)
 
-Once downloaded, locate the .rdp file on your local machine, and double-click to open it. Click **connecr** and when prompted, enter the credentials you supplied when creating the VM earlier. Accept any certificate prompts, and within a few moments, you should be successfully logged into the Windows Server 2019 VM.
+Once downloaded, locate the .rdp file on your local machine, and double-click to open it. Click **connect** and when prompted, enter the credentials you supplied when creating the VM earlier. Accept any certificate prompts, and within a few moments, you should be successfully logged into the Windows Server 2019 VM.
 
 Now that you're successfully connected to the VM, it's a good idea to ensure your OS is running the latest security updates and patches. VMs deployed from marketplace images in Azure, should already contain most of the latest updates, however it's worthwhile checking for any additional updates, and applying them as necessary.
 
@@ -312,5 +312,5 @@ Next Steps
 -----------
 In this step, you've successfully created your Azure VM, and configured Windows Server 2019 with the Hyper-V role, and core networking to support the nested scenario.  You're now ready to start creating your virtual machines as part of deploying your management infrastructure. You have 2 choices on how to proceed, either a more graphical way, using a GUI (Graphical User Interface, such as Hyper-V Manager, Server Manager etc), or via PowerShell.  Make your choice below:
 
-* [**Part 2a** - Deploy your management infrastructure with the GUI](/steps/2a_ManagementInfraGUI.md "Deploy your management infrastructure with the GUI")
-* [**Part 2b** - Deploy your management infrastructure with PowerShell](/steps/2b_ManagementInfraPS.md "Deploy your management infrastructure with PowerShell")
+* [**Part 2a** - Deploy your management infrastructure with the GUI](/nested/steps/2a_ManagementInfraGUI.md "Deploy your management infrastructure with the GUI")
+* [**Part 2b** - Deploy your management infrastructure with PowerShell](/nested/steps/2b_ManagementInfraPS.md "Deploy your management infrastructure with PowerShell")

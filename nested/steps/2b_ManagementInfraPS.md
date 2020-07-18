@@ -1,4 +1,4 @@
-Deploy management infrastructure with the GUI
+Deploy management infrastructure with PowerShell
 ==============
 Overview
 -----------
@@ -6,7 +6,7 @@ Overview
 With your Hyper-V host up and running, either in Azure, or on a local physical system, it's now time to deploy the core management infrastructure to support the Azure Stack HCI deployment in a future step.
 
 ### Important Note ###
-In this step, you'll be using the GUI (Graphical User Interface, such as Hyper-V Manager, Server Manager etc) to create resources.  If you prefer to use PowerShell, which may allow faster completion, head on over to the [PowerShell guide](/steps/2b_ManagementInfraPS.md).
+In this step, you'll be using PowerShell to create resources.  If you prefer to use a GUI (Graphical User Interface, such as Hyper-V Manager, Server Manager etc), which may allow faster completion, head on over to the [GUI guide](/nested/steps/2a_ManagementInfraGUI.md).
 
 Architecture
 -----------
@@ -22,34 +22,29 @@ Download artifacts
 In order to deploy our nested virtual machines on AzSHCIHost001, we'll first need to download the appropriate ISOs and files for the following operating systems:
 
 * Windows Server 2019 Evaluation
-* Windows 10 Enterprise Evaluation
+* Windows 10 Enterprise Evaluation (x64)
 * Azure Stack HCI Public Preview
 * Windows Admin Center
 
-Before downloading, create a new folder on your AzSHCIHost001 machine, to contain the downloaded ISO files.
+Before downloading, create a new folder on your AzSHCIHost001 machine, to contain the downloaded ISO files
 
-1. Open **File Explorer** and navigate to **This PC** and double-click on your **C:**
-2. **Right-click** in the white-space and select **New** then **Folder**
-3. Name the folder **ISO** and close File Explorer.
-
-
+```powershell
+# Create a new folder to hold the downloaded ISO files
+New-Item -Path "C:\" -Name "ISO" -ItemType "directory"
+```
 #### For Windows Server 2019 Hyper-V hosts ####
-If you're running Windows Server 2019 as your Hyper-V host, it doesn't ship with the new Microsoft Edge by default, so unless you've chosen to install an alternative web browser, you'll have to use Internet Explorer initially.  Out of the box, Windows Server 2019 also has **Internet Explorer Protected Mode** enabled, which helps to protect users when browsing the internet. To streamline the download of the ISO files, we'll disable IE Protected Mode for the administrator account.
+If you're running Windows Server 2019 as your Hyper-V host, it doesn't ship with the new Microsoft Edge by default, so unless you've chosen to install an alternative web browser, you'll have to use Internet Explorer initially.  Out of the box, Windows Server 2019 also has **Internet Explorer Protected Mode** enabled, which helps to protect users when browsing the internet. To streamline the download of the ISO files, we'll disable IE Protected Mode for the administrator account, by running the following script in PowerShell **as administrator**:
 
-1. Click **Start** and open **Server Manager**
-2. On the main dashboard, click on **Configure this local server**
-3. In the **Properties** view, find the **IE Enhanced Security Configuration** item, and click on **On**
-4. In the **Internet Explorer Enhanced Security Configuration** window, under **Administrators**, click **Off** and click **OK**
-
-![Setting the Internet Explorer Enhanced Security Configuration to Off](/media/ie_enhanced.png)
-
-5. Close **Server Manager**
-
+```powershell
+$AdminKey = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}"
+Set-ItemProperty -Path $AdminKey -Name "IsInstalled" -Value 0
+Stop-Process -Name Explorer
+```
 #### Download the files ####
 Next, in order to download the ISO files, **open your web browser** and follow the steps below.
 
 1. Visit https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2019, complete the registration form, and download the ISO.  Save the file as **WS2019.iso** to C:\ISO
-2. Visit https://www.microsoft.com/en-us/evalcenter/evaluate-windows-10-enterprise, complete the registration form, and download the ISO.  Save the file as **W10.iso** to C:\ISO
+2. Visit https://www.microsoft.com/en-us/evalcenter/evaluate-windows-10-enterprise, complete the registration form, and download the x64 ISO.  Save the file as **W10.iso** to C:\ISO
 3. Visit --link--, complete the registration form, and download the ISO.  Save the file as **AzSHCI.iso** to C:\ISO
 4. Visit --link--, complete any necessary registration, and download the executables for the Windows Admin Center, storing them in C:\ISO
 
@@ -61,50 +56,47 @@ Create your domain controller
 -----------
 There are 3 main steps to create the virtualized domain controller on our Hyper-V host:
 
-1. Create the DC01 VM using Hyper-V Manager
+1. Create the DC01 VM using PowerShell
 2. Complete the Out of Box Experience (OOBE)
-3. Configure the domain controller with AD, DNS and DHCP roles
+3. Configure the domain controller with AD and DNS roles, all using PowerShell
 
-### Create the DC01 VM using Hyper-V Manager ###
-In this step, you'll be using Hyper-V Manager to deploy a Windows Server 2019 domain controller. With this being the GUI guide, you'll be deploying Windows Server with the Desktop Experience.
+For speed, we'll use PowerShell to configure as much as we can, but if you have experience with creating virtualized domain controllers using the Hyper-V Manager GUI, feel free to take that approach.
 
-1. On your Hyper-V host, **open Hyper-V Manager**.
-2. In the top right-corner, under **Actions**, click **New**, then **Virtual Machine**. The **New Virtual Machine Wizard** should open.
-3. On the **Before you begin** page, click **Next**
-4. On the **Specify Name and Location** page, enter **DC01**
-5. Tick the box for **Store the virtual machine in a different location** and click **Browse**
-6. In the **Select Folder** window, click on **This **PC****, navigate to **C:**, click on **New Folder**, name it **VMs** then click **Select Folder** and click **Next**
+### Create the DC01 VM using PowerShell ###
+On your AzSHCIHost001 VM, **open PowerShell as administrator**.  Make any changes that you require, to the script below, and then run it:
 
-![Specify VM name and location](/media/new_vm_name.png)
+```powershell
+# Define the characteristics of the VM, and create
+New-VM `
+    -Name "DC01" `
+    -MemoryStartupBytes 4GB `
+    -SwitchName "InternalNAT" `
+    -Path "C:\VMs\" `
+    -NewVHDPath "C:\VMs\DC01\Virtual Hard Disks\DC01.vhdx" `
+    -NewVHDSizeBytes 30GB `
+    -Generation 2
+```
 
-7. On the **Specify Generation** page, select **Generation 2** and click **Next**
-8. On the **Assign Memory** page, assign 4GB memory by entering **4096** for Startup memory and tick the **Use Dynamic Memory for this virtual machine**, then click **Next**
+To optimize the VM's use of available memory, especially on physical systems with lower physical memory, you can optionally configure the VM with Dynamic Memory, which will allow Hyper-V to allocate memory to the VM, based on it's requirements, and remove memory when idle.  This can help to free up valuable host resources in memory-constrained environments.
 
-![Assign VM memory](/media/new_vm_dynamicmem.png)
+```powershell
+# Optionally configure the VM with Dynamic Memory
+Set-VMMemory DC01 -DynamicMemoryEnabled $true -MinimumBytes 1GB -StartupBytes 4GB -MaximumBytes 4GB
+```
+Once the VM is successfully created, you should connect the Windows Server 2019 ISO file, downloaded earlier.
 
-9. On the **Configure Networking** page, select **InternalNAT** and click **Next**
-10. On the **Connect Virtual Hard Disk** page, change **size** to **30** and click **Next**
+```powershell
+# Add the DVD drive, attach the ISO to DC01 and set the DVD as the first boot device
+$DVD = Add-VMDvdDrive -VMName DC01 -Path C:\ISO\WS2019.iso -Passthru
+Set-VMFirmware -VMName DC01 -FirstBootDevice $DVD
+```
+With the VM configured correctly, you can use the following commands to connect to the VM using VM Connect, and at the same time, start the VM.  To boot from the ISO, you'll need to click on the VM and quickly press a key to trigger the boot from the DVD inside the VM.  If you miss the prompt to press a key to boot from CD or DVD, simply reset the VM and try again.
 
-![Connect Virtual Hard Disk](/media/new_vm_vhd.png)
-
-11. On the **Installation Options** page, select **Install an operating system from a bootable image file**, and click **Browse**
-12. Navigate to **C:\ISO** and select your **WS2019.iso** file, and click **Open**.  Then click **Next**
-13. On the **Completing the New Virtual Machine Wizard** page, review the information and click **Finish**
-
-Your new DC01 virtual machine will now be created.  Once created, we need to make a few final modifications. To optimize the VM's use of available memory, especially on physical systems with lower physical memory, you can optionally configure the VM with Dynamic Memory, which will allow Hyper-V to allocate memory to the VM, based on it's requirements, and remove memory when idle.  This can help to free up valuable host resources in memory-constrained environments.
-
-1. In **Hyper-V Manager**, right-click **DC01** and click **Settings**
-2. In the **Settings** window, under **Memory**, in the **Dynamic Memory** section, enter the following figures, then click **OK**
-   * Minimum RAM: 1024
-   * Maximum RAM: 4096
-
-![Updating memory for DC01](/media/dynamicmem.png)
-
-With the VM configured correctly, in **Hyper-V Manager**, double-click DC01.  This should open the VM Connect window.
-
-![Starting up DC01](/media/startvm.png)
-
-In the center of the window, there is a message explaining the VM is currently switched off.  Click on **Start** and then quickly **press any key** inside the VM to boot from the ISO file. If you miss the prompt to press a key to boot from CD or DVD, simply reset the VM and try again.
+```powershell
+# Open a VM Connect window, and start the VM
+vmconnect.exe localhost DC01
+Start-VM -Name DC01
+```
 
 ![Booting the VM and triggering the boot from DVD](/media/boot_from_dvd.png)
 
@@ -128,7 +120,7 @@ Installation will then begin, and will take a few minutes, automatically rebooti
 
 With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **C:\Users\Administrator** screen.  You can **close** the VM Connect window, as we will continue configuring the domain controller using PowerShell, from AzSHCIHost001.
 
-### Configure the domain controller with AD, DNS and DHCP roles ###
+### Configure the domain controller with AD and DNS roles ###
 With the VM successfully deployed, you can now configure the Windows Server 2019 OS to become the core domain infrastructure for your sandbox environment. To simplify the process, you'll use PowerShell, but from the Hyper-V host, into the VM, using PowerShell Direct.
 
 #### Configure the networking and host name on DC01 ####
@@ -193,7 +185,7 @@ Write-Verbose "DC01 is now online. Proceed to the next step...." -Verbose
 #### Configure the Active Directory role on DC01 ####
 With the OS configured, you can now move on to configuring the Windows Server 2019 OS with the appropriate roles and features to support the domain infrastructure.
 
-First, you'll configire Active Directory - the following code block will remotely connect to DC01, enable the Active Directory role, and apply a configuration as defined in the script block below.  Firstly, you should optionally set the Directory Services Restore Mode password, or just leave as the default below.
+First, you'll configure Active Directory - the following code block will remotely connect to DC01, enable the Active Directory role, and apply a configuration as defined in the script block below.  Firstly, you should optionally set the Directory Services Restore Mode password, or just leave as the default below.
 
 ```powershell
 # Configure Active Directory on DC01
@@ -243,60 +235,19 @@ With DC01 now back online and operational, we need to add an additional administ
 Write-Verbose "Creating new administrative User within the azshci.local domain." -Verbose
 $newUser = "LabAdmin"
 Invoke-Command -VMName DC01 -Credential $domainCreds -ScriptBlock {
-    param ($domainCreds)
-    Write-Verbose "Waiting for AD Web Services to be in a running state" -Verbose
-    $ADWebSvc = Get-Service ADWS | Select-Object *
-    while($ADWebSvc.Status -ne 'Running')
-            {
-            Start-Sleep -Seconds 1
-            }
-    Do {
-    Start-Sleep -Seconds 30
-    Write-Verbose "Waiting for AD to be Ready for User Creation" -Verbose
+    param ($domainCreds, $newUser)
     New-ADUser -Name "$newUser" -AccountPassword $domainCreds.Password -Enabled $True
     $ADReadyCheck = Get-ADUser -Identity "$newUser"
-    }
-    Until ($ADReadyCheck.Enabled -eq "True")
     Add-ADGroupMember -Identity "Domain Admins" -Members "$newUser"
     Add-ADGroupMember -Identity "Enterprise Admins" -Members $newUser
     Add-ADGroupMember -Identity "Schema Admins" -Members $newUser
     } -ArgumentList $domainCreds, $newUser
- 
 Write-Verbose "User: $newUser created." -Verbose
 ```
 
-You can move on to the next step - enabling the DHCP role.
+**NOTE** - if you receive warnings or errors creating new users, wait a few moments, as your DC01 machine may need more time to start new services.
 
-#### Configure the DHCP role on DC01 ####
-In order to simplify network management in the sandboxed environment, you will now enable DHCP on DC01.
-
-```powershell
-# Set updated domain credentials based on new credentials
-$domainName = "azshci.local"
-$domainAdmin = "$domainName\labadmin"
-$domainCreds = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $domainAdmin, $dcCreds.Password
-
-# Configure the DHCP role on DC01
-Invoke-Command -VMName DC01 -Credential $domainCreds -ScriptBlock {
-    # Install DHCP Server
-    Install-WindowsFeature -Name DHCP -IncludeManagementTools
-    # Authorize
-    Add-DhcpServerInDC -DnsName DC01
-    # Add DHCP scope
-    Add-DhcpServerv4Scope -StartRange "192.168.0.3" -EndRange "192.168.0.100" -Name ManagementScope `
-    -LeaseDuration "00:08:00" -SubnetMask "255.255.255.0" -State Active
-    # Add DHCP scope options
-    Set-DhcpServerv4OptionValue -OptionId 6 -Value "192.168.0.2" -ScopeId "192.168.0.0"
-    Set-DhcpServerv4OptionValue -OptionId 3 -Value "192.168.0.1" -ScopeId "192.168.0.0"
-    Set-DhcpServerv4OptionValue -OptionId 15 -Value "azshci.local" -ScopeId "192.168.0.0"
-}
-```
-
-When the process is completed successfully, you should see a message similar to this below.
-
-![DHCP role successfully configured on DC01](/media/dhcp_enabled.png)
-
-With Active Directory, DNS and DHCP all configured, you can now move on to deploying the Windows 10 Enterprise VM, that will be used to run the Windows Admin Center.
+With Active Directory and DNS configured, you can now move on to deploying the Windows 10 Enterprise VM, that will be used to run the Windows Admin Center.
 
 Create your Windows 10 Management VM
 -----------
@@ -347,7 +298,7 @@ Start-VM -Name MGMT01
 ![Booting the VM and triggering the boot from DVD](/media/boot_from_dvd.png)
 
 ### Complete the Out of Box Experience (OOBE) ###
-With the VM running, and the boot process initiated, you should be in a position to start the deployment of the Windows Server 2019 OS.
+With the VM running, and the boot process initiated, you should be in a position to start the deployment of the Windows 10 OS.
 
 ![Initiate setup of Windows 10](/media/w10_setup.png)
 
@@ -363,17 +314,32 @@ Installation will then begin, and will take a few minutes, automatically rebooti
 
 With the installation complete, you'll be prompted to finish the out of box experience, including **choosing your region**, **keyboard layout** and finally, setting a username and password.
 
-![Initiate setup of the Windows Server 2019 OS](/media/w10_install_complete.png)
+![Initiate setup of the Windows 10 OS](/media/w10_install_complete.png)
 
 1. On the **Sign in with Microsoft** page, select **Domain join instead**
 2. On the **Who's going to use this PC** page, enter **LocalAdmin** and click **Next**
-3. On the **Create a super memorable password** page, enter your previously used password and click **Next**
+3. On the **Create a super memorable password** page, for simplicity, enter a previously used password and click **Next**
 4. Enter your password again on the **Confirm your password** page, then click **Next**
 5. For the security questions, provide answers for 3 questions, and click **Next**
 6. On the **Choose privacy settings for your device** page, make your adjustments and click **Accept**
 7. On the next few screens, make your desired selections for the services, and the install process will finish.  This will take a few minutes.
 
 Once complete, you should be logged in on the Windows 10 machine.
+
+### Configure MGMT01 networking ###
+With MGMT01 up and running, it's time to configure the networking so it can communicate with DC01.
+
+```powershell
+# Define local Windows 10 credentials
+$w10Creds = Get-Credential -UserName "LocalAdmin" -Message "Enter the password used when you deployed Windows 10"
+Invoke-Command -VMName "MGMT01" -Credential $w10Creds -ScriptBlock {
+    # Set Static IP on MGMT01
+    New-NetIPAddress -IPAddress "192.168.0.3" -DefaultGateway "192.168.0.1" -InterfaceAlias "Ethernet" -PrefixLength "24" | Out-Null
+    Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses ("192.168.0.2")
+    $mgmtIP = Get-NetIPAddress -AddressFamily IPv4 -InterfaceAlias "Ethernet" | Select-Object IPAddress
+    Write-Verbose "The currently assigned IPv4 address for MGMT01 is $($mgmtIP.IPAddress)" -Verbose 
+}
+```
 
 #### Optional - Update your Windows 10 OS ####
 
@@ -384,7 +350,7 @@ It's a good idea to ensure your OS is running the latest security updates and pa
 3. In the Updates window within Settings, click **Check for updates**. If any are required, ensure they are downloaded and installed.  This will take a few minutes.
 4. Restart if required
 
-You can then **close** the VM Connect window, as we will continue configuring the domain controller using PowerShell, from AzSHCIHost001.
+You can then **close** the VM Connect window, as we will continue configuring MGMT01 using PowerShell, from your Hyper-V host.
 
 ### Join your Windows 10 VM to the domain ###
 To simplify the domain join of the machine to your sandbox domain environment, use the following PowerShell script:
@@ -456,4 +422,4 @@ To install the Windows Admin Center, simply **double-click** the executable on t
 
 Next Steps
 -----------
-In this step, you've successfully created your management infrastructure, including a Windows Server 2019 domain controller and a Windows 10 management VM, complete with Windows Admin Center. You can now proceed to [deploy your nested Azure Stack HCI nodes](/steps/3_AzSHCINodes.md "deploying your Azure Stack HCI nodes").
+In this step, you've successfully created your management infrastructure, including a Windows Server 2019 domain controller and a Windows 10 management VM, complete with Windows Admin Center. You can now proceed to [create your nested Azure Stack HCI nodes with PowerShell](/nested/steps/3b_AzSHCINodesPS.md "Create your nested Azure Stack HCI nodes with PowerShell")
