@@ -240,8 +240,96 @@ As part of this guide, we're going to set up cluster quorum, using **Windows Adm
 
 18. Within a few moments, your witness settings should be successfully applied and you have now completed configuring the quorum settings for the **azshciclus** cluster.
 
+Connect and Register Azure Stack HCI to Azure
+-----------
+Azure Stack HCI is delivered as an Azure service and needs to register within 30 days of installation per the Azure Online Services Terms. This topic explains how to register your Azure Stack HCI cluster with **Azure Arc** for monitoring, support, billing, and hybrid services. Upon registration, an Azure Resource Manager resource is created to represent each on-premises Azure Stack HCI cluster, effectively extending the Azure management plane to Azure Stack HCI. Information is periodically synced between the Azure resource and the on-premises cluster.  One great aspect of Azure Stack HCI, is that the Azure Arc registration is a native capability of Azure Stack HCI, so there is no agent required.
+
+### Prerequisites for registration ###
+Firstly, **you need an Azure Stack HCI cluster**, which we've just created, so you're good there.
+
+Your nodes need to have **internet connectivity** in order to register and communicate with Azure.  If you've been running nested in Azure, you should have this already set up correctly, but if you're running on a local physical machine, make any necessary adjustments to your InternalNAT switch to allow internet connections through to your nested nodes.
+
+You'll need an **Azure subscription**, but seeing as you've just configured the **cloud witness** earlier, we'll assume that's taken care of.
+
+You'll need appropriate **Azure Active Directory permissions** to complete the registration process. If you don't already have them, you'll need to ask your Azure AD administrator to grant permissions or delegate them to you.  You can learn more about this below.
+
+#### What happens when you register Azure Stack HCI? ####
+
+
+
+#### Understanding Azure Active Directory Permissions ####
+
+In addition to creating an Azure resource in your subscription, registering Azure Stack HCI creates an app identity, conceptually similar to a user, in your Azure Active Directory tenant. The app identity inherits the cluster name. This identity acts on behalf on the Azure Stack HCI cloud service, as appropriate, within your subscription.
+
+If the user who registers Azure Stack HCI is an Azure Active Directory administrator or has been delegated sufficient permissions, this all happens automatically, and no additional action is required. If not, approval may be needed from your Azure Active Directory administrator to complete registration. Your administrator can either explicitly grant consent to the app, or they can delegate permissions so that you can grant consent to the app:
+
+![Azure Active Directory Permissions](/media/aad_permissions.png "Azure Active Directory Permissions")
+
+### Register using PowerShell ###
+We're going to perform the registration from the **MGMT01** machine, which we've been using with the Windows Admin Center.
+
+1. On **MGMT01**, open **PowerShell as administrator** and run the following code. This installs the PowerShell Module for Azure Stack HCI on the local node.
+
+```powershell
+$azshciNodeCreds = Get-Credential -UserName "azshci\labadmin" -Message "Enter the Lab Admin password"
+Invoke-Command -ComputerName AZSHCINODE01 -Credential $azshciNodeCreds -ScriptBlock {
+    Install-WindowsFeature RSAT-Azure-Stack-HCI
+}
+```
+
+2. Next, on **MGMT01**, you'll install the required Az.StackHCI PowerShell module locally
+
+```powershell
+Install-Module Az.StackHCI
+}
+```
+ **NOTE** - You may recieve a message that **PowerShellGet requires NuGet Provider...** - read the full message, and then click **Yes** to allow the appropriate dependencies to be installed. You may receive a second prompt to **install the modules from the PSGallery** - click **Yes to All** to proceed.
+
+ In addition, in future releases, installing the Azure PowerShell **Az** modules will include **StackHCI**, however today, in preview, you have to install this module specifically, using the command **Install-Module Az.StackHCI**
+
+3. With the Az.StackHCI modules installed, it's now time to register your Azure Stack HCI cluster to Azure, however first, it's worth exploring how to check existing registration status, which we'll do remotely, from **MGMT01**.  The following code assumes you left your PowerShell window open from the previous commands.
+
+```powershell
+Invoke-Command -ComputerName AZSHCINODE01 -Credential $azshciNodeCreds -ScriptBlock {
+    Get-AzureStackHCI
+}
+```
+
+![Check the registration status of the Azure Stack HCI cluster](/media/reg_check.png "Check the registration status of the Azure Stack HCI cluster")
+
+As you can see from the result, the cluster is yet to be registered, and the cluster status identifies as **Clustered**. Azure Stack HCI needs to register within 30 days of installation per the Azure Online Services Terms. If not clustered after 30 days, the **ClusterStatus** will show **OutOfPolicy**, and if not registered after 30 days, the **RegistrationStatus** will show **OutOfPolicy**.
+
+4. To register the cluster, 
+
+
+
+
+
+Once the cluster is registered, you can see the ConnectionStatus and LastConnected time, which is usually within the last day unless the cluster is temporarily disconnected from the Internet. An Azure Stack HCI cluster can operate fully offline for up to 30 consecutive days.
+
+
+
+
+
+
+
+you'll need the subscription ID of the Azure subscription you wish to use.
+
 
 
 Next Steps
 -----------
 In this step, you've successfully created a nested Azure Stack HCI cluster using Windows Admin Center.  With this complete, you can now [Explore the management of your Azure Stack HCI environment](/nested/steps/3b_AzSHCINodesPS.md "Create your nested Azure Stack HCI nodes with PowerShell")
+
+
+To grant consent, open portal.azure.com and sign in with an Azure account that has sufficient permissions on the Azure Active Directory. Navigate to Azure Active Directory, then App registrations. Select the app identity named after your cluster and navigate to API permissions.
+
+The app requires two permissions:
+
+HTTP
+
+Copy
+https://azurestackhci-usage.trafficmanager.net/AzureStackHCI.Census.Sync
+
+https://azurestackhci-usage.trafficmanager.net/AzureStackHCI.Billing.Sync
+Seeking approval from your Azure Active Directory administrator could take some time, so the Register-AzureStackHCI cmdlet will exit and leave the registration in status "pending admin consent," i.e. partially completed. Once consent has been granted, simply re-run Register-AzureStackHCI to complete registration.
