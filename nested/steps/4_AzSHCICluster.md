@@ -279,7 +279,6 @@ Invoke-Command -ComputerName AZSHCINODE01 -Credential $azshciNodeCreds -ScriptBl
 
 ```powershell
 Install-Module Az.StackHCI
-}
 ```
 
  **NOTE** - You may recieve a message that **PowerShellGet requires NuGet Provider...** - read the full message, and then click **Yes** to allow the appropriate dependencies to be installed. You may receive a second prompt to **install the modules from the PSGallery** - click **Yes to All** to proceed.
@@ -333,7 +332,7 @@ Of these commands, many are optional:
 
 7. Once dependencies have been installed, you'll receive a popup on **MGMT01** to authenticate to Azure. Provide your **Azure credentials**.
 
-![Login to Azure](/media/azure_login_req.png "Login to Azure")
+![Login to Azure](/media/azure_login_reg.png "Login to Azure")
 
 Once the cluster is registered, you can see the ConnectionStatus and LastConnected time, which is usually within the last day unless the cluster is temporarily disconnected from the Internet. An Azure Stack HCI cluster can operate fully offline for up to 30 consecutive days.
 
