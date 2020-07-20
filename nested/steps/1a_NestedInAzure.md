@@ -26,7 +26,7 @@ Architecture
 
 From an architecture perspective, the following graphic showcases the different layers and interconnections between the different components:
 
-![Architecture diagram for Azure Stack HCI nested in Azure](/media/nested_virt_arch.png)
+![Architecture diagram for Azure Stack HCI nested in Azure](/media/nested_virt_arch.png "Architecture diagram for Azure Stack HCI nested in Azure")
 
 Get an Azure subscription
 -----------
@@ -105,21 +105,21 @@ To keep things simple, and graphical to begin with, we'll show you how to deploy
 
 Firstly, the **Visualize** button will launch the ARMVIZ designer view, where you will see a graphic representing the core components of the deployment, including the VM, NIC, disk and more. If you want to open this in a new tab, **hold CTRL** when you click the button.
 
-[![Visualize your template deployment](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.png)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FAzureStackHCI-EvalGuide%2Fmain%2Fnested%2Fjson%2Fazshcilabvm.json)
+[![Visualize your template deployment](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.png)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FAzureStackHCI-EvalGuide%2Fmain%2Fnested%2Fjson%2Fazshcilabvm.json "Visualize your template deployment")
 
 Secondly, the **Deploy to Azure** button, when clicked, will take you directly to the Azure portal, and upon login, provide you with a form to complete. If you want to open this in a new tab, **hold CTRL** when you click the button.
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FAzureStackHCI-EvalGuide%2Fmain%2Fnested%2Fjson%2Fazshcilabvm.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FAzureStackHCI-EvalGuide%2Fmain%2Fnested%2Fjson%2Fazshcilabvm.json "Deploy to Azure")
 
 Upon clicking the **Deploy to Azure** button, enter the details, which should look something similar to those shown below, and click **Purchase**.
 
-![Custom template deployment in Azure](/media/azure_vm_custom_template.png)
+![Custom template deployment in Azure](/media/azure_vm_custom_template.png "Custom template deployment in Azure")
 
 **NOTE** - For customers with Software Assurance, Azure Hybrid Benefit for Windows Server allows you to use your on-premises Windows Server licenses and run Windows virtual machines on Azure at a reduced cost. By selecting **Yes** for the "Already have a Windows Server License", **you confirm I have an eligible Windows Server license with Software Assurance or Windows Server subscription to apply this Azure Hybrid Benefit** and have reviewed the [Azure hybrid benefit compliance](http://go.microsoft.com/fwlink/?LinkId=859786 "Azure hybrid benefit compliance document")
 
 The custom template will be validated, and if all of your entries are correct, you can click **Create**. Within a few minutes, your VM will be created.
 
-![Custom template deployment in Azure completed](/media/azure_vm_custom_template_complete.png)
+![Custom template deployment in Azure completed](/media/azure_vm_custom_template_complete.png "Custom template deployment in Azure completed")
 
 If you chose to **enable** the auto-shutdown for the VM, and supplied a time, and time zone, but want to also add a notification alert, simply click on the **Go to resource group** button and then perform the following steps:
 
@@ -175,7 +175,7 @@ Login-AzAccount
 
 When you've successfully logged in, you will be presented with the default subscription and tenant associated with those credentials.
 
-![Result of Login-AzAccount](/media/Login-AzAccount.png)
+![Result of Login-AzAccount](/media/Login-AzAccount.png "Result of Login-AzAccount")
 
 If this is the subscription and tenant you wish to use for this evaluation, you can move on to the next step, however if you wish to deploy the VM to an alternative subscription, you will need to run the following commands:
 
@@ -229,7 +229,7 @@ New-AzVM `
 
 Once you've made your size and region selection, based on the information provided earlier, run the PowerShell script and wait a few moments for your VM deployment to complete.
 
-![Virtual machine successfully deployed with PowerShell](/media/powershell_vm_deployed.png)
+![Virtual machine successfully deployed with PowerShell](/media/powershell_vm_deployed.png "Virtual machine successfully deployed with PowerShell")
 
 With the VM successfully deployed, make a note of the fully qualified domain name, as you'll use that to connect to the VM shortly.
 
@@ -240,14 +240,14 @@ One way to control costs, is to ensure your VM automatically shuts down at the e
 
 Firstly, visit https://portal.azure.com/, and login with the same credentials used earlier.  Once logged in, using the search box on the dashboard, enter "azshci" and once the results are returned, click on your AzSHCIHost virtual machine.
 
-![Virtual machine located in Azure](/media/azure_vm_search.png)
+![Virtual machine located in Azure](/media/azure_vm_search.png "Virtual machine located in Azure")
 
 1. Once on the overview blade for your VM, **scroll down on the left-hand navigation**, and click on **Auto-shutdown**
 2. Click the Enabled slider to **On**
 3. Enter your **scheduled shutdown time**, **time zone** and **notification information**
 4. Click **Save**
 
-![Enable VM auto-shutdown in Azure](/media/auto_shutdown.png)
+![Enable VM auto-shutdown in Azure](/media/auto_shutdown.png "Enable VM auto-shutdown in Azure")
 
 Prepare your Azure VM
 -----------
@@ -257,15 +257,15 @@ With your Azure VM (AzSHCIHost001) successfully deployed, you're ready to config
 ### Update your Azure VM ###
 Firstly, you'll need to connect into the VM, with the easiest approach being via Remote Desktop.  If you're not already logged into the Azure portal, visit https://portal.azure.com/, and login with the same credentials used earlier.  Once logged in, using the search box on the dashboard, enter "**azshci**" and once the results are returned, **click on your AzSHCIHost001 virtual machine**.
 
-![Virtual machine located in Azure](/media/azure_vm_search.png)
+![Virtual machine located in Azure](/media/azure_vm_search.png "Virtual machine located in Azure")
 
 Once you're on the Overview blade for your VM, along the top of the blade, click on **Connect** and from the drop-down options.
 
-![Connect to a virtual machine in Azure](/media/connect_to_vm.png)
+![Connect to a virtual machine in Azure](/media/connect_to_vm.png "Connect to a virtual machine in Azure")
 
 Select **RDP**. On the newly opened Connect blade, ensure the **Public IP** is selected, and the port is **3389**, click **Download RDP File** and select a suitable folder to store the .rdp file.
 
-![Configure RDP settings for Azure VM](/media/connect_to_vm_properties.png)
+![Configure RDP settings for Azure VM](/media/connect_to_vm_properties.png "Configure RDP settings for Azure VM")
 
 Once downloaded, locate the .rdp file on your local machine, and double-click to open it. Click **connect** and when prompted, enter the credentials you supplied when creating the VM earlier. Accept any certificate prompts, and within a few moments, you should be successfully logged into the Windows Server 2019 VM.
 
@@ -313,7 +313,7 @@ Get-NetNat
 ```
 The **Get-NetNat** cmdlet gets Network Address Translation (NAT) objects configured on a computer. NAT modifies IP address and port information in packet headers. Your configuration should look similar to the configuration below:
 
-![Result of Get-NetNat PowerShell command](/media/get_net_nat.png)
+![Result of Get-NetNat PowerShell command](/media/get_net_nat.png "Result of Get-NetNat PowerShell command")
 
 The final part of the process is to enable Enhanced Session mode.  Enhanced Session mode can be useful to enhance the user experience, particularly when using the Windows 10 VM later, when connecting to a VM over VMConnect.  To enable Enhanced Session Mode with PowerShell, run the following on AzSHCIHost001:
 

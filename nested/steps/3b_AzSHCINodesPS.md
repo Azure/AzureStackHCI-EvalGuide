@@ -74,7 +74,7 @@ Set-VMProcessor -VMName $nodeName -ExposeVirtualizationExtensions $true -Verbose
 
 When those commands have completed, this is what you would see in Hyper-V Manager, in the settings view:
 
-![Finished settings for the AZSHCINODE01 node](/media/azshci_settings_ps.png)
+![Finished settings for the AZSHCINODE01 node](/media/azshci_settings_ps.png "Finished settings for the AZSHCINODE01 node")
 
 With the VM configured correctly, you can use the following commands to connect to the VM using VM Connect, and at the same time, start the VM.  To boot from the ISO, you'll need to click on the VM and quickly press a key to trigger the boot from the DVD inside the VM.  If you miss the prompt to press a key to boot from CD or DVD, simply reset the VM and try again.
 
@@ -84,12 +84,12 @@ vmconnect.exe localhost $nodeName
 Start-VM -Name $nodeName
 ```
 
-![Booting the VM and triggering the boot from DVD](/media/boot_from_dvd.png)
+![Booting the VM and triggering the boot from DVD](/media/boot_from_dvd.png "Booting the VM and triggering the boot from DVD")
 
 ### Complete the Out of Box Experience (OOBE) ###
 With the VM running, and the boot process initiated, you should be in a position to start the deployment of the Azure Stack HCI OS.
 
-![Initiate setup of the Azure Stack HCI OS](/media/azshci_setup.png)
+![Initiate setup of the Azure Stack HCI OS](/media/azshci_setup.png "Initiate setup of the Azure Stack HCI OS")
 
 Proceed through the process, making the following selections:
 
@@ -101,7 +101,7 @@ Proceed through the process, making the following selections:
 
 Installation will then begin, and will take a few minutes, automatically rebooting as part of the process.
 
-![Completed setup of the Azure Stack HCI OS](/media/azshci_setup_complete.png)
+![Completed setup of the Azure Stack HCI OS](/media/azshci_setup_complete.png "Completed setup of the Azure Stack HCI OS")
 
 With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **C:\Users\Administrator** screen.  Minimize the VM Connect window.
 

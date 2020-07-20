@@ -60,34 +60,34 @@ If you have just 2 nodes, or if your preference is for a cluster running in a si
 
 ### Get started ###
 
-![Choose cluster type in the Create Cluster wizard](/media/wac_cluster_type.png)
+![Choose cluster type in the Create Cluster wizard](/media/wac_cluster_type.png "Choose cluster type in the Create Cluster wizard")
 
 1. Ensure you select **Azure Stack HCI**, select **All servers in one site** and cick **Create**
 2. On the **Check the prerequisites** page, review the requirements and click **Next**
 3. On the **Add Servers** page, supply a **username**, which should be **azshci\labadmin** and **your-domain-admin-password** and then one by one, enter the node names (or IP addresses if names don't resolve) of your Azure Stack HCI nodes, clicking **Add** after each one has been located.  Each node will be validated, and given a **Ready** status when fully validated.  This may take a few moments.
 
-![Add servers in the Create Cluster wizard](/media/add_nodes.png)
+![Add servers in the Create Cluster wizard](/media/add_nodes.png "Add servers in the Create Cluster wizard")
 
 4. On the **Join a domain** page, details should already be in place, as we joined the domain previously, so click **Next**
 
-![Joined the domain in the Create Cluster wizard](/media/wac_domain_joined.png)
+![Joined the domain in the Create Cluster wizard](/media/wac_domain_joined.png "Joined the domain in the Create Cluster wizard")
 
 1. On the **Install features** page, Windows Admin Center will query the nodes for currently installed features, and will request you install required features.  Click **Install features**.  This will take a few moments - once complete, click **Next**
 
-![Installing required features in the Create Cluster wizard](/media/wac_installed_features.png)
+![Installing required features in the Create Cluster wizard](/media/wac_installed_features.png "Installing required features in the Create Cluster wizard")
 
 7. On the **Install updates** page, Windows Admin Center will query the nodes for available updates, and will request you install any that are required.  Optionally, click **Install updates**.  This will take a few moments - once complete, click **Next**
 8. On the **Solution updates** page, install any appropriate extensions, and then click **Next**
 9. On the **Restart servers** page, if required, click **Restart servers**
 
-![Restart nodes in the Create Cluster wizard](/media/wac_restart.png)
+![Restart nodes in the Create Cluster wizard](/media/wac_restart.png "Restart nodes in the Create Cluster wizard")
 
 ### Networking ###
 With the servers domain joined, configured with the appropriate features, updated and rebooted, you're ready to configure your network.  You have a number of different choices here, so we'll try to explain why we're making each selection, so you can better apply it to your environment further down the road.
 
 Firstly, Windows Admin Center will verify your networking setup - it'll tell you how many NICs are in each node, along with relevant hardware information, MAC address and status information.  Review for accuracy, and then click **Next**
 
-![Verify network in the Create Cluster wizard](/media/wac_verify_network.png)
+![Verify network in the Create Cluster wizard](/media/wac_verify_network.png "Verify network in the Create Cluster wizard")
 
 The first key step with setting up the networking with Windows Admin Center, is to choose a management NIC that will be dedicated for management use.  You can choose either a single NIC, or two NICs for redundancy.  This step specifically designates 1 or 2 adapters that will be used by the Windows Admin Center to orchestrate the cluster creation flow.  It's mandatory to select at least one of the adapters for management, and in a physical deployment, the 1GbE NICs are usually good candidates for this.
 
@@ -104,11 +104,11 @@ Again, this is just one **example** network configuration for the simple purpose
 
 1. Back in the Windows Admin Center, on the **Select the adapters to use for management** page, ensure you select the **One physical network adapter for management** box
 
-![Select management adapter in the Create Cluster wizard](/media/wac_management_nic.png)
+![Select management adapter in the Create Cluster wizard](/media/wac_management_nic.png "Select management adapter in the Create Cluster wizard")
 
 1. Then, for each node, **select the highlighted NIC** that will be dedicated for management.  The reason only one NIC is highlighted, is because this is the only one that has an IP address assigned from a previous step. Once you've finished your selections, scroll to the bottom, then click **Apply and test**
 
-![Select management adapters in the Create Cluster wizard](/media/wac_singlemgmt.png)
+![Select management adapters in the Create Cluster wizard](/media/wac_singlemgmt.png "Select management adapters in the Create Cluster wizard")
 
 3. Windows Admin Center will then apply the configuration to your NIC. When complete and successful, click **Next**
 4. On the **Define networks** page, this is where you can define the specific networks, separate subnets, and optionally apply VLANs.  In this **nested environment**, we now have 3 NICs remaining.  Configure your remaining NICs as follows, by clicking on a field in the table and entering the appropriate information.
@@ -132,12 +132,12 @@ Again, this is just one **example** network configuration for the simple purpose
 
 When you click **Apply and test**, Windows Admin Center validates network connectivity between the adapters in the same VLAN and subnet, which may take a few moments.  Once complete, your configuration should look similar to this:
 
-![Define networks in the Create Cluster wizard](/media/wac_define_network.png)
+![Define networks in the Create Cluster wizard](/media/wac_define_network.png "Define networks in the Create Cluster wizard")
 
 1. Once the networks have been verified, click **Next**
 2. On the **Virtual Switch** page, you have a number of options
 
-![Select vSwitch in the Create Cluster wizard](/media/wac_vswitches.png)
+![Select vSwitch in the Create Cluster wizard](/media/wac_vswitches.png "Select vSwitch in the Create Cluster wizard")
 
 * **Create one virtual switch for compute and storage together** - in this configuration, your Azure Stack HCI nodes will create a vSwitch, comprised of multiple NICs, and the bandwidth available across these NICs will be shared by the Azure Stack HCI nodes themselves, for storage traffic, and in addition, any VMs you deploy on top of the nodes, will also share this bandwidth.
 * **Create one virtual switch for compute only** - in this configuration, you would leave some NICs dedicated to storage traffic, and have a set of NICs attached to a vSwitch, to which your VMs traffic would be dedicated.
@@ -146,7 +146,7 @@ When you click **Apply and test**, Windows Admin Center validates network connec
 
 7. Select the **Create one virtual switch for compute only**, and select your NIC labelled with **VMs**, on each node, then click **Apply and test**
 
-![Create single vSwitch for Compute in the Create Cluster wizard](/media/wac_compute_vswitch.png)
+![Create single vSwitch for Compute in the Create Cluster wizard](/media/wac_compute_vswitch.png "Create single vSwitch for Compute in the Create Cluster wizard")
 
 8. Once changes have been successfully applied, click **Next: Clustering**
 
@@ -155,47 +155,47 @@ With the network configured for the evaluation environment, it's time to constru
 
 1. At the start of the **Cluster** wizard, on the **Validate the cluster** page, click **Validate**.  You should be prompted with a **Credential Security Service Provider (CredSSP)** box - read the information, then click **Yes**
 
-![Validate cluster in the Create Cluster wizard](/media/wac_credssp.png)
+![Validate cluster in the Create Cluster wizard](/media/wac_credssp.png "Validate cluster in the Create Cluster wizard")
 
 2. Cluster validation will then start, and will take a few moments to complete - once completed, you should see a successful message.
 
 **NOTE** - Cluster validation is intended to catch hardware or configuration problems before a cluster goes into production. Cluster validation helps to ensure that the Azure Stack HCI solution that you're about to deploy is truly dependable. You can also use cluster validation on configured failover clusters as a diagnostic tool. If you're interested in learning more about Cluster Validation, [check out the official docs](https://docs.microsoft.com/en-us/azure-stack/hci/deploy/validate "Cluster validation official documentation").
 
-![Validation complete in the Create Cluster wizard](/media/wac_validated.png)
+![Validation complete in the Create Cluster wizard](/media/wac_validated.png "Validation complete in the Create Cluster wizard")
 
 1. Optionally, if you want to review the validation report, click on **Download report** and open the file in your browser.
 2. Back in the **Validate the cluster** screen, click **Next**
 3. On the **Create the cluster** page, enter your **cluster name** as **AZSHCICLUS** and select **Advanced**
 4. Under **IP addresses**, click **Specify one or more static addresses**, and enter **192.168.0.10** (assuming you've deployed less than 10 nodes, otherwise adjust accordingly), and click **Add**
 
-![Finalize cluster creation in the Create Cluster wizard](/media/wac_create_clus.png)
+![Finalize cluster creation in the Create Cluster wizard](/media/wac_create_clus.png "Finalize cluster creation in the Create Cluster wizard")
 
 7. With all settings confirmed, click **Create cluster**. This will take a few moments.  Once complete, click **Next: Storage**
 
-![Cluster creation successful in the Create Cluster wizard](/media/wac_cluster_success.png)
+![Cluster creation successful in the Create Cluster wizard](/media/wac_cluster_success.png "Cluster creation successful in the Create Cluster wizard")
 
 ### Clustering ###
 With the cluster successfully created, you're now good to proceed on to configuring your storage.  Whilst less important in a fresh nested environment, it's always good to start from a clean slate, so first, you'll clean the drives before configuring storage.
 
 1. On the storage landing page within the Create Cluster wizard, click **Clean Drives**, and when prompted, with **Continue** to **Really clean and reset drives**.  Once complete, you should have a successful confirmation message:
 
-![Cleaning drives in the Create Cluster wizard](/media/wac_clean_drives.png)
+![Cleaning drives in the Create Cluster wizard](/media/wac_clean_drives.png "Cleaning drives in the Create Cluster wizard")
 
 2. On the **Verify drives** page, validate that all your drives have been detected, and show correctly.  As these are virtual disks in a nested environment, they won't display as SSD or HDD etc. You should have **4 data drives** per node.  Once verified, click **Next**
 
-![Verified drives in the Create Cluster wizard](/media/wac_verify_drives.png)
+![Verified drives in the Create Cluster wizard](/media/wac_verify_drives.png "Verified drives in the Create Cluster wizard")
 
 3. Storage Spaces Direct validation tests will then automatically run, which will take a few moments.
 
-![Verifying Storage Spaces Direct in the Create Cluster wizard](/media/wac_validate_storage.png)
+![Verifying Storage Spaces Direct in the Create Cluster wizard](/media/wac_validate_storage.png "Verifying Storage Spaces Direct in the Create Cluster wizard")
 
 4. Once completed, you should see a successful confirmation.  You can scroll through the brief list of tests, or alternatively, click to **Download report** to view more detailed information, then click **Next**
 
-![Storage verified in the Create Cluster wizard](/media/wac_storage_validated.png)
+![Storage verified in the Create Cluster wizard](/media/wac_storage_validated.png "Storage verified in the Create Cluster wizard")
 
 5. The final step with storage, is to **Enable Storage Spaces Direct**, so click **Enable**.  This will take a few moments.
 
-![Storage Spaces Direct enabled in the Create Cluster wizard](/media/wac_s2d_enabled.png)
+![Storage Spaces Direct enabled in the Create Cluster wizard](/media/wac_s2d_enabled.png "Storage Spaces Direct enabled in the Create Cluster wizard")
 
 6. With Storage Spaces Direct enabled, click **Finish**, then **Go to connections list**
 

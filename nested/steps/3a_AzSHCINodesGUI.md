@@ -36,12 +36,12 @@ In this step, you'll be using Hyper-V Manager to deploy an Azure Stack HCI node.
 5. Tick the box for **Store the virtual machine in a different location** and click **Browse**
 6. In the **Select Folder** window, click on **This **PC****, navigate to **C:**, click on the **VMs** folder, click **Select Folder** and then click **Next**
 
-![Specify VM name and location](/media/new_vm_node.png)
+![Specify VM name and location](/media/new_vm_node.png "Specify VM name and location")
 
 7. On the **Specify Generation** page, select **Generation 2** and click **Next**
 8. On the **Assign Memory** page, assign 4GB memory by entering **4096** for Startup memory and leave the the **Use Dynamic Memory for this virtual machine** empty, then click **Next**
 
-![Assign VM memory](/media/new_vm_node_memory.png)
+![Assign VM memory](/media/new_vm_node_memory.png "Assign VM memory")
 
 #### Dynamic Memory and Runtime Memory Resize ####
 When Hyper-V is running inside a virtual machine, the virtual machine must be turned off to adjust its memory. This means that even if dynamic memory is enabled, **the amount of memory will not fluctuate**. For virtual machines without dynamic memory enabled, any attempt to adjust the amount of memory while it's on will fail.  Note that simply enabling nested virtualization will have no effect on dynamic memory or runtime memory resize. The incompatibility only occurs while Hyper-V is running in the VM.
@@ -51,7 +51,7 @@ When Hyper-V is running inside a virtual machine, the virtual machine must be tu
 9. On the **Configure Networking** page, select **InternalNAT** and click **Next**
 10. On the **Connect Virtual Hard Disk** page, change **size** to **30** and click **Next**
 
-![Connect Virtual Hard Disk](/media/new_vm_node_vhd.png)
+![Connect Virtual Hard Disk](/media/new_vm_node_vhd.png "Connect Virtual Hard Disk")
 
 11. On the **Installation Options** page, select **Install an operating system from a bootable image file**, and click **Browse**
 12. Navigate to **C:\ISO** and select your **AzSHCI.iso** file, and click **Open**.  Then click **Next**
@@ -66,7 +66,7 @@ Your new AZSHCINODE01 virtual machine will now be created.  Once created, we nee
 5. Once you have **4 network adapters**, click on **Processor**
 6. For **Number of virtual processors**, choose a number appropriate to your underlying hardware. In this case, we'll choose **4** but we can adjust this later, then click **Apply**
 
-![Configuring the vm settings](/media/new_vm_node_settings.png)
+![Configuring the vm settings](/media/new_vm_node_settings.png "Configuring the vm settings")
 
 You now need to add additional hard drives to support the Azure Stack HCI nodes and cluster.  You need to add a minimum of 2 data disks, but we will add 4 data disks to each node.
 
@@ -75,14 +75,14 @@ You now need to add additional hard drives to support the Azure Stack HCI nodes 
 9. On the **Choose Disk Type** page, ensure **Dynamically expanding** is selected, then click **Next**
 10. On the **Specify Name and Location** page, enter **DATA01.vhdx**, and change the location to **C:\VMs\AZSHCINODE01\Virtual Hard Disks**, then click **Next**
 
-![Adding additional hard drives to AzSHCINode01](/media/azshci_data_disk.png)
+![Adding additional hard drives to AzSHCINode01](/media/azshci_data_disk.png "Adding additional hard drives to AzSHCINode01")
 
 11. On the **Configure Disk** page, ensure **Create a blank virtual hard disk** is selected, set size to **100**, then click **Next**
 12. On the **Completing the New Virtual Hard Disk Wizard** page, review your settings and click **Finish**
 13. Back in the **AZSHCINODE01 settings**, click **Apply**
 14. **Repeat steps 7-13** to add **at least 3 more data disks**
 
-![Finished adding additional hard drives to AzSHCINode01](/media/azshci_disks_added.png)
+![Finished adding additional hard drives to AzSHCINode01](/media/azshci_disks_added.png "Finished adding additional hard drives to AzSHCINode01")
 
 Before starting the VM, in order to enable Hyper-V to function inside the AZSHCINODE01 virtual machine, we need to run a quick PowerShell command to facilitate this.  Open **PowerShell as administrator** and run the following:
 
@@ -90,20 +90,20 @@ Before starting the VM, in order to enable Hyper-V to function inside the AZSHCI
 Set-VMProcessor -VMName AZSHCINODE01 -ExposeVirtualizationExtensions $true -Verbose
 ```
 
-![Enabling nested virtualization on AZSHCINODE01](/media/enable_nested.png)
+![Enabling nested virtualization on AZSHCINODE01](/media/enable_nested.png "Enabling nested virtualization on AZSHCINODE01")
 
 With the VM configured correctly, in **Hyper-V Manager**, double-click the AZSHCINODE01 VM.  This should open the VM Connect window.
 
-![Starting up AZSHCINODE01](/media/node_turned_off.png)
+![Starting up AZSHCINODE01](/media/node_turned_off.png "Starting up AZSHCINODE01")
 
 In the center of the window, there is a message explaining the VM is currently switched off.  Click on **Start** and then quickly **press any key** inside the VM to boot from the ISO file. If you miss the prompt to press a key to boot from CD or DVD, simply reset the VM and try again.
 
-![Booting the VM and triggering the boot from DVD](/media/boot_from_dvd.png)
+![Booting the VM and triggering the boot from DVD](/media/boot_from_dvd.png "Booting the VM and triggering the boot from DVD")
 
 ### Complete the Out of Box Experience (OOBE) ###
 With the VM running, and the boot process initiated, you should be in a position to start the deployment of the Azure Stack HCI OS.
 
-![Initiate setup of the Azure Stack HCI OS](/media/azshci_setup.png)
+![Initiate setup of the Azure Stack HCI OS](/media/azshci_setup.png "Initiate setup of the Azure Stack HCI OS")
 
 Proceed through the process, making the following selections:
 
@@ -115,7 +115,7 @@ Proceed through the process, making the following selections:
 
 Installation will then begin, and will take a few minutes, automatically rebooting as part of the process.
 
-![Completed setup of the Azure Stack HCI OS](/media/azshci_setup_complete.png)
+![Completed setup of the Azure Stack HCI OS](/media/azshci_setup_complete.png "Completed setup of the Azure Stack HCI OS")
 
 With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **C:\Users\Administrator** screen.
 
@@ -126,7 +126,7 @@ With the node up and running, it's time to configure the networking with SConfig
 2. Enter **8** then press **Enter** to select **Network Settings**
 3. Choose one of the interfaces by typing the corresponding number, and pressing **Enter**
 
-![Showing NICs using SConfig](/media/sconfig_nic.png)
+![Showing NICs using SConfig](/media/sconfig_nic.png "Showing NICs using SConfig")
 
 4. On the **Network Adapter Settings** screen, press **1**, then **Enter**
 5. Enter **S** for **Static IP** and press **Enter**

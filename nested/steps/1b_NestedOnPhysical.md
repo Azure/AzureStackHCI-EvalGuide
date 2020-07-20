@@ -24,7 +24,7 @@ Architecture
 
 From an architecture perspective, the following graphic showcases the different layers and interconnections between the different components:
 
-![Architecture diagram for Azure Stack HCI nested on a physical system](/media/nested_virt_physical.png)
+![Architecture diagram for Azure Stack HCI nested on a physical system](/media/nested_virt_physical.png "Architecture diagram for Azure Stack HCI nested on a physical system")
 
 Will my hardware support this?
 -----------
@@ -43,7 +43,7 @@ The following items will need to be enabled in the system BIOS:
 ### Verify Hardware Compatibility ###
 After checking the operating system and hardware requirements above, verify hardware compatibility in Windows by opening a PowerShell session or a command prompt (cmd.exe) window, typing **systeminfo**, and then checking the Hyper-V Requirements section. If all listed Hyper-V requirements have a value of **Yes**, your system can run the Hyper-V role. If any item returns No, check the requirements above and make adjustments where possible.
 
-![Hyper-V requirements](/media/systeminfo_upd.png)
+![Hyper-V requirements](/media/systeminfo_upd.png "Hyper-V requirements")
 
 If you run **systeminfo** on an existing Hyper-V host, the Hyper-V Requirements section reads:
 
@@ -134,7 +134,7 @@ Get-NetNat
 
 The **Get-NetNat** cmdlet gets Network Address Translation (NAT) objects configured on a computer. NAT modifies IP address and port information in packet headers. Your configuration should look similar to the configuration below:
 
-![Result of Get-NetNat PowerShell command](/media/get_net_nat.png)
+![Result of Get-NetNat PowerShell command](/media/get_net_nat.png "Result of Get-NetNat PowerShell command")
 
 The final part of the process is to enable Enhanced Session mode.  Enhanced Session mode can be useful to enhance the user experience, particularly when using the Windows 10 Management VM later, when connecting to a VM over VMConnect.  To enable Enhanced Session Mode with PowerShell, run the following on your Hyper-V host:
 

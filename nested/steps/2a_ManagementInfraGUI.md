@@ -20,7 +20,7 @@ Architecture
 
 As shown on the architecture graphic below, the core management infrastructure consists of a Windows Server 2019 domain controller VM, along with a Windows 10 Enterprise VM, which will run the Windows Admin Center.  In this step, you'll deploy both of those key components.
 
-![Architecture diagram for Azure Stack HCI nested with management infra highlighted](/media/nested_virt_mgmt.png)
+![Architecture diagram for Azure Stack HCI nested with management infra highlighted](/media/nested_virt_mgmt.png "Architecture diagram for Azure Stack HCI nested with management infra highlighted")
 
 However, before you deploy your management infrastructure, first, you need to download the necessary software components required to complete this evalution.
 
@@ -48,7 +48,7 @@ If you're running Windows Server 2019 as your Hyper-V host, it doesn't ship with
 3. In the **Properties** view, find the **IE Enhanced Security Configuration** item, and click on **On**
 4. In the **Internet Explorer Enhanced Security Configuration** window, under **Administrators**, click **Off** and click **OK**
 
-![Setting the Internet Explorer Enhanced Security Configuration to Off](/media/ie_enhanced.png)
+![Setting the Internet Explorer Enhanced Security Configuration to Off](/media/ie_enhanced.png "Setting the Internet Explorer Enhanced Security Configuration to Off")
 
 5. Close **Server Manager**
 
@@ -60,7 +60,7 @@ Next, in order to download the ISO files, **open your web browser** and follow t
 3. Visit https://azure.microsoft.com/en-us/products/azure-stack/hci/hci-download, complete the registration form, and download the ISO.  Save the file as **AzSHCI.iso** to C:\ISO
 4. Visit https://aka.ms/wacdownload to download the executables for the Windows Admin Center.  Save it as **WindowsAdminCenter.msi**, also in C:\ISO
 
-![All files have been downloaded onto your Hyper-V host](/media/download_files.png)
+![All files have been downloaded onto your Hyper-V host](/media/download_files.png "All files have been downloaded onto your Hyper-V host")
 
 With all files downloaded, proceed on to creating your management infrastructure.
 
@@ -82,17 +82,17 @@ In this step, you'll be using Hyper-V Manager to deploy a Windows Server 2019 do
 5. Tick the box for **Store the virtual machine in a different location** and click **Browse**
 6. In the **Select Folder** window, click on **This PC**, navigate to **C:**, click on **New Folder**, name it **VMs** then click **Select Folder** and click **Next**
 
-![Specify VM name and location](/media/new_vm_name.png)
+![Specify VM name and location](/media/new_vm_name.png "Specify VM name and location")
 
 7. On the **Specify Generation** page, select **Generation 2** and click **Next**
 8. On the **Assign Memory** page, assign 4GB memory by entering **4096** for Startup memory and tick the **Use Dynamic Memory for this virtual machine**, then click **Next**
 
-![Assign VM memory](/media/new_vm_dynamicmem.png)
+![Assign VM memory](/media/new_vm_dynamicmem.png "Assign VM memory")
 
 9. On the **Configure Networking** page, select **InternalNAT** and click **Next**
 10. On the **Connect Virtual Hard Disk** page, change **size** to **30** and click **Next**
 
-![Connect Virtual Hard Disk](/media/new_vm_vhd.png)
+![Connect Virtual Hard Disk](/media/new_vm_vhd.png "Connect Virtual Hard Disk")
 
 11. On the **Installation Options** page, select **Install an operating system from a bootable image file**, and click **Browse**
 12. Navigate to **C:\ISO** and select your **WS2019.iso** file, and click **Open**.  Then click **Next**
@@ -105,20 +105,20 @@ Your new DC01 virtual machine will now be created.  Once created, we need to mak
    * Minimum RAM: 1024
    * Maximum RAM: 4096
 
-![Updating memory for DC01](/media/dynamicmem.png)
+![Updating memory for DC01](/media/dynamicmem.png "Updating memory for DC01")
 
 With the VM configured correctly, in **Hyper-V Manager**, double-click DC01.  This should open the VM Connect window.
 
-![Starting up DC01](/media/startvm.png)
+![Starting up DC01](/media/startvm.png "Starting up DC01")
 
 In the center of the window, there is a message explaining the VM is currently switched off.  Click on **Start** and then quickly **press any key** inside the VM to boot from the ISO file. If you miss the prompt to press a key to boot from CD or DVD, simply reset the VM and try again.
 
-![Booting the VM and triggering the boot from DVD](/media/boot_from_dvd.png)
+![Booting the VM and triggering the boot from DVD](/media/boot_from_dvd.png "Booting the VM and triggering the boot from DVD")
 
 ### Complete the Out of Box Experience (OOBE) ###
 With the VM running, and the boot process initiated, you should be in a position to start the deployment of the Windows Server 2019 OS.
 
-![Initiate setup of the Windows Server 2019 OS](/media/ws_setup.png)
+![Initiate setup of the Windows Server 2019 OS](/media/ws_setup.png "Initiate setup of the Windows Server 2019 OS")
 
 Proceed through the process, making the following selections:
 
@@ -154,7 +154,7 @@ Firstly, you will configure the networking inside the VM and rename the OS, befo
    * Preferred DNS server: 1.1.1.1
    * Alternate DNS server: 1.0.0.1
 
-![Network settings for DC01](/media/dc_nic.png)
+![Network settings for DC01](/media/dc_nic.png "Network settings for DC01")
 
 #### Optional - Update DC01 with latest Windows Updates ####
 If you'd like to ensure DC01 is fully updated, click on **Start**, search for **Updates** and select **Check for Updates** in the results.  Check for any new updates and install any that are required.  This may take a few minutes.
@@ -179,13 +179,13 @@ First, you'll configure Active Directory:
 11. On the **DNS Server** page, click **Next**
 12. On the **Confirmation** page, review the information and click **Install**
 
-![Active Directory Domain Services installation progress](/media/dc_install_progress.png)
+![Active Directory Domain Services installation progress](/media/dc_install_progress.png "Active Directory Domain Services installation progress")
 
 The installation of Active Directory Domain Services will begin, and take a few moments to complete.  Once complete, click **Promote this server to a domain controller** to continue the configuration of DC01. The **Active Directory Domain Services Configuration Wizard** should open.
 
 1. On the **Deployment configuration** page, select **Add a new forest**, enter **azshci.local** as the Root domain name, and click **Next**
 
-![Active Directory Domain Services configuration wizard](/media/adds_wizard.png)
+![Active Directory Domain Services configuration wizard](/media/adds_wizard.png "Active Directory Domain Services configuration wizard")
 
 2. On the **Domain Controller options** page, leave the defaults, provide a **Directory Services Restore Mode (DSRM) password**, then click **Next**
 3. On the **DNS Options** page, click **Next**
@@ -195,7 +195,7 @@ The installation of Active Directory Domain Services will begin, and take a few 
 
 The prerequisites will then be checked, and once completed, click **Install**. This will take a few moments.
 
-![Active Directory Domain Services configuration wizard prerequisites check](/media/adds_prereq.png)
+![Active Directory Domain Services configuration wizard prerequisites check](/media/adds_prereq.png "Active Directory Domain Services configuration wizard prerequisites check")
 
 Once completed, DC01 should reboot automatically, but if not, ensure you reboot it yourself.
 
@@ -215,14 +215,14 @@ Rather than use the main domain admin account, we'll add an additional administr
    * Full name: Lab Admin
    * User logon name: labadmin
 
-![Active Directory Domain Services New Object wizard - adding a user](/media/adds_new_user.png)
+![Active Directory Domain Services New Object wizard - adding a user](/media/adds_new_user.png "Active Directory Domain Services New Object wizard - adding a user")
 
 4. Provide a password for this new account, and **tick the Password never expires** box, then click **Next**, then click **Finish**
 5. Click on the **Users** OU, and find the new **Lab Admin** account
 6. Right-click the **Lab Admin** account, and click **Add to a group...**
 7. In the **Select Groups** window, in the **Enter the object names to select** box, enter **Domain Admins**, **Schema Admins** and **Enterprise Admins**, clicking **Check Names** after each one, then click **OK**, then **OK** to close the confirmation popup
 
-![Active Directory Domain Services New Object wizard - adding a user to groups](/media/adds_group.png)
+![Active Directory Domain Services New Object wizard - adding a user to groups](/media/adds_group.png "Active Directory Domain Services New Object wizard - adding a user to groups")
 
 8. Close the **Active Directory Users and Computers** window
 
@@ -246,17 +246,17 @@ In this step, you'll be using Hyper-V Manager to deploy a Windows 10 Enterprise 
 5. Tick the box for **Store the virtual machine in a different location** and click **Browse**
 6. In the **Select Folder** window, click on **This PC**, navigate to **C:**, click on **VMs**, click **Select Folder** and click **Next**
 
-![Specify VM name and location](/media/new_vm_mgmt01.png)
+![Specify VM name and location](/media/new_vm_mgmt01.png "Specify VM name and location")
 
 7. On the **Specify Generation** page, select **Generation 2** and click **Next**
 8. On the **Assign Memory** page, assign 4GB memory by entering **4096** for Startup memory and tick the **Use Dynamic Memory for this virtual machine**, then click **Next**
 
-![Assign VM memory](/media/new_vm_dynamicmem.png)
+![Assign VM memory](/media/new_vm_dynamicmem.png "Assign VM memory")
 
 9. On the **Configure Networking** page, select **InternalNAT** and click **Next**
 10. On the **Connect Virtual Hard Disk** page, change **size** to **30** and click **Next**
 
-![Connect Virtual Hard Disk](/media/new_vm_mgmt01_vhd.png)
+![Connect Virtual Hard Disk](/media/new_vm_mgmt01_vhd.png "Connect Virtual Hard Disk")
 
 11. On the **Installation Options** page, select **Install an operating system from a bootable image file**, and click **Browse**
 12. Navigate to **C:\ISO** and select your **W10.iso** file, and click **Open**.  Then click **Next**
@@ -270,20 +270,20 @@ Your new MGMT01 virtual machine will now be created.  Once created, we need to m
    * Minimum RAM: 2048
    * Maximum RAM: 4096
 
-![Updating memory for MGMT01](/media/dynamicmem_mgmt01.png)
+![Updating memory for MGMT01](/media/dynamicmem_mgmt01.png "Updating memory for MGMT01")
 
 With the VM configured correctly, in **Hyper-V Manager**, double-click MGMT01.  This should open the VM Connect window.
 
-![Starting up MGMT01](/media/startvm_mgmt01.png)
+![Starting up MGMT01](/media/startvm_mgmt01.png "Starting up MGMT01")
 
 In the center of the window, there is a message explaining the VM is currently switched off.  Click on **Start** and then quickly **press any key** inside the VM to boot from the ISO file. If you miss the prompt to press a key to boot from CD or DVD, simply reset the VM and try again.
 
-![Booting the VM and triggering the boot from DVD](/media/boot_from_dvd.png)
+![Booting the VM and triggering the boot from DVD](/media/boot_from_dvd.png "Booting the VM and triggering the boot from DVD")
 
 ### Complete the Out of Box Experience (OOBE) ###
 With the VM running, and the boot process initiated, you should be in a position to start the deployment of the Windows 10 OS.
 
-![Initiate setup of Windows 10](/media/w10_setup.png)
+![Initiate setup of Windows 10](/media/w10_setup.png "Initiate setup of Windows 10")
 
 Proceed through the process, making the following selections:
 
@@ -297,7 +297,7 @@ Installation will then begin, and will take a few minutes, automatically rebooti
 
 With the installation complete, you'll be prompted to finish the out of box experience, including **choosing your region**, **keyboard layout** and finally, setting a username and password.
 
-![Initiate setup of the Windows 10 OS](/media/w10_install_complete.png)
+![Initiate setup of the Windows 10 OS](/media/w10_install_complete.png "Initiate setup of the Windows 10 OS")
 
 1. On the **Sign in with Microsoft** page, select **Domain join instead**
 2. On the **Who's going to use this PC** page, enter **LocalAdmin** and click **Next**
@@ -314,7 +314,7 @@ With MGMT01 up and running, it's time to configure the networking so it can comm
 
 1. In the bottom-right corner, right-click the NIC icon, and select **Open Network & Internet settings**
 
-![Select NIC](/media/nic_adapter.png)
+![Select NIC](/media/nic_adapter.png "Select NIC")
 
 2. In the **Settings** window, click on **Ethernet** and then click on the **Ethernet adapter** shown in the central window
 3. Under **IP settings**, click **Edit**, then enter the following information, then click **Save** and close **Settings**
@@ -325,7 +325,7 @@ With MGMT01 up and running, it's time to configure the networking so it can comm
    * Gateway: 192.168.0.1
    * Preferred DNS: 192.168.0.2
 
-![Setting static NIC settings](/media/ip_settings.png)
+![Setting static NIC settings](/media/ip_settings.png "Setting static NIC settings")
 
 #### Optional - Update your Windows 10 OS ####
 
@@ -341,7 +341,7 @@ Before installing the Windows Admin Center, you'll join MGMT01 to the azshci.loc
 
 1. Ensure you're logged into MGMT01, then click on **Start** and enter **sysdm.cpl**, then in the results, select **sysdm.cpl**
 
-![Open the System Properties dialog box](/media/sysdm.png)
+![Open the System Properties dialog box](/media/sysdm.png "Open the System Properties dialog box")
 
 2. In the **System Properties** window, click on **Change**, then enter the following details, then click **OK**
 
@@ -370,11 +370,11 @@ Firstly, navigate to C:\ISO, or wherever you chose to store your ISOs and Window
 
 Navigate to **Hyper-V Manager**, locate **MGMT01** and double-click the VM.  This will open the VM Connect window.  If you haven't set this already, you should be presented with a **Connect to MGMT01** screen.  Ensure that the display size is set to **Full Screen** and using the **Show Options** dropdown, ensure that **Save my settings for future connections to this virtual machine** is ticked, then click **Connect**.
 
-![Establish a VM Connect session to MGMT01](/media/connect_to_mgmt01.png)
+![Establish a VM Connect session to MGMT01](/media/connect_to_mgmt01.png "Establish a VM Connect session to MGMT01")
 
 **NOTE** if you don't see the prompt for **Enhanced Session Mode**, simply click on the **Enhanced Session** button in the VM Connect window to activate it, and define your default settings.
 
-![Enhanced Session Mode button](/media/enhanced_session.png)
+![Enhanced Session Mode button](/media/enhanced_session.png "Enhanced Session Mode button")
 
 When prompted, enter your Lab Admin credentials to log into MGMT01.  When on the desktop, **right-click** and select **paste** to transfer the Windows Admin Center executable onto the desktop of MGMT01.
 
@@ -385,18 +385,18 @@ To install the Windows Admin Center, simply **double-click** the executable on t
 3. On the **Install Windows Admin Center on Windows 10** screen, read the installation information, then click **Next**
 4. On the **Installing Windows Admin Center** screen, tick the **Create a desktop shortcut...** box, and click **Install**. The install process will take a few minutes, and once completed, you should be presented with some certificate information.
 
-![Windows Admin Center installed](/media/wac_installed.png)
+![Windows Admin Center installed](/media/wac_installed.png "Windows Admin Center installed")
 
 5. Tick the **Open Windows Admin Center** box, and click **Finish**
 6. Windows Admin Center will now open on https://localhost:port/
 7. Once open, you may receive notifications in the top-right corner, indicating that some extensions may require updating.
 
-![Windows Admin Center extensions available](/media/extension_update.png)
+![Windows Admin Center extensions available](/media/extension_update.png "Windows Admin Center extensions available")
 
 8. If you do require extension updates, click on the notification, then **Go to Extensions**
 9. On the **Extensions** page, you'll find a list of installed extensions.  Any that require an update will be listed:
 
-![Windows Admin Center extensions required](/media/extension_update_needed.png)
+![Windows Admin Center extensions required](/media/extension_update_needed.png "Windows Admin Center extensions required")
 
 10. Click on the extension, and click **Update**. This will take a few moments, and will reload the page when complete.  With the extensions updated, navigate back to the Windows Admin Center homepage.
 
