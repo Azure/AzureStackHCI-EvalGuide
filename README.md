@@ -3,13 +3,27 @@ Azure Stack HCI - Evaluation Guide
 
 ## Welcome to the Azure Stack HCI Evaluation Guide ##
 
-In this guide, we'll walk you experiencing a number of the amazing capabilities within Azure Stack HCI, and set the foundation for you to explore in your own time.  If you've landed on this page, and you're still wondering what Azure Stack HCI is, Azure Stack HCI is a hyperconverged cluster solution that runs virtualized Windows and Linux workloads in a hybrid on-premises environment. Azure hybrid services enhance the cluster with capabilities such as cloud-based monitoring, site recovery, and backup, as well as a central view of all of your Azure Stack HCI deployments in the Azure portal. You can manage the cluster with your existing tools including Windows Admin Center, System Center, and PowerShell.
+In this guide, we'll walk you experiencing a number of the amazing capabilities within Azure Stack HCI, and set the foundation for you to explore in your own time.  You'll cover aspects such as:
+
+* Deploying Azure Stack HCI nodes
+* Deploying supporting management infrastructure, including Active Directory domain and management tooling
+* Building a Hyperconverged cluster using Windows Admin Center, including configuring a cloud witness
+* Registering Azure Stack HCI with Azure
+* and more...!
+
+What is Azure Stack HCI?
+-----------
+
+If you've landed on this page, and you're still wondering what Azure Stack HCI is, Azure Stack HCI is a hyperconverged cluster solution that runs virtualized Windows and Linux workloads in a hybrid on-premises environment. Azure hybrid services enhance the cluster with capabilities such as cloud-based monitoring, site recovery, and backup, as well as a central view of all of your Azure Stack HCI deployments in the Azure portal. You can manage the cluster with your existing tools including Windows Admin Center, System Center, and PowerShell.
 
 Initially based on Windows Server 2019, Azure Stack HCI is now a specialized OS, running on your hardware, delivered as an Azure service with a subscription-based licensing model and hybrid capabilities built-in. Although Azure Stack HCI is based on the same core operating system components as Windows Server, it's an entirely new product line focused on being the best virtualization host.
 
 If you're interested in learning more about what Azure Stack HCI is, make sure you [check out the official documentation](https://docs.microsoft.com/en-us/azure-stack/hci/overview "What is Azure Stack HCI documentation"), before coming back to continue your evaluation experience.  We'll refer to the docs in various places in the guide, to help you build your knowledge of Azure Stack HCI.
 
-This evaluation guide will walk you through standing up a sandboxed, isolated Azure Stack HCI environment using **nested virtualization**, and can run on a **single physical system**, such as a workstation, laptop, or server of you have one, or alternatively, you can run the whole configuration in Azure.  We'll go into more details for these paths, shortly.
+Why follow this guide?
+-----------
+
+This evaluation guide will walk you through standing up a sandboxed, isolated Azure Stack HCI environment using **nested virtualization**, and can run on a **single physical system**, such as a workstation, laptop, or server of you have one, or alternatively, you can run the whole configuration in Azure.  We'll go into more details for this path, shortly.
 
 The important takeaway here is, by following this guide, you'll lay down a solid foundation on to which you can explore additional Azure Stack HCI scenarios that will be documented as we move through the public preview program to the first release of Azure Stack HCI, so keep checking back for additional scenarios over time.
 
