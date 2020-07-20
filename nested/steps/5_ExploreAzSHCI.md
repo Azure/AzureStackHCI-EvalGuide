@@ -7,10 +7,10 @@ With all key components deployed, including a management infrastructure, along w
 
 Contents
 -----------
-[Create volumes for VMs](#create-volumes-for-vms)
-[Deploy a virtual machine](#deploy-a-virtual-machine)
-[Shutting down the environment](#shutting-down-the-environment)
-[Next steps](#next-steps)
+* [Create volumes for VMs](#create-volumes-for-vms)
+* [Deploy a virtual machine](#deploy-a-virtual-machine)
+* [Shutting down the environment](#shutting-down-the-environment)
+* [Next steps](#next-steps)
 
 Create volumes for VMs
 -----------

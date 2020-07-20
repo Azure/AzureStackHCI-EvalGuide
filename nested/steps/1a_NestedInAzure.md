@@ -14,12 +14,12 @@ In this guide, you'll walk through the steps to stand up an Azure Stack HCI conf
 
 Contents
 -----------
-[Architecture](#architecture)
-[Get an Azure subscription](#get-an-azure-subscription)
-[Azure VM Size Considerations](#azure-vm-size-considerations)
-[Deploying the Azure VM](#deploying-the-azure-vm)
-[Prepare your Azure VM](#prepare-your-azure-vm)
-[Next steps](#next-steps)
+* [Architecture](#architecture)
+* [Get an Azure subscription](#get-an-azure-subscription)
+* [Azure VM Size Considerations](#azure-vm-size-considerations)
+* [Deploying the Azure VM](#deploying-the-azure-vm)
+* [Prepare your Azure VM](#prepare-your-azure-vm)
+* [Next steps](#next-steps)
 
 Architecture
 -----------

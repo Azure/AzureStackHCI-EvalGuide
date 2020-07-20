@@ -7,11 +7,11 @@ With your Hyper-V host up and running, either in Azure, or on a local physical s
 
 Contents
 -----------
-[Architecture](#architecture)
-[Download artifacts](#download-artifacts)
-[Create your domain controller](#create-your-domain-controller)
-[Create your Windows 10 Management VM](#create-your-windows-10-management-vm)
-[Next steps](#next-steps)
+* [Architecture](#architecture)
+* [Download artifacts](#download-artifacts)
+* [Create your domain controller](#create-your-domain-controller)
+* [Create your Windows 10 Management VM](#create-your-windows-10-management-vm)
+* [Next steps](#next-steps)
 
 ### Important Note ###
 In this step, you'll be using PowerShell to create resources.  If you prefer to use a GUI (Graphical User Interface, such as Hyper-V Manager, Server Manager etc), which may allow faster completion, head on over to the [GUI guide](/nested/steps/2a_ManagementInfraGUI.md).

@@ -7,10 +7,10 @@ With your Hyper-V host up and running, along with the management infrastructure,
 
 Contents
 -----------
-[Architecture](#architecture)
-[Create your first nested Azure Stack HCI node](#create-your-first-nested-azure-stack-hci-node)
-[Repeat creation process](#repeat-creation-process)
-[Next steps](#next-steps)
+* [Architecture](#architecture)
+* [Create your first nested Azure Stack HCI node](#create-your-first-nested-azure-stack-hci-node)
+* [Repeat creation process](#repeat-creation-process)
+* [Next steps](#next-steps)
 
 Architecture
 -----------

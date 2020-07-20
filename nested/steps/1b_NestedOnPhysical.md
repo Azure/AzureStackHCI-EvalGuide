@@ -13,11 +13,11 @@ In this guide, you'll walk through the steps to stand up an Azure Stack HCI conf
 
 Contents
 -----------
-[Architecture](#architecture)
-[Will my hardware support this?](#will-my-hardware-support-this)
-[Get an Azure subscription](#get-an-azure-subscription)
-[Configuring your Hyper-V host](#configuring-your-hyper-v-host)
-[Next steps](#next-steps)
+* [Architecture](#architecture)
+* [Will my hardware support this?](#will-my-hardware-support-this)
+* [Get an Azure subscription](#get-an-azure-subscription)
+* [Configuring your Hyper-V host](#configuring-your-hyper-v-host)
+* [Next steps](#next-steps)
 
 Architecture
 -----------

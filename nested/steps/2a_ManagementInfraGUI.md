@@ -9,11 +9,11 @@ In this step, you'll be using the GUI (Graphical User Interface, such as Hyper-V
 
 Contents
 -----------
-[Architecture](#architecture)
-[Download artifacts](#download-artifacts)
-[Create your domain controller](#create-your-domain-controller)
-[Create your Windows 10 Management VM](#create-your-windows-10-management-vm)
-[Next steps](#next-steps)
+* [Architecture](#architecture)
+* [Download artifacts](#download-artifacts)
+* [Create your domain controller](#create-your-domain-controller)
+* [Create your Windows 10 Management VM](#create-your-windows-10-management-vm)
+* [Next steps](#next-steps)
 
 Architecture
 -----------
