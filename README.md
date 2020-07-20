@@ -27,7 +27,7 @@ This evaluation guide will walk you through standing up a sandboxed, isolated Az
 
 The important takeaway here is, by following this guide, you'll lay down a solid foundation on to which you can explore additional Azure Stack HCI scenarios that will be documented as we move through the public preview program to the first release of Azure Stack HCI, so keep checking back for additional scenarios over time.
 
-Evaluate Azure Stack HCI using Nested Virtualization
+Start your Azure Stack HCI evaluation using nested virtualization
 -----------
 
 If you have a single physical system, which could be a laptop, desktop, or server, or you have no spare hardware at all, using **nested virtualization** would be a great approach to experiencing Azure Stack HCI.  You can get more details at the start of the path
