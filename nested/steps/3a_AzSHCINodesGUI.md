@@ -116,22 +116,21 @@ With the installation complete, you'll be prompted to change the password before
 #### Configure Azure Stack HCI node networking using SConfig ####
 With the node up and running, it's time to configure the networking with SConfig, a useful local administrative interface.
 
-1. To launch SConfig, first, run **PowerShell** from the command line
-2. Then, when PowerShell is open, run **Invoke-SConfig** to launch this new admin interface
-3. Enter **8** then press **Enter** to select **Network Settings**
-4. Choose one of the interfaces by typing the corresponding number, and pressing **Enter**
+1. To launch SConfig, first, run **sconfig** from the command line
+2. Enter **8** then press **Enter** to select **Network Settings**
+3. Choose one of the interfaces by typing the corresponding number, and pressing **Enter**
 
 ![Showing NICs using SConfig](/media/sconfig_nic.png)
 
-5. On the **Network Adapter Settings** screen, press **1**, then **Enter**
-6. Enter **S** for **Static IP** and press **Enter**
-7. Enter **192.168.0.4** for the static IP address and press **Enter**
-8. For **Subnet mask**, press **Enter** for the default (255.255.255.0)
-9. For **Default Gateway**, enter **192.168.0.1** and press **Enter**
-10. Back in the **Network Adapter Settings** screen, press **2**, then **Enter**
-11. For the **DNS Server**, enter **192.168.0.2** and press **Enter**, then click **OK** in the **Network Settings** notification
-12. For the **alternate DNS Server**, press **Enter** for none
-13. Press **4** to return to the main menu.
+4. On the **Network Adapter Settings** screen, press **1**, then **Enter**
+5. Enter **S** for **Static IP** and press **Enter**
+6. Enter **192.168.0.4** for the static IP address and press **Enter**
+7. For **Subnet mask**, press **Enter** for the default (255.255.255.0)
+8. For **Default Gateway**, enter **192.168.0.1** and press **Enter**
+9. Back in the **Network Adapter Settings** screen, press **2**, then **Enter**
+10. For the **DNS Server**, enter **192.168.0.2** and press **Enter**, then click **OK** in the **Network Settings** notification
+11. For the **alternate DNS Server**, press **Enter** for none
+12. Press **4** to return to the main menu.
 
 ### Join the domain using SConfig ###
 While in SConfig, it is quick a easy to rename the OS, and join a domain.
