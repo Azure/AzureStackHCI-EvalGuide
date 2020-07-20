@@ -3,11 +3,14 @@ Create nested Azure Stack HCI cluster with Windows Admin Center
 Overview
 -----------
 
-So far, you've deployed your Azure Stack HCI nodes, either in a nested virtualization sandbox, or on existing physical hardware.  In the case of the sandboxed environment, you've also stood up an Active Directory infrastructure with DNS.  In a physical deployment, it was assumed these kind of dependencies were already in place.  Finally, in both cases, you've deployed the Windows Admin Center, which we'll be using to configure the Azure Stack HCI cluster.
+So far, you've deployed your Azure Stack HCI nodes in the nested virtualization sandbox, along with an Active Directory infrastructure with DNS.  Finally, you've deployed the Windows Admin Center, which we'll be using to configure the Azure Stack HCI cluster.
 
 Architecture
 -----------
 
+As shown on the architecture graphic below, in this step, you'll take the nodes that you previously deployed, and be **clustering them into an Azure Stack HCI cluster**. You'll be focused on **creating a cluster in a single site**, but in later articles, we'll also cover creating a stretch cluster.
+
+![Architecture diagram for Azure Stack HCI nested](/media/nested_virt_nodes.png "Architecture diagram for Azure Stack HCI nested")
 
 Before you begin
 -----------
@@ -337,15 +340,6 @@ Of these commands, many are optional:
 ![Login to Azure](/media/azure_login_reg.png "Login to Azure")
 
 Once the cluster is registered, you can see the ConnectionStatus and LastConnected time, which is usually within the last day unless the cluster is temporarily disconnected from the Internet. An Azure Stack HCI cluster can operate fully offline for up to 30 consecutive days.
-
-
-
-
-
-
-
-you'll need the subscription ID of the Azure subscription you wish to use.
-
 
 
 Next Steps
