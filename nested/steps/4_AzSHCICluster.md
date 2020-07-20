@@ -246,7 +246,7 @@ Connect and Register Azure Stack HCI to Azure
 -----------
 Azure Stack HCI is delivered as an Azure service and needs to register within 30 days of installation per the Azure Online Services Terms.  With our cluster configured, we'll now register your Azure Stack HCI cluster with **Azure Arc** for monitoring, support, billing, and hybrid services. Upon registration, an Azure Resource Manager resource is created to represent each on-premises Azure Stack HCI cluster, effectively extending the Azure management plane to Azure Stack HCI. Information is periodically synced between the Azure resource and the on-premises cluster.  One great aspect of Azure Stack HCI, is that the Azure Arc registration is a native capability of Azure Stack HCI, so there is no agent required.
 
-**NOTE** - During the preview program, there will be no charges for Azure Stack HCI when registered with Azure.
+**NOTE** - During the preview program, there will be no charges for Azure Stack HCI when registered with Azure, and even after the first official release of Azure Stack HCI, the **first 30 days usage will be free**.
 
 ### Prerequisites for registration ###
 Firstly, **you need an Azure Stack HCI cluster**, which we've just created, so you're good there.
