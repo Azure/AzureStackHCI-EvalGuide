@@ -348,6 +348,14 @@ Before installing the Windows Admin Center, you'll join MGMT01 to the azshci.loc
 
 This may take a few moments, but should then join the machine to the domain.  **Reboot** the machine when prompted.
 
+#### Optional - Install the new Microsoft Edge ####
+It's highly recommended to install the new version of the Microsoft Edge browser, as it gives a much smoother browsing experience, and is more efficient with it's use of limited resources, if you've deployed in a memory-constrained environment.
+
+1. Open the existing **Microsoft Edge** browser, and navigate to https://www.microsoft.com/en-us/edge
+2. On the landing page, click on **Download** and when prompted, **read the license terms** then click **Accept and download**
+3. Once downloaded, click **Run**
+4. The installation will begin, and take a few moments to download, install and configure.  You can accept the **defaults** for the configuration.
+
 ### Install Windows Admin Center on Windows 10 ###
 With the Windows 10 VM now deployed and configured, the final step in the infrastructure preparation, is to install and configure the Windows Admin Center. Earlier in this guide, you should have downloaded the Windows Admin Center files, along with other ISOs.
 
