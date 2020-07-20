@@ -12,7 +12,7 @@ Nested Virtualization
 -----------
 If you're not familiar with Nested Virtualization, at a high level, it allows a virtualization platform, such as Hyper-V, or VMware ESXi, to run virtual machines that, within those virtual machines, run a virtualization platform. It may be easier to think about this in an architectural view.
 
-![Nested virtualization architecture](/media/nested_virt.png)
+![Nested virtualization architecture](/media/nested_virt.png "Nested virtualization architecture")
 
 As you can see from the graphic, at the base layer, you have your physical hardware, onto which you install a hypervisor. In this case, for our example, we're using Windows Server 2019 with the Hyper-V role enabled.  The hypervisor on the lowest level is considered L0 or the level 0 hypervisor.  On that physical host, you create a virtual machine, and into that virtual machine, you deploy an OS that itself, has a hypervisor enabled.  In this example, that 1st Virtualized Layer is running a **nested** Azure Stack HCI operating system. This would be an L1 or level 1 hypervisor.  Finally, in our example, inside the Azure Stack HCI OS, you create a virtual machine to run a workload.  This could in fact also contain a hypervisor, which would be known as the L2 or level 2 hypervisor, and so the process continues, with multiple levels of nested virtualization possible.
 
@@ -24,7 +24,7 @@ For those of you who don't have multiple server-class pieces of hardware to test
 
 ### Deployment of Azure Stack HCI nested in Azure ###
 
-![Architecture diagram for Azure Stack HCI nested in Azure](/media/nested_virt_arch.png)
+![Architecture diagram for Azure Stack HCI nested in Azure](/media/nested_virt_arch.png "Architecture diagram for Azure Stack HCI nested in Azure")
 
 In this configuration, you'll take advantage of the nested virtualization support provided within certain Azure VM sizes.  You'll first deploy a single Azure VM running Windows Server 2019.  Inside this VM, you'll enable the Hyper-V role, and deploy a Windows Server 2019 domain controller VM, along with a management VM, running Windows 10 Enterprise. This management VM will also run the Windows Admin Center.  Finally, you'll deploy a nested Azure Stack HCI cluster, with a minimum of 2 nodes, however the number of nodes will be based on the size of your Azure VM.
 
@@ -32,7 +32,7 @@ To reiterate, the whole configuration (Domain Controller VM, Management VM and A
 
 ### Deployment of Azure Stack HCI nested on a physical system ###
 
-![Architecture diagram for Azure Stack HCI nested on a physical system](/media/nested_virt_physical.png)
+![Architecture diagram for Azure Stack HCI nested on a physical system](/media/nested_virt_physical.png "Architecture diagram for Azure Stack HCI nested on a physical system")
 
 In this configuration, you'll again take advantage of nested virtualization, but in this case, you'll deploy the whole solution on a single desktop/laptop/server.  On your physical system, you'll run either Windows Server 2016/2019 or Windows 10 Pro/Enterprise/Education, with the Hyper-V role enabled.  On Hyper-V, you'll deploy a sandbox infrastructure, consisting of a Windows Server 2019 domain controller VM, a management VM running Windows 10 Enterprise, and a nested Azure Stack HCI cluster.
 
