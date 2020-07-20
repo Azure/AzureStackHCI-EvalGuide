@@ -53,11 +53,11 @@ If you have just 2 nodes, or if your preference is for a cluster running in a si
 
 1. Ensure you select **Azure Stack HCI**, select **All servers in one site** and cick **Create**
 2. On the **Check the prerequisites** page, review the requirements and click **Next**
-3. On the **Add Servers** page, supply a **username**, which should be **azshci\labadmin** and **your-domain-admin-password** and then one by one, enter the node names (or IP addresses if names don't resolve) of your Azure Stack HCI nodes, clicking **Add** twice after each one.  Each node will be validated, and given a **Ready** status when fully validated.
+3. On the **Add Servers** page, supply a **username**, which should be **azshci\labadmin** and **your-domain-admin-password** and then one by one, enter the node names (or IP addresses if names don't resolve) of your Azure Stack HCI nodes, clicking **Add** after each one has been located.  Each node will be validated, and given a **Ready** status when fully validated.  This may take a few moments.
 
 ![Add servers in the Create Cluster wizard](/media/add_nodes.png)
 
-4. On the **Join a domain** page, details should already be in place, as we joined domain previously, so click **Next**
+4. On the **Join a domain** page, details should already be in place, as we joined the domain previously, so click **Next**
 
 ![Joined the domain in the Create Cluster wizard](/media/wac_domain_joined.png)
 
@@ -100,7 +100,9 @@ Again, this is just one **example** network configuration for the simple purpose
 ![Select management adapters in the Create Cluster wizard](/media/wac_singlemgmt.png)
 
 3. Windows Admin Center will then apply the configuration to your NIC. When complete and successful, click **Next**
-4. On the **Define networks** page, this is where you can define the specific networks, separate subnets, and optionally apply VLANs.  In the **nested environment**, we now have 3 NICs remaining.  Configure your remaining NICs as follows:
+4. On the **Define networks** page, this is where you can define the specific networks, separate subnets, and optionally apply VLANs.  In the **nested environment**, we now have 3 NICs remaining.  Configure your remaining NICs as follows, by clicking on a field in the table and entering the appropriate information.
+
+**NOTE** - we have a simple flat network in this configuration, so you can pick any of the NICs on a host to assign as VMs, Storage 1 and Storage 2.
 
 | Node | Name | IP Address | Subnet Mask
 | :-- | :-- | :-- | :-- |
