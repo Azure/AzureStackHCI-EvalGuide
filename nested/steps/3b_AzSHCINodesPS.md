@@ -102,16 +102,17 @@ With the installation complete, you'll be prompted to change the password before
 With the node up and running, it's time to configure the networking with PowerShell Direct, so it can communicate with the rest of the environment.  Open **PowerShell** as an administrator on the Hyper-V host, and run the following:
 
 ```powershell
-$nodeName = "AZSHCINODE01"
-$newIP = "192.168.0.4"
 # Define local credentials
 $azsHCILocalCreds = Get-Credential -UserName "Administrator" -Message "Enter the password used when you deployed the Azure Stack HCI OS"
+# Define new name and IP
+$nodeName = "AZSHCINODE01"
+$newIP = "192.168.0.4"
 Invoke-Command -VMName "$nodeName" -Credential $azsHCILocalCreds -ScriptBlock {
     # Set Static IP
-    New-NetIPAddress -IPAddress "$newIP" -DefaultGateway "192.168.0.1" -InterfaceAlias "Ethernet" -PrefixLength "24" | Out-Null
+    New-NetIPAddress -IPAddress "$using:newIP" -DefaultGateway "192.168.0.1" -InterfaceAlias "Ethernet" -PrefixLength "24" | Out-Null
     Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses ("192.168.0.2")
     $nodeIP = Get-NetIPAddress -AddressFamily IPv4 -InterfaceAlias "Ethernet" | Select-Object IPAddress
-    Write-Verbose "The currently assigned IPv4 address for MGMT01 is $($nodeIP.IPAddress)" -Verbose 
+    Write-Verbose "The currently assigned IPv4 address for $using:nodeName is $($nodeIP.IPAddress)" -Verbose 
 }
 ```
 
@@ -119,18 +120,18 @@ Invoke-Command -VMName "$nodeName" -Credential $azsHCILocalCreds -ScriptBlock {
 To save a later step, you can quickly use PowerShell Direct to join your AZSHCINODE01 to the domain:
 
 ```powershell
-$nodeName = "AZSHCINODE01"
 $azsHCILocalCreds = Get-Credential -UserName "Administrator" -Message "Enter the password used when you deployed the Azure Stack HCI OS"
 # Define domain-join credentials
 $domainName = "azshci.local"
 $domainAdmin = "$domainName\labadmin"
 $domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the password for the LabAdmin account"
+# Define node name
+$nodeName = "AZSHCINODE01"
 Invoke-Command -VMName "$nodeName" -Credential $azsHCILocalCreds -ScriptBlock {
-    param ($domainCreds, $nodeName)
     Write-Verbose "Updating Hostname" -Verbose
-    Rename-Computer -NewName $nodeName
-    Add-Computer –DomainName azshci.local -NewName $nodeName –Credential $domainCreds -Force
-} -ArgumentList $domainCreds, $nodeName
+    Rename-Computer -NewName $Using:nodeName
+    Add-Computer –DomainName azshci.local -NewName $Using:nodeName –Credential $Using:domainCreds -Force
+}
 
 Write-Verbose "Rebooting node for changes to take effect" -Verbose
 Stop-VM -Name $nodeName
