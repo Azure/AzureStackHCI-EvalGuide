@@ -29,7 +29,7 @@ You should be over on **MGMT01**, but if you're not, log into MGMT01, and open t
 
 6. Creating the volume can take a few minutes. Notifications in the upper-right will let you know when the volume is created. The new volume appears in the Inventory list
 
-![Volume created on Azure Stack HCI](/media/wac_vm_storage_completed.png "Volume created on Azure Stack HCI")
+![Volume created on Azure Stack HCI](/media/wac_vm_storage_deployed.png "Volume created on Azure Stack HCI")
 
 ### Create a mirror-accelerated parity volume ###
 Mirror-accelerated parity reduces the footprint of the volume on the HDD. For example, a three-way mirror volume would mean that for every 10 terabytes of size, you will need 30 terabytes as footprint. To reduce the overhead in footprint, create a volume with mirror-accelerated parity. This reduces the footprint from 30 terabytes to just 22 terabytes, even with only 4 servers, by mirroring the most active 20 percent of data, and using parity, which is more space efficient, to store the rest. You can adjust this ratio of parity and mirror to make the performance versus capacity tradeoff that's right for your workload. For example, 90 percent parity and 10 percent mirror yields less performance but streamlines the footprint even further.
