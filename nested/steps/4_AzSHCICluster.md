@@ -259,6 +259,10 @@ You'll need an **Azure subscription**, but seeing as you've just configured the 
 You'll need appropriate **Azure Active Directory permissions** to complete the registration process. If you don't already have them, you'll need to ask your Azure AD administrator to grant permissions or delegate them to you.  You can learn more about this below.
 
 #### What happens when you register Azure Stack HCI? ####
+When you register your Azure Stack HCI cluster, the process creates an Azure Resource Manager (ARM) resource to represent the on-prem cluster. This resource is provisioned by an Azure resource provider (RP) and placed inside a resource group, within your chosen Azure subscription.  If these Azure concepts are new to you, you can check out an [overview of them, and more, here](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview "Azure Resource Manager overview").
+
+![ARM architecture for Azure Stack HCI](/media/azure_arm.png "ARM architecture for Azure Stack HCI")
+
 In addition to creating an Azure resource in your subscription, registering Azure Stack HCI creates an app identity, conceptually similar to a user, in your Azure Active Directory tenant. The app identity inherits the cluster name. This identity acts on behalf on the Azure Stack HCI cloud service, as appropriate, within your subscription.
 
 #### Understanding required Azure Active Directory permissions ####
