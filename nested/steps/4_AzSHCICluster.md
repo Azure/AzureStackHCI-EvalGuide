@@ -159,12 +159,14 @@ With the network configured for the evaluation environment, it's time to constru
 
 2. Cluster validation will then start, and will take a few moments to complete - once completed, you should see a successful message.
 
+**NOTE** - Cluster validation is intended to catch hardware or configuration problems before a cluster goes into production. Cluster validation helps to ensure that the Azure Stack HCI solution that you're about to deploy is truly dependable. You can also use cluster validation on configured failover clusters as a diagnostic tool. If you're interested in learning more about Cluster Validation, [check out the official docs](https://docs.microsoft.com/en-us/azure-stack/hci/deploy/validate "Cluster validation official documentation").
+
 ![Validation complete in the Create Cluster wizard](/media/wac_validated.png)
 
-3. Optionally, if you want to review the validation report, click on **Download report** and open the file in your browser.
-4. Back in the **Validate the cluster** screen, click **Next**
-5. On the **Create the cluster** page, enter your **cluster name** as **AZSHCICLUS** and select **Advanced**
-6. Under **IP addresses**, click **Specify one or more static addresses**, and enter **192.168.0.10** (assuming you've deployed less than 10 nodes, otherwise adjust accordingly), and click **Add**
+1. Optionally, if you want to review the validation report, click on **Download report** and open the file in your browser.
+2. Back in the **Validate the cluster** screen, click **Next**
+3. On the **Create the cluster** page, enter your **cluster name** as **AZSHCICLUS** and select **Advanced**
+4. Under **IP addresses**, click **Specify one or more static addresses**, and enter **192.168.0.10** (assuming you've deployed less than 10 nodes, otherwise adjust accordingly), and click **Add**
 
 ![Finalize cluster creation in the Create Cluster wizard](/media/wac_create_clus.png)
 
