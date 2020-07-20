@@ -382,21 +382,9 @@ Optionally, you can click on these services to see more information
 
 **NOTE** - If when you ran **Register-AzureStackHCI**, you don't have appropriate permissions in Azure Active Directory, to grant admin consent, you will need to work with your Azure Active Directory administrator to complete registration later. You can exit and leave the registration in status "**pending admin consent**," i.e. partially completed. Once consent has been granted, **simply re-run Register-AzureStackHCI** to complete registration.
 
-Congratulations!  You've now successfully deployed, configured and registered your Azure Stack HCI cluster
+### Congratulations! ###
+You've now successfully deployed, configured and registered your Azure Stack HCI cluster!
 
 Next Steps
 -----------
-In this step, you've successfully created a nested Azure Stack HCI cluster using Windows Admin Center.  With this complete, you can now [Explore the management of your Azure Stack HCI environment](/nested/steps/3b_AzSHCINodesPS.md "Create your nested Azure Stack HCI nodes with PowerShell")
-
-
-To grant consent, open portal.azure.com and sign in with an Azure account that has sufficient permissions on the Azure Active Directory. Navigate to Azure Active Directory, then App registrations. Select the app identity named after your cluster and navigate to API permissions.
-
-The app requires two permissions:
-
-HTTP
-
-Copy
-https://azurestackhci-usage.trafficmanager.net/AzureStackHCI.Census.Sync
-
-https://azurestackhci-usage.trafficmanager.net/AzureStackHCI.Billing.Sync
-Seeking approval from your Azure Active Directory administrator could take some time, so the Register-AzureStackHCI cmdlet will exit and leave the registration in status "pending admin consent," i.e. partially completed. Once consent has been granted, simply re-run Register-AzureStackHCI to complete registration.
+In this step, you've successfully created a nested Azure Stack HCI cluster using Windows Admin Center.  With this complete, you can now [Explore the management of your Azure Stack HCI environment](/nested/steps/5_ExploreAzSHCI.md "Explore the management of your Azure Stack HCI environment")
