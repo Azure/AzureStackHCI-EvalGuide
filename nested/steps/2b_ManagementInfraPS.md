@@ -235,13 +235,12 @@ With DC01 now back online and operational, we need to add an additional administ
 Write-Verbose "Creating new administrative User within the azshci.local domain." -Verbose
 $newUser = "LabAdmin"
 Invoke-Command -VMName DC01 -Credential $domainCreds -ScriptBlock {
-    param ($domainCreds, $newUser)
-    New-ADUser -Name "$newUser" -AccountPassword $domainCreds.Password -Enabled $True
-    $ADReadyCheck = Get-ADUser -Identity "$newUser"
-    Add-ADGroupMember -Identity "Domain Admins" -Members "$newUser"
-    Add-ADGroupMember -Identity "Enterprise Admins" -Members $newUser
-    Add-ADGroupMember -Identity "Schema Admins" -Members $newUser
-    } -ArgumentList $domainCreds, $newUser
+    New-ADUser -Name $using:newUser -AccountPassword $using:domainCreds.Password -Enabled $True
+    $ADReadyCheck = Get-ADUser -Identity $using:newUser
+    Add-ADGroupMember -Identity "Domain Admins" -Members $using:newUser
+    Add-ADGroupMember -Identity "Enterprise Admins" -Members $using:newUser
+    Add-ADGroupMember -Identity "Schema Admins" -Members $using:newUser
+    }
 Write-Verbose "User: $newUser created." -Verbose
 ```
 
@@ -363,12 +362,11 @@ $domainName = "azshci.local"
 $domainAdmin = "$domainName\labadmin"
 $domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the password for the LabAdmin account"
 Invoke-Command -VMName "MGMT01" -Credential $w10Creds -ScriptBlock {
-    param ($domainCreds)
     # Update Hostname to MGMT01
     Write-Verbose "Updating Hostname for MGMT01" -Verbose
     Rename-Computer -NewName "MGMT01"
-    Add-Computer –DomainName azshci.local -NewName "MGMT01" –Credential $domainCreds -Force
-} -ArgumentList $domainCreds
+    Add-Computer –DomainName azshci.local -NewName "MGMT01" –Credential $using:domainCreds -Force
+}
 
 Write-Verbose "Rebooting MGMT01 for hostname change to take effect" -Verbose
 Stop-VM -Name MGMT01
