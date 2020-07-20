@@ -5,6 +5,16 @@ Overview
 
 So far, you've deployed your Azure Stack HCI nodes in the nested virtualization sandbox, along with an Active Directory infrastructure with DNS.  Finally, you've deployed the Windows Admin Center, which we'll be using to configure the Azure Stack HCI cluster.
 
+Contents
+-----------
+[Architecture](#architecture)
+[Before you begin](#before-you-begin)
+[Creating a (local) cluster](#creating-a-local-cluster)
+[Configuring the cluster witness](#configuring-the-cluster-witness)
+[Connect and Register Azure Stack HCI to Azure](#connect-and-register-azure-stack-hci-to-azure)
+[Register using PowerShell](#register-using-powershell)
+[Next steps](#next-steps)
+
 Architecture
 -----------
 
