@@ -2,11 +2,18 @@ Deploy management infrastructure with the GUI
 ==============
 Overview
 -----------
-
 With your Hyper-V host up and running, either in Azure, or on a local physical system, it's now time to deploy the core management infrastructure to support the Azure Stack HCI deployment in a future step.
 
 ### Important Note ###
 In this step, you'll be using the GUI (Graphical User Interface, such as Hyper-V Manager, Server Manager etc) to create resources.  If you prefer to use PowerShell, which may allow faster completion, head on over to the [PowerShell guide](/nested/steps/2b_ManagementInfraPS.md).
+
+Contents
+-----------
+[Architecture](#architecture)
+[Download artifacts](#download-artifacts)
+[Create your domain controller](#create-your-domain-controller)
+[Create your Windows 10 Management VM](#create-your-windows-10-management-vm)
+[Next steps](#next-steps)
 
 Architecture
 -----------

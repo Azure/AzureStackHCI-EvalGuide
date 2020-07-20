@@ -11,6 +11,17 @@ In this guide, you'll walk through the steps to stand up an Azure Stack HCI conf
 * On your Hyper-V host, deploy 2-4 Azure Stack HCI nodes with nested virtualization enabled
 * On the Windows 10 management VM, configure your Azure Stack HCI cluster
 
+Contents
+-----------
+[Architecture](#architecture)
+[Will my hardware support this?](#will-my-hardware-support-this)
+[Get an Azure subscription](#get-an-azure-subscription)
+[Configuring your Hyper-V host](#configuring-your-hyper-v-host)
+[Next steps](#next-steps)
+
+Architecture
+-----------
+
 From an architecture perspective, the following graphic showcases the different layers and interconnections between the different components:
 
 ![Architecture diagram for Azure Stack HCI nested on a physical system](/media/nested_virt_physical.png)

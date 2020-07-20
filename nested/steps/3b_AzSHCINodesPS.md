@@ -5,6 +5,13 @@ Overview
 
 With your Hyper-V host up and running, along with the management infrastructure, it's now time to deploy the Azure Stack HCI nodes into VMs on your Hyper-V host.  For this, you'll be using a simple PowerShell script to automate much of the creation experience.
 
+Contents
+-----------
+[Architecture](#architecture)
+[Create your first nested Azure Stack HCI node](#create-your-first-nested-azure-stack-hci-node)
+[Repeat creation process](#repeat-creation-process)
+[Next steps](#next-steps)
+
 Architecture
 -----------
 

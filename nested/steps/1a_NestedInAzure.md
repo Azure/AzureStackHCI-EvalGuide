@@ -2,7 +2,6 @@ Evaluate Azure Stack HCI using Nested Virtualization in Azure
 ==============
 Overview
 -----------
-
 With the introduction of [nested virtualization support in Azure](https://azure.microsoft.com/en-us/blog/nested-virtualization-in-azure/ "Nested virtualization announcement blog post") back in 2017, Microsoft opened the door to a number of new and interesting scenarios.  Nested virtualization in Azure is particularly useful for validating configurations that would require additional hardware in your environment, such as running Hyper-V hosts and clusters.
 
 In this guide, you'll walk through the steps to stand up an Azure Stack HCI configuration, and key dependencies.  At a high level, this will consist of the following:
@@ -12,6 +11,18 @@ In this guide, you'll walk through the steps to stand up an Azure Stack HCI conf
 * On the Windows Server 2019 VM, deploy a Windows Server 2019 domain controller, and a Windows 10 management VM, running the Windows Admin Center
 * On the Windows Server 2019 VM, deploy 2-4 nested Azure Stack HCI nodes
 * On the Windows 10 management VM, configure your Azure Stack HCI cluster
+
+Contents
+-----------
+[Architecture](#architecture)
+[Get an Azure subscription](#get-an-azure-subscription)
+[Azure VM Size Considerations](#azure-vm-size-considerations)
+[Deploying the Azure VM](#deploying-the-azure-vm)
+[Prepare your Azure VM](#prepare-your-azure-vm)
+[Next steps](#next-steps)
+
+Architecture
+-----------
 
 From an architecture perspective, the following graphic showcases the different layers and interconnections between the different components:
 

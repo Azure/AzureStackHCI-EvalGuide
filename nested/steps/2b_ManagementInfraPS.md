@@ -5,6 +5,14 @@ Overview
 
 With your Hyper-V host up and running, either in Azure, or on a local physical system, it's now time to deploy the core management infrastructure to support the Azure Stack HCI deployment in a future step.
 
+Contents
+-----------
+[Architecture](#architecture)
+[Download artifacts](#download-artifacts)
+[Create your domain controller](#create-your-domain-controller)
+[Create your Windows 10 Management VM](#create-your-windows-10-management-vm)
+[Next steps](#next-steps)
+
 ### Important Note ###
 In this step, you'll be using PowerShell to create resources.  If you prefer to use a GUI (Graphical User Interface, such as Hyper-V Manager, Server Manager etc), which may allow faster completion, head on over to the [GUI guide](/nested/steps/2a_ManagementInfraGUI.md).
 
@@ -46,7 +54,7 @@ Next, in order to download the ISO files, **open your web browser** and follow t
 1. Visit https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2019, complete the registration form, and download the ISO.  Save the file as **WS2019.iso** to C:\ISO
 2. Visit https://www.microsoft.com/en-us/evalcenter/evaluate-windows-10-enterprise, complete the registration form, and download the x64 ISO.  Save the file as **W10.iso** to C:\ISO
 3. Visit --link--, complete the registration form, and download the ISO.  Save the file as **AzSHCI.iso** to C:\ISO
-4. Visit --link--, complete any necessary registration, and download the executables for the Windows Admin Center, storing them in C:\ISO
+4. Visit https://aka.ms/wacdownload to download the executables for the Windows Admin Center.  Save it as **WindowsAdminCenter.msi**, also in C:\ISO
 
 ![All files have been downloaded onto your Hyper-V host](/media/download_files.png)
 
