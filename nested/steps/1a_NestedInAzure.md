@@ -222,6 +222,8 @@ Once you've made your size and region selection, based on the information provid
 
 With the VM successfully deployed, make a note of the fully qualified domain name, as you'll use that to connect to the VM shortly.
 
+
+
 #### OPTIONAL - Enable Auto-Shutdown for your VM ####
 One way to control costs, is to ensure your VM automatically shuts down at the end of each day.  Enabling this feature requires you to log into the Azure portal, and perform a few steps:
 

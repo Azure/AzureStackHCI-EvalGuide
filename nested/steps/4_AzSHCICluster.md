@@ -27,15 +27,13 @@ As it stands, you should have met those requirements thus far, and should be in 
 
 Here are the major steps in the Create Cluster wizard in Windows Admin Center:
 
-* Get Started - ensures that each server meets the prerequisites for and features needed for cluster join
-* Networking - assigns and configures network adapters and creates the virtual switches for each server
-* Clustering - validates the cluster is set up correctly. For stretched clusters, also sets up up the two sites
-* Storage - Configures Storage Spaces Direct
-
-After the wizard completes, you set up the cluster witness, optionally register with Azure (to integrate additional services, like Azure Backup, Azure Monitor etc), and then create volumes (which also sets up replication between sites if you're creating a stretched cluster).
+* **Get Started** - ensures that each server meets the prerequisites for and features needed for cluster join
+* **Networking** - assigns and configures network adapters and creates the virtual switches for each server
+* **Clustering** - validates the cluster is set up correctly. For stretched clusters, also sets up up the two sites
+* **Storage** - Configures Storage Spaces Direct
 
 ### Decide on cluster type ###
-Not only does Azure Stack HCI support a cluster in a single site (or a **local cluster** as i'll refer to it going forward) consisting of between 2 and 16 nodes, but, also supports a **Stretch Cluster**, where a single cluster can have nodes distrubuted across two sites.
+Not only does Azure Stack HCI support a cluster in a single site (or a **local cluster** as we'll refer to it going forward) consisting of between 2 and 16 nodes, but, also supports a **Stretch Cluster**, where a single cluster can have nodes distrubuted across two sites.
 
 * If you have 2 Azure Stack HCI nodes, you will be able to create a **local cluster**
 * If you have 4 Azure Stack HCI nodes, you will have a choice of creating either a **local cluster** or a **stretch cluster**
@@ -302,7 +300,7 @@ Invoke-Command -ComputerName AZSHCINODE01 -Credential $azshciNodeCreds -ScriptBl
 
 As you can see from the result, the cluster is yet to be registered, and the cluster status identifies as **Clustered**. Azure Stack HCI needs to register within 30 days of installation per the Azure Online Services Terms. If not clustered after 30 days, the **ClusterStatus** will show **OutOfPolicy**, and if not registered after 30 days, the **RegistrationStatus** will show **OutOfPolicy**.
 
-4. To register the cluster, you'll first need to get yuor **Azure subscription ID**.  An easy way to do this is to quickly **log into https://portal.azure.com**, and in the **search box** at the top of the screen, search for **subscriptions** and then click on **Subscriptions**
+4. To register the cluster, you'll first need to get your **Azure subscription ID**.  An easy way to do this is to quickly **log into https://portal.azure.com**, and in the **search box** at the top of the screen, search for **subscriptions** and then click on **Subscriptions**
 
 ![Azure Subscriptions](/media/azure_subscriptions.png "Azure Subscriptions")
 
@@ -339,8 +337,48 @@ Of these commands, many are optional:
 
 ![Login to Azure](/media/azure_login_reg.png "Login to Azure")
 
-Once the cluster is registered, you can see the ConnectionStatus and LastConnected time, which is usually within the last day unless the cluster is temporarily disconnected from the Internet. An Azure Stack HCI cluster can operate fully offline for up to 30 consecutive days.
+8. Once successfully authenticated, the registration process will begin, and will take a few moments. Once complete, you should see a message indicating success, as per below:
 
+![Register Azure Stack HCI with PowerShell](/media/register_azshci.png "Register Azure Stack HCI with PowerShell")
+
+9. Once the cluster is registered, run the following command to check the updated status:
+
+```powershell
+Invoke-Command -ComputerName AZSHCINODE01 -Credential $azshciNodeCreds -ScriptBlock {
+    Get-AzureStackHCI
+}
+```
+![Check updated registration status with PowerShell](/media/registration_status.png "Check updated registration status with PowerShell")
+
+You can see the **ConnectionStatus** and **LastConnected** time, which is usually within the last day unless the cluster is temporarily disconnected from the Internet. An Azure Stack HCI cluster can operate fully offline for up to 30 consecutive days.
+
+10. You can also **log into https://portal.azure.com** to check the resources created there. In the **search box** at the top of the screen, search for **Resource groups** and then click on **Resource groups**
+11. You should see a new **Resource group** listed, with the name you specified earlier, which in our case, is **AzureStackHCIRegistration**
+
+![Registration resource group in Azure](/media/registration_rg.png "Registration resource group in Azure")
+
+12. Click on the **AzureStackHCIRegistration** resource group, and in the central pane, click on **Show hidden types** to see that a record has been created inside the resource group
+
+![Registration record in Azure](/media/registration_record.png "Registration record in Azure")
+
+13. **Optionally**, if you click on the **azihciclus** record, you'll get more information about the registration.
+14. Next, still in the Azure portal, in the **search box** at the top of the screen, search for **Azure Active Directory** and then click on **Azure Active Directory**
+15. Click on **App Registrations**, then in the box labeled "Start typing a name or Application ID to filter these results", enter **azshciclus** and in the results, click on your application
+
+![Application ID in App Registrations in Azure](/media/azure_ad_app.png "Application ID in App Registrations in Azure")
+
+16. Within the application, click on **API permissions**.  From there, you can see the **Configured permissions** which have been created as part of the **Register-AzureStackHCI** you ran earlier.  You can see that 2 services that have been granted permissions.
+
+    * **AzureStackHCI.Billing.Sync** - Allows synchronizing billing information, such as the number of physical processor cores, between the Azure Stack HCI cluster and the cloud
+    * **AzureStackHCI.Census.Sync** - Allows synchronizing census metadata, such as hardware vendor and software version, between the Azure Stack HCI cluster and the cloud
+
+Optionally, you can click on these services to see more information
+
+![Application ID API Permissions for App Registration in Azure](/media/api_permissions.png "Application ID API Permissions for App Registration in Azure")
+
+**NOTE** - If when you ran **Register-AzureStackHCI**, you don't have appropriate permissions in Azure Active Directory, to grant admin consent, you will need to work with your Azure Active Directory administrator to complete registration later. You can exit and leave the registration in status "**pending admin consent**," i.e. partially completed. Once consent has been granted, **simply re-run Register-AzureStackHCI** to complete registration.
+
+Congratulations!  You've now successfully deployed, configured and registered your Azure Stack HCI cluster
 
 Next Steps
 -----------
