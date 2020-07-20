@@ -94,7 +94,7 @@ The first key step with setting up the networking with Windows Admin Center, is 
 As it stands, this is the way that the Windows Admin Center approaches the network configuration, however, if you were not using the Windows Admin Center, through PowerShell, there are a number of different ways to configure the network to meet your needs.  We will work through the Windows Admin Center approach in this guide.
 
 #### Network Setup Overview ####
-As part of the **nested path in this evaluation guide**, each of your Azure Stack HCI nodes should have 4 NICs.  For this simple evaluation, you'll dedicate the NICs in the following way:
+Each of your Azure Stack HCI nodes should have 4 NICs.  For this simple evaluation, you'll dedicate the NICs in the following way:
 
 * 1 NIC will be dedicated to management.  It will reside on the 192.168.0.0/24 subnet. No virtual switch will be attached to this NIC.
 * 1 NIC will be dedicated to VM traffic.  A virtual switch will be attached to this NIC and the Azure Stack HCI host will no longer use this NIC for it's own traffic.
@@ -111,7 +111,7 @@ Again, this is just one **example** network configuration for the simple purpose
 ![Select management adapters in the Create Cluster wizard](/media/wac_singlemgmt.png)
 
 3. Windows Admin Center will then apply the configuration to your NIC. When complete and successful, click **Next**
-4. On the **Define networks** page, this is where you can define the specific networks, separate subnets, and optionally apply VLANs.  In the **nested environment**, we now have 3 NICs remaining.  Configure your remaining NICs as follows, by clicking on a field in the table and entering the appropriate information.
+4. On the **Define networks** page, this is where you can define the specific networks, separate subnets, and optionally apply VLANs.  In this **nested environment**, we now have 3 NICs remaining.  Configure your remaining NICs as follows, by clicking on a field in the table and entering the appropriate information.
 
 **NOTE** - we have a simple flat network in this configuration, so you can pick any of the NICs on a host to assign as VMs, Storage 1 and Storage 2.
 
