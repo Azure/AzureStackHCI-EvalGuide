@@ -1,13 +1,27 @@
-Deploy management infrastructure
+Deploy management infrastructure with PowerShell
 ==============
 Overview
 -----------
 
 With your Hyper-V host up and running, either in Azure, or on a local physical system, it's now time to deploy the core management infrastructure to support the Azure Stack HCI deployment in a future step.
 
+Contents
+-----------
+* [Architecture](#architecture)
+* [Download artifacts](#download-artifacts)
+* [Create your domain controller](#create-your-domain-controller)
+* [Create your Windows 10 Management VM](#create-your-windows-10-management-vm)
+* [Next steps](#next-steps)
+
+### Important Note ###
+In this step, you'll be using PowerShell to create resources.  If you prefer to use a GUI (Graphical User Interface, such as Hyper-V Manager, Server Manager etc), which may allow faster completion, head on over to the [GUI guide](/nested/steps/2a_ManagementInfraGUI.md).
+
+Architecture
+-----------
+
 As shown on the architecture graphic below, the core management infrastructure consists of a Windows Server 2019 domain controller VM, along with a Windows 10 Enterprise VM, which will run the Windows Admin Center.  In this step, you'll deploy both of those key components.
 
-![Architecture diagram for Azure Stack HCI nested with management infra highlighted](/media/nested_virt_mgmt.png)
+![Architecture diagram for Azure Stack HCI nested with management infra highlighted](/media/nested_virt_mgmt.png "Architecture diagram for Azure Stack HCI nested with management infra highlighted")
 
 However, before you deploy your management infrastructure, first, you need to download the necessary software components required to complete this evalution.
 
@@ -16,7 +30,7 @@ Download artifacts
 In order to deploy our nested virtual machines on AzSHCIHost001, we'll first need to download the appropriate ISOs and files for the following operating systems:
 
 * Windows Server 2019 Evaluation
-* Windows 10 Enterprise Evaluation
+* Windows 10 Enterprise Evaluation (x64)
 * Azure Stack HCI Public Preview
 * Windows Admin Center
 
@@ -38,11 +52,11 @@ Stop-Process -Name Explorer
 Next, in order to download the ISO files, **open your web browser** and follow the steps below.
 
 1. Visit https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2019, complete the registration form, and download the ISO.  Save the file as **WS2019.iso** to C:\ISO
-2. Visit https://www.microsoft.com/en-us/evalcenter/evaluate-windows-10-enterprise, complete the registration form, and download the ISO.  Save the file as **W10.iso** to C:\ISO
-3. Visit --link--, complete the registration form, and download the ISO.  Save the file as **AzSHCI.iso** to C:\ISO
-4. Visit --link--, complete any necessary registration, and download the executables for the Windows Admin Center, storing them in C:\ISO
+2. Visit https://www.microsoft.com/en-us/evalcenter/evaluate-windows-10-enterprise, complete the registration form, and download the x64 ISO.  Save the file as **W10.iso** to C:\ISO
+3. Visit https://azure.microsoft.com/en-us/products/azure-stack/hci/hci-download, complete the registration form, and download the ISO.  Save the file as **AzSHCI.iso** to C:\ISO
+4. Visit https://aka.ms/wacdownload to download the executables for the Windows Admin Center.  Save it as **WindowsAdminCenter.msi**, also in C:\ISO
 
-![All files have been downloaded onto your Hyper-V host](/media/download_files.png)
+![All files have been downloaded onto your Hyper-V host](/media/download_files.png "All files have been downloaded onto your Hyper-V host")
 
 With all files downloaded, proceed on to creating your management infrastructure.
 
@@ -52,7 +66,7 @@ There are 3 main steps to create the virtualized domain controller on our Hyper-
 
 1. Create the DC01 VM using PowerShell
 2. Complete the Out of Box Experience (OOBE)
-3. Configure the domain controller with AD, DNS and DHCP roles, all using PowerShell
+3. Configure the domain controller with AD and DNS roles, all using PowerShell
 
 For speed, we'll use PowerShell to configure as much as we can, but if you have experience with creating virtualized domain controllers using the Hyper-V Manager GUI, feel free to take that approach.
 
@@ -92,12 +106,12 @@ vmconnect.exe localhost DC01
 Start-VM -Name DC01
 ```
 
-![Booting the VM and triggering the boot from DVD](/media/boot_from_dvd.png)
+![Booting the VM and triggering the boot from DVD](/media/boot_from_dvd.png "Booting the VM and triggering the boot from DVD")
 
 ### Complete the Out of Box Experience (OOBE) ###
 With the VM running, and the boot process initiated, you should be in a position to start the deployment of the Windows Server 2019 OS.
 
-![Initiate setup of the Windows Server 2019 OS](/media/ws_setup.png)
+![Initiate setup of the Windows Server 2019 OS](/media/ws_setup.png "Initiate setup of the Windows Server 2019 OS")
 
 Proceed through the process, making the following selections:
 
@@ -110,11 +124,11 @@ Proceed through the process, making the following selections:
 
 Installation will then begin, and will take a few minutes, automatically rebooting as part of the process.
 
-![Initiate setup of the Windows Server 2019 OS](/media/ws_install_complete.png)
+![Initiate setup of the Windows Server 2019 OS](/media/ws_install_complete.png "Initiate setup of the Windows Server 2019 OS")
 
 With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **C:\Users\Administrator** screen.  You can **close** the VM Connect window, as we will continue configuring the domain controller using PowerShell, from AzSHCIHost001.
 
-### Configure the domain controller with AD, DNS and DHCP roles ###
+### Configure the domain controller with AD and DNS roles ###
 With the VM successfully deployed, you can now configure the Windows Server 2019 OS to become the core domain infrastructure for your sandbox environment. To simplify the process, you'll use PowerShell, but from the Hyper-V host, into the VM, using PowerShell Direct.
 
 #### Configure the networking and host name on DC01 ####
@@ -179,7 +193,7 @@ Write-Verbose "DC01 is now online. Proceed to the next step...." -Verbose
 #### Configure the Active Directory role on DC01 ####
 With the OS configured, you can now move on to configuring the Windows Server 2019 OS with the appropriate roles and features to support the domain infrastructure.
 
-First, you'll configire Active Directory - the following code block will remotely connect to DC01, enable the Active Directory role, and apply a configuration as defined in the script block below.  Firstly, you should optionally set the Directory Services Restore Mode password, or just leave as the default below.
+First, you'll configure Active Directory - the following code block will remotely connect to DC01, enable the Active Directory role, and apply a configuration as defined in the script block below.  Firstly, you should optionally set the Directory Services Restore Mode password, or just leave as the default below.
 
 ```powershell
 # Configure Active Directory on DC01
@@ -204,7 +218,7 @@ Invoke-Command -VMName DC01 -Credential $dcCreds -ScriptBlock {
 
 When the process is completed successfully, you should see a message similar to this below. Once validated, you should be able to reboot the domain controller and proceed on through the process.
 
-![Active Directory role successfully install and domain controller configured](/media/dc_created.png)
+![Active Directory role successfully install and domain controller configured](/media/dc_created.png "Active Directory role successfully install and domain controller configured")
 
 ```powershell
 Write-Verbose "Rebooting DC01 to finish installing of Active Directory" -Verbose
@@ -229,60 +243,18 @@ With DC01 now back online and operational, we need to add an additional administ
 Write-Verbose "Creating new administrative User within the azshci.local domain." -Verbose
 $newUser = "LabAdmin"
 Invoke-Command -VMName DC01 -Credential $domainCreds -ScriptBlock {
-    param ($domainCreds)
-    Write-Verbose "Waiting for AD Web Services to be in a running state" -Verbose
-    $ADWebSvc = Get-Service ADWS | Select-Object *
-    while($ADWebSvc.Status -ne 'Running')
-            {
-            Start-Sleep -Seconds 1
-            }
-    Do {
-    Start-Sleep -Seconds 30
-    Write-Verbose "Waiting for AD to be Ready for User Creation" -Verbose
-    New-ADUser -Name "$newUser" -AccountPassword $domainCreds.Password -Enabled $True
-    $ADReadyCheck = Get-ADUser -Identity "$newUser"
+    New-ADUser -Name $using:newUser -AccountPassword $using:domainCreds.Password -Enabled $True
+    $ADReadyCheck = Get-ADUser -Identity $using:newUser
+    Add-ADGroupMember -Identity "Domain Admins" -Members $using:newUser
+    Add-ADGroupMember -Identity "Enterprise Admins" -Members $using:newUser
+    Add-ADGroupMember -Identity "Schema Admins" -Members $using:newUser
     }
-    Until ($ADReadyCheck.Enabled -eq "True")
-    Add-ADGroupMember -Identity "Domain Admins" -Members "$newUser"
-    Add-ADGroupMember -Identity "Enterprise Admins" -Members $newUser
-    Add-ADGroupMember -Identity "Schema Admins" -Members $newUser
-    } -ArgumentList $domainCreds, $newUser
- 
 Write-Verbose "User: $newUser created." -Verbose
 ```
 
-You can move on to the next step - enabling the DHCP role.
+**NOTE** - if you receive warnings or errors creating new users, wait a few moments, as your DC01 machine may need more time to start new services.
 
-#### Configure the DHCP role on DC01 ####
-In order to simplify network management in the sandboxed environment, you will now enable DHCP on DC01.
-
-```powershell
-# Set updated domain credentials based on new credentials
-$domainName = "azshci.local"
-$domainAdmin = "$domainName\labadmin"
-$domainCreds = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $domainAdmin, $dcCreds.Password
-
-# Configure the DHCP role on DC01
-Invoke-Command -VMName DC01 -Credential $domainCreds -ScriptBlock {
-    # Install DHCP Server
-    Install-WindowsFeature -Name DHCP -IncludeManagementTools
-    # Authorize
-    Add-DhcpServerInDC -DnsName DC01
-    # Add DHCP scope
-    Add-DhcpServerv4Scope -StartRange "192.168.0.3" -EndRange "192.168.0.100" -Name ManagementScope `
-    -LeaseDuration "00:08:00" -SubnetMask "255.255.255.0" -State Active
-    # Add DHCP scope options
-    Set-DhcpServerv4OptionValue -OptionId 6 -Value "192.168.0.2" -ScopeId "192.168.0.0"
-    Set-DhcpServerv4OptionValue -OptionId 3 -Value "192.168.0.1" -ScopeId "192.168.0.0"
-    Set-DhcpServerv4OptionValue -OptionId 15 -Value "azshci.local" -ScopeId "192.168.0.0"
-}
-```
-
-When the process is completed successfully, you should see a message similar to this below.
-
-![DHCP role successfully configured on DC01](/media/dhcp_enabled.png)
-
-With Active Directory, DNS and DHCP all configured, you can now move on to deploying the Windows 10 Enterprise VM, that will be used to run the Windows Admin Center.
+With Active Directory and DNS configured, you can now move on to deploying the Windows 10 Enterprise VM, that will be used to run the Windows Admin Center.
 
 Create your Windows 10 Management VM
 -----------
@@ -330,12 +302,12 @@ vmconnect.exe localhost MGMT01
 Start-VM -Name MGMT01
 ```
 
-![Booting the VM and triggering the boot from DVD](/media/boot_from_dvd.png)
+![Booting the VM and triggering the boot from DVD](/media/boot_from_dvd.png "Booting the VM and triggering the boot from DVD")
 
 ### Complete the Out of Box Experience (OOBE) ###
-With the VM running, and the boot process initiated, you should be in a position to start the deployment of the Windows Server 2019 OS.
+With the VM running, and the boot process initiated, you should be in a position to start the deployment of the Windows 10 OS.
 
-![Initiate setup of Windows 10](/media/w10_setup.png)
+![Initiate setup of Windows 10](/media/w10_setup.png "Initiate setup of Windows 10")
 
 Proceed through the process, making the following selections:
 
@@ -349,17 +321,32 @@ Installation will then begin, and will take a few minutes, automatically rebooti
 
 With the installation complete, you'll be prompted to finish the out of box experience, including **choosing your region**, **keyboard layout** and finally, setting a username and password.
 
-![Initiate setup of the Windows Server 2019 OS](/media/w10_install_complete.png)
+![Initiate setup of the Windows 10 OS](/media/w10_install_complete.png "Initiate setup of the Windows 10 OS")
 
 1. On the **Sign in with Microsoft** page, select **Domain join instead**
 2. On the **Who's going to use this PC** page, enter **LocalAdmin** and click **Next**
-3. On the **Create a super memorable password** page, enter your previously used password and click **Next**
+3. On the **Create a super memorable password** page, for simplicity, enter a previously used password and click **Next**
 4. Enter your password again on the **Confirm your password** page, then click **Next**
 5. For the security questions, provide answers for 3 questions, and click **Next**
 6. On the **Choose privacy settings for your device** page, make your adjustments and click **Accept**
 7. On the next few screens, make your desired selections for the services, and the install process will finish.  This will take a few minutes.
 
 Once complete, you should be logged in on the Windows 10 machine.
+
+### Configure MGMT01 networking ###
+With MGMT01 up and running, it's time to configure the networking so it can communicate with DC01.
+
+```powershell
+# Define local Windows 10 credentials
+$w10Creds = Get-Credential -UserName "LocalAdmin" -Message "Enter the password used when you deployed Windows 10"
+Invoke-Command -VMName "MGMT01" -Credential $w10Creds -ScriptBlock {
+    # Set Static IP on MGMT01
+    New-NetIPAddress -IPAddress "192.168.0.3" -DefaultGateway "192.168.0.1" -InterfaceAlias "Ethernet" -PrefixLength "24" | Out-Null
+    Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses ("192.168.0.2")
+    $mgmtIP = Get-NetIPAddress -AddressFamily IPv4 -InterfaceAlias "Ethernet" | Select-Object IPAddress
+    Write-Verbose "The currently assigned IPv4 address for MGMT01 is $($mgmtIP.IPAddress)" -Verbose 
+}
+```
 
 #### Optional - Update your Windows 10 OS ####
 
@@ -370,7 +357,7 @@ It's a good idea to ensure your OS is running the latest security updates and pa
 3. In the Updates window within Settings, click **Check for updates**. If any are required, ensure they are downloaded and installed.  This will take a few minutes.
 4. Restart if required
 
-You can then **close** the VM Connect window, as we will continue configuring the domain controller using PowerShell, from AzSHCIHost001.
+You can then **close** the VM Connect window, as we will continue configuring MGMT01 using PowerShell, from your Hyper-V host.
 
 ### Join your Windows 10 VM to the domain ###
 To simplify the domain join of the machine to your sandbox domain environment, use the following PowerShell script:
@@ -383,12 +370,11 @@ $domainName = "azshci.local"
 $domainAdmin = "$domainName\labadmin"
 $domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the password for the LabAdmin account"
 Invoke-Command -VMName "MGMT01" -Credential $w10Creds -ScriptBlock {
-    param ($domainCreds)
     # Update Hostname to MGMT01
     Write-Verbose "Updating Hostname for MGMT01" -Verbose
     Rename-Computer -NewName "MGMT01"
-    Add-Computer –DomainName azshci.local -NewName "MGMT01" –Credential $domainCreds -Force
-} -ArgumentList $domainCreds
+    Add-Computer –DomainName azshci.local -NewName "MGMT01" –Credential $using:domainCreds -Force
+}
 
 Write-Verbose "Rebooting MGMT01 for hostname change to take effect" -Verbose
 Stop-VM -Name MGMT01
@@ -414,7 +400,7 @@ vmconnect.exe localhost MGMT01
 
 This will open the VM Connect window.  You should be presented with a **Connect to MGMT01** screen.  Ensure that the display size is set to **Full Screen** and using the **Show Options** dropdown, ensure that **Save my settings for future connections to this virtual machine** is ticked, then click **Connect**.
 
-![Establish a VM Connect session to MGMT01](/media/connect_to_mgmt01.png)
+![Establish a VM Connect session to MGMT01](/media/connect_to_mgmt01.png "Establish a VM Connect session to MGMT01")
 
 When prompted, enter your Lab Admin credentials to log into MGMT01.  When on the desktop, **right-click** and select **paste** to transfer the Windows Admin Center executable onto the desktop of MGMT01.
 
@@ -425,21 +411,21 @@ To install the Windows Admin Center, simply **double-click** the executable on t
 3. On the **Install Windows Admin Center on Windows 10** screen, read the installation information, then click **Next**
 4. On the **Installing Windows Admin Center** screen, tick the **Create a desktop shortcut...** box, and click **Install**. The install process will take a few minutes, and once completed, you should be presented with some certificate information.
 
-![Windows Admin Center installed](/media/wac_installed.png)
+![Windows Admin Center installed](/media/wac_installed.png "Windows Admin Center installed")
 
 5. Tick the **Open Windows Admin Center** box, and click **Finish**
 6. Windows Admin Center will now open on https://localhost:port/
 7. Once open, you may receive notifications in the top-right corner, indicating that some extensions may require updating.
 
-![Windows Admin Center extensions available](/media/extension_update.png)
+![Windows Admin Center extensions available](/media/extension_update.png "Windows Admin Center extensions available")
 
 8. If you do require extension updates, click on the notification, then **Go to Extensions**
 9. On the **Extensions** page, you'll find a list of installed extensions.  Any that require an update will be listed:
 
-![Windows Admin Center extensions required](/media/extension_update_needed.png)
+![Windows Admin Center extensions required](/media/extension_update_needed.png "Windows Admin Center extensions required")
 
 10. Click on the extension, and click **Update**. This will take a few moments, and will reload the page when complete.  With the extensions updated, navigate back to the Windows Admin Center homepage.
 
 Next Steps
 -----------
-In this step, you've successfully created your management infrastructure, including a Windows Server 2019 domain controller and a Windows 10 management VM, complete with Windows Admin Center. You can now proceed to [deploy your nested Azure Stack HCI nodes](/steps/3_AzSHCINodes.md "deploying your Azure Stack HCI nodes").
+In this step, you've successfully created your management infrastructure, including a Windows Server 2019 domain controller and a Windows 10 management VM, complete with Windows Admin Center. You can now proceed to [create your nested Azure Stack HCI nodes with PowerShell](/nested/steps/3b_AzSHCINodesPS.md "Create your nested Azure Stack HCI nodes with PowerShell")
