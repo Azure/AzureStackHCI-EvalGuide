@@ -123,7 +123,7 @@ Installation will then begin, and will take a few minutes, automatically rebooti
 
 ![Completed setup of the Azure Stack HCI OS](/media/azshci_setup_complete.png "Completed setup of the Azure Stack HCI OS")
 
-With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **command prompt** with "Welcome to Azure Stack HCI" showing.
+With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **command prompt** on the "Welcome to Azure Stack HCI" screen.
 
 ![Azure Stack HCI Welcome Screen](/media/sconfig.png "Azure Stack HCI Welcome Screen")
 
@@ -139,7 +139,7 @@ With the node up and running, it's time to configure the networking with SConfig
 4. On the **Network Adapter Settings** screen, press **1**, then **Enter**
 5. Enter **S** for **Static IP** and press **Enter**
 6. Enter **192.168.0.4** for the static IP address and press **Enter**
-7. For **Subnet mask**, enter **255.255.255.0** and press **Enter** - if you leave this blank and press enter, the NIC settings will not save due to a bug, so make sure you enter the subnet mask entirely)
+7. For **Subnet mask**, enter **255.255.255.0** and press **Enter** - (**NOTE** - if you leave this blank and press enter, the NIC settings will not save due to a bug, so make sure you enter the subnet mask entirely)
 8. For **Default Gateway**, enter **192.168.0.1** and press **Enter**
 9. Back in the **Network Adapter Settings** screen, press **2**, then **Enter**
 10. For the **DNS Server**, enter **192.168.0.2** and press **Enter**, then click **OK** in the **Network Settings** notification
