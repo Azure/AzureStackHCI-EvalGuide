@@ -123,12 +123,14 @@ Installation will then begin, and will take a few minutes, automatically rebooti
 
 ![Completed setup of the Azure Stack HCI OS](/media/azshci_setup_complete.png "Completed setup of the Azure Stack HCI OS")
 
-With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **C:\Users\Administrator** screen.
+With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **command prompt** with "Welcome to Azure Stack HCI" showing.
+
+![Azure Stack HCI Welcome Screen](/media/sconfig.png "Azure Stack HCI Welcome Screen")
 
 #### Configure Azure Stack HCI node networking using SConfig ####
 With the node up and running, it's time to configure the networking with SConfig, a useful local administrative interface.
 
-1. To launch SConfig, first, run **sconfig** from the command line
+1. When you first logged into Azure Stack HCI locally, SConfig should have launched automatically.  If it hasn't, simply type **sconfig** and press **enter**
 2. Enter **8** then press **Enter** to select **Network Settings**
 3. Choose one of the interfaces by typing the corresponding number, and pressing **Enter**
 
@@ -137,7 +139,7 @@ With the node up and running, it's time to configure the networking with SConfig
 4. On the **Network Adapter Settings** screen, press **1**, then **Enter**
 5. Enter **S** for **Static IP** and press **Enter**
 6. Enter **192.168.0.4** for the static IP address and press **Enter**
-7. For **Subnet mask**, press **Enter** for the default (255.255.255.0)
+7. For **Subnet mask**, enter **255.255.255.0** and press **Enter** - if you leave this blank and press enter, the NIC settings will not save due to a bug, so make sure you enter the subnet mask entirely)
 8. For **Default Gateway**, enter **192.168.0.1** and press **Enter**
 9. Back in the **Network Adapter Settings** screen, press **2**, then **Enter**
 10. For the **DNS Server**, enter **192.168.0.2** and press **Enter**, then click **OK** in the **Network Settings** notification
@@ -156,7 +158,7 @@ While in SConfig, it is quick a easy to rename the OS, and join a domain.
 The machine will now reboot, and you've successfully set up your Azure Stack HCI node.
 
 ### Enable the Hyper-V role on your Azure Stack HCI Node ###
-There is an existing bug when running Azure Stack HCI within a nested virtualization configuration, specifically, when trying to enable the Hyper-V role within a running instance of Azure Stack HCI, inside a **Generation 2 Hyper-V VM**.  To workaround this, if you're running on a Windows 10 Hyper-V host, you should have deployed a **Generation 1 VM** earlier, however for a Windows Server Hyper-V host, you can run the following PowerShell command to fix this issue.
+There is an existing bug when running Azure Stack HCI within a nested virtualization configuration, specifically, when trying to enable the Hyper-V role within a running instance of Azure Stack HCI, inside a **Generation 2 Hyper-V VM**.  To workaround this, if you're running on a Windows 10 Hyper-V host, you should have deployed a **Generation 1 VM** [earlier](#create-the-azshcinode01-vm-using-hyper-v-manager), however for a Windows Server Hyper-V host, you can run the following PowerShell command to fix this issue.
 
 ```powershell
 $VM = Get-VM -Name $nodeName

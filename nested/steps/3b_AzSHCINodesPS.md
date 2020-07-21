@@ -82,7 +82,7 @@ Set-VM -VMname $nodeName -ProcessorCount 4
 # Create the DATA virtual hard disks and attach them
 $dataDrives = 1..4 | ForEach-Object { New-VHD -Path "C:\VMs\$nodeName\Virtual Hard Disks\DATA0$_.vhdx" -Dynamic -Size 100GB }
 $dataDrives | ForEach-Object {
-    Add-VMHardDiskDrive -Path $_.path -VMName $nodeName
+    Add-VMHardDiskDrive -Path $_.path -VMName $nodeName -ControllerType SCSI
 }
 # Enable nested virtualization
 Set-VMProcessor -VMName $nodeName -ExposeVirtualizationExtensions $true -Verbose
@@ -167,7 +167,7 @@ Write-Verbose "$nodeName is now online. Proceed to the next step...." -Verbose
 ```
 
 ### Enable the Hyper-V role on your Azure Stack HCI Node ###
-There is an existing bug when running Azure Stack HCI within a nested virtualization configuration, specifically, when trying to enable the Hyper-V role within a running instance of Azure Stack HCI, on a **Generation 2 Hyper-V VM**.  To workaround this, you can run the following PowerShell command to fix this issue.
+There is an existing bug when running Azure Stack HCI within a nested virtualization configuration, specifically, when trying to enable the Hyper-V role within a running instance of Azure Stack HCI, inside a **Generation 2 Hyper-V VM**.  To workaround this, if you're running on a Windows 10 Hyper-V host, you should have deployed a **Generation 1 VM** [earlier](#create-the-azshcinode01-vm-using-powershell), however for a Windows Server Hyper-V host, you can run the following PowerShell command to fix this issue.
 
 ```powershell
 $VM = Get-VM -Name $nodeName
