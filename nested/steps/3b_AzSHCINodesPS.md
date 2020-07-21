@@ -167,33 +167,23 @@ Write-Verbose "$nodeName is now online. Proceed to the next step...." -Verbose
 ```
 
 ### Enable the Hyper-V role on your Azure Stack HCI Node ###
-There is an existing bug when running Azure Stack HCI within a nested virtualization configuration, specifically, when trying to enable the Hyper-V role within a running instance of Azure Stack HCI.  To workaround this, you can run the following PowerShell command to fix this issue.
-
-#### If you have a Windows Server 2016/2019 Hyper-V host ####
+There is an existing bug when running Azure Stack HCI within a nested virtualization configuration, specifically, when trying to enable the Hyper-V role within a running instance of Azure Stack HCI, on a **Generation 2 Hyper-V VM**.  To workaround this, you can run the following PowerShell command to fix this issue.
 
 ```powershell
-# Stop the node
-Stop-VM -Name $nodeName
-# Get the path to the OS VHD and install Hyper-V
-$OSVHDXPath = (Get-VMHardDiskDrive -VMName $nodeName -ControllerLocation 0).Path
-Install-WindowsFeature -Vhd $OSVHDXPath -Name Hyper-V, RSAT-Hyper-V-Tools, Hyper-V-Powershell
-# Start the node
-Start-VM -Name $nodeName
-```
-
-#### If you have a Windows 10 Hyper-V host ####
-The client OS cannot service the VHDx in the same way that the Windows Server OS can, so in this workaround, the Azure Stack HCI node VHDx file will be mounted on DC01 to complete the configuration
-
-```powershell
-# Stop the node
-Stop-VM -Name $nodeName
-# Create a new VHD on the Host and mount it
-New-VHD
-# Get the path to the OS VHD and install Hyper-V
-$OSVHDXPath = (Get-VMHardDiskDrive -VMName $nodeName -ControllerLocation 0).Path
-Install-WindowsFeature -Vhd $OSVHDXPath -Name Hyper-V, RSAT-Hyper-V-Tools, Hyper-V-Powershell
-# Start the node
-Start-VM -Name $nodeName
+$VM = Get-VM -Name $nodeName
+$OS = Get-CimInstance -ClassName "win32_operatingsystem"
+if (($VM.Generation -eq "2") -and ($OS.Caption -like "*Server*")) {
+    # Stop the node
+    Stop-VM -Name $nodeName
+    # Get the path to the OS VHD and install Hyper-V
+    $OSVHDXPath = (Get-VMHardDiskDrive -VMName $nodeName -ControllerLocation 0).Path
+    Install-WindowsFeature -Vhd $OSVHDXPath -Name Hyper-V, RSAT-Hyper-V-Tools, Hyper-V-Powershell
+    # Start the node
+    Start-VM -Name $nodeName
+}
+else {
+    Write-Host "This VM is a Generation 1 VM, and doesn't require this workaround"
+}
 ```
 
 Repeat creation process

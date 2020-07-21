@@ -38,8 +38,14 @@ In this step, you'll be using Hyper-V Manager to deploy an Azure Stack HCI node.
 
 ![Specify VM name and location](/media/new_vm_node.png "Specify VM name and location")
 
-7. On the **Specify Generation** page, select **Generation 2** and click **Next**
-8. On the **Assign Memory** page, assign 4GB memory by entering **4096** for Startup memory and leave the the **Use Dynamic Memory for this virtual machine** empty, then click **Next**
+**IMPORTANT NOTE** - if your Hyper-V host is a **Windows 10 system**, ensure you select **Generation 1** VMs, due to a bug with nested virtualization in Generation 2 VMs, and the Azure Stack HCI Public Preview.  Choosing Generation 1 will not impact your experience in this evaluation guide.
+
+7. On the **Specify Generation** page, select one of the following and click **Next**
+
+    * If your Hyper-V **host** is running a Windows Server OS, select **Generation 2**
+    * If your Hyper-V **host** is running a Windows 10 OS, select **Generation 1**
+
+8.  On the **Assign Memory** page, assign 4GB memory by entering **4096** for Startup memory and leave the the **Use Dynamic Memory for this virtual machine** empty, then click **Next**
 
 ![Assign VM memory](/media/new_vm_node_memory.png "Assign VM memory")
 
