@@ -35,7 +35,14 @@ On your Hyper-V host, **open PowerShell as administrator**.  Make any changes th
 ```powershell
 # Define the characteristics of the VM, and create
 $nodeName = "AZSHCINODE11"
-$generation = 2
+# Set the nested Azure Stack HCI Node Generation based on Hyper-V host system
+$OS = Get-CimInstance -ClassName "win32_operatingsystem"
+if ($OS.caption -like "*Server*") {
+    $generation = 2
+}
+else {
+    $generation = 1
+}
 $VM = New-VM `
     -Name $nodeName  `
     -MemoryStartupBytes 4GB `
@@ -55,6 +62,7 @@ Once the VM is successfully created, you should connect the Azure Stack HCI ISO 
 
 ```powershell
 # Add the DVD drive, attach the ISO to DC01 and set the DVD as the first boot device
+# Process is different depending on VM Generation
 $DVD = Add-VMDvdDrive -VMName $nodeName -Path C:\ISO\AzSHCI.iso -Passthru
 if ($VM.Generation -eq "2") {
     Set-VMFirmware -VMName $nodeName -FirstBootDevice $DVD
