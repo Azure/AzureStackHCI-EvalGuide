@@ -30,8 +30,6 @@ There are 3 main steps to create the virtualized Azure Stack HCI node on our Hyp
 ### Create the AZSHCINODE01 VM using PowerShell ###
 On your Hyper-V host, **open PowerShell as administrator**.  Make any changes that you require, to the script below, and then run it:
 
-**IMPORTANT NOTE** - if your Hyper-V host is a **Windows 10 system**, ensure you select **Generation 1** VMs, due to a bug with nested virtualization in Generation 2 VMs, and the Azure Stack HCI Public Preview.  Choosing Generation 1 will not impact your experience in this evaluation guide.
-
 ```powershell
 # Define the characteristics of the VM, and create
 $nodeName = "AZSHCINODE01"
