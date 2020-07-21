@@ -34,7 +34,7 @@ On your Hyper-V host, **open PowerShell as administrator**.  Make any changes th
 
 ```powershell
 # Define the characteristics of the VM, and create
-$nodeName = "AZSHCINODE11"
+$nodeName = "AZSHCINODE01"
 # Set the nested Azure Stack HCI Node Generation based on Hyper-V host system
 $OS = Get-CimInstance -ClassName "win32_operatingsystem"
 if ($OS.caption -like "*Server*") {
