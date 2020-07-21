@@ -147,7 +147,7 @@ With the node up and running, it's time to configure the networking with SConfig
 12. Press **4** to return to the main menu.
 
 ### Join the domain using SConfig ###
-While in SConfig, it is quick a easy to rename the OS, and join a domain.
+While in SConfig, it is quick and easy to rename the OS, and join a domain.
 
 1. In SConfig, enter **1** to join the domain, press **D** to select domain, then press **Enter**
 2. Enter your domain name: **azshci.local** and press **Enter**
