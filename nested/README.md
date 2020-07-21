@@ -1,12 +1,12 @@
 Evaluate Azure Stack HCI using Nested Virtualization
 ==============
 
-As with any infrastructure technology, in order to test, validate and evaluate the technology, there's typically a requirement for hardware.  If you're fortunate enough to have multiple server-class pieces of hardware going spare (ideally hardware certified for Azure Stack HCI, found on our [Azure Stack HCI Catalog](https://azure.com/hci "Azure Stack HCI Catalog")), you can certainly perform a more real-world evaluation of Azure Stack HCI, which is something we'll be guiding you through separately, in the coming days, so stay tuned for that.
+As with any infrastructure technology, in order to test, validate and evaluate the technology, there's typically a requirement for hardware.  If you're fortunate enough to have multiple server-class pieces of hardware going spare (ideally hardware certified for Azure Stack HCI, found on our [Azure Stack HCI Catalog](https://aka.ms/azurestackhcicatalog "Azure Stack HCI Catalog")), you can certainly perform a more real-world evaluation of Azure Stack HCI, which is something we'll be guiding you through separately, in the coming days, so stay tuned for that.
 
 For the purpose of this evaluation guide however, we'll be relying on **nested virtualization** to allow us to consolidate a full lab infrastructure, down onto a single Hyper-V host, either on-prem, or in Azure.
 
 ### Important Note ###
-The use of nested virtualization in this evaluation guide is aimed at providing flexibility for deploying Azure Stack HCI in a lab, or test environment. For **production** use, **Azure Stack HCI should be deployed on certified physical hardware**, of which you can find a vast array of choices on the [Azure Stack HCI Catalog](https://azure.com/hci "Azure Stack HCI Catalog").
+The use of nested virtualization in this evaluation guide is aimed at providing flexibility for deploying Azure Stack HCI in a lab, or test environment. For **production** use, **Azure Stack HCI should be deployed on certified physical hardware**, of which you can find a vast array of choices on the [Azure Stack HCI Catalog](https://aka.ms/azurestackhcicatalog "Azure Stack HCI Catalog").
 
 Nested Virtualization
 -----------

@@ -37,7 +37,7 @@ If you have a single physical system, which could be a laptop, desktop, or serve
 [**Evaluate Azure Stack HCI using Nested Virtualization**](/nested/README.md "Evaluate Azure Stack HCI using Nested Virtualization")
 
 ### Important Note ###
-The use of nested virtualization in this evaluation guide is aimed at providing flexibility for deploying Azure Stack HCI in a lab, or test environment. For **production** use, **Azure Stack HCI should be deployed on certified physical hardware**, of which you can find a vast array of choices on the [Azure Stack HCI Catalog](https://azure.com/hci "Azure Stack HCI Catalog").
+The use of nested virtualization in this evaluation guide is aimed at providing flexibility for deploying Azure Stack HCI in a lab, or test environment. For **production** use, **Azure Stack HCI should be deployed on certified physical hardware**, of which you can find a vast array of choices on the [Azure Stack HCI Catalog](https://aka.ms/azurestackhcicatalog "Azure Stack HCI Catalog").
 
 ### Contributing ###
 
