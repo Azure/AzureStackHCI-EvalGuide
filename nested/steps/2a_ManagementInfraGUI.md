@@ -101,11 +101,13 @@ In this step, you'll be using Hyper-V Manager to deploy a Windows Server 2019 do
 Your new DC01 virtual machine will now be created.  Once created, we need to make a few final modifications. To optimize the VM's use of available memory, especially on physical systems with lower physical memory, you can optionally configure the VM with Dynamic Memory, which will allow Hyper-V to allocate memory to the VM, based on it's requirements, and remove memory when idle.  This can help to free up valuable host resources in memory-constrained environments.
 
 1. In **Hyper-V Manager**, right-click **DC01** and click **Settings**
-2. In the **Settings** window, under **Memory**, in the **Dynamic Memory** section, enter the following figures, then click **OK**
+2. In the **Settings** window, under **Memory**, in the **Dynamic Memory** section, enter the following figures, then click **Apply**
    * Minimum RAM: 1024
    * Maximum RAM: 4096
 
 ![Updating memory for DC01](/media/dynamicmem.png "Updating memory for DC01")
+
+3. If you are running on a **Windows 10 Hyper-V host**, you should **disable automatic checkpoints**. From the **Settings** window, under **Management**, click **Checkpoints** and then if ticked, **untick** the **Enable checkpoints** box, then click **OK**
 
 With the VM configured correctly, in **Hyper-V Manager**, double-click DC01.  This should open the VM Connect window.
 
@@ -271,6 +273,8 @@ Your new MGMT01 virtual machine will now be created.  Once created, we need to m
    * Maximum RAM: 4096
 
 ![Updating memory for MGMT01](/media/dynamicmem_mgmt01.png "Updating memory for MGMT01")
+
+3. If you are running on a **Windows 10 Hyper-V host**, you should **disable automatic checkpoints**. From the **Settings** window, under **Management**, click **Checkpoints** and then if ticked, **untick** the **Enable checkpoints** box, then click **OK**
 
 With the VM configured correctly, in **Hyper-V Manager**, double-click MGMT01.  This should open the VM Connect window.
 

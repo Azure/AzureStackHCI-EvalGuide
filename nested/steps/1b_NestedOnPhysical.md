@@ -112,6 +112,8 @@ Install-WindowsFeature -Name Hyper-V -IncludeManagementTools -Restart
 Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
 ```
 
+Ensure you **restart the system** after installing Hyper-V, if prompted.
+
 ### Configure Internal NAT vSwitch ###
 Both Windows 10 Hyper-V, and Windows Server 2019 Hyper-V allow native network address translation (NAT) for a virtual network. NAT gives a virtual machine access to network resources using the host computer's IP address and a port through an internal Hyper-V Virtual Switch.  It doesn't require you to expose the sandbox VMs directly onto your physical network.
 
