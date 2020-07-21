@@ -30,17 +30,20 @@ There are 3 main steps to create the virtualized Azure Stack HCI node on our Hyp
 ### Create the AZSHCINODE01 VM using PowerShell ###
 On your Hyper-V host, **open PowerShell as administrator**.  Make any changes that you require, to the script below, and then run it:
 
+**IMPORTANT NOTE** - if your Hyper-V host is a **Windows 10 system**, ensure you select **Generation 1** VMs, due to a bug with nested virtualization in Generation 2 VMs, and the Azure Stack HCI Public Preview.  Choosing Generation 1 will not impact your experience in this evaluation guide.
+
 ```powershell
 # Define the characteristics of the VM, and create
-$nodeName = "AZSHCINODE01"
-New-VM `
+$nodeName = "AZSHCINODE11"
+$generation = 2
+$VM = New-VM `
     -Name $nodeName  `
     -MemoryStartupBytes 4GB `
     -SwitchName "InternalNAT" `
     -Path "C:\VMs\" `
     -NewVHDPath "C:\VMs\$nodeName\Virtual Hard Disks\$nodeName.vhdx" `
     -NewVHDSizeBytes 30GB `
-    -Generation 2
+    -Generation $generation
 ```
 
 #### Dynamic Memory and Runtime Memory Resize ####
@@ -53,7 +56,12 @@ Once the VM is successfully created, you should connect the Azure Stack HCI ISO 
 ```powershell
 # Add the DVD drive, attach the ISO to DC01 and set the DVD as the first boot device
 $DVD = Add-VMDvdDrive -VMName $nodeName -Path C:\ISO\AzSHCI.iso -Passthru
-Set-VMFirmware -VMName $nodeName -FirstBootDevice $DVD
+if ($VM.Generation -eq "2") {
+    Set-VMFirmware -VMName $nodeName -FirstBootDevice $DVD
+}
+else {
+    Set-VMBios -VMName $nodeName -StartupOrder @("CD", "IDE", "LegacyNetworkAdapter", "Floppy")
+}
 ```
 
 Finally, you need to add some additional network adapters, set the vCPU count, enable nested virtualization, and add data hard drives.
@@ -135,8 +143,7 @@ $domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the passw
 # Define node name
 $nodeName = "AZSHCINODE01"
 Invoke-Command -VMName "$nodeName" -Credential $azsHCILocalCreds -ScriptBlock {
-    Write-Verbose "Updating Hostname" -Verbose
-    Rename-Computer -NewName $Using:nodeName
+    # Join the domain and change the name at the same time
     Add-Computer –DomainName azshci.local -NewName $Using:nodeName –Credential $Using:domainCreds -Force
 }
 
@@ -149,6 +156,36 @@ while ((Invoke-Command -VMName $nodeName -Credential $domainCreds {"Test"} -Erro
     Start-Sleep -Seconds 1
 }
 Write-Verbose "$nodeName is now online. Proceed to the next step...." -Verbose
+```
+
+### Enable the Hyper-V role on your Azure Stack HCI Node ###
+There is an existing bug when running Azure Stack HCI within a nested virtualization configuration, specifically, when trying to enable the Hyper-V role within a running instance of Azure Stack HCI.  To workaround this, you can run the following PowerShell command to fix this issue.
+
+#### If you have a Windows Server 2016/2019 Hyper-V host ####
+
+```powershell
+# Stop the node
+Stop-VM -Name $nodeName
+# Get the path to the OS VHD and install Hyper-V
+$OSVHDXPath = (Get-VMHardDiskDrive -VMName $nodeName -ControllerLocation 0).Path
+Install-WindowsFeature -Vhd $OSVHDXPath -Name Hyper-V, RSAT-Hyper-V-Tools, Hyper-V-Powershell
+# Start the node
+Start-VM -Name $nodeName
+```
+
+#### If you have a Windows 10 Hyper-V host ####
+The client OS cannot service the VHDx in the same way that the Windows Server OS can, so in this workaround, the Azure Stack HCI node VHDx file will be mounted on DC01 to complete the configuration
+
+```powershell
+# Stop the node
+Stop-VM -Name $nodeName
+# Create a new VHD on the Host and mount it
+New-VHD
+# Get the path to the OS VHD and install Hyper-V
+$OSVHDXPath = (Get-VMHardDiskDrive -VMName $nodeName -ControllerLocation 0).Path
+Install-WindowsFeature -Vhd $OSVHDXPath -Name Hyper-V, RSAT-Hyper-V-Tools, Hyper-V-Powershell
+# Start the node
+Start-VM -Name $nodeName
 ```
 
 Repeat creation process
