@@ -169,7 +169,7 @@ $domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the passw
 $nodeName = "AZSHCINODE01"
 Invoke-Command -VMName "$nodeName" -Credential $domainCreds -ScriptBlock {
     # Enable the Hyper-V role within the Azure Stack HCI OS
-    Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V
+    Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
 }
 ```
 

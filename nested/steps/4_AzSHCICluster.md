@@ -161,14 +161,14 @@ With the network configured for the evaluation environment, it's time to constru
 
 **NOTE** - Cluster validation is intended to catch hardware or configuration problems before a cluster goes into production. Cluster validation helps to ensure that the Azure Stack HCI solution that you're about to deploy is truly dependable. You can also use cluster validation on configured failover clusters as a diagnostic tool. If you're interested in learning more about Cluster Validation, [check out the official docs](https://docs.microsoft.com/en-us/azure-stack/hci/deploy/validate "Cluster validation official documentation").
 
-**NOTE** - if you see an issue with CredSSP when attempting to validate the cluster, [see the workaround here](#troubleshooting-credssp-issue-during-cluster-validation).
+**NOTE** - if you see an issues when trying to validate the cluster, [see the workarounds here](#troubleshooting-cluster-validation-issues).
 
 ![Validation complete in the Create Cluster wizard](/media/wac_validated.png "Validation complete in the Create Cluster wizard")
 
-3. Optionally, if you want to review the validation report, click on **Download report** and open the file in your browser.
-4. Back in the **Validate the cluster** screen, click **Next**
-5. On the **Create the cluster** page, enter your **cluster name** as **AZSHCICLUS** and select **Advanced**
-6. Under **IP addresses**, click **Specify one or more static addresses**, and enter **192.168.0.10** (assuming you've deployed less than 10 nodes, otherwise adjust accordingly), and click **Add**
+1. Optionally, if you want to review the validation report, click on **Download report** and open the file in your browser.
+2. Back in the **Validate the cluster** screen, click **Next**
+3. On the **Create the cluster** page, enter your **cluster name** as **AZSHCICLUS** and select **Advanced**
+4. Under **IP addresses**, click **Specify one or more static addresses**, and enter **192.168.0.10** (assuming you've deployed less than 10 nodes, otherwise adjust accordingly), and click **Add**
 
 ![Finalize cluster creation in the Create Cluster wizard](/media/wac_create_clus.png "Finalize cluster creation in the Create Cluster wizard")
 
@@ -409,7 +409,7 @@ Next Steps
 -----------
 In this step, you've successfully created a nested Azure Stack HCI cluster using Windows Admin Center.  With this complete, you can now [Explore the management of your Azure Stack HCI environment](/nested/steps/5_ExploreAzSHCI.md "Explore the management of your Azure Stack HCI environment")
 
-Troubleshooting CredSSP issue during cluster validation
+Troubleshooting cluster validation issues
 -----------
 During testing, you **may** see an issue initiating cluster validation due to a CredSSP issue.  To workaround this issue, on **MGMT01**, you should run the following command:
 
@@ -430,3 +430,12 @@ Restart-Computer -Force
 ```
 
 You should then be able to continue the validation process once all the nodes are back online.
+
+If you see a **WinRM** related issue when running validation, on **each Azure Stack HCI node**, and on the **MGMT01** OS, run the following in PowerShell:
+
+```powershell
+Restart-Service WinRm
+Restart-Computer -Force
+```
+
+Then, back on **MGMT01**, access the Windows Admin Center, if you restart the cluster creation wizard, Windows Admin Center should allow you to pick up where you left off previously.
