@@ -324,15 +324,14 @@ Installation will then begin, and will take a few minutes, automatically rebooti
 
 With the installation complete, you'll be prompted to finish the out of box experience, including **choosing your region**, **keyboard layout** and finally, setting a username and password.
 
-![Initiate setup of the Windows 10 OS](/media/w10_install_complete.png "Initiate setup of the Windows 10 OS")
-
-1. On the **Sign in with Microsoft** page, select **Domain join instead**
-2. On the **Who's going to use this PC** page, enter **LocalAdmin** and click **Next**
-3. On the **Create a super memorable password** page, for simplicity, enter a previously used password and click **Next**
-4. Enter your password again on the **Confirm your password** page, then click **Next**
-5. For the security questions, provide answers for 3 questions, and click **Next**
-6. On the **Choose privacy settings for your device** page, make your adjustments and click **Accept**
-7. On the next few screens, make your desired selections for the services, and the install process will finish.  This will take a few minutes.
+1. On the **Let's connect you to a network** page, select **I don't have internet** in the bottom left corner
+2. On the **There's more to discover...** page, in the bottom left corner, click **Continue with limited setup**
+3. On the **Who's going to use this PC** page, enter **LocalAdmin**
+4. On the **Create a super memorable password** page, for simplicity, enter a previously used password and click **Next**
+5. Enter your password again on the **Confirm your password** page, then click **Next**
+6. For the security questions, provide answers for 3 questions, and click **Next**
+7. On the **Choose privacy settings for your device** page, make your adjustments and click **Accept**
+8. On the next few screens, make your desired selections for the services, and the install process will finish.  This will take a few minutes.
 
 Once complete, you should be logged in on the Windows 10 machine.
 
