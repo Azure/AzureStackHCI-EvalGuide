@@ -328,7 +328,7 @@ With MGMT01 up and running, it's time to configure the networking so it can comm
    * Gateway: 192.168.0.1
    * Preferred DNS: 192.168.0.2
 
-![Setting static NIC settings](/media/ip_settings.png "Setting static NIC settings")
+![Setting static NIC settings](/media/ip_settings.PNG "Setting static NIC settings")
 
 #### Optional - Update your Windows 10 OS ####
 
