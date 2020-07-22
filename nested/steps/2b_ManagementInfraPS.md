@@ -244,15 +244,14 @@ Write-Verbose "Creating new administrative User within the azshci.local domain."
 $newUser = "LabAdmin"
 Invoke-Command -VMName DC01 -Credential $domainCreds -ScriptBlock {
     New-ADUser -Name $using:newUser -AccountPassword $using:domainCreds.Password -Enabled $True
-    $ADReadyCheck = Get-ADUser -Identity $using:newUser
+    Get-ADUser -Identity $using:newUser
     Add-ADGroupMember -Identity "Domain Admins" -Members $using:newUser
     Add-ADGroupMember -Identity "Enterprise Admins" -Members $using:newUser
     Add-ADGroupMember -Identity "Schema Admins" -Members $using:newUser
     }
-Write-Verbose "User: $newUser created." -Verbose
 ```
 
-**NOTE** - if you receive warnings or errors creating new users, wait a few moments, as your DC01 machine may need more time to start new services.
+**NOTE** - if you receive warnings or errors creating new users, wait a few moments, as your DC01 machine may need more time to start the AD web services.
 
 With Active Directory and DNS configured, you can now move on to deploying the Windows 10 Enterprise VM, that will be used to run the Windows Admin Center.
 
