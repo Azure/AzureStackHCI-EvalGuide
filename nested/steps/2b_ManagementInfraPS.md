@@ -336,7 +336,7 @@ With the installation complete, you'll be prompted to finish the out of box expe
 Once complete, you should be logged in on the Windows 10 machine.
 
 ### Configure MGMT01 networking ###
-With MGMT01 up and running, it's time to configure the networking so it can communicate with DC01.
+With MGMT01 up and running, it's time to configure the networking so it can communicate with DC01. On your Hyper-V host, run the following:
 
 ```powershell
 # Define local Windows 10 credentials
@@ -372,9 +372,7 @@ $domainName = "azshci.local"
 $domainAdmin = "$domainName\labadmin"
 $domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the password for the LabAdmin account"
 Invoke-Command -VMName "MGMT01" -Credential $w10Creds -ScriptBlock {
-    # Update Hostname to MGMT01
-    Write-Verbose "Updating Hostname for MGMT01" -Verbose
-    Rename-Computer -NewName "MGMT01"
+    # Rename and join domain
     Add-Computer –DomainName azshci.local -NewName "MGMT01" –Credential $using:domainCreds -Force
 }
 
@@ -388,6 +386,14 @@ while ((Invoke-Command -VMName MGMT01 -Credential $domainCreds {"Test"} -ErrorAc
 }
 Write-Verbose "MGMT01 is now online. Proceed to the next step...." -Verbose
 ```
+
+#### Optional - Install the new Microsoft Edge ####
+It's highly recommended to install the new version of the Microsoft Edge browser, as it gives a much smoother browsing experience, and is more efficient with it's use of limited resources, if you've deployed in a memory-constrained environment.
+
+1. Open the existing **Microsoft Edge** browser, and navigate to https://www.microsoft.com/en-us/edge
+2. On the landing page, click on **Download** and when prompted, **read the license terms** then click **Accept and download**
+3. Once downloaded, click **Run**
+4. The installation will begin, and take a few moments to download, install and configure.  You can accept the **defaults** for the configuration.
 
 ### Install Windows Admin Center on Windows 10 ###
 With the Windows 10 VM now deployed and configured, the final step in the infrastructure preparation, is to install and configure the Windows Admin Center. Earlier in this guide, you should have downloaded the Windows Admin Center files, along with other ISOs.
