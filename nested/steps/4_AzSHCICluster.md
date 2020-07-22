@@ -290,8 +290,9 @@ We're going to perform the registration from the **MGMT01** machine, which we've
 1. On **MGMT01**, open **PowerShell as administrator** and run the following code. This installs the PowerShell Module for Azure Stack HCI on the local node.
 
 ```powershell
-$azshciNodeCreds = Get-Credential -UserName "azshci\labadmin" -Message "Enter the Lab Admin password"
-Invoke-Command -ComputerName AZSHCINODE01 -Credential $azshciNodeCreds -ScriptBlock {
+# Edit your node names here
+$nodes = "AZSHCINODE01","AZSHCINODE02","AZSHCINODE03","AZSHCINODE04"
+Invoke-Command -ComputerName $nodes -ScriptBlock {
     Install-WindowsFeature RSAT-Azure-Stack-HCI
 }
 ```
@@ -299,6 +300,7 @@ Invoke-Command -ComputerName AZSHCINODE01 -Credential $azshciNodeCreds -ScriptBl
 2. Next, on **MGMT01**, you'll install the required Az.StackHCI PowerShell module locally
 
 ```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
 Install-Module Az.StackHCI
 ```
 
@@ -309,7 +311,7 @@ Install-Module Az.StackHCI
 3. With the Az.StackHCI modules installed, it's now time to register your Azure Stack HCI cluster to Azure, however first, it's worth exploring how to check existing registration status, which we'll do remotely, from **MGMT01**.  The following code assumes you left your PowerShell window open from the previous commands.
 
 ```powershell
-Invoke-Command -ComputerName AZSHCINODE01 -Credential $azshciNodeCreds -ScriptBlock {
+Invoke-Command -ComputerName AZSHCINODE01 -ScriptBlock {
     Get-AzureStackHCI
 }
 ```
@@ -365,10 +367,10 @@ Of these commands, many are optional:
 Register-AzStackHCI : Azure Stack HCI is not yet available in region <regionName>
 ```
 
-9. Once the cluster is registered, run the following command to check the updated status:
+9. Once the cluster is registered, run the following command on **MGMT01** to check the updated status:
 
 ```powershell
-Invoke-Command -ComputerName AZSHCINODE01 -Credential $azshciNodeCreds -ScriptBlock {
+Invoke-Command -ComputerName AZSHCINODE01 -ScriptBlock {
     Get-AzureStackHCI
 }
 ```
@@ -411,6 +413,8 @@ In this step, you've successfully created a nested Azure Stack HCI cluster using
 
 Troubleshooting cluster validation issues
 -----------
+
+#### CredSSP issue ####
 During testing, you **may** see an issue initiating cluster validation due to a CredSSP issue.  To workaround this issue, on **MGMT01**, you should run the following command:
 
 ```powershell
@@ -431,6 +435,7 @@ Restart-Computer -Force
 
 You should then be able to continue the validation process once all the nodes are back online.
 
+#### WinRM issue ####
 If you see a **WinRM** related issue when running validation, on **each Azure Stack HCI node**, and on the **MGMT01** OS, run the following in PowerShell:
 
 ```powershell
