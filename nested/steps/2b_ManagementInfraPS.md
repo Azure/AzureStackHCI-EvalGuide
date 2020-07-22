@@ -295,7 +295,7 @@ Once the VM is successfully created, you should connect the Windows 10 Enterpris
 $DVD = Add-VMDvdDrive -VMName MGMT01 -Path C:\ISO\W10.iso -Passthru
 Set-VMFirmware -VMName MGMT01 -FirstBootDevice $DVD
 # Disable checkpoints
-Set-VM -VMName DC01 -CheckpointType Disabled
+Set-VM -VMName MGMT01 -CheckpointType Disabled
 ```
 With the VM configured correctly, you can use the following commands to connect to the VM using VM Connect, and at the same time, start the VM.  To boot from the ISO, you'll need to click on the VM and quickly press a key to trigger the boot from the DVD inside the VM.  If you miss the prompt to press a key to boot from CD or DVD, simply reset the VM and try again.
 
