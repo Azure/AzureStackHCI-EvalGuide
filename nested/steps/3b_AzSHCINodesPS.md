@@ -51,6 +51,8 @@ When Hyper-V is running inside a virtual machine, the virtual machine must be tu
 Once the VM is successfully created, you should connect the Azure Stack HCI ISO file, downloaded earlier.
 
 ```powershell
+# Disable Dynamic Memory
+Set-VMMemory -VMName $nodeName -DynamicMemoryEnabled $false
 # Add the DVD drive, attach the ISO to DC01 and set the DVD as the first boot device
 $DVD = Add-VMDvdDrive -VMName $nodeName -Path C:\ISO\AzSHCI.iso -Passthru
 Set-VMFirmware -VMName $nodeName -FirstBootDevice $DVD
