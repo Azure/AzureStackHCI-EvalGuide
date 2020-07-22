@@ -63,8 +63,11 @@ Finally, you need to add some additional network adapters, set the vCPU count, e
 ```powershell
 # Set the VM processor count for the VM
 Set-VM -VMname $nodeName -ProcessorCount 4
-# Add the virtual network adapters to the VM
-1..3 | ForEach-Object { Add-VMNetworkAdapter -VMName $nodeName -SwitchName InternalNAT }
+# Add the virtual network adapters to the VM and configure appropriately
+1..3 | ForEach-Object { 
+    Add-VMNetworkAdapter -VMName $nodeName -SwitchName InternalNAT
+    Set-VMNetworkAdapter -VMName $nodeName -MacAddressSpoofing On -AllowTeaming on 
+}
 # Create the DATA virtual hard disks and attach them
 $dataDrives = 1..4 | ForEach-Object { New-VHD -Path "C:\VMs\$nodeName\Virtual Hard Disks\DATA0$_.vhdx" -Dynamic -Size 100GB }
 $dataDrives | ForEach-Object {
