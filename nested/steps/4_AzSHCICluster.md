@@ -359,6 +359,12 @@ Of these commands, many are optional:
 
 ![Register Azure Stack HCI with PowerShell](/media/register_azshci.png "Register Azure Stack HCI with PowerShell")
 
+**NOTE** - if upon registering, you receive an error similar to that below, please **try registering again in 24-48 hours**.  The Azure integration is still in the process of being rolled out across regions.  You can still proceed to [Step 5](#next-steps) and continue with your evaluation, and it won't affect any functionality.  Just make sure you come back and register later!
+
+```
+Register-AzStackHCI : Azure Stack HCI is not yet available in region <regionName>
+```
+
 9. Once the cluster is registered, run the following command to check the updated status:
 
 ```powershell
