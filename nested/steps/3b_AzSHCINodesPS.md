@@ -66,7 +66,7 @@ Set-VM -VMname $nodeName -ProcessorCount 4
 # Add the virtual network adapters to the VM and configure appropriately
 1..3 | ForEach-Object { 
     Add-VMNetworkAdapter -VMName $nodeName -SwitchName InternalNAT
-    Set-VMNetworkAdapter -VMName $nodeName -MacAddressSpoofing On -AllowTeaming on 
+    Set-VMNetworkAdapter -VMName $nodeName -MacAddressSpoofing On -AllowTeaming On 
 }
 # Create the DATA virtual hard disks and attach them
 $dataDrives = 1..4 | ForEach-Object { New-VHD -Path "C:\VMs\$nodeName\Virtual Hard Disks\DATA0$_.vhdx" -Dynamic -Size 100GB }
