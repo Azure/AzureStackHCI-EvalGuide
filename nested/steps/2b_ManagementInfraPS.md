@@ -91,12 +91,14 @@ To optimize the VM's use of available memory, especially on physical systems wit
 # Optionally configure the VM with Dynamic Memory
 Set-VMMemory DC01 -DynamicMemoryEnabled $true -MinimumBytes 1GB -StartupBytes 4GB -MaximumBytes 4GB
 ```
-Once the VM is successfully created, you should connect the Windows Server 2019 ISO file, downloaded earlier.
+Once the VM is successfully created, you should connect the Windows Server 2019 ISO file, downloaded earlier, and also disable checkpoints.
 
 ```powershell
 # Add the DVD drive, attach the ISO to DC01 and set the DVD as the first boot device
 $DVD = Add-VMDvdDrive -VMName DC01 -Path C:\ISO\WS2019.iso -Passthru
 Set-VMFirmware -VMName DC01 -FirstBootDevice $DVD
+# Disable checkpoints
+Set-VM -VMName DC01 -CheckpointType Disabled
 ```
 With the VM configured correctly, you can use the following commands to connect to the VM using VM Connect, and at the same time, start the VM.  To boot from the ISO, you'll need to click on the VM and quickly press a key to trigger the boot from the DVD inside the VM.  If you miss the prompt to press a key to boot from CD or DVD, simply reset the VM and try again.
 
@@ -286,12 +288,14 @@ To optimize the VM's use of available memory, especially on physical systems wit
 # Optionally configure the VM with Dynamic Memory
 Set-VMMemory MGMT01 -DynamicMemoryEnabled $true -MinimumBytes 2GB -StartupBytes 4GB -MaximumBytes 4GB
 ```
-Once the VM is successfully created, you should connect the Windows 10 Enterprise Evaluation ISO file, downloaded earlier.
+Once the VM is successfully created, you should connect the Windows 10 Enterprise Evaluation ISO file, downloaded earlier, and also disable checkpoints.
 
 ```powershell
 # Add the DVD drive, attach the ISO to DC01 and set the DVD as the first boot device
 $DVD = Add-VMDvdDrive -VMName MGMT01 -Path C:\ISO\W10.iso -Passthru
 Set-VMFirmware -VMName MGMT01 -FirstBootDevice $DVD
+# Disable checkpoints
+Set-VM -VMName DC01 -CheckpointType Disabled
 ```
 With the VM configured correctly, you can use the following commands to connect to the VM using VM Connect, and at the same time, start the VM.  To boot from the ISO, you'll need to click on the VM and quickly press a key to trigger the boot from the DVD inside the VM.  If you miss the prompt to press a key to boot from CD or DVD, simply reset the VM and try again.
 
