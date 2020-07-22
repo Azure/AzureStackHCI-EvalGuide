@@ -238,7 +238,7 @@ There are 3 main steps to create the virtualized Windows 10 Management VM on our
 2. Complete the Out of Box Experience (OOBE)
 3. Join the domain, and install Windows Admin Center
 
-### Create the DC01 VM using Hyper-V Manager ###
+### Create the MGMT01 VM using Hyper-V Manager ###
 In this step, you'll be using Hyper-V Manager to deploy a Windows 10 Enterprise management virtual machine.
 
 1. On your Hyper-V host, **open Hyper-V Manager**.
