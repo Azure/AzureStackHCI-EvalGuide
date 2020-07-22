@@ -60,31 +60,35 @@ When Hyper-V is running inside a virtual machine, the virtual machine must be tu
 Your new AZSHCINODE01 virtual machine will now be created.  Once created, we need to make a few final modifications.
 
 1. In **Hyper-V Manager**, right-click **AZSHCINODE01** and click **Settings**
-2. Select **Add Hardware**, select **Network Adapter** and click **Add**
-3. In the **Network Adapter** window, under **Virtual Switch**, use the drop down to select **InternalNAT**, then click **Apply**
-4. Repeat **Steps 2-3** to create an **additional** 2 network adapters all attached to **InternalNAT**
-5. Once you have **4 network adapters**, click on **Processor**
-6. For **Number of virtual processors**, choose a number appropriate to your underlying hardware. In this case, we'll choose **4** but we can adjust this later, then click **Apply**
+2. Click on the **+** next to **Network Adapter** then click **Advanced Features**
+3. Tick the box for **Enable MAC address spoofing** and also for **Enable this network adapter to be part of a team in the guest operating system**, then click **apply**
+4. Select **Add Hardware**, select **Network Adapter** and click **Add**
+5. In the **Network Adapter** window, under **Virtual Switch**, use the drop down to select **InternalNAT**
+6. For this new NIC, click on the **+** next to **Network Adapter** then click **Advanced Features**
+7. Tick the box for **Enable MAC address spoofing** and also for **Enable this network adapter to be part of a team in the guest operating system**, then click **apply**
+8. Repeat **Steps 4-7** to create an **additional** 2 network adapters all attached to **InternalNAT**
+9.  Once you have **4 network adapters**, click on **Processor**
+10. For **Number of virtual processors**, choose a number appropriate to your underlying hardware. In this case, we'll choose **4** but we can adjust this later, then click **Apply**
 
 ![Configuring the vm settings](/media/new_vm_node_settings.png "Configuring the vm settings")
 
 You now need to add additional hard drives to support the Azure Stack HCI nodes and cluster.  You need to add a minimum of 2 data disks, but we will add 4 data disks to each node.
 
-7. Still within **AZSHCINODE01 settings**, click on **SCSI Controller**, then **Hard Drive** and click **Add**
-8. In the **Hard Drive** window, click **New**.  The **New Virtual Hard Disk** wizard opens, then click **Next**
-9. On the **Choose Disk Type** page, ensure **Dynamically expanding** is selected, then click **Next**
-10. On the **Specify Name and Location** page, enter **DATA01.vhdx**, and change the location to **C:\VMs\AZSHCINODE01\Virtual Hard Disks**, then click **Next**
+11. Still within **AZSHCINODE01 settings**, click on **SCSI Controller**, then **Hard Drive** and click **Add**
+12. In the **Hard Drive** window, click **New**.  The **New Virtual Hard Disk** wizard opens, then click **Next**
+13. On the **Choose Disk Type** page, ensure **Dynamically expanding** is selected, then click **Next**
+14. On the **Specify Name and Location** page, enter **DATA01.vhdx**, and change the location to **C:\VMs\AZSHCINODE01\Virtual Hard Disks**, then click **Next**
 
 ![Adding additional hard drives to AzSHCINode01](/media/azshci_data_disk.png "Adding additional hard drives to AzSHCINode01")
 
-11. On the **Configure Disk** page, ensure **Create a blank virtual hard disk** is selected, set size to **100**, then click **Next**
-12. On the **Completing the New Virtual Hard Disk Wizard** page, review your settings and click **Finish**
-13. Back in the **AZSHCINODE01 settings**, click **Apply**
-14. **Repeat steps 7-13** to add **at least 3 more data disks**
+15. On the **Configure Disk** page, ensure **Create a blank virtual hard disk** is selected, set size to **100**, then click **Next**
+16. On the **Completing the New Virtual Hard Disk Wizard** page, review your settings and click **Finish**
+17. Back in the **AZSHCINODE01 settings**, click **Apply**
+18. **Repeat steps 7-13** to add **at least 3 more data disks**
 
 ![Finished adding additional hard drives to AzSHCINode01](/media/azshci_disks_added.png "Finished adding additional hard drives to AzSHCINode01")
 
-15. If you are running on a **Windows 10 Hyper-V host**, you should also **disable automatic checkpoints**. From the **Settings** window, under **Management**, click **Checkpoints** and then if ticked, **untick** the **Enable checkpoints** box, then click **OK**
+19. If you are running on a **Windows 10 Hyper-V host**, you should also **disable automatic checkpoints**. From the **Settings** window, under **Management**, click **Checkpoints** and then if ticked, **untick** the **Enable checkpoints** box, then click **OK**
 
 Before starting the VM, in order to enable Hyper-V to function inside the AZSHCINODE01 virtual machine, we need to run a quick PowerShell command to facilitate this.  Open **PowerShell as administrator** and run the following:
 
@@ -165,7 +169,7 @@ $domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the passw
 $nodeName = "AZSHCINODE01"
 Invoke-Command -VMName "$nodeName" -Credential $domainCreds -ScriptBlock {
     # Enable the Hyper-V role within the Azure Stack HCI OS
-    Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V
+    Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V,RSAT-Hyper-V-Tools-Feature,Microsoft-Hyper-V-Management-PowerShell
 }
 ```
 

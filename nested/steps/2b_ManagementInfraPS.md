@@ -91,12 +91,14 @@ To optimize the VM's use of available memory, especially on physical systems wit
 # Optionally configure the VM with Dynamic Memory
 Set-VMMemory DC01 -DynamicMemoryEnabled $true -MinimumBytes 1GB -StartupBytes 4GB -MaximumBytes 4GB
 ```
-Once the VM is successfully created, you should connect the Windows Server 2019 ISO file, downloaded earlier.
+Once the VM is successfully created, you should connect the Windows Server 2019 ISO file, downloaded earlier, and also disable checkpoints.
 
 ```powershell
 # Add the DVD drive, attach the ISO to DC01 and set the DVD as the first boot device
 $DVD = Add-VMDvdDrive -VMName DC01 -Path C:\ISO\WS2019.iso -Passthru
 Set-VMFirmware -VMName DC01 -FirstBootDevice $DVD
+# Disable checkpoints
+Set-VM -VMName DC01 -CheckpointType Disabled
 ```
 With the VM configured correctly, you can use the following commands to connect to the VM using VM Connect, and at the same time, start the VM.  To boot from the ISO, you'll need to click on the VM and quickly press a key to trigger the boot from the DVD inside the VM.  If you miss the prompt to press a key to boot from CD or DVD, simply reset the VM and try again.
 
@@ -244,15 +246,14 @@ Write-Verbose "Creating new administrative User within the azshci.local domain."
 $newUser = "LabAdmin"
 Invoke-Command -VMName DC01 -Credential $domainCreds -ScriptBlock {
     New-ADUser -Name $using:newUser -AccountPassword $using:domainCreds.Password -Enabled $True
-    $ADReadyCheck = Get-ADUser -Identity $using:newUser
+    Get-ADUser -Identity $using:newUser
     Add-ADGroupMember -Identity "Domain Admins" -Members $using:newUser
     Add-ADGroupMember -Identity "Enterprise Admins" -Members $using:newUser
     Add-ADGroupMember -Identity "Schema Admins" -Members $using:newUser
     }
-Write-Verbose "User: $newUser created." -Verbose
 ```
 
-**NOTE** - if you receive warnings or errors creating new users, wait a few moments, as your DC01 machine may need more time to start new services.
+**NOTE** - if you receive warnings or errors creating new users, wait a few moments, as your DC01 machine may need more time to start the AD web services.
 
 With Active Directory and DNS configured, you can now move on to deploying the Windows 10 Enterprise VM, that will be used to run the Windows Admin Center.
 
@@ -287,12 +288,14 @@ To optimize the VM's use of available memory, especially on physical systems wit
 # Optionally configure the VM with Dynamic Memory
 Set-VMMemory MGMT01 -DynamicMemoryEnabled $true -MinimumBytes 2GB -StartupBytes 4GB -MaximumBytes 4GB
 ```
-Once the VM is successfully created, you should connect the Windows 10 Enterprise Evaluation ISO file, downloaded earlier.
+Once the VM is successfully created, you should connect the Windows 10 Enterprise Evaluation ISO file, downloaded earlier, and also disable checkpoints.
 
 ```powershell
 # Add the DVD drive, attach the ISO to DC01 and set the DVD as the first boot device
 $DVD = Add-VMDvdDrive -VMName MGMT01 -Path C:\ISO\W10.iso -Passthru
 Set-VMFirmware -VMName MGMT01 -FirstBootDevice $DVD
+# Disable checkpoints
+Set-VM -VMName MGMT01 -CheckpointType Disabled
 ```
 With the VM configured correctly, you can use the following commands to connect to the VM using VM Connect, and at the same time, start the VM.  To boot from the ISO, you'll need to click on the VM and quickly press a key to trigger the boot from the DVD inside the VM.  If you miss the prompt to press a key to boot from CD or DVD, simply reset the VM and try again.
 
@@ -321,20 +324,19 @@ Installation will then begin, and will take a few minutes, automatically rebooti
 
 With the installation complete, you'll be prompted to finish the out of box experience, including **choosing your region**, **keyboard layout** and finally, setting a username and password.
 
-![Initiate setup of the Windows 10 OS](/media/w10_install_complete.png "Initiate setup of the Windows 10 OS")
-
-1. On the **Sign in with Microsoft** page, select **Domain join instead**
-2. On the **Who's going to use this PC** page, enter **LocalAdmin** and click **Next**
-3. On the **Create a super memorable password** page, for simplicity, enter a previously used password and click **Next**
-4. Enter your password again on the **Confirm your password** page, then click **Next**
-5. For the security questions, provide answers for 3 questions, and click **Next**
-6. On the **Choose privacy settings for your device** page, make your adjustments and click **Accept**
-7. On the next few screens, make your desired selections for the services, and the install process will finish.  This will take a few minutes.
+1. On the **Let's connect you to a network** page, select **I don't have internet** in the bottom left corner
+2. On the **There's more to discover...** page, in the bottom left corner, click **Continue with limited setup**
+3. On the **Who's going to use this PC** page, enter **LocalAdmin**
+4. On the **Create a super memorable password** page, for simplicity, enter a previously used password and click **Next**
+5. Enter your password again on the **Confirm your password** page, then click **Next**
+6. For the security questions, provide answers for 3 questions, and click **Next**
+7. On the **Choose privacy settings for your device** page, make your adjustments and click **Accept**
+8. On the next few screens, make your desired selections for the services, and the install process will finish.  This will take a few minutes.
 
 Once complete, you should be logged in on the Windows 10 machine.
 
 ### Configure MGMT01 networking ###
-With MGMT01 up and running, it's time to configure the networking so it can communicate with DC01.
+With MGMT01 up and running, it's time to configure the networking so it can communicate with DC01. On your Hyper-V host, run the following:
 
 ```powershell
 # Define local Windows 10 credentials
@@ -370,9 +372,7 @@ $domainName = "azshci.local"
 $domainAdmin = "$domainName\labadmin"
 $domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the password for the LabAdmin account"
 Invoke-Command -VMName "MGMT01" -Credential $w10Creds -ScriptBlock {
-    # Update Hostname to MGMT01
-    Write-Verbose "Updating Hostname for MGMT01" -Verbose
-    Rename-Computer -NewName "MGMT01"
+    # Rename and join domain
     Add-Computer –DomainName azshci.local -NewName "MGMT01" –Credential $using:domainCreds -Force
 }
 
@@ -386,6 +386,14 @@ while ((Invoke-Command -VMName MGMT01 -Credential $domainCreds {"Test"} -ErrorAc
 }
 Write-Verbose "MGMT01 is now online. Proceed to the next step...." -Verbose
 ```
+
+#### Optional - Install the new Microsoft Edge ####
+It's highly recommended to install the new version of the Microsoft Edge browser, as it gives a much smoother browsing experience, and is more efficient with it's use of limited resources, if you've deployed in a memory-constrained environment.
+
+1. Open the existing **Microsoft Edge** browser, and navigate to https://www.microsoft.com/en-us/edge
+2. On the landing page, click on **Download** and when prompted, **read the license terms** then click **Accept and download**
+3. Once downloaded, click **Run**
+4. The installation will begin, and take a few moments to download, install and configure.  You can accept the **defaults** for the configuration.
 
 ### Install Windows Admin Center on Windows 10 ###
 With the Windows 10 VM now deployed and configured, the final step in the infrastructure preparation, is to install and configure the Windows Admin Center. Earlier in this guide, you should have downloaded the Windows Admin Center files, along with other ISOs.

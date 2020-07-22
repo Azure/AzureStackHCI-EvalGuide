@@ -51,6 +51,8 @@ When Hyper-V is running inside a virtual machine, the virtual machine must be tu
 Once the VM is successfully created, you should connect the Azure Stack HCI ISO file, downloaded earlier.
 
 ```powershell
+# Disable Dynamic Memory
+Set-VMMemory -VMName $nodeName -DynamicMemoryEnabled $false
 # Add the DVD drive, attach the ISO to DC01 and set the DVD as the first boot device
 $DVD = Add-VMDvdDrive -VMName $nodeName -Path C:\ISO\AzSHCI.iso -Passthru
 Set-VMFirmware -VMName $nodeName -FirstBootDevice $DVD
@@ -61,8 +63,11 @@ Finally, you need to add some additional network adapters, set the vCPU count, e
 ```powershell
 # Set the VM processor count for the VM
 Set-VM -VMname $nodeName -ProcessorCount 4
-# Add the virtual network adapters to the VM
-1..3 | ForEach-Object { Add-VMNetworkAdapter -VMName $nodeName -SwitchName InternalNAT }
+# Add the virtual network adapters to the VM and configure appropriately
+1..3 | ForEach-Object { 
+    Add-VMNetworkAdapter -VMName $nodeName -SwitchName InternalNAT
+    Set-VMNetworkAdapter -VMName $nodeName -MacAddressSpoofing On -AllowTeaming On 
+}
 # Create the DATA virtual hard disks and attach them
 $dataDrives = 1..4 | ForEach-Object { New-VHD -Path "C:\VMs\$nodeName\Virtual Hard Disks\DATA0$_.vhdx" -Dynamic -Size 100GB }
 $dataDrives | ForEach-Object {
@@ -164,7 +169,7 @@ $domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the passw
 $nodeName = "AZSHCINODE01"
 Invoke-Command -VMName "$nodeName" -Credential $domainCreds -ScriptBlock {
     # Enable the Hyper-V role within the Azure Stack HCI OS
-    Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V
+    Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
 }
 ```
 
