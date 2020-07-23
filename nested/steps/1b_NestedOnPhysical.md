@@ -64,7 +64,7 @@ If your physical system doesn't meet these recommended requirements, you're stil
 #### Reducing memory consumption ####
 To reduce the memory requirements of the configuration, you could choose not to deploy in a sandbox envinronment.  By removing the domain controller and management virtual machines, you could free up additional memory that could be used for the nested Azure Stack HCI nodes themselves.  However, this will require you to have an existing domain environment accessible, and an alternative location, potentially on the host itself, to install the Windows Admin Center.  This approach will **not** be covered as part of these initial guides, but may be evaluated for later versions.
 
-If you do want to skip deployment of the management infrastructure, install the Windows Admin Center, and jump ahead to [deploy your nested Azure Stack HCI nodes](/nested/steps/3_AzSHCINodes.md "deploying your Azure Stack HCI nodes").  Bear in mind, you may need to modify certain steps to account for the different management environment.
+If you do want to skip deployment of the management infrastructure, install the Windows Admin Center, and jump ahead to [deploy your nested Azure Stack HCI nodes](/nested/steps/3a_AzSHCINodesGUI.md "deploying your Azure Stack HCI nodes").  Bear in mind, you may need to modify certain steps to account for the different management environment.
 
 Get an Azure subscription
 -----------
