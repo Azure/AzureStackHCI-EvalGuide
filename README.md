@@ -3,7 +3,7 @@ Azure Stack HCI - Evaluation Guide
 
 ## Welcome to the Azure Stack HCI Evaluation Guide ##
 
-In this guide, we'll walk you experiencing a number of the amazing capabilities within Azure Stack HCI, and set the foundation for you to explore in your own time.  You'll cover aspects such as:
+In this guide, we'll walk you experiencing a number of the amazing capabilities within the [new Azure Stack HCI public preview](https://azure.microsoft.com/en-us/products/azure-stack/hci/ "link to the new Azure Stack HCI public preview"), and set the foundation for you to explore in your own time.  You'll cover aspects such as:
 
 * Deploying Azure Stack HCI nodes
 * Deploying supporting management infrastructure, including Active Directory domain and management tooling
