@@ -53,6 +53,8 @@ Hyper-V Requirements: A hypervisor has been detected. Features required for Hype
 
 With 16GB memory, running on a laptop, we'll need to ensure that we're taking advantage of features in Hyper-V, such as Dynamic Memory, to optimize the memory usage as much as possible, to ensure you can experience as much as possible on the system you have available.
 
+**NOTE** When you configure your nested Azure Stack HCI nodes later, they will **require a minimum of 4GB RAM per node**, otherwise, they won't boot, so on a 16GB system, expect 2-3 nodes plus management infrastructure realistically.
+
 Obviously, if you have a larger physical system, such as a workstation, or server, you'll likely have a greater amount of memory available to you, therefore you can adjust the memory levels for the different resources accordingly.
 
 If your physical system doesn't meet these recommended requirements, you're still free to test, and see if you can proceed with lower numbers, but it may be a better approach to [deploy in Azure instead](/azshci/NestedInAzure.md "Deploy in Azure")
