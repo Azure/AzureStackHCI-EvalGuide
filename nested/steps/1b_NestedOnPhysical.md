@@ -41,7 +41,9 @@ The following items will need to be enabled in the system BIOS:
 * Hardware Enforced Data Execution Prevention.
 
 ### Important note for systems with AMD CPUs ###
-For those of you wanting to evaluate Azure Stack HCI in a nested configuration, with **AMD-based systems**, the only way this is currently possible is to use **Windows 10 Insider Build 19636 or newer** as your Hyper-V host. Your system should have AMD's 1st generation Ryzen/Epyc or newer CPUs. You can get more information on nested virtualization on AMD here: https://techcommunity.microsoft.com/t5/virtualization/amd-nested-virtualization-support/ba-p/1434841
+For those of you wanting to evaluate Azure Stack HCI in a nested configuration, with **AMD-based systems**, the only way this is currently possible is to use **Windows 10 Insider Build 19636 or newer** as your Hyper-V host. Your system should have AMD's 1st generation Ryzen/Epyc or newer CPUs. You can get more information on nested virtualization on AMD here: https://techcommunity.microsoft.com/t5/virtualization/amd-nested-virtualization-support/ba-p/1434841.
+
+If you can't run the Windows 10 Insider builds on your AMD-based system, it may be a better approach to [deploy in Azure instead](/azshci/NestedInAzure.md "Deploy in Azure").  We'll be sure to update this guidance as and when new updates to nested virtualization support become available.
 
 ### Verify Hardware Compatibility ###
 After checking the operating system and hardware requirements above, verify hardware compatibility in Windows by opening a PowerShell session or a command prompt (cmd.exe) window, typing **systeminfo**, and then checking the Hyper-V Requirements section. If all listed Hyper-V requirements have a value of **Yes**, your system can run the Hyper-V role. If any item returns No, check the requirements above and make adjustments where possible.
@@ -62,7 +64,7 @@ With 16GB memory, running on a laptop, we'll need to ensure that we're taking ad
 
 Obviously, if you have a larger physical system, such as a workstation, or server, you'll likely have a greater amount of memory available to you, therefore you can adjust the memory levels for the different resources accordingly.
 
-If your physical system doesn't meet these recommended requirements, you're still free to test, and see if you can proceed with lower numbers, but it may be a better approach to [deploy in Azure instead](/azshci/NestedInAzure.md "Deploy in Azure")
+If your physical system doesn't meet these recommended requirements, you're still free to test, and see if you can proceed with lower numbers, but it may be a better approach to [deploy in Azure instead](/nested/steps/1a_NestedInAzure.md "Deploy in Azure")
 
 #### Reducing memory consumption ####
 To reduce the memory requirements of the configuration, you could choose not to deploy in a sandbox envinronment.  By removing the domain controller and management virtual machines, you could free up additional memory that could be used for the nested Azure Stack HCI nodes themselves.  However, this will require you to have an existing domain environment accessible, and an alternative location, potentially on the host itself, to install the Windows Admin Center.  This approach will **not** be covered as part of these initial guides, but may be evaluated for later versions.

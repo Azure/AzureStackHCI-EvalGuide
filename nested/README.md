@@ -36,6 +36,11 @@ To reiterate, the whole configuration (Domain Controller VM, Management VM and A
 
 In this configuration, you'll again take advantage of nested virtualization, but in this case, you'll deploy the whole solution on a single desktop/laptop/server.  On your physical system, you'll run either Windows Server 2016/2019 or Windows 10 Pro/Enterprise/Education, with the Hyper-V role enabled.  On Hyper-V, you'll deploy a sandbox infrastructure, consisting of a Windows Server 2019 domain controller VM, a management VM running Windows 10 Enterprise, and a nested Azure Stack HCI cluster.
 
+#### Important note for systems with AMD CPUs ####
+For those of you wanting to evaluate Azure Stack HCI in a nested configuration, with **AMD-based systems**, the only way this is currently possible is to use **Windows 10 Insider Build 19636 or newer** as your Hyper-V host. Your system should have AMD's 1st generation Ryzen/Epyc or newer CPUs. You can get more information on nested virtualization on AMD here: https://techcommunity.microsoft.com/t5/virtualization/amd-nested-virtualization-support/ba-p/1434841.
+
+If you can't run the Windows 10 Insider builds on your AMD-based system, it may be a better approach to [deploy in Azure instead](/nested/steps/1a_NestedInAzure.md "Deploy in Azure").  We'll be sure to update this guidance as and when new updates to nested virtualization support become available.
+
 Deployment Workflow
 -----------
 This guide will walk you through deploying a sandboxed Azure Stack HCI infrastructure.  Many of the steps will be universal, regardless of whether you are deploying in Azure, or deploying on a single physical system, however to accommodate different preferences, we've provided paths for those of you who prefer PowerShell, or GUI (Graphical User Interface, such as Hyper-V Manager, Server Manager etc)-based deployments.
