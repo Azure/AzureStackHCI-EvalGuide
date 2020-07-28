@@ -40,6 +40,9 @@ The following items will need to be enabled in the system BIOS:
 * Virtualization Technology - may have a different label depending on motherboard manufacturer.
 * Hardware Enforced Data Execution Prevention.
 
+### Important note for systems with AMD CPUs ###
+For those of you wanting to evaluate Azure Stack HCI in a nested configuration, with **AMD-based systems**, the only way this is currently possible is to use **Windows 10 Insider Build 19636 or newer** as your Hyper-V host. Your system should have AMD's 1st generation Ryzen/Epyc or newer CPUs. You can get more information on nested virtualization on AMD here: https://techcommunity.microsoft.com/t5/virtualization/amd-nested-virtualization-support/ba-p/1434841
+
 ### Verify Hardware Compatibility ###
 After checking the operating system and hardware requirements above, verify hardware compatibility in Windows by opening a PowerShell session or a command prompt (cmd.exe) window, typing **systeminfo**, and then checking the Hyper-V Requirements section. If all listed Hyper-V requirements have a value of **Yes**, your system can run the Hyper-V role. If any item returns No, check the requirements above and make adjustments where possible.
 
