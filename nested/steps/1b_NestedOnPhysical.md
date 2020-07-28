@@ -41,7 +41,7 @@ The following items will need to be enabled in the system BIOS:
 * Hardware Enforced Data Execution Prevention.
 
 ### Important note for systems with AMD CPUs ###
-For those of you wanting to evaluate Azure Stack HCI in a nested configuration, with **AMD-based systems**, the only way this is currently possible is to use **Windows 10 Insider Build 19636 or newer** as your Hyper-V host. Your system should have AMD's 1st generation Ryzen/Epyc or newer CPUs. You can get more information on nested virtualization on AMD here: https://techcommunity.microsoft.com/t5/virtualization/amd-nested-virtualization-support/ba-p/1434841.
+For those of you wanting to evaluate Azure Stack HCI in a nested configuration, with **AMD-based systems**, the only way this is currently possible is to use **Windows 10 Insider Build 19636 or newer** as your Hyper-V host. Your system should have AMD's 1st generation Ryzen/Epyc or newer CPUs. You can get more information on [nested virtualization on AMD here](https://techcommunity.microsoft.com/t5/virtualization/amd-nested-virtualization-support/ba-p/1434841 "Nested virtualization on AMD-based systems").
 
 If you can't run the Windows 10 Insider builds on your AMD-based system, it may be a better approach to [deploy in Azure instead](/azshci/NestedInAzure.md "Deploy in Azure").  We'll be sure to update this guidance as and when new updates to nested virtualization support become available.
 
