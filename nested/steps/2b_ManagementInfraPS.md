@@ -245,12 +245,23 @@ With DC01 now back online and operational, we need to add an additional administ
 Write-Verbose "Creating new administrative User within the azshci.local domain." -Verbose
 $newUser = "LabAdmin"
 Invoke-Command -VMName DC01 -Credential $domainCreds -ScriptBlock {
-    New-ADUser -Name $using:newUser -AccountPassword $using:domainCreds.Password -Enabled $True
-    Get-ADUser -Identity $using:newUser
+    Write-Verbose "Waiting for AD Web Services to be in a running state" -Verbose
+    $ADWebSvc = Get-Service ADWS | Select-Object *
+    while ($ADWebSvc.Status -ne 'Running') {
+        Start-Sleep -Seconds 1
+    }
+    Do {
+        Start-Sleep -Seconds 30
+        Write-Verbose "Waiting for AD to be Ready for User Creation" -Verbose
+        New-ADUser -Name $using:newUser -AccountPassword $using:domainCreds.Password -Enabled $True
+        $ADReadyCheck = Get-ADUser -Identity $using:newUser
+    }
+    Until ($ADReadyCheck.Enabled -eq "True")
     Add-ADGroupMember -Identity "Domain Admins" -Members $using:newUser
     Add-ADGroupMember -Identity "Enterprise Admins" -Members $using:newUser
     Add-ADGroupMember -Identity "Schema Admins" -Members $using:newUser
-    }
+}
+Write-Verbose "$newUser Account Created." -Verbose
 ```
 
 **NOTE** - if you receive warnings or errors creating new users, wait a few moments, as your DC01 machine may need more time to start the AD web services.
