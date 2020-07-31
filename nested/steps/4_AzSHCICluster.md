@@ -336,7 +336,7 @@ Register-AzStackHCI  `
     -SubscriptionId "your-subscription-ID-here" `
     -ResourceName "azshciclus" `
     -ResourceGroupName "AzureStackHCIRegistration" `
-    -Region "East US" `
+    -Region "EastUS" `
     -EnvironmentName "AzureCloud" `
     -ComputerName "AZSHCINODE01.azshci.local" `
     –Credential $azshciNodeCreds
