@@ -444,3 +444,14 @@ Restart-Computer -Force
 ```
 
 Then, back on **MGMT01**, access the Windows Admin Center, if you restart the cluster creation wizard, Windows Admin Center should allow you to pick up where you left off previously.
+
+#### Test Report issue ####
+If you see an issue with an error relating to **Test report isn't available, try to validate again**, this is likely due to a bug where your Azure Stack HCI nodes are in a different locale than the MGMT01/Windows Admin Center machine.  To fix this, on **each of the nested Azure Stack HCI nodes**, run the following in PowerShell:
+
+```powershell
+Get-WinSystemLocale # If not en-US you will have problems
+Set-WinSystemLocale -SystemLocale en-US
+Restart-Computer -Force
+```
+
+Then run validate again, and it should pass this step.  This bug is being actively worked on, and should be addressed soon.
