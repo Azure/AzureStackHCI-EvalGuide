@@ -166,11 +166,35 @@ $domainName = "azshci.local"
 $domainAdmin = "$domainName\labadmin"
 $domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the password for the LabAdmin account"
 # Define node name
-$nodeName = "AZSHCINODE01"
 Invoke-Command -VMName "$nodeName" -Credential $domainCreds -ScriptBlock {
     # Enable the Hyper-V role within the Azure Stack HCI OS
-    Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V,RSAT-Hyper-V-Tools-Feature,Microsoft-Hyper-V-Management-PowerShell
+    Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All -NoRestart -Verbose
 }
+
+Write-Verbose "Rebooting node for changes to take effect" -Verbose
+Stop-VM -Name $nodeName
+Start-VM -Name $nodeName
+
+# Test for the node to be back online and responding
+while ((Invoke-Command -VMName $nodeName -Credential $domainCreds {"Test"} -ErrorAction SilentlyContinue) -ne "Test") {
+    Start-Sleep -Seconds 1
+}
+Write-Verbose "$nodeName is now online. Proceeding to install Hyper-V PowerShell...." -Verbose
+
+Invoke-Command -VMName "$nodeName" -Credential $domainCreds -ScriptBlock {
+    # Enable the Hyper-V PowerShell within the Azure Stack HCI OS
+    Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-Management-PowerShell -All -NoRestart -Verbose
+}
+
+Write-Verbose "Rebooting node for changes to take effect" -Verbose
+Stop-VM -Name $nodeName
+Start-VM -Name $nodeName
+
+# Test for the node to be back online and responding
+while ((Invoke-Command -VMName $nodeName -Credential $domainCreds {"Test"} -ErrorAction SilentlyContinue) -ne "Test") {
+    Start-Sleep -Seconds 1
+}
+Write-Verbose "$nodeName is now online. Proceed to the next step...." -Verbose
 ```
 
 When prompted, ensure you **restart** the OS to complete the installation of the Hyper-V role.
