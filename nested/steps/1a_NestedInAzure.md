@@ -139,7 +139,7 @@ In this step, you'll update your PowerShell execution policy to RemoteSigned
 
 ```powershell
 # Get the Execution Policy on the system, and make note of it before making changes
-Get-Execution Policy
+Get-ExecutionPolicy
 # Set the Execution Policy for this process only
 if ((Get-ExecutionPolicy) -ne "RemoteSigned") { Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process -Force }
 ```
