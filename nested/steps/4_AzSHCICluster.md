@@ -336,7 +336,7 @@ Register-AzStackHCI  `
     -SubscriptionId "your-subscription-ID-here" `
     -ResourceName "azshciclus" `
     -ResourceGroupName "AzureStackHCIRegistration" `
-    -Region "EastUS" `
+    -Region "East US" `
     -EnvironmentName "AzureCloud" `
     -ComputerName "AZSHCINODE01.azshci.local" `
     –Credential $azshciNodeCreds
@@ -346,7 +346,7 @@ Of these commands, many are optional:
 
 * **-ResourceName** - If not declared, the Azure Stack HCI cluster name is used
 * **-ResourceGroupName** - If not declared, the Azure Stack HCI cluster plus the suffix "-rg" is used
-* **-Region** - If not declared, "EastUS" will be used.  Additional regions are supported as part of the preview program, with the longer term goal to integrate with Azure Arc in all Azure regions.
+* **-Region** - If not declared, "East US" will be used.  Additional regions are supported as part of the preview program, with the longer term goal to integrate with Azure Arc in all Azure regions.
 * **-EnvironmentName** - If not declared, "AzureCloud" will be used, but allowed values will include additional environments in the future
 * **-ComputerName** - This is used when running the commands remotely against a cluster.  Just make sure you're using a domain account that has admin privilege on the nodes and cluster
 * **-Credential** - This is also used for running the commands remotely against a cluster.
