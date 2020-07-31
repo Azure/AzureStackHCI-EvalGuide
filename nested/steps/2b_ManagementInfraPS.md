@@ -401,7 +401,7 @@ Write-Verbose "MGMT01 is now online. Proceed to the next step...." -Verbose
 #### Optional - Install the new Microsoft Edge ####
 It's highly recommended to install the new version of the Microsoft Edge browser, as it gives a much smoother browsing experience, and is more efficient with it's use of limited resources, if you've deployed in a memory-constrained environment.
 
-1. Open the existing **Microsoft Edge** browser, and navigate to https://www.microsoft.com/en-us/edge
+1. Open the existing **Microsoft Edge** browser, and navigate to https://www.microsoft.com/edge
 2. On the landing page, click on **Download** and when prompted, **read the license terms** then click **Accept and download**
 3. Once downloaded, click **Run**
 4. The installation will begin, and take a few moments to download, install and configure.  You can accept the **defaults** for the configuration.
