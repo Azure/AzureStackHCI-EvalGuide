@@ -56,7 +56,7 @@ If you have just 2 nodes, or if your preference is for a cluster running in a si
 
 1. Connect to **MGMT01**, and open your **Windows Admin Center** instance.
 2. Once logged into Windows Admin Center, under **All connections**, click **Add**
-3. On the **Add resources popup**, under **Windows Server cluster**, click **Create new** to open the **Cluster Creation wizard**
+3. On the **Add or create resources popup**, under **Server clusters**, click **Create new** to open the **Cluster Creation wizard**
 
 ### Get started ###
 
