@@ -384,7 +384,7 @@ $domainAdmin = "$domainName\labadmin"
 $domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the password for the LabAdmin account"
 Invoke-Command -VMName "MGMT01" -Credential $w10Creds -ScriptBlock {
     # Rename and join domain
-    Add-Computer –DomainName azshci.local -NewName "MGMT01" –Credential $using:domainCreds -Force
+    Add-Computer -DomainName azshci.local -NewName "MGMT01" -Credential $using:domainCreds -Force
 }
 
 Write-Verbose "Rebooting MGMT01 for hostname change to take effect" -Verbose
