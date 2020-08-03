@@ -421,26 +421,48 @@ During testing, you **may** see an issue initiating cluster validation due to a 
 Disable-WsmanCredSSP -Role Client
 ```
 
-And on **each of the nested Azure Stack HCI nodes**, run
+And for **each of the nested Azure Stack HCI nodes**, on your Hyper-V host, run the following 
 
 ```powershell
-Disable-WsmanCredSSP -Role Server
+$nodeName = "AZSHCINODE01"
+
+# Provide the domain credentials to log into the VM
 $domainName = "azshci.local"
 $domainAdmin = "$domainName\labadmin"
 $domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the password for the LabAdmin account"
-Test-ComputerSecureChannel -Verbose -Repair
-gpupdate /force
-Restart-Computer -Force
+
+Invoke-Command -VMName "$nodeName" -Credential $domainCreds -ScriptBlock {
+    Disable-WsmanCredSSP -Role Server
+    Test-ComputerSecureChannel -Verbose -Repair
+    gpupdate /force
+    Restart-Computer -Force
+}
 ```
 
 You should then be able to continue the validation process once all the nodes are back online.
 
 #### WinRM issue ####
-If you see a **WinRM** related issue when running validation, on **each Azure Stack HCI node**, and on the **MGMT01** OS, run the following in PowerShell:
+If you see a **WinRM** related issue when running validation, on the **MGMT01** OS, run the following in PowerShell:
 
 ```powershell
 Restart-Service WinRm
 Restart-Computer -Force
+```
+
+Also for **each of the nested Azure Stack HCI nodes**, on your Hyper-V host, run the following 
+
+```powershell
+$nodeName = "AZSHCINODE01"
+
+# Provide the domain credentials to log into the VM
+$domainName = "azshci.local"
+$domainAdmin = "$domainName\labadmin"
+$domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the password for the LabAdmin account"
+
+Invoke-Command -VMName "$nodeName" -Credential $domainCreds -ScriptBlock {
+    Restart-Service WinRm
+    Restart-Computer -Force
+}
 ```
 
 Then, back on **MGMT01**, access the Windows Admin Center, if you restart the cluster creation wizard, Windows Admin Center should allow you to pick up where you left off previously.
