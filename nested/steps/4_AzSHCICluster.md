@@ -176,7 +176,7 @@ With the network configured for the evaluation environment, it's time to constru
 
 ![Cluster creation successful in the Create Cluster wizard](/media/wac_cluster_success.png "Cluster creation successful in the Create Cluster wizard")
 
-### Clustering ###
+### Storage ###
 With the cluster successfully created, you're now good to proceed on to configuring your storage.  Whilst less important in a fresh nested environment, it's always good to start from a clean slate, so first, you'll clean the drives before configuring storage.
 
 1. On the storage landing page within the Create Cluster wizard, click **Clean Drives**, and when prompted, with **Continue** to **Really clean and reset drives**.  Once complete, you should have a successful confirmation message:
