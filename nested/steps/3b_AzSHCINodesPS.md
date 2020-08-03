@@ -110,7 +110,7 @@ Installation will then begin, and will take a few minutes, automatically rebooti
 
 ![Completed setup of the Azure Stack HCI OS](/media/azshci_setup_complete.png "Completed setup of the Azure Stack HCI OS")
 
-With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **C:\Users\Administrator** screen.  Minimize the VM Connect window.
+With the installation complete, you'll be prompted to change the password before logging in.  Enter a password and exit to command line. Once complete, you should be at the **C:\Users\Administrator** screen.  Minimize the VM Connect window.
 
 #### Configure Azure Stack HCI node networking using PowerShell Direct ####
 With the node up and running, it's time to configure the networking with PowerShell Direct, so it can communicate with the rest of the environment.  Open **PowerShell** as an administrator on the Hyper-V host, and run the following:
