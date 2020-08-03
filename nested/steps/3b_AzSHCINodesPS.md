@@ -143,7 +143,7 @@ $domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the passw
 $nodeName = "AZSHCINODE01"
 Invoke-Command -VMName "$nodeName" -Credential $azsHCILocalCreds -ScriptBlock {
     # Join the domain and change the name at the same time
-    Add-Computer –DomainName azshci.local -NewName $Using:nodeName –Credential $Using:domainCreds -Force
+    Add-Computer -DomainName azshci.local -NewName $Using:nodeName -Credential $Using:domainCreds -Force
 }
 
 Write-Verbose "Rebooting node for changes to take effect" -Verbose
