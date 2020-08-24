@@ -229,7 +229,7 @@ As part of this guide, we're going to set up cluster quorum, using **Windows Adm
 
     * Resource Group: **Create new**, then enter **azshcicloudwitness**, and click **OK**
     * Storage account name: **azshcicloudwitness**
-    * Location: **Relect your preferred region**
+    * Location: **Select your preferred region**
     * Performance: **Only standard is supported**
     * Account kind: **Storage (general purpose v1)** is the best option for cloud witness
     * Replication: **Locally-redundant storage (LRS)** - Failover Clustering uses the blob file as the arbitration point, which requires some consistency guarantees when reading the data. Therefore you must select Locally-redundant storage for Replication type.

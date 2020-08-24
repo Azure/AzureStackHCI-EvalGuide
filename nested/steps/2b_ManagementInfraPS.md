@@ -171,7 +171,7 @@ If you'd like to ensure DC01 is fully updated, you can run the following PowerSh
 ```powershell
 $dcCreds = Get-Credential -UserName "Administrator" -Message "Enter the password used when you deployed Windows Server 2019"
 Invoke-Command -VMName "DC01" -Credential $dcCreds -ScriptBlock {
-    # Scane for updates
+    # Scan for updates
     $ScanResult = Invoke-CimMethod -Namespace "root/Microsoft/Windows/WindowsUpdate" -ClassName "MSFT_WUOperations" `
     -MethodName ScanForUpdates -Arguments @{SearchCriteria = "IsInstalled=0" }
     # Apply updates (if not empty)
