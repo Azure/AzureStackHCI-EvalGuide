@@ -301,6 +301,9 @@ Invoke-Command -ComputerName $nodes -ScriptBlock {
 
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
+Install-Module Az.Accounts
+Install-Module Az.Resources
+Install-Module AzureAD
 Install-Module Az.StackHCI
 ```
 
