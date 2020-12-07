@@ -1,33 +1,33 @@
-Deploy nested Azure Stack HCI nodes with the GUI
+Deploy nested Azure Stack HCI 20H2 nodes with the GUI
 ==============
 Overview
 -----------
-With your Hyper-V host up and running, along with the management infrastructure, it's now time to deploy the Azure Stack HCI nodes into VMs on your Hyper-V host.
+With your Hyper-V host up and running, along with the management infrastructure, it's now time to deploy the Azure Stack HCI 20H2 nodes into VMs on your Hyper-V host.
 
 Contents
 -----------
 * [Architecture](#architecture)
-* [Create your first nested Azure Stack HCI node](#create-your-first-nested-azure-stack-hci-node)
+* [Create your first nested Azure Stack HCI 20H2 node](#create-your-first-nested-azure-stack-hci-node)
 * [Repeat creation process](#repeat-creation-process)
 * [Next steps](#next-steps)
 
 Architecture
 -----------
 
-As shown on the architecture graphic below, in this step, **you'll deploy a number of nested Azure Stack HCI nodes**. The minimum number for deployment of a local Azure Stack HCI cluster is **2 nodes**, however if your Hyper-V host has enough spare capacity, you could deploy additional nested nodes, and explore more complex scenarios, such as a nested **stretch cluster**.  For the purpose of this step, we'll focus on deploying 4 nodes, however you should make adjustments based on your environment.
+As shown on the architecture graphic below, in this step, **you'll deploy a number of nested Azure Stack HCI 20H2 nodes**. The minimum number for deployment of a local Azure Stack HCI 20H2 cluster is **2 nodes**, however if your Hyper-V host has enough spare capacity, you could deploy additional nested nodes, and explore more complex scenarios, such as a nested **stretch cluster**.  For the purpose of this step, we'll focus on deploying 4 nodes, however you should make adjustments based on your environment.
 
-![Architecture diagram for Azure Stack HCI nested](/media/nested_virt_nodes.png "Architecture diagram for Azure Stack HCI nested")
+![Architecture diagram for Azure Stack HCI 20H2 nested](/media/nested_virt_nodes.png "Architecture diagram for Azure Stack HCI 20H2 nested")
 
-Create your first nested Azure Stack HCI node
+Create your first nested Azure Stack HCI 20H2 node
 -----------
-There are 3 main steps to create the virtualized Azure Stack HCI node on our Hyper-V host:
+There are 3 main steps to create the virtualized Azure Stack HCI 20H2 node on our Hyper-V host:
 
 1. Create the AZSHCINODE01 VM using Hyper-V Manager
 2. Complete the Out of Box Experience (OOBE)
 3. Join the domain using SConfig
 
 ### Create the AZSHCINODE01 VM using Hyper-V Manager ###
-In this step, you'll be using Hyper-V Manager to deploy an Azure Stack HCI node.
+In this step, you'll be using Hyper-V Manager to deploy an Azure Stack HCI 20H2 node.
 
 1. On your Hyper-V host, **open Hyper-V Manager**.
 2. In the top right-corner, under **Actions**, click **New**, then **Virtual Machine**. The **New Virtual Machine Wizard** should open.
@@ -72,7 +72,7 @@ Your new AZSHCINODE01 virtual machine will now be created.  Once created, we nee
 
 ![Configuring the vm settings](/media/new_vm_node_settings.png "Configuring the vm settings")
 
-You now need to add additional hard drives to support the Azure Stack HCI nodes and cluster.  You need to add a minimum of 2 data disks, but we will add 4 data disks to each node.
+You now need to add additional hard drives to support the Azure Stack HCI 20H2 nodes and cluster.  You need to add a minimum of 2 data disks, but we will add 4 data disks to each node.
 
 11. Still within **AZSHCINODE01 settings**, click on **SCSI Controller**, then **Hard Drive** and click **Add**
 12. In the **Hard Drive** window, click **New**.  The **New Virtual Hard Disk** wizard opens, then click **Next**
@@ -107,30 +107,30 @@ In the center of the window, there is a message explaining the VM is currently s
 ![Booting the VM and triggering the boot from DVD](/media/boot_from_dvd.png "Booting the VM and triggering the boot from DVD")
 
 ### Complete the Out of Box Experience (OOBE) ###
-With the VM running, and the boot process initiated, you should be in a position to start the deployment of the Azure Stack HCI OS.
+With the VM running, and the boot process initiated, you should be in a position to start the deployment of the Azure Stack HCI 20H2 OS.
 
-![Initiate setup of the Azure Stack HCI OS](/media/azshci_setup.png "Initiate setup of the Azure Stack HCI OS")
+![Initiate setup of the Azure Stack HCI 20H2 OS](/media/azshci_setup.png "Initiate setup of the Azure Stack HCI 20H2 OS")
 
 Proceed through the process, making the following selections:
 
 1. On the initial screen, select your **Language to install**, **Time and currency format**, and **Keyboard or input method**, then press **Next**
 2. Click **Install now**
 3. On the **Applicable notices and license terms** screen, read the information, **tick I accept the license terms** and click **Next**
-4. On the **What type of installation do you want** screen, select **Custom: Install the newer version of Azure Stack HCI only (advanced)** and click **Next**
-5. On the **Where do you want to install Azure Stack HCI?** screen, select the **30GB Drive 0** and click **Next**
+4. On the **What type of installation do you want** screen, select **Custom: Install the newer version of Azure Stack HCI 20H2 only (advanced)** and click **Next**
+5. On the **Where do you want to install Azure Stack HCI 20H2?** screen, select the **30GB Drive 0** and click **Next**
 
 Installation will then begin, and will take a few minutes, automatically rebooting as part of the process.
 
-![Completed setup of the Azure Stack HCI OS](/media/azshci_setup_complete.png "Completed setup of the Azure Stack HCI OS")
+![Completed setup of the Azure Stack HCI 20H2 OS](/media/azshci_setup_complete.png "Completed setup of the Azure Stack HCI 20H2 OS")
 
-With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **command prompt** on the "Welcome to Azure Stack HCI" screen.
+With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **command prompt** on the "Welcome to Azure Stack HCI 20H2" screen.
 
-![Azure Stack HCI Welcome Screen](/media/sconfig.png "Azure Stack HCI Welcome Screen")
+![Azure Stack HCI 20H2 Welcome Screen](/media/sconfig.png "Azure Stack HCI 20H2 Welcome Screen")
 
-#### Configure Azure Stack HCI node networking using SConfig ####
+#### Configure Azure Stack HCI 20H2 node networking using SConfig ####
 With the node up and running, it's time to configure the networking with SConfig, a useful local administrative interface.
 
-1. When you first logged into Azure Stack HCI locally, SConfig should have launched automatically.  If it hasn't, simply type **sconfig** and press **enter**
+1. When you first logged into Azure Stack HCI 20H2 locally, SConfig should have launched automatically.  If it hasn't, simply type **sconfig** and press **enter**
 2. Enter **8** then press **Enter** to select **Network Settings**
 3. Choose one of the interfaces by typing the corresponding number, and pressing **Enter**
 
@@ -155,10 +155,10 @@ While in SConfig, it is quick and easy to rename the OS, and join a domain.
 4. You are presented with an option to rename the computer, so click **Yes** and provide the new name **AZSHCINODE01**
 5. When prompted to reboot the machine, click **Yes**
 
-The machine will now reboot, and you've successfully set up your Azure Stack HCI node.
+The machine will now reboot, and you've successfully set up your Azure Stack HCI 20H2 node.
 
-### Enable the Hyper-V role on your Azure Stack HCI Node ###
-There is an **bug** when running Azure Stack HCI within a nested virtualization configuration, specifically, when using Windows Admin Center to enable the Hyper-V role, within a running instance of Azure Stack HCI, inside a **Generation 2 Hyper-V VM**.  To workaround this, you can run the following PowerShell command **from the Hyper-V host** to fix this issue.
+### Enable the Hyper-V role on your Azure Stack HCI 20H2 Node ###
+There is an **bug** when running Azure Stack HCI 20H2 within a nested virtualization configuration, specifically, when using Windows Admin Center to enable the Hyper-V role, within a running instance of Azure Stack HCI 20H2, inside a **Generation 2 Hyper-V VM**.  To workaround this, you can run the following PowerShell command **from the Hyper-V host** to fix this issue.
 
 ```powershell
 # Provide the domain credentials to log into the VM
@@ -167,7 +167,7 @@ $domainAdmin = "$domainName\labadmin"
 $domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the password for the LabAdmin account"
 # Define node name
 Invoke-Command -VMName "$nodeName" -Credential $domainCreds -ScriptBlock {
-    # Enable the Hyper-V role within the Azure Stack HCI OS
+    # Enable the Hyper-V role within the Azure Stack HCI 20H2 OS
     Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All -NoRestart -Verbose
 }
 
@@ -182,7 +182,7 @@ while ((Invoke-Command -VMName $nodeName -Credential $domainCreds {"Test"} -Erro
 Write-Verbose "$nodeName is now online. Proceeding to install Hyper-V PowerShell...." -Verbose
 
 Invoke-Command -VMName "$nodeName" -Credential $domainCreds -ScriptBlock {
-    # Enable the Hyper-V PowerShell within the Azure Stack HCI OS
+    # Enable the Hyper-V PowerShell within the Azure Stack HCI 20H2 OS
     Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-Management-PowerShell -All -NoRestart -Verbose
 }
 
@@ -201,18 +201,18 @@ When prompted, ensure you **restart** the OS to complete the installation of the
 
 Repeat creation process
 -----------
-You have now created your first Azure Stack HCI node, inside a VM, running nested on Hyper-V.  You need a minimum of 2 nodes for deployment of an Azure Stack HCI cluster, so **repeat the creation process** to add at least one additional node, or more, depending on your Hyper-V host resources.  Use AZSHCINODE0x for your node names and increment your IP addresses by 1 for each node you add, so 192.168.0.5, 192.168.0.6 and so on.
+You have now created your first Azure Stack HCI 20H2 node, inside a VM, running nested on Hyper-V.  You need a minimum of 2 nodes for deployment of an Azure Stack HCI 20H2 cluster, so **repeat the creation process** to add at least one additional node, or more, depending on your Hyper-V host resources.  Use AZSHCINODE0x for your node names and increment your IP addresses by 1 for each node you add, so 192.168.0.5, 192.168.0.6 and so on.
 
 Next Steps
 -----------
-In this step, you've successfully created your nested Azure Stack HCI nodes.  You can now proceed to [create your Azure Stack HCI cluster](/nested/steps/4_AzSHCICluster.md "Create your Azure Stack HCI cluster")
+In this step, you've successfully created your nested Azure Stack HCI 20H2 nodes.  You can now proceed to [create your Azure Stack HCI 20H2 cluster](/nested/steps/4_AzSHCICluster.md "Create your Azure Stack HCI 20H2 cluster")
 
 Product improvements
 -----------
-If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI, Windows Admin Center, or the Azure Arc integration and experience, let us know!  We want to hear from you!  [Head on over to our Azure Stack HCI UserVoice page](https://feedback.azure.com/forums/929833-azure-stack-hci "Azure Stack HCI UserVoice"), where you can share your thoughts and ideas about making the technologies better.  If however, you have an issue that you'd like some help with, read on...
+If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI 20H2, Windows Admin Center, or the Azure Arc integration and experience, let us know!  We want to hear from you!  [Head on over to our Azure Stack HCI 20H2 UserVoice page](https://feedback.azure.com/forums/929833-azure-stack-hci "Azure Stack HCI 20H2 UserVoice"), where you can share your thoughts and ideas about making the technologies better.  If however, you have an issue that you'd like some help with, read on...
 
 Raising issues
 -----------
 If you notice something is wrong with the evaluation guide, such as a step isn't working, or something just doesn't make sense - help us to make this guide better!  Raise an issue in GitHub, and we'll be sure to fix this as quickly as possible!
 
-If however, you're having a problem with Azure Stack HCI **outside** of this evaluation guide, make sure you post to [our Microsoft Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Microsoft Q&A Forum"), where Microsoft experts and valuable members of the Azure Stack HCI community will do their best to help you.
+If however, you're having a problem with Azure Stack HCI 20H2 **outside** of this evaluation guide, make sure you post to [our Microsoft Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Microsoft Q&A Forum"), where Microsoft experts and valuable members of the community will do their best to help you.

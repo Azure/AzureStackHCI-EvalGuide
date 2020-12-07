@@ -3,7 +3,7 @@ Deploy management infrastructure with PowerShell
 Overview
 -----------
 
-With your Hyper-V host up and running, either in Azure, or on a local physical system, it's now time to deploy the core management infrastructure to support the Azure Stack HCI deployment in a future step.
+With your Hyper-V host up and running, either in Azure, or on a local physical system, it's now time to deploy the core management infrastructure to support the Azure Stack HCI 20H2 deployment in a future step.
 
 Contents
 -----------
@@ -21,7 +21,7 @@ Architecture
 
 As shown on the architecture graphic below, the core management infrastructure consists of a Windows Server 2019 domain controller VM, along with a Windows 10 Enterprise VM, which will run the Windows Admin Center.  In this step, you'll deploy both of those key components.
 
-![Architecture diagram for Azure Stack HCI nested with management infra highlighted](/media/nested_virt_mgmt.png "Architecture diagram for Azure Stack HCI nested with management infra highlighted")
+![Architecture diagram for Azure Stack HCI 20H2 nested with management infra highlighted](/media/nested_virt_mgmt.png "Architecture diagram for Azure Stack HCI 20H2 nested with management infra highlighted")
 
 However, before you deploy your management infrastructure, first, you need to download the necessary software components required to complete this evalution.
 
@@ -447,14 +447,14 @@ To install the Windows Admin Center, simply **double-click** the executable on t
 
 Next Steps
 -----------
-In this step, you've successfully created your management infrastructure, including a Windows Server 2019 domain controller and a Windows 10 management VM, complete with Windows Admin Center. You can now proceed to [create your nested Azure Stack HCI nodes with PowerShell](/nested/steps/3b_AzSHCINodesPS.md "Create your nested Azure Stack HCI nodes with PowerShell")
+In this step, you've successfully created your management infrastructure, including a Windows Server 2019 domain controller and a Windows 10 management VM, complete with Windows Admin Center. You can now proceed to [create your nested Azure Stack HCI 20H2 nodes with PowerShell](/nested/steps/3b_AzSHCINodesPS.md "Create your nested Azure Stack HCI 20H2 nodes with PowerShell")
 
 Product improvements
 -----------
-If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI, Windows Admin Center, or the Azure Arc integration and experience, let us know!  We want to hear from you!  [Head on over to our Azure Stack HCI UserVoice page](https://feedback.azure.com/forums/929833-azure-stack-hci "Azure Stack HCI UserVoice"), where you can share your thoughts and ideas about making the technologies better.  If however, you have an issue that you'd like some help with, read on...
+If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI 20H2, Windows Admin Center, or the Azure Arc integration and experience, let us know!  We want to hear from you!  [Head on over to our Azure Stack HCI 20H2 UserVoice page](https://feedback.azure.com/forums/929833-azure-stack-hci "Azure Stack HCI 20H2 UserVoice"), where you can share your thoughts and ideas about making the technologies better.  If however, you have an issue that you'd like some help with, read on...
 
 Raising issues
 -----------
 If you notice something is wrong with the evaluation guide, such as a step isn't working, or something just doesn't make sense - help us to make this guide better!  Raise an issue in GitHub, and we'll be sure to fix this as quickly as possible!
 
-If however, you're having a problem with Azure Stack HCI **outside** of this evaluation guide, make sure you post to [our Microsoft Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Microsoft Q&A Forum"), where Microsoft experts and valuable members of the Azure Stack HCI community will do their best to help you.
+If however, you're having a problem with Azure Stack HCI 20H2 **outside** of this evaluation guide, make sure you post to [our Microsoft Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Microsoft Q&A Forum"), where Microsoft experts and valuable members of the community will do their best to help you.

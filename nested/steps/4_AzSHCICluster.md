@@ -1,9 +1,9 @@
-Create nested Azure Stack HCI cluster with Windows Admin Center
+Create nested Azure Stack HCI 20H2 cluster with Windows Admin Center
 ==============
 Overview
 -----------
 
-So far, you've deployed your Azure Stack HCI nodes in the nested virtualization sandbox, along with an Active Directory infrastructure with DNS.  Finally, you've deployed the Windows Admin Center, which we'll be using to configure the Azure Stack HCI cluster.
+So far, you've deployed your Azure Stack HCI 20H2 nodes in the nested virtualization sandbox, along with an Active Directory infrastructure with DNS.  Finally, you've deployed the Windows Admin Center, which we'll be using to configure the Azure Stack HCI 20H2 cluster.
 
 Contents
 -----------
@@ -11,25 +11,25 @@ Contents
 * [Before you begin](#before-you-begin)
 * [Creating a (local) cluster](#creating-a-local-cluster)
 * [Configuring the cluster witness](#configuring-the-cluster-witness)
-* [Connect and Register Azure Stack HCI to Azure](#connect-and-register-azure-stack-hci-to-azure)
+* [Connect and Register Azure Stack HCI 20H2 to Azure](#connect-and-register-azure-stack-hci-to-azure)
 * [Register using PowerShell](#register-using-powershell)
 * [Next steps](#next-steps)
 
 Architecture
 -----------
 
-As shown on the architecture graphic below, in this step, you'll take the nodes that you previously deployed, and be **clustering them into an Azure Stack HCI cluster**. You'll be focused on **creating a cluster in a single site**, but in later articles, we'll also cover creating a stretch cluster.
+As shown on the architecture graphic below, in this step, you'll take the nodes that you previously deployed, and be **clustering them into an Azure Stack HCI 20H2 cluster**. You'll be focused on **creating a cluster in a single site**, but in later articles, we'll also cover creating a stretch cluster.
 
-![Architecture diagram for Azure Stack HCI nested](/media/nested_virt_nodes.png "Architecture diagram for Azure Stack HCI nested")
+![Architecture diagram for Azure Stack HCI 20H2 nested](/media/nested_virt_nodes.png "Architecture diagram for Azure Stack HCI 20H2 nested")
 
 Before you begin
 -----------
-With Windows Admin Center, you now have the ability to construct Azure Stack HCI clusters from the vanilla nodes.  There are no additional extensions to install, the workflow is built in and ready to go.
+With Windows Admin Center, you now have the ability to construct Azure Stack HCI 20H2 clusters from the vanilla nodes.  There are no additional extensions to install, the workflow is built in and ready to go.
 
 Before you start creating the cluster, it's important that we briefly review the steps that we've performed, and map them to the requirements:
 
 1. In the case of physical multi-node deployments, all physical nodes are running on suitable hardware
-2. All nodes are running the Azure Stack HCI OS
+2. All nodes are running the Azure Stack HCI 20H2 OS
 3. Windows Admin Center is installed and operational, on the same AD domain into which you'll deploy the cluster
 4. You have an account that's a local admin on each server
 
@@ -43,16 +43,16 @@ Here are the major steps in the Create Cluster wizard in Windows Admin Center:
 * **Storage** - Configures Storage Spaces Direct
 
 ### Decide on cluster type ###
-Not only does Azure Stack HCI support a cluster in a single site (or a **local cluster** as we'll refer to it going forward) consisting of between 2 and 16 nodes, but, also supports a **Stretch Cluster**, where a single cluster can have nodes distrubuted across two sites.
+Not only does Azure Stack HCI 20H2 support a cluster in a single site (or a **local cluster** as we'll refer to it going forward) consisting of between 2 and 16 nodes, but, also supports a **Stretch Cluster**, where a single cluster can have nodes distrubuted across two sites.
 
-* If you have 2 Azure Stack HCI nodes, you will be able to create a **local cluster**
-* If you have 4 Azure Stack HCI nodes, you will have a choice of creating either a **local cluster** or a **stretch cluster**
+* If you have 2 Azure Stack HCI 20H2 nodes, you will be able to create a **local cluster**
+* If you have 4 Azure Stack HCI 20H2 nodes, you will have a choice of creating either a **local cluster** or a **stretch cluster**
 
 In this first release of the guide, we'll be focusing on deploying a **local cluster** but guidance for stretch clustering will be added soon, so check back later!
 
 Creating a (local) cluster
 -----------
-If you have just 2 nodes, or if your preference is for a cluster running in a single site, this section will walk through the key steps for you to set up the Azure Stack HCI cluster with the Windows Admin Center
+If you have just 2 nodes, or if your preference is for a cluster running in a single site, this section will walk through the key steps for you to set up the Azure Stack HCI 20H2 cluster with the Windows Admin Center
 
 1. Connect to **MGMT01**, and open your **Windows Admin Center** instance.
 2. Once logged into Windows Admin Center, under **All connections**, click **Add**
@@ -62,9 +62,9 @@ If you have just 2 nodes, or if your preference is for a cluster running in a si
 
 ![Choose cluster type in the Create Cluster wizard](/media/wac_cluster_type.png "Choose cluster type in the Create Cluster wizard")
 
-1. Ensure you select **Azure Stack HCI**, select **All servers in one site** and cick **Create**
+1. Ensure you select **Azure Stack HCI 20H2**, select **All servers in one site** and cick **Create**
 2. On the **Check the prerequisites** page, review the requirements and click **Next**
-3. On the **Add Servers** page, supply a **username**, which should be **azshci\labadmin** and **your-domain-admin-password** and then one by one, enter the node names (or IP addresses if names don't resolve) of your Azure Stack HCI nodes, clicking **Add** after each one has been located.  Each node will be validated, and given a **Ready** status when fully validated.  This may take a few moments - once you've added all nodes, click **Next**
+3. On the **Add Servers** page, supply a **username**, which should be **azshci\labadmin** and **your-domain-admin-password** and then one by one, enter the node names (or IP addresses if names don't resolve) of your Azure Stack HCI 20H2 nodes, clicking **Add** after each one has been located.  Each node will be validated, and given a **Ready** status when fully validated.  This may take a few moments - once you've added all nodes, click **Next**
 
 ![Add servers in the Create Cluster wizard](/media/add_nodes.png "Add servers in the Create Cluster wizard")
 
@@ -94,10 +94,10 @@ The first key step with setting up the networking with Windows Admin Center, is 
 As it stands, this is the way that the Windows Admin Center approaches the network configuration, however, if you were not using the Windows Admin Center, through PowerShell, there are a number of different ways to configure the network to meet your needs.  We will work through the Windows Admin Center approach in this guide.
 
 #### Network Setup Overview ####
-Each of your Azure Stack HCI nodes should have 4 NICs.  For this simple evaluation, you'll dedicate the NICs in the following way:
+Each of your Azure Stack HCI 20H2 nodes should have 4 NICs.  For this simple evaluation, you'll dedicate the NICs in the following way:
 
 * 1 NIC will be dedicated to management.  It will reside on the 192.168.0.0/24 subnet. No virtual switch will be attached to this NIC.
-* 1 NIC will be dedicated to VM traffic.  A virtual switch will be attached to this NIC and the Azure Stack HCI host will no longer use this NIC for it's own traffic.
+* 1 NIC will be dedicated to VM traffic.  A virtual switch will be attached to this NIC and the Azure Stack HCI 20H2 host will no longer use this NIC for it's own traffic.
 * 2 NICs will be dedicated to storage traffic.  They will reside on 2 separate subnets, 10.10.10.0/24 and 10.10.11.0/24. No virtual switches will be attached to these NICs.
 
 Again, this is just one **example** network configuration for the simple purpose of evaluation.
@@ -139,7 +139,7 @@ When you click **Apply and test**, Windows Admin Center validates network connec
 
 ![Select vSwitch in the Create Cluster wizard](/media/wac_vswitches.png "Select vSwitch in the Create Cluster wizard")
 
-* **Create one virtual switch for compute and storage together** - in this configuration, your Azure Stack HCI nodes will create a vSwitch, comprised of multiple NICs, and the bandwidth available across these NICs will be shared by the Azure Stack HCI nodes themselves, for storage traffic, and in addition, any VMs you deploy on top of the nodes, will also share this bandwidth.
+* **Create one virtual switch for compute and storage together** - in this configuration, your Azure Stack HCI 20H2 nodes will create a vSwitch, comprised of multiple NICs, and the bandwidth available across these NICs will be shared by the Azure Stack HCI 20H2 nodes themselves, for storage traffic, and in addition, any VMs you deploy on top of the nodes, will also share this bandwidth.
 * **Create one virtual switch for compute only** - in this configuration, you would leave some NICs dedicated to storage traffic, and have a set of NICs attached to a vSwitch, to which your VMs traffic would be dedicated.
 * **Create two virtual switches** - in this configuration, you can create separate vSwitches, each attached to different sets of underlying NICs.  This may be useful if you wish to dedicate a set of underlying NICs to VM traffic, and another set to storage traffic, but wish to have vNICs used for storage communication instead of the underlying NICs.
 * **Skip virtual switch creation** - if you want to define things later, that's fine too
@@ -159,7 +159,7 @@ With the network configured for the evaluation environment, it's time to constru
 
 2. Cluster validation will then start, and will take a few moments to complete - once completed, you should see a successful message.
 
-**NOTE** - Cluster validation is intended to catch hardware or configuration problems before a cluster goes into production. Cluster validation helps to ensure that the Azure Stack HCI solution that you're about to deploy is truly dependable. You can also use cluster validation on configured failover clusters as a diagnostic tool. If you're interested in learning more about Cluster Validation, [check out the official docs](https://docs.microsoft.com/en-us/azure-stack/hci/deploy/validate "Cluster validation official documentation").
+**NOTE** - Cluster validation is intended to catch hardware or configuration problems before a cluster goes into production. Cluster validation helps to ensure that the Azure Stack HCI 20H2 solution that you're about to deploy is truly dependable. You can also use cluster validation on configured failover clusters as a diagnostic tool. If you're interested in learning more about Cluster Validation, [check out the official docs](https://docs.microsoft.com/en-us/azure-stack/hci/deploy/validate "Cluster validation official documentation").
 
 **NOTE** - if you see an issues when trying to validate the cluster, [see the workarounds here](#troubleshooting-cluster-validation-issues).
 
@@ -203,7 +203,7 @@ With the cluster successfully created, you're now good to proceed on to configur
 
 Configuring the cluster witness
 -----------
-By deploying an Azure Stack HCI cluster, you're providing high availability for workloads. These resources are considered highly available if the nodes that host resources are up; however, the cluster generally requires more than half the nodes to be running, which is known as having quorum.
+By deploying an Azure Stack HCI 20H2 cluster, you're providing high availability for workloads. These resources are considered highly available if the nodes that host resources are up; however, the cluster generally requires more than half the nodes to be running, which is known as having quorum.
 
 Quorum is designed to prevent split-brain scenarios which can happen when there is a partition in the network and subsets of nodes cannot communicate with each other. This can cause both subsets of nodes to try to own the workload and write to the same disk which can lead to numerous problems. However, this is prevented with Failover Clustering's concept of quorum which forces only one of these groups of nodes to continue running, so only one of these groups will stay online.
 
@@ -257,37 +257,37 @@ As part of this guide, we're going to set up cluster quorum, using **Windows Adm
 
 18. Within a few moments, your witness settings should be successfully applied and you have now completed configuring the quorum settings for the **azshciclus** cluster.
 
-Connect and Register Azure Stack HCI to Azure
+Connect and Register Azure Stack HCI 20H2 to Azure
 -----------
-Azure Stack HCI is delivered as an Azure service and needs to register within 30 days of installation per the Azure Online Services Terms.  With our cluster configured, we'll now register your Azure Stack HCI cluster with **Azure Arc** for monitoring, support, billing, and hybrid services. Upon registration, an Azure Resource Manager resource is created to represent each on-premises Azure Stack HCI cluster, effectively extending the Azure management plane to Azure Stack HCI. Information is periodically synced between the Azure resource and the on-premises cluster.  One great aspect of Azure Stack HCI, is that the Azure Arc registration is a native capability of Azure Stack HCI, so there is no agent required.
+Azure Stack HCI 20H2 is delivered as an Azure service and needs to register within 30 days of installation per the Azure Online Services Terms.  With our cluster configured, we'll now register your Azure Stack HCI 20H2 cluster with **Azure Arc** for monitoring, support, billing, and hybrid services. Upon registration, an Azure Resource Manager resource is created to represent each on-premises Azure Stack HCI 20H2 cluster, effectively extending the Azure management plane to Azure Stack HCI 20H2. Information is periodically synced between the Azure resource and the on-premises cluster.  One great aspect of Azure Stack HCI 20H2, is that the Azure Arc registration is a native capability of Azure Stack HCI 20H2, so there is no agent required.
 
-**NOTE** - After registering your Azure Stack HCI cluster, the **first 30 days usage will be free**.
+**NOTE** - After registering your Azure Stack HCI 20H2 cluster, the **first 30 days usage will be free**.
 
 ### Prerequisites for registration ###
-Firstly, **you need an Azure Stack HCI cluster**, which we've just created, so you're good there.
+Firstly, **you need an Azure Stack HCI 20H2 cluster**, which we've just created, so you're good there.
 
-Your nodes need to have **internet connectivity** in order to register and communicate with Azure.  If you've been running nested in Azure, you should have this already set up correctly, but if you're running nested on a local physical machine, make any necessary adjustments to your InternalNAT switch to allow internet connections through to your nested Azure Stack HCI nodes.
+Your nodes need to have **internet connectivity** in order to register and communicate with Azure.  If you've been running nested in Azure, you should have this already set up correctly, but if you're running nested on a local physical machine, make any necessary adjustments to your InternalNAT switch to allow internet connections through to your nested Azure Stack HCI 20H2 nodes.
 
 You'll need an **Azure subscription**, but seeing as you've just configured the **cloud witness** earlier, we'll assume that's taken care of.
 
 You'll need appropriate **Azure Active Directory permissions** to complete the registration process. If you don't already have them, you'll need to ask your Azure AD administrator to grant permissions or delegate them to you.  You can learn more about this below.
 
-#### What happens when you register Azure Stack HCI? ####
-When you register your Azure Stack HCI cluster, the process creates an Azure Resource Manager (ARM) resource to represent the on-prem cluster. This resource is provisioned by an Azure resource provider (RP) and placed inside a resource group, within your chosen Azure subscription.  If these Azure concepts are new to you, you can check out an [overview of them, and more, here](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview "Azure Resource Manager overview").
+#### What happens when you register Azure Stack HCI 20H2? ####
+When you register your Azure Stack HCI 20H2 cluster, the process creates an Azure Resource Manager (ARM) resource to represent the on-prem cluster. This resource is provisioned by an Azure resource provider (RP) and placed inside a resource group, within your chosen Azure subscription.  If these Azure concepts are new to you, you can check out an [overview of them, and more, here](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview "Azure Resource Manager overview").
 
-![ARM architecture for Azure Stack HCI](/media/azure_arm.png "ARM architecture for Azure Stack HCI")
+![ARM architecture for Azure Stack HCI 20H2](/media/azure_arm.png "ARM architecture for Azure Stack HCI 20H2")
 
-In addition to creating an Azure resource in your subscription, registering Azure Stack HCI creates an app identity, conceptually similar to a user, in your Azure Active Directory tenant. The app identity inherits the cluster name. This identity acts on behalf on the Azure Stack HCI cloud service, as appropriate, within your subscription.
+In addition to creating an Azure resource in your subscription, registering Azure Stack HCI 20H2 creates an app identity, conceptually similar to a user, in your Azure Active Directory tenant. The app identity inherits the cluster name. This identity acts on behalf on the Azure Stack HCI 20H2 cloud service, as appropriate, within your subscription.
 
 #### Understanding required Azure Active Directory permissions ####
-If the user who registers Azure Stack HCI is an Azure Active Directory global administrator or has been delegated sufficient permissions, this all happens automatically, and no additional action is required. If not, approval may be needed from your Azure Active Directory global administrator to complete registration. Your global administrator can either explicitly grant consent to the app, or they can delegate permissions so that you can grant consent to the app.
+If the user who registers Azure Stack HCI 20H2 is an Azure Active Directory global administrator or has been delegated sufficient permissions, this all happens automatically, and no additional action is required. If not, approval may be needed from your Azure Active Directory global administrator to complete registration. Your global administrator can either explicitly grant consent to the app, or they can delegate permissions so that you can grant consent to the app.
 
 ![Azure Active Directory Permissions](/media/aad_permissions.png "Azure Active Directory Permissions")
 
 ### Register using PowerShell ###
 We're going to perform the registration from the **MGMT01** machine, which we've been using with the Windows Admin Center.
 
-1. On **MGMT01**, open **PowerShell as administrator** and run the following code. This installs the PowerShell Module for Azure Stack HCI on the local node.
+1. On **MGMT01**, open **PowerShell as administrator** and run the following code. This installs the PowerShell Module for Azure Stack HCI 20H2 on the local node.
 
 ```powershell
 # Edit your node names here
@@ -308,7 +308,7 @@ Install-Module Az.StackHCI
 
  In addition, in future releases, installing the Azure PowerShell **Az** modules will include **StackHCI**, however today, you have to install this module specifically, using the command **Install-Module Az.StackHCI**
 
-3. With the Az.StackHCI modules installed, it's now time to register your Azure Stack HCI cluster to Azure, however first, it's worth exploring how to check existing registration status, which we'll do remotely, from **MGMT01**.  The following code assumes you left your PowerShell window open from the previous commands.
+3. With the Az.StackHCI modules installed, it's now time to register your Azure Stack HCI 20H2 cluster to Azure, however first, it's worth exploring how to check existing registration status, which we'll do remotely, from **MGMT01**.  The following code assumes you left your PowerShell window open from the previous commands.
 
 ```powershell
 Invoke-Command -ComputerName AZSHCINODE01 -ScriptBlock {
@@ -316,9 +316,9 @@ Invoke-Command -ComputerName AZSHCINODE01 -ScriptBlock {
 }
 ```
 
-![Check the registration status of the Azure Stack HCI cluster](/media/reg_check.png "Check the registration status of the Azure Stack HCI cluster")
+![Check the registration status of the Azure Stack HCI 20H2 cluster](/media/reg_check.png "Check the registration status of the Azure Stack HCI 20H2 cluster")
 
-As you can see from the result, the cluster is yet to be registered, and the cluster status identifies as **Clustered**. Azure Stack HCI needs to register within 30 days of installation per the Azure Online Services Terms. If not clustered after 30 days, the **ClusterStatus** will show **OutOfPolicy**, and if not registered after 30 days, the **RegistrationStatus** will show **OutOfPolicy**.
+As you can see from the result, the cluster is yet to be registered, and the cluster status identifies as **Clustered**. Azure Stack HCI 20H2 needs to register within 30 days of installation per the Azure Online Services Terms. If not clustered after 30 days, the **ClusterStatus** will show **OutOfPolicy**, and if not registered after 30 days, the **RegistrationStatus** will show **OutOfPolicy**.
 
 4. To register the cluster, you'll first need to get your **Azure subscription ID**.  An easy way to do this is to quickly **log into https://portal.azure.com**, and in the **search box** at the top of the screen, search for **subscriptions** and then click on **Subscriptions**
 
@@ -344,8 +344,8 @@ Register-AzStackHCI  `
 
 Of these commands, many are optional:
 
-* **-ResourceName** - If not declared, the Azure Stack HCI cluster name is used
-* **-ResourceGroupName** - If not declared, the Azure Stack HCI cluster plus the suffix "-rg" is used
+* **-ResourceName** - If not declared, the Azure Stack HCI 20H2 cluster name is used
+* **-ResourceGroupName** - If not declared, the Azure Stack HCI 20H2 cluster plus the suffix "-rg" is used
 * **-Region** - If not declared, "EastUS" will be used.  Additional regions are supported, with the longer term goal to integrate with Azure Arc in all Azure regions.
 * **-EnvironmentName** - If not declared, "AzureCloud" will be used, but allowed values will include additional environments in the future
 * **-ComputerName** - This is used when running the commands remotely against a cluster.  Just make sure you're using a domain account that has admin privilege on the nodes and cluster
@@ -359,12 +359,12 @@ Of these commands, many are optional:
 
 8. Once successfully authenticated, the registration process will begin, and will take a few moments. Once complete, you should see a message indicating success, as per below:
 
-![Register Azure Stack HCI with PowerShell](/media/register_azshci.png "Register Azure Stack HCI with PowerShell")
+![Register Azure Stack HCI 20H2 with PowerShell](/media/register_azshci.png "Register Azure Stack HCI 20H2 with PowerShell")
 
 **NOTE** - if upon registering, you receive an error similar to that below, please **try a different region**.  You can still proceed to [Step 5](#next-steps) and continue with your evaluation, and it won't affect any functionality.  Just make sure you come back and register later!
 
 ```
-Register-AzStackHCI : Azure Stack HCI is not yet available in region <regionName>
+Register-AzStackHCI : Azure Stack HCI 20H2 is not yet available in region <regionName>
 ```
 
 1. Once the cluster is registered, run the following command on **MGMT01** to check the updated status:
@@ -376,7 +376,7 @@ Invoke-Command -ComputerName AZSHCINODE01 -ScriptBlock {
 ```
 ![Check updated registration status with PowerShell](/media/registration_status.png "Check updated registration status with PowerShell")
 
-You can see the **ConnectionStatus** and **LastConnected** time, which is usually within the last day unless the cluster is temporarily disconnected from the Internet. An Azure Stack HCI cluster can operate fully offline for up to 30 consecutive days.
+You can see the **ConnectionStatus** and **LastConnected** time, which is usually within the last day unless the cluster is temporarily disconnected from the Internet. An Azure Stack HCI 20H2 cluster can operate fully offline for up to 30 consecutive days.
 
 10. You can also **log into https://portal.azure.com** to check the resources created there. In the **search box** at the top of the screen, search for **Resource groups** and then click on **Resource groups**
 11. You should see a new **Resource group** listed, with the name you specified earlier, which in our case, is **AzureStackHCIRegistration**
@@ -395,8 +395,8 @@ You can see the **ConnectionStatus** and **LastConnected** time, which is usuall
 
 16. Within the application, click on **API permissions**.  From there, you can see the **Configured permissions** which have been created as part of the **Register-AzureStackHCI** you ran earlier.  You can see that 2 services that have been granted permissions.
 
-    * **AzureStackHCI.Billing.Sync** - Allows synchronizing billing information, such as the number of physical processor cores, between the Azure Stack HCI cluster and the cloud
-    * **AzureStackHCI.Census.Sync** - Allows synchronizing census metadata, such as hardware vendor and software version, between the Azure Stack HCI cluster and the cloud
+    * **AzureStackHCI.Billing.Sync** - Allows synchronizing billing information, such as the number of physical processor cores, between the Azure Stack HCI 20H2 cluster and the cloud
+    * **AzureStackHCI.Census.Sync** - Allows synchronizing census metadata, such as hardware vendor and software version, between the Azure Stack HCI 20H2 cluster and the cloud
 
 Optionally, you can click on these services to see more information
 
@@ -405,21 +405,21 @@ Optionally, you can click on these services to see more information
 **NOTE** - If when you ran **Register-AzureStackHCI**, you don't have appropriate permissions in Azure Active Directory, to grant admin consent, you will need to work with your Azure Active Directory administrator to complete registration later. You can exit and leave the registration in status "**pending admin consent**," i.e. partially completed. Once consent has been granted, **simply re-run Register-AzureStackHCI** to complete registration.
 
 ### Congratulations! ###
-You've now successfully deployed, configured and registered your Azure Stack HCI cluster!
+You've now successfully deployed, configured and registered your Azure Stack HCI 20H2 cluster!
 
 Next Steps
 -----------
-In this step, you've successfully created a nested Azure Stack HCI cluster using Windows Admin Center.  With this complete, you can now [Explore the management of your Azure Stack HCI environment](/nested/steps/5_ExploreAzSHCI.md "Explore the management of your Azure Stack HCI environment")
+In this step, you've successfully created a nested Azure Stack HCI 20H2 cluster using Windows Admin Center.  With this complete, you can now [Explore the management of your Azure Stack HCI 20H2 environment](/nested/steps/5_ExploreAzSHCI.md "Explore the management of your Azure Stack HCI 20H2 environment")
 
 Product improvements
 -----------
-If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI, Windows Admin Center, or the Azure Arc integration and experience, let us know!  We want to hear from you!  [Head on over to our Azure Stack HCI UserVoice page](https://feedback.azure.com/forums/929833-azure-stack-hci "Azure Stack HCI UserVoice"), where you can share your thoughts and ideas about making the technologies better.  If however, you have an issue that you'd like some help with, read on...
+If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI 20H2, Windows Admin Center, or the Azure Arc integration and experience, let us know!  We want to hear from you!  [Head on over to our Azure Stack HCI 20H2 UserVoice page](https://feedback.azure.com/forums/929833-azure-stack-hci "Azure Stack HCI 20H2 UserVoice"), where you can share your thoughts and ideas about making the technologies better.  If however, you have an issue that you'd like some help with, read on...
 
 Raising issues
 -----------
 If you notice something is wrong with the evaluation guide, such as a step isn't working, or something just doesn't make sense - help us to make this guide better!  Raise an issue in GitHub, and we'll be sure to fix this as quickly as possible!
 
-If however, you're having a problem with Azure Stack HCI **outside** of this evaluation guide, make sure you post to [our Microsoft Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Microsoft Q&A Forum"), where Microsoft experts and valuable members of the Azure Stack HCI community will do their best to help you.
+If however, you're having a problem with Azure Stack HCI 20H2 **outside** of this evaluation guide, make sure you post to [our Microsoft Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Microsoft Q&A Forum"), where Microsoft experts and valuable members of the community will do their best to help you.
 
 Troubleshooting cluster validation issues
 -----------
@@ -431,7 +431,7 @@ During testing, you **may** see an issue initiating cluster validation due to a 
 Disable-WsmanCredSSP -Role Client
 ```
 
-And for **each of the nested Azure Stack HCI nodes**, on your Hyper-V host, run the following 
+And for **each of the nested Azure Stack HCI 20H2 nodes**, on your Hyper-V host, run the following 
 
 ```powershell
 $nodeName = "AZSHCINODE01"
@@ -459,7 +459,7 @@ Restart-Service WinRm
 Restart-Computer -Force
 ```
 
-Also for **each of the nested Azure Stack HCI nodes**, on your Hyper-V host, run the following 
+Also for **each of the nested Azure Stack HCI 20H2 nodes**, on your Hyper-V host, run the following 
 
 ```powershell
 $nodeName = "AZSHCINODE01"
@@ -478,7 +478,7 @@ Invoke-Command -VMName "$nodeName" -Credential $domainCreds -ScriptBlock {
 Then, back on **MGMT01**, access the Windows Admin Center, if you restart the cluster creation wizard, Windows Admin Center should allow you to pick up where you left off previously.
 
 #### Test Report issue ####
-If you see an issue with an error relating to **Test report isn't available, try to validate again**, this is likely due to a bug where your Azure Stack HCI nodes are in a different locale than the MGMT01/Windows Admin Center machine.  To fix this, on **each of the nested Azure Stack HCI nodes**, run the following in PowerShell:
+If you see an issue with an error relating to **Test report isn't available, try to validate again**, this is likely due to a bug where your Azure Stack HCI 20H2 nodes are in a different locale than the MGMT01/Windows Admin Center machine.  To fix this, on **each of the nested Azure Stack HCI 20H2 nodes**, run the following in PowerShell:
 
 ```powershell
 Get-WinSystemLocale # If not en-US you will have problems

@@ -1,9 +1,9 @@
 
-Explore the management of your Azure Stack HCI environment
+Explore the management of your Azure Stack HCI 20H2 environment
 ==============
 Overview
 -----------
-With all key components deployed, including a management infrastructure, along with clustered Azure Stack HCI nodes, you can now begin to explore some of the additional capabilities within Azure Stack HCI and the Windows Admin Center.  We'll cover a few recommended activities below, to expose you to some of the key elements of the Windows Admin Center, but for the rest, we'll [direct you over to the official documentation](https://docs.microsoft.com/en-us/azure-stack/hci/ "Azure Stack HCI documentation").
+With all key components deployed, including a management infrastructure, along with clustered Azure Stack HCI 20H2 nodes, you can now begin to explore some of the additional capabilities within Azure Stack HCI 20H2 and the Windows Admin Center.  We'll cover a few recommended activities below, to expose you to some of the key elements of the Windows Admin Center, but for the rest, we'll [direct you over to the official documentation](https://docs.microsoft.com/en-us/azure-stack/hci/ "Azure Stack HCI 20H2 documentation").
 
 Contents
 -----------
@@ -14,7 +14,7 @@ Contents
 
 Create volumes for VMs
 -----------
-In this step, you'll create some volumes on an Azure Stack HCI cluster by using Windows Admin Center, and enable data deduplication and compression on volumes.
+In this step, you'll create some volumes on an Azure Stack HCI 20H2 cluster by using Windows Admin Center, and enable data deduplication and compression on volumes.
 
 ### Create a three-way mirror volume ###
 You should be over on **MGMT01**, but if you're not, log into MGMT01, and open the **Windows Admin Center**.  You'll spend your time here for the remainder of the steps documented below.
@@ -25,11 +25,11 @@ You should be over on **MGMT01**, but if you're not, log into MGMT01, and open t
 4. In the **Create volume** pane, enter **VMSTORAGE** for the volume name, and leave **Resiliency** as **Three-way mirror**
 5. In Size on HDD, specify **20GB** for the size of the volume, then click **Create**.
 
-![Create a volume on Azure Stack HCI](/media/wac_vm_storage.png "Create a volume on Azure Stack HCI")
+![Create a volume on Azure Stack HCI 20H2](/media/wac_vm_storage.png "Create a volume on Azure Stack HCI 20H2")
 
 6. Creating the volume can take a few minutes. Notifications in the upper-right will let you know when the volume is created. The new volume appears in the Inventory list
 
-![Volume created on Azure Stack HCI](/media/wac_vm_storage_deployed.png "Volume created on Azure Stack HCI")
+![Volume created on Azure Stack HCI 20H2](/media/wac_vm_storage_deployed.png "Volume created on Azure Stack HCI 20H2")
 
 ### Create a mirror-accelerated parity volume ###
 Mirror-accelerated parity reduces the footprint of the volume on the HDD. For example, a three-way mirror volume would mean that for every 10 terabytes of size, you will need 30 terabytes as footprint. To reduce the overhead in footprint, create a volume with mirror-accelerated parity. This reduces the footprint from 30 terabytes to just 22 terabytes, even with only 4 servers, by mirroring the most active 20 percent of data, and using parity, which is more space efficient, to store the rest. You can adjust this ratio of parity and mirror to make the performance versus capacity tradeoff that's right for your workload. For example, 90 percent parity and 10 percent mirror yields less performance but streamlines the footprint even further.
@@ -39,7 +39,7 @@ Mirror-accelerated parity reduces the footprint of the volume on the HDD. For ex
 3. In **Parity percentage**, set the percentage of parity to **80% parity, 20% mirror**
 4. In Size on HDD, specify **20GB** for the size of the volume, then click **Create**.
 
-For more information on planning volumes with Azure Stack HCI, you should [refer to the official docs](https://docs.microsoft.com/en-us/azure-stack/hci/concepts/plan-volumes "Planning volumes for Azure Stack HCI").
+For more information on planning volumes with Azure Stack HCI 20H2, you should [refer to the official docs](https://docs.microsoft.com/en-us/azure-stack/hci/concepts/plan-volumes "Planning volumes for Azure Stack HCI 20H2").
 
 ### Turn on deduplication and compression ###
 You may have seen, during the **Create volume** wizard, you could have enabled deduplication and compression at creation time, however we wanted to make sure you were fully aware of how to enable it for existing volumes.
@@ -51,7 +51,7 @@ You may have seen, during the **Create volume** wizard, you could have enabled d
 
 3. In the **Enable deduplication** pane, use the drop-down to select **Hyper-V** then click **Enable Deduplication**. This should be enabled quickly, as there's no files on the volume.
 
-**NOTE** - You'll notice there there are 3 options; default, Hyper-V and Backup.  If you're interested in learning more about Deduplication in Azure Stack HCI, you should [refer to our documentation](https://docs.microsoft.com/en-us/windows-server/storage/data-deduplication/overview "Deduplication overview")
+**NOTE** - You'll notice there there are 3 options; default, Hyper-V and Backup.  If you're interested in learning more about Deduplication in Azure Stack HCI 20H2, you should [refer to our documentation](https://docs.microsoft.com/en-us/windows-server/storage/data-deduplication/overview "Deduplication overview")
 
 You now have a couple of volumes created and ready to accept workloads.  Whilst we deployed the volumes using the Windows Admin Center, you can also do the same through PowerShell.  If you're interested in taking that approach, [check out the official docs that walk you through that process](https://docs.microsoft.com/en-us/azure-stack/hci/manage/create-volumes "Official documentation for creating volumes")
 
@@ -112,7 +112,7 @@ Shutting down the environment
 If you're running the environment in Azure, to save costs, you may wish to shut down your nested VMs, and Hyper-V host.  In order to do so, it's advisable to run the following commands, from the Hyper-V host, to cleanly power down the different components, before powering down the Azure VM itself.
 
 1. On your Hyper-V host, open **PowerShell as administrator**
-2. First, using PowerShell Direct, you'll log into one of the Azure Stack HCI nodes to shutdown the cluster, then you'll power down the VMs running on your Hyper-V host
+2. First, using PowerShell Direct, you'll log into one of the Azure Stack HCI 20H2 nodes to shutdown the cluster, then you'll power down the VMs running on your Hyper-V host
 
 ```powershell
 $domainName = "azshci.local"
@@ -143,15 +143,15 @@ You've reached the end of the evaluation guide.  In this guide you have:
 * Deployed/Configured a Hyper-V host, either on-prem or in Azure, to run your nested sandbox environment
 * Deployed a management infrastructure including a Windows Server 2019 Active Directory and Windows 10 management server
 * Installed and configured the Windows Admin Center
-* Created, deployed and configured a number of Azure Stack HCI nodes, in nested virtual machines
-* Created an Azure Stack HCI cluster, integrated with a cloud witness in Azure, and registered with Azure for billing
+* Created, deployed and configured a number of Azure Stack HCI 20H2 nodes, in nested virtual machines
+* Created an Azure Stack HCI 20H2 cluster, integrated with a cloud witness in Azure, and registered with Azure for billing
 * Used the Windows Admin Center to create and modify volumes, then deploy and migrate a virtual machine.
 
 Great work!
 
 Next steps
 -----------
-This part of the guide covers only a handful of key topics and capabilities that Azure Stack HCI can provide.  We'll be adding more shortly, but in the meantime, we'd strongly advise you to check out some of the key areas below:
+This part of the guide covers only a handful of key topics and capabilities that Azure Stack HCI 20H2 can provide.  We'll be adding more shortly, but in the meantime, we'd strongly advise you to check out some of the key areas below:
 
 * [Explore Windows Admin Center](https://docs.microsoft.com/en-us/azure-stack/hci/get-started "Explore Windows Admin Center")
 * [Manage virtual machines](https://docs.microsoft.com/en-us/azure-stack/hci/manage/vm "Manage virtual machines")
@@ -164,10 +164,10 @@ This part of the guide covers only a handful of key topics and capabilities that
 
 Product improvements
 -----------
-If, while you've worked through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI, Windows Admin Center, or the Azure Arc integration and experience, let us know!  We want to hear from you!  [Head on over to our Azure Stack HCI UserVoice page](https://feedback.azure.com/forums/929833-azure-stack-hci "Azure Stack HCI UserVoice"), where you can share your thoughts and ideas about making the technologies better.  If however, you have an issue that you'd like some help with, read on...
+If, while you've worked through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI 20H2, Windows Admin Center, or the Azure Arc integration and experience, let us know!  We want to hear from you!  [Head on over to our Azure Stack HCI 20H2 UserVoice page](https://feedback.azure.com/forums/929833-azure-stack-hci "Azure Stack HCI 20H2 UserVoice"), where you can share your thoughts and ideas about making the technologies better.  If however, you have an issue that you'd like some help with, read on...
 
 Raising issues
 -----------
 If you notice something is wrong with the evaluation guide, such as a step isn't working, or something just doesn't make sense - help us to make this guide better!  Raise an issue in GitHub, and we'll be sure to fix this as quickly as possible!
 
-If however, you're having a problem with Azure Stack HCI **outside** of this evaluation guide, make sure you post to [our Microsoft Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Microsoft Q&A Forum"), where Microsoft experts and valuable members of the Azure Stack HCI community will do their best to help you.
+If however, you're having a problem with Azure Stack HCI 20H2 **outside** of this evaluation guide, make sure you post to [our Microsoft Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Microsoft Q&A Forum"), where Microsoft experts and valuable members of the community will do their best to help you.

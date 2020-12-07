@@ -1,16 +1,16 @@
-Evaluate Azure Stack HCI using Nested Virtualization in Azure
+Evaluate Azure Stack HCI 20H2 using Nested Virtualization in Azure
 ==============
 Overview
 -----------
 With the introduction of [nested virtualization support in Azure](https://azure.microsoft.com/en-us/blog/nested-virtualization-in-azure/ "Nested virtualization announcement blog post") back in 2017, Microsoft opened the door to a number of new and interesting scenarios.  Nested virtualization in Azure is particularly useful for validating configurations that would require additional hardware in your environment, such as running Hyper-V hosts and clusters.
 
-In this guide, you'll walk through the steps to stand up an Azure Stack HCI configuration, and key dependencies.  At a high level, this will consist of the following:
+In this guide, you'll walk through the steps to stand up an Azure Stack HCI 20H2 configuration, and key dependencies.  At a high level, this will consist of the following:
 
 * Deploy an Azure VM, running Windows Server 2019, to act as your main Hyper-V host
 * Inside the Windows Server 2019 VM, enable the Hyper-V role and accompanying management tools
 * On the Windows Server 2019 VM, deploy a Windows Server 2019 domain controller, and a Windows 10 management VM, running the Windows Admin Center
-* On the Windows Server 2019 VM, deploy 2 nested Azure Stack HCI nodes
-* On the Windows 10 management VM, configure your Azure Stack HCI cluster
+* On the Windows Server 2019 VM, deploy 2 nested Azure Stack HCI 20H2 nodes
+* On the Windows 10 management VM, configure your Azure Stack HCI 20H2 cluster
 
 Contents
 -----------
@@ -26,17 +26,17 @@ Architecture
 
 From an architecture perspective, the following graphic showcases the different layers and interconnections between the different components:
 
-![Architecture diagram for Azure Stack HCI nested in Azure](/media/nested_virt_arch.png "Architecture diagram for Azure Stack HCI nested in Azure")
+![Architecture diagram for Azure Stack HCI 20H2 nested in Azure](/media/nested_virt_arch.png "Architecture diagram for Azure Stack HCI 20H2 nested in Azure")
 
 Get an Azure subscription
 -----------
-To evaluate Azure Stack HCI, you'll need an Azure subscription.  If you already have one provided by your company, you can skip this step, but if not, you have a couple of options.
+To evaluate Azure Stack HCI 20H2, you'll need an Azure subscription.  If you already have one provided by your company, you can skip this step, but if not, you have a couple of options.
 
-The first option would apply to Visual Studio subscribers, where you can use Azure at no extra charge. With your monthly Azure DevTest individual credit, Azure is your personal sandbox for dev/test. You can provision virtual machines, cloud services, and other Azure resources. Credit amounts vary by subscription level, but if you manage your Azure Stack HCI VM run time efficiently, you can test the scenario well within your subscription limits.
+The first option would apply to Visual Studio subscribers, where you can use Azure at no extra charge. With your monthly Azure DevTest individual credit, Azure is your personal sandbox for dev/test. You can provision virtual machines, cloud services, and other Azure resources. Credit amounts vary by subscription level, but if you manage your Azure Stack HCI 20H2 Host VM run-time efficiently, you can test the scenario well within your subscription limits.
 
-The second option would be to sign up for a [free trial](https://azure.microsoft.com/en-us/free/ "Azure free trial link"), which gives you $200 credit for the first 30 days, and 12 months of popular services for free.  The credit for the first 30 days will give you plenty of headroom to validate Azure Stack HCI.
+The second option would be to sign up for a [free trial](https://azure.microsoft.com/en-us/free/ "Azure free trial link"), which gives you $200 credit for the first 30 days, and 12 months of popular services for free.  The credit for the first 30 days will give you plenty of headroom to validate Azure Stack HCI 20H2.
 
-You can also use this same Azure subscription to register your Azure Stack HCI cluster, once the deployment is completed.
+You can also use this same Azure subscription to register your Azure Stack HCI 20H2 cluster, once the deployment is completed.
 
 Azure VM Size Considerations
 -----------
@@ -45,9 +45,9 @@ Now, before you deploy the VM in Azure, it's important to choose a **size** that
 
 * Windows Server 2019 Domain Controller - 2 vCPU, 2 GB memory
 * Windows 10 management VM - 2 vCPU, 4 GB memory
-* Azure Stack HCI nodes, each with 16 vCPUs and 24 GB memory depending on the number of nodes you choose
+* Azure Stack HCI 20H2 nodes, each with 16 vCPUs and 24 GB memory depending on the number of nodes you choose
 
-These are just example numbers, and you can adjust accordingly to suit your needs, even after deployment.  The point here is, think about how many Azure Stack HCI nodes you'd like to nest inside this Azure VM, and select an Azure VM size from there.  Some good examples would be:
+These are just example numbers, and you can adjust accordingly to suit your needs, even after deployment.  The point here is, think about how many Azure Stack HCI 20H2 nodes you'd like to nest inside this Azure VM, and select an Azure VM size from there.  Some good examples would be:
 
 **D-series VMs (General purpose)**
 
@@ -192,7 +192,7 @@ if (($context).count -gt 1) {
 With login successful, and the target subscription confirmed, you can move on to deploy the VM.
 
 #### Deploy the VM with PowerShell ####
-In order to keep things as streamlined and quick as possible, we're going to be deploying the VM that will host Azure Stack HCI, using PowerShell.  As an alternative option, we will provide an alternative method using the Azure Portal and an Azure Resource Manager Template, in JSON format.
+In order to keep things as streamlined and quick as possible, we're going to be deploying the VM that will host Azure Stack HCI 20H2, using PowerShell.  As an alternative option, we will provide an alternative method using the Azure Portal and an Azure Resource Manager Template, in JSON format.
 
 In the below script, feel free to change the VM Name, along with other parameters.  The public DNS name for this VM will be generated by combining your VM name, with a random guid, to ensure it is unique, and the deployment completes without conflicts.
 
@@ -252,7 +252,7 @@ Firstly, visit https://portal.azure.com/, and login with the same credentials us
 Prepare your Azure VM
 -----------
 
-With your Azure VM (AzSHCIHost001) successfully deployed, you're ready to configure the VM to allow creation of the the Windows Server 2019 domain controller, the Windows 10 management VM, and the Azure Stack HCI nodes.
+With your Azure VM (AzSHCIHost001) successfully deployed, you're ready to configure the VM to allow creation of the the Windows Server 2019 domain controller, the Windows 10 management VM, and the Azure Stack HCI 20H2 nodes.
 
 ### Update your Azure VM ###
 Firstly, you'll need to connect into the VM, with the easiest approach being via Remote Desktop.  If you're not already logged into the Azure portal, visit https://portal.azure.com/, and login with the same credentials used earlier.  Once logged in, using the search box on the dashboard, enter "**azshci**" and once the results are returned, **click on your AzSHCIHost001 virtual machine**.
@@ -330,10 +330,10 @@ In this step, you've successfully created your Azure VM, and configured Windows 
 
 Product improvements
 -----------
-If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI, Windows Admin Center, or the Azure Arc integration and experience, let us know!  We want to hear from you!  [Head on over to our Azure Stack HCI UserVoice page](https://feedback.azure.com/forums/929833-azure-stack-hci "Azure Stack HCI UserVoice"), where you can share your thoughts and ideas about making the technologies better.  If however, you have an issue that you'd like some help with, read on...
+If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI 20H2, Windows Admin Center, or the Azure Arc integration and experience, let us know!  We want to hear from you!  [Head on over to our Azure Stack HCI 20H2 UserVoice page](https://feedback.azure.com/forums/929833-azure-stack-hci "Azure Stack HCI 20H2 UserVoice"), where you can share your thoughts and ideas about making the technologies better.  If however, you have an issue that you'd like some help with, read on...
 
 Raising issues
 -----------
 If you notice something is wrong with the evaluation guide, such as a step isn't working, or something just doesn't make sense - help us to make this guide better!  Raise an issue in GitHub, and we'll be sure to fix this as quickly as possible!
 
-If however, you're having a problem with Azure Stack HCI **outside** of this evaluation guide, make sure you post to [our Microsoft Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Microsoft Q&A Forum"), where Microsoft experts and valuable members of the Azure Stack HCI community will do their best to help you.
+If however, you're having a problem with Azure Stack HCI 20H2 **outside** of this evaluation guide, make sure you post to [our Microsoft Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Microsoft Q&A Forum"), where Microsoft experts and valuable members of the community will do their best to help you.
