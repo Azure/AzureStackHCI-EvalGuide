@@ -104,7 +104,7 @@
                 "1024"
             ],
             "metadata": {
-                "description": "The size of the VM OS disk in GiB. If you are planning to test AKS on Azure Stack HCI, select larger storage, ideally 512 GiB"
+                "description": "The size of the VM OS disk in GiB. If you are planning to test AKS on Azure Stack HCI 20H2, select larger storage, ideally 512 GiB"
             }
         },
         "adminUsername": {
