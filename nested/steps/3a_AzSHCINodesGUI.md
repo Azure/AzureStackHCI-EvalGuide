@@ -166,6 +166,7 @@ $domainName = "azshci.local"
 $domainAdmin = "$domainName\labadmin"
 $domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the password for the LabAdmin account"
 # Define node name
+$nodeName = "AZSHCINODE01"
 Invoke-Command -VMName "$nodeName" -Credential $domainCreds -ScriptBlock {
     # Enable the Hyper-V role within the Azure Stack HCI 20H2 OS
     Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All -NoRestart -Verbose
@@ -173,6 +174,7 @@ Invoke-Command -VMName "$nodeName" -Credential $domainCreds -ScriptBlock {
 
 Write-Verbose "Rebooting node for changes to take effect" -Verbose
 Stop-VM -Name $nodeName
+Start-Sleep -Seconds 5
 Start-VM -Name $nodeName
 
 # Test for the node to be back online and responding
@@ -188,6 +190,7 @@ Invoke-Command -VMName "$nodeName" -Credential $domainCreds -ScriptBlock {
 
 Write-Verbose "Rebooting node for changes to take effect" -Verbose
 Stop-VM -Name $nodeName
+Start-Sleep -Seconds 5
 Start-VM -Name $nodeName
 
 # Test for the node to be back online and responding
