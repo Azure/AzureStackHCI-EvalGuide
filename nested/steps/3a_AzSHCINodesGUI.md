@@ -158,7 +158,7 @@ While in SConfig, it is quick and easy to rename the OS, and join a domain.
 The machine will now reboot, and you've successfully set up your Azure Stack HCI node.
 
 ### Enable the Hyper-V role on your Azure Stack HCI Node ###
-There is an **bug** in the **public preview** when running Azure Stack HCI within a nested virtualization configuration, specifically, when using Windows Admin Center to enable the Hyper-V role, within a running instance of Azure Stack HCI, inside a **Generation 2 Hyper-V VM**.  To workaround this, you can run the following PowerShell command **from the Hyper-V host** to fix this issue.
+There is an **bug** when running Azure Stack HCI within a nested virtualization configuration, specifically, when using Windows Admin Center to enable the Hyper-V role, within a running instance of Azure Stack HCI, inside a **Generation 2 Hyper-V VM**.  To workaround this, you can run the following PowerShell command **from the Hyper-V host** to fix this issue.
 
 ```powershell
 # Provide the domain credentials to log into the VM

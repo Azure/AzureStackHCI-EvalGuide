@@ -261,7 +261,7 @@ Connect and Register Azure Stack HCI to Azure
 -----------
 Azure Stack HCI is delivered as an Azure service and needs to register within 30 days of installation per the Azure Online Services Terms.  With our cluster configured, we'll now register your Azure Stack HCI cluster with **Azure Arc** for monitoring, support, billing, and hybrid services. Upon registration, an Azure Resource Manager resource is created to represent each on-premises Azure Stack HCI cluster, effectively extending the Azure management plane to Azure Stack HCI. Information is periodically synced between the Azure resource and the on-premises cluster.  One great aspect of Azure Stack HCI, is that the Azure Arc registration is a native capability of Azure Stack HCI, so there is no agent required.
 
-**NOTE** - During the preview program, there will be no charges for Azure Stack HCI when registered with Azure, and even after the first official release of Azure Stack HCI, the **first 30 days usage will be free**.
+**NOTE** - After registering your Azure Stack HCI cluster, the **first 30 days usage will be free**.
 
 ### Prerequisites for registration ###
 Firstly, **you need an Azure Stack HCI cluster**, which we've just created, so you're good there.
@@ -306,7 +306,7 @@ Install-Module Az.StackHCI
 
  **NOTE** - You may recieve a message that **PowerShellGet requires NuGet Provider...** - read the full message, and then click **Yes** to allow the appropriate dependencies to be installed. You may receive a second prompt to **install the modules from the PSGallery** - click **Yes to All** to proceed.
 
- In addition, in future releases, installing the Azure PowerShell **Az** modules will include **StackHCI**, however today, in preview, you have to install this module specifically, using the command **Install-Module Az.StackHCI**
+ In addition, in future releases, installing the Azure PowerShell **Az** modules will include **StackHCI**, however today, you have to install this module specifically, using the command **Install-Module Az.StackHCI**
 
 3. With the Az.StackHCI modules installed, it's now time to register your Azure Stack HCI cluster to Azure, however first, it's worth exploring how to check existing registration status, which we'll do remotely, from **MGMT01**.  The following code assumes you left your PowerShell window open from the previous commands.
 
@@ -346,14 +346,14 @@ Of these commands, many are optional:
 
 * **-ResourceName** - If not declared, the Azure Stack HCI cluster name is used
 * **-ResourceGroupName** - If not declared, the Azure Stack HCI cluster plus the suffix "-rg" is used
-* **-Region** - If not declared, "EastUS" will be used.  Additional regions are supported as part of the preview program, with the longer term goal to integrate with Azure Arc in all Azure regions.
+* **-Region** - If not declared, "EastUS" will be used.  Additional regions are supported, with the longer term goal to integrate with Azure Arc in all Azure regions.
 * **-EnvironmentName** - If not declared, "AzureCloud" will be used, but allowed values will include additional environments in the future
 * **-ComputerName** - This is used when running the commands remotely against a cluster.  Just make sure you're using a domain account that has admin privilege on the nodes and cluster
 * **-Credential** - This is also used for running the commands remotely against a cluster.
 
 **Register-AzureStackHCI** runs syncronously, with progress reporting, and typically takes 1-2 minutes.  The first time you run it, it may take slightly longer, because it needs to install some dependencies, including additional Azure PowerShell modules.
 
-7. Once dependencies have been installed, you'll receive a popup on **MGMT01** to authenticate to Azure. Provide your **Azure credentials**.
+1. Once dependencies have been installed, you'll receive a popup on **MGMT01** to authenticate to Azure. Provide your **Azure credentials**.
 
 ![Login to Azure](/media/azure_login_reg.png "Login to Azure")
 

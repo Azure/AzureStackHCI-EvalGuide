@@ -3,7 +3,7 @@ Azure Stack HCI - Evaluation Guide
 
 ## Welcome to the Azure Stack HCI Evaluation Guide ##
 
-In this guide, we'll walk you experiencing a number of the amazing capabilities within the [new Azure Stack HCI public preview](https://azure.microsoft.com/en-us/products/azure-stack/hci/ "link to the new Azure Stack HCI public preview"), and set the foundation for you to explore in your own time.  You'll cover aspects such as:
+In this guide, we'll walk you experiencing a number of the amazing capabilities within [Azure Stack HCI 20H2](https://azure.microsoft.com/en-us/products/azure-stack/hci/ "link to the Azure Stack HCI 20H2 landing page"), and set the foundation for you to explore in your own time.  You'll cover aspects such as:
 
 * Deploying Azure Stack HCI nodes
 * Deploying supporting management infrastructure, including Active Directory domain and management tooling
@@ -25,7 +25,7 @@ Why follow this guide?
 
 This evaluation guide will walk you through standing up a sandboxed, isolated Azure Stack HCI environment using **nested virtualization**, and can run on a **single physical system**, such as a workstation, laptop, or server of you have one, or alternatively, you can run the whole configuration in Azure.  We'll go into more details for this path, shortly.
 
-The important takeaway here is, by following this guide, you'll lay down a solid foundation on to which you can explore additional Azure Stack HCI scenarios that will be documented as we move through the public preview program to the first release of Azure Stack HCI, so keep checking back for additional scenarios over time.
+The important takeaway here is, by following this guide, you'll lay down a solid foundation on to which you can explore additional Azure Stack HCI scenarios in the future, so keep checking back for additional scenarios over time.
 
 Start your Azure Stack HCI evaluation using nested virtualization
 -----------

@@ -30,7 +30,7 @@ In order to deploy our nested virtual machines on AzSHCIHost001, we'll first nee
 
 * Windows Server 2019 Evaluation
 * Windows 10 Enterprise Evaluation (x64)
-* Azure Stack HCI Public Preview
+* Azure Stack HCI 20H2
 * Windows Admin Center
 
 Before downloading, create a new folder on your AzSHCIHost001 machine, to contain the downloaded ISO files.

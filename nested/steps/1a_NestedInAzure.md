@@ -9,7 +9,7 @@ In this guide, you'll walk through the steps to stand up an Azure Stack HCI conf
 * Deploy an Azure VM, running Windows Server 2019, to act as your main Hyper-V host
 * Inside the Windows Server 2019 VM, enable the Hyper-V role and accompanying management tools
 * On the Windows Server 2019 VM, deploy a Windows Server 2019 domain controller, and a Windows 10 management VM, running the Windows Admin Center
-* On the Windows Server 2019 VM, deploy 2-4 nested Azure Stack HCI nodes
+* On the Windows Server 2019 VM, deploy 2 nested Azure Stack HCI nodes
 * On the Windows 10 management VM, configure your Azure Stack HCI cluster
 
 Contents
@@ -45,7 +45,7 @@ Now, before you deploy the VM in Azure, it's important to choose a **size** that
 
 * Windows Server 2019 Domain Controller - 2 vCPU, 2 GB memory
 * Windows 10 management VM - 2 vCPU, 4 GB memory
-* 2-4 Azure Stack HCI nodes, each with 4-8 vCPUs, 12-24 GB memory depending on the number of nodes you choose
+* Azure Stack HCI nodes, each with 16 vCPUs and 24 GB memory depending on the number of nodes you choose
 
 These are just example numbers, and you can adjust accordingly to suit your needs, even after deployment.  The point here is, think about how many Azure Stack HCI nodes you'd like to nest inside this Azure VM, and select an Azure VM size from there.  Some good examples would be:
 
