@@ -121,7 +121,7 @@ $azsHCILocalCreds = Get-Credential -UserName "Administrator" -Message "Enter the
 # Define new name and IP
 $nodeName = "AZSHCINODE01"
 $newIP = "192.168.0.4"
-Invoke-Command -VMName "$nodeName" -Credential $azsHCILocalCreds -ScriptBlock {
+Invoke-Command -VMName $nodeName -Credential $azsHCILocalCreds -ScriptBlock {
     # Set Static IP
     New-NetIPAddress -IPAddress "$using:newIP" -DefaultGateway "192.168.0.1" -InterfaceAlias "Ethernet" -PrefixLength "24" | Out-Null
     Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses ("192.168.0.2")
@@ -139,7 +139,7 @@ $azsHCILocalCreds = Get-Credential -UserName "Administrator" -Message "Enter the
 $domainName = "azshci.local"
 $domainAdmin = "$domainName\labadmin"
 $domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the password for the LabAdmin account"
-Invoke-Command -VMName "$nodeName" -Credential $azsHCILocalCreds -ScriptBlock {
+Invoke-Command -VMName $nodeName -Credential $azsHCILocalCreds -ScriptBlock {
     # Join the domain and change the name at the same time
     Add-Computer -DomainName azshci.local -NewName $Using:nodeName -Credential $Using:domainCreds -Force
 }
@@ -164,7 +164,7 @@ There is an **bug** when running Azure Stack HCI 20H2 within a nested virtualiza
 $domainName = "azshci.local"
 $domainAdmin = "$domainName\labadmin"
 $domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the password for the LabAdmin account"
-Invoke-Command -VMName "$nodeName" -Credential $domainCreds -ScriptBlock {
+Invoke-Command -VMName $nodeName -Credential $domainCreds -ScriptBlock {
     # Enable the Hyper-V role within the Azure Stack HCI 20H2 OS
     Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All -NoRestart -Verbose
 }
@@ -180,7 +180,7 @@ while ((Invoke-Command -VMName $nodeName -Credential $domainCreds {"Test"} -Erro
 }
 Write-Verbose "$nodeName is now online. Proceeding to install Hyper-V PowerShell...." -Verbose
 
-Invoke-Command -VMName "$nodeName" -Credential $domainCreds -ScriptBlock {
+Invoke-Command -VMName $nodeName -Credential $domainCreds -ScriptBlock {
     # Enable the Hyper-V PowerShell within the Azure Stack HCI 20H2 OS
     Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-Management-PowerShell -All -NoRestart -Verbose
 }

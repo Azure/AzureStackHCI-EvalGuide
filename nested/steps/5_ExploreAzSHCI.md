@@ -120,7 +120,7 @@ $domainAdmin = "$domainName\labadmin"
 $domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the password for the LabAdmin account"
 # Define node name
 $nodeName = "AZSHCINODE01"
-Invoke-Command -VMName "$nodeName" -Credential $domainCreds -ScriptBlock {
+Invoke-Command -VMName $nodeName -Credential $domainCreds -ScriptBlock {
     # Get any running VMs and turn them off
     Get-ClusterResource | Where-Object {$_.ResourceType -eq "Virtual Machine"} | Stop-ClusterResource
     # Stop the cluster

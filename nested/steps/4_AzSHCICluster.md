@@ -434,14 +434,12 @@ Disable-WsmanCredSSP -Role Client
 And for **each of the nested Azure Stack HCI 20H2 nodes**, on your Hyper-V host, run the following 
 
 ```powershell
-$nodeName = "AZSHCINODE01"
-
 # Provide the domain credentials to log into the VM
 $domainName = "azshci.local"
 $domainAdmin = "$domainName\labadmin"
 $domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the password for the LabAdmin account"
-
-Invoke-Command -VMName "$nodeName" -Credential $domainCreds -ScriptBlock {
+$nodeName = "AZSHCINODE01"
+Invoke-Command -VMName $nodeName -Credential $domainCreds -ScriptBlock {
     Disable-WsmanCredSSP -Role Server
     Test-ComputerSecureChannel -Verbose -Repair
     gpupdate /force
@@ -462,14 +460,11 @@ Restart-Computer -Force
 Also for **each of the nested Azure Stack HCI 20H2 nodes**, on your Hyper-V host, run the following 
 
 ```powershell
-$nodeName = "AZSHCINODE01"
-
 # Provide the domain credentials to log into the VM
 $domainName = "azshci.local"
 $domainAdmin = "$domainName\labadmin"
 $domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the password for the LabAdmin account"
-
-Invoke-Command -VMName "$nodeName" -Credential $domainCreds -ScriptBlock {
+Invoke-Command -VMName $nodeName -Credential $domainCreds -ScriptBlock {
     Restart-Service WinRm
     Restart-Computer -Force
 }
