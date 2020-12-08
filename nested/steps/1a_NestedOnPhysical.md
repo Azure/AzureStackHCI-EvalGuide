@@ -24,7 +24,7 @@ Architecture
 
 From an architecture perspective, the following graphic showcases the different layers and interconnections between the different components:
 
-![Architecture diagram for Azure Stack HCI 20H2 nested on a physical system](/media/nested_virt_physical.png "Architecture diagram for Azure Stack HCI 20H2 nested on a physical system")
+![Architecture diagram for Azure Stack HCI 20H2 nested on a physical system](/media/nested_virt_physical_ga.png "Architecture diagram for Azure Stack HCI 20H2 nested on a physical system")
 
 Will my hardware support this?
 -----------
