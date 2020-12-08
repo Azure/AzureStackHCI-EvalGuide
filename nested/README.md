@@ -22,14 +22,6 @@ Deployment Options
 -----------
 For those of you who don't have multiple server-class pieces of hardware to test a full hyperconverged solution, this evaluation guide will detail 2 configurations, both using **nested virtualization**, that should be of interest.
 
-### Deployment of Azure Stack HCI 20H2 nested in Azure ###
-
-![Architecture diagram for Azure Stack HCI 20H2 nested in Azure](/media/nested_virt_arch.png "Architecture diagram for Azure Stack HCI 20H2 nested in Azure")
-
-In this configuration, you'll take advantage of the nested virtualization support provided within certain Azure VM sizes.  You'll first deploy a single Azure VM running Windows Server 2019.  Inside this VM, you'll enable the Hyper-V role, and deploy a Windows Server 2019 domain controller VM, along with a management VM, running Windows 10 Enterprise. This management VM will also run the Windows Admin Center.  Finally, you'll deploy a nested Azure Stack HCI 20H2 cluster, with a minimum of 2 nodes, however the number of nodes will be based on the size of your Azure VM.
-
-To reiterate, the whole configuration (Domain Controller VM, Management VM and Azure Stack HCI 20H2 Nodes) will run inside the single Azure VM.
-
 ### Deployment of Azure Stack HCI 20H2 nested on a physical system ###
 
 ![Architecture diagram for Azure Stack HCI 20H2 nested on a physical system](/media/nested_virt_physical.png "Architecture diagram for Azure Stack HCI 20H2 nested on a physical system")
@@ -39,7 +31,15 @@ In this configuration, you'll again take advantage of nested virtualization, but
 #### Important note for systems with AMD CPUs ####
 For those of you wanting to evaluate Azure Stack HCI 20H2 in a nested configuration, with **AMD-based systems**, the only way this is currently possible is to use **Windows 10 Insider Build 19636 or newer** as your Hyper-V host. Your system should have AMD's 1st generation Ryzen/Epyc or newer CPUs. You can get more information on [nested virtualization on AMD here](https://techcommunity.microsoft.com/t5/virtualization/amd-nested-virtualization-support/ba-p/1434841 "Nested virtualization on AMD-based systems").
 
-If you can't run the Windows 10 Insider builds on your AMD-based system, it may be a better approach to [deploy in Azure instead](/nested/steps/1a_NestedInAzure.md "Deploy in Azure").  We'll be sure to update this guidance as and when new updates to nested virtualization support become available.
+If you can't run the Windows 10 Insider builds on your AMD-based system, it may be a better approach to [deploy in Azure instead](/nested/steps/1b_NestedInAzure.md "Deploy in Azure").  We'll be sure to update this guidance as and when new updates to nested virtualization support become available.
+
+### Deployment of Azure Stack HCI 20H2 nested in Azure ###
+
+![Architecture diagram for Azure Stack HCI 20H2 nested in Azure](/media/nested_virt_arch.png "Architecture diagram for Azure Stack HCI 20H2 nested in Azure")
+
+In this configuration, you'll take advantage of the nested virtualization support provided within certain Azure VM sizes.  You'll first deploy a single Azure VM running Windows Server 2019.  Inside this VM, you'll enable the Hyper-V role, and deploy a Windows Server 2019 domain controller VM, along with a management VM, running Windows 10 Enterprise. This management VM will also run the Windows Admin Center.  Finally, you'll deploy a nested Azure Stack HCI 20H2 cluster, with a minimum of 2 nodes, however the number of nodes will be based on the size of your Azure VM.
+
+To reiterate, the whole configuration (Domain Controller VM, Management VM and Azure Stack HCI 20H2 Nodes) will run inside the single Azure VM.
 
 Deployment Workflow
 -----------
@@ -47,17 +47,17 @@ This guide will walk you through deploying a sandboxed Azure Stack HCI 20H2 infr
 
 The general flow will be as follows:
 
-![Evaluation guide workflow using nested virtualization](/media/flow_chart_paths.png "Evaluation guide workflow using nested virtualization")
+![Evaluation guide workflow using nested virtualization](/media/flow_chart_ga.png "Evaluation guide workflow using nested virtualization")
 
-#### Part 1a - Deploy Hyper-V host in Azure ####
-In this step, you'll create a suitable VM in Azure using PowerShell or an Azure Resource Manager template.  This VM will run Windows Server 2019 Datacenter, with the full desktop experience.  On this system, you'll enable the Hyper-V role and accompanying management tools, and create a NAT virtual switch to enable network communication between sandbox VMs, and out to the internet.
-
-* [**Part 1a** - Start your deployment into Azure](/nested/steps/1a_NestedInAzure.md "Start your deployment into Azure")
-
-#### Part 1b - Deploy Hyper-V on a physical system ####
+#### Part 1a - Deploy Hyper-V on a physical system ####
 In this step, on your existing system, that's running Windows Server 2016/2019 or Windows 10 Pro/Enterprise/Education, you'll enable the Hyper-V role and create a NAT virtual switch to enable network communication between sandbox VMs, and out to the internet.
 
-* [**Part 1b** - Start your deployment on a physical system](/nested/steps/1b_NestedOnPhysical.md "Start your deployment on a physical system")
+* [**Part 1a** - Start your deployment on a physical system](/nested/steps/1a_NestedOnPhysical.md "Start your deployment on a physical system")
+
+#### Part 1b - Deploy Hyper-V host in Azure ####
+In this step, you'll create a suitable VM in Azure using PowerShell or an Azure Resource Manager template.  This VM will run Windows Server 2019 Datacenter, with the full desktop experience.  On this system, you'll enable the Hyper-V role and accompanying management tools, and create a NAT virtual switch to enable network communication between sandbox VMs, and out to the internet.
+
+* [**Part 1b** - Start your deployment into Azure](/nested/steps/1b_NestedInAzure.md "Start your deployment into Azure")
 
 #### Part 2 - Deploy management infrastructure ####
 In this step, you'll use **either the GUI, or PowerShell** to deploy and configure both a Windows Server 2019 domain controller, and a Windows 10 management VM on your Hyper-V host.  You'll create a Windows Server 2019 Active Directory domain, and join the Windows 10 management VM to this domain.  You'll also install the Windows Admin Center ahead of deploying the nested Azure Stack HCI 20H2 cluster.

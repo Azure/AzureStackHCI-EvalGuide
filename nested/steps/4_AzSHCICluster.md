@@ -223,7 +223,7 @@ As part of this guide, we're going to set up cluster quorum, using **Windows Adm
 ![Set up cloud witness in Windows Admin Center](/media/wac_cloud_witness_new.png "Set up cloud witness in Windows Admin Center")
 
 6. Open a new tab in your browser, and navigate to **https://portal.azure.com** and login with your Azure credentials
-7. You should already have a subscription from an earlier step, but if not, you should [review those steps and create one, then come back here](/nested/steps/1a_NestedInAzure.md#get-an-azure-subscription)
+7. You should already have a subscription from an earlier step, but if not, you should [review those steps and create one, then come back here](/nested/steps/1b_NestedInAzure.md#get-an-azure-subscription)
 8. Once logged into the Azure portal, click on **Create a Resource**, click **Storage**, then **Storage account**
 9. For the **Create storage account** blade, ensure the **correct subscription** is selected, then enter the following:
 
