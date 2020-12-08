@@ -26,7 +26,7 @@ Architecture
 
 From an architecture perspective, the following graphic showcases the different layers and interconnections between the different components:
 
-![Architecture diagram for Azure Stack HCI 20H2 nested in Azure](/media/nested_virt_arch.png "Architecture diagram for Azure Stack HCI 20H2 nested in Azure")
+![Architecture diagram for Azure Stack HCI 20H2 nested in Azure](/media/nested_virt_arch_ga.png "Architecture diagram for Azure Stack HCI 20H2 nested in Azure")
 
 Get an Azure subscription
 -----------
@@ -215,7 +215,7 @@ New-AzVM `
     -DomainNameLabel "$dnsName"
     -OpenPorts 3389 `
     -ImageName Win2019Datacenter `
-    -Size Standard_D16s_v3 `
+    -Size Standard_D16s_v4 `
     -Credential (Get-Credential) `
     # -LicenseType "Windows_Server" ` # Only used if you have existing Windows Server licenses with Software Assurance (See below)
     -Verbose
