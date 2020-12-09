@@ -225,7 +225,7 @@ As part of this guide, we're going to set up cluster quorum, using **Windows Adm
 4. On the **cluster dashboard**, at the very bottom-left of the window, click on **Settings**
 5. In the **Settings** window, click on **Witness** and under **Witness type**, use the drop-down to select **Cloud witness**
 
-![Set up cloud witness in Windows Admin Center](/media/wac_cloud_witness_new.png "Set up cloud witness in Windows Admin Center")
+![Set up cloud witness in Windows Admin Center](/media/wac_cloud_witness_new_ga.png "Set up cloud witness in Windows Admin Center")
 
 6. Open a new tab in your browser, and navigate to **https://portal.azure.com** and login with your Azure credentials
 7. You should already have a subscription from an earlier step, but if not, you should [review those steps and create one, then come back here](/nested/steps/1b_NestedInAzure.md#get-an-azure-subscription)
@@ -239,26 +239,26 @@ As part of this guide, we're going to set up cluster quorum, using **Windows Adm
     * Account kind: **Storage (general purpose v1)** is the best option for cloud witness
     * Replication: **Locally-redundant storage (LRS)** - Failover Clustering uses the blob file as the arbitration point, which requires some consistency guarantees when reading the data. Therefore you must select Locally-redundant storage for Replication type.
 
-![Set up storage account in Azure](/media/azure_cloud_witness.png "Set up storage account in Azure")
+![Set up storage account in Azure](/media/azure_cloud_witness_ga.png "Set up storage account in Azure")
 
 10. On the **Networking** and **Data protection** pages, accept the defaults and press **Next**
 11. On the **Advanced** page, ensure that **Blob public access** is **disabled**, and **Minimum TLS version** is set to **Version 1.2**
 12. When complete, click **Create** and your deployment will begin.  This should take a few moments.
 13. Once complete, in the **notification**, click on **Go to resource**
 14. On the left-hand navigation, under Settings, click **Access Keys**. When you create a Microsoft Azure Storage Account, it is associated with two Access Keys that are automatically generated - Primary Access key and Secondary Access key. For a first-time creation of Cloud Witness, use the **Primary Access Key**. There is no restriction regarding which key to use for Cloud Witness.
-15. Take a copy of the **Storage account name** and **key1**
+15. Click on **Show keys** and take a copy of the **Storage account name** and **key1**
 
-![Configure Primary Access key in Azure](/media/azure_keys.png "Configure Primary Access key in Azure")
+![Configure Primary Access key in Azure](/media/azure_keys_ga.png "Configure Primary Access key in Azure")
 
 16. On the left-hand navigation, under Settings, click **Properties** and make a note of your **blob service endpoint**.
 
-![Blob Service endpoint in Azure](/media/azure_blob.png "Blob Service endpoint in Azure")
+![Blob Service endpoint in Azure](/media/azure_blob_ga.png "Blob Service endpoint in Azure")
 
 **NOTE** - The required service endpoint is the section of the Blob service URL **after blob.**, i.e. for our configuration, **core.windows.net**
 
 17. With all the information gathered, return to the **Windows Admin Center** and complete the form with your values, then click **Save**
 
-![Providing storage account info in Windows Admin Center](/media/wac_azure_key.png "Providing storage account info in Windows Admin Center")
+![Providing storage account info in Windows Admin Center](/media/wac_azure_key_ga.png "Providing storage account info in Windows Admin Center")
 
 18. Within a few moments, your witness settings should be successfully applied and you have now completed configuring the quorum settings for the **azshciclus** cluster.
 
@@ -288,6 +288,12 @@ In addition to creating an Azure resource in your subscription, registering Azur
 If the user who registers Azure Stack HCI 20H2 is an Azure Active Directory global administrator or has been delegated sufficient permissions, this all happens automatically, and no additional action is required. If not, approval may be needed from your Azure Active Directory global administrator to complete registration. Your global administrator can either explicitly grant consent to the app, or they can delegate permissions so that you can grant consent to the app.
 
 ![Azure Active Directory Permissions](/media/aad_permissions.png "Azure Active Directory Permissions")
+
+To complete registration, you have 2 options - you can use **Windows Admin Center**, or you can use **PowerShell**.
+
+### Option 1 - Register using Windows Admin Center ###
+
+
 
 ### Register using PowerShell ###
 We're going to perform the registration from the **MGMT01** machine, which we've been using with the Windows Admin Center.
