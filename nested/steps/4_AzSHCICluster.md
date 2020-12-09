@@ -368,10 +368,10 @@ As you can see from the result, the cluster is yet to be registered, and the clu
 
 ```powershell
 $azshciNodeCreds = Get-Credential -UserName "azshci\labadmin" -Message "Enter the Lab Admin password"
-Register-AzStackHCI  `
+Register-AzStackHCI `
     -SubscriptionId "your-subscription-ID-here" `
     -ResourceName "azshciclus" `
-    -ResourceGroupName "AzureStackHCIRegistration" `
+    -ResourceGroupName "AZSHCICLUS_RG" `
     -Region "EastUS" `
     -EnvironmentName "AzureCloud" `
     -ComputerName "AZSHCINODE01.azshci.local" `
@@ -415,15 +415,15 @@ Invoke-Command -ComputerName AZSHCINODE01 -ScriptBlock {
 You can see the **ConnectionStatus** and **LastConnected** time, which is usually within the last day unless the cluster is temporarily disconnected from the Internet. An Azure Stack HCI 20H2 cluster can operate fully offline for up to 30 consecutive days.
 
 10. You can also **log into https://portal.azure.com** to check the resources created there. In the **search box** at the top of the screen, search for **Resource groups** and then click on **Resource groups**
-11. You should see a new **Resource group** listed, with the name you specified earlier, which in our case, is **AzureStackHCIRegistration**
+11. You should see a new **Resource group** listed, with the name you specified earlier, which in our case, is **AZSHCICLUS_RG**
 
-![Registration resource group in Azure](/media/registration_rg.png "Registration resource group in Azure")
+![Registration resource group in Azure](/media/registration_rg_ga.png "Registration resource group in Azure")
 
-12. Click on the **AzureStackHCIRegistration** resource group, and in the central pane, click on **Show hidden types** to see that a record has been created inside the resource group
+12. Click on the **AZSHCICLUS_RG** resource group, and in the central pane, you'll see that a record has been created inside the resource group
+13. Click on the **azihciclus** record, and you'll be taken to the new Azure Stack HCI Resource Provider, which shows information about all of your clusters, including details on the currently selected cluster
 
-![Registration record in Azure](/media/registration_record.png "Registration record in Azure")
+![Overview of the recently registered cluster in the Azure portal](/media/azure_portal_hcicluster.png "Overview of the recently registered cluster in the Azure portal")
 
-13. **Optionally**, if you click on the **azihciclus** record, you'll get more information about the registration.
 14. Next, still in the Azure portal, in the **search box** at the top of the screen, search for **Azure Active Directory** and then click on **Azure Active Directory**
 15. Click on **App Registrations**, then in the box labeled "Start typing a name or Application ID to filter these results", enter **azshciclus** and in the results, click on your application
 
