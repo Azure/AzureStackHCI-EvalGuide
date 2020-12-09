@@ -327,7 +327,7 @@ You can now proceed on to [Viewing registration details in the Azure portal](#Vi
 ### Option 2 - Register using PowerShell ###
 We're going to perform the registration from the **MGMT01** machine, which we've been using with the Windows Admin Center.
 
-1. On **MGMT01**, open **PowerShell as administrator** and run the following code. This first established a remote PowerShell connection to the first nodes of your cluster, then installs the necessary tools and PowerShell Module for Azure Stack HCI 20H2 on that node.
+1. On **MGMT01**, open **PowerShell as administrator** and run the following code. This first establishes a remote PowerShell connection to the first nodes of your cluster, then installs the necessary tools and PowerShell Module for Azure Stack HCI 20H2 on that node.
 
 ```powershell
 # Edit your node names here
@@ -364,7 +364,7 @@ As you can see from the result, the cluster is yet to be registered, and the clu
 
 ![Azure Subscriptions](/media/azure_subscriptions_ga.png "Azure Subscriptions")
 
-5. You **subscription** should be shown in the main window.  If you have more than one subscription listed here, click the correct one, and in the new blade, copy the **Subscription ID**.
+5. Your **subscription** should be shown in the main window.  If you have more than one subscription listed here, click the correct one, and in the new blade, copy the **Subscription ID**.
 
 **NOTE** - If you don't see your desired subscription, in the top right-corner of the Azure portal, click on your user account, and click **Switch directory**, then select an alternative directory.  Once in the chosen directory, repeat the search for your **Subscription ID** and copy it down.
 
@@ -426,24 +426,24 @@ With registration complete, either through Windows Admin Center, or through Powe
 
 ![Registration resource group in Azure](/media/registration_rg_ga.png "Registration resource group in Azure")
 
-12. Click on the **AZSHCICLUS_RG** resource group, and in the central pane, you'll see that a record has been created inside the resource group
+12. Click on the **AZSHCICLUS_RG** resource group, and in the central pane, you'll see that a record with the name **azshciclus** has been created inside the resource group
 13. Click on the **azihciclus** record, and you'll be taken to the new Azure Stack HCI Resource Provider, which shows information about all of your clusters, including details on the currently selected cluster
 
 ![Overview of the recently registered cluster in the Azure portal](/media/azure_portal_hcicluster.png "Overview of the recently registered cluster in the Azure portal")
 
 14. Next, still in the Azure portal, in the **search box** at the top of the screen, search for **Azure Active Directory** and then click on **Azure Active Directory**
-15. Click on **App Registrations**, then in the box labeled "Start typing a name or Application ID to filter these results", enter **azshciclus** and in the results, click on your application
+15. Click on **App Registrations**, then (you may need to click on **All applications**) in the box labeled "Start typing a name or Application ID to filter these results", enter **azshciclus** and in the results, click on your application
 
-![Application ID in App Registrations in Azure](/media/azure_ad_app.png "Application ID in App Registrations in Azure")
+![Application ID in App Registrations in Azure](/media/azure_ad_app_ga.png "Application ID in App Registrations in Azure")
 
-16. Within the application, click on **API permissions**.  From there, you can see the **Configured permissions** which have been created as part of the **Register-AzureStackHCI** you ran earlier.  You can see that 2 services that have been granted permissions.
+16. Within the application, click on **API permissions**.  From there, you can see the **Configured permissions** which have been created as part of the **Register-AzureStackHCI** you ran earlier.  You can see that a number of services that have been granted appropriate permissions for both billing and cluster management. For reference, the Billing and Census sync APIs are described below:
 
     * **AzureStackHCI.Billing.Sync** - Allows synchronizing billing information, such as the number of physical processor cores, between the Azure Stack HCI 20H2 cluster and the cloud
     * **AzureStackHCI.Census.Sync** - Allows synchronizing census metadata, such as hardware vendor and software version, between the Azure Stack HCI 20H2 cluster and the cloud
 
 Optionally, you can click on these services to see more information
 
-![Application ID API Permissions for App Registration in Azure](/media/api_permissions.png "Application ID API Permissions for App Registration in Azure")
+![Application ID API Permissions for App Registration in Azure](/media/api_permissions_ga.png "Application ID API Permissions for App Registration in Azure")
 
 **NOTE** - If when you ran **Register-AzureStackHCI**, you don't have appropriate permissions in Azure Active Directory, to grant admin consent, you will need to work with your Azure Active Directory administrator to complete registration later. You can exit and leave the registration in status "**pending admin consent**," i.e. partially completed. Once consent has been granted, **simply re-run Register-AzureStackHCI** to complete registration.
 
