@@ -14,9 +14,9 @@ Contents
 Architecture
 -----------
 
-As shown on the architecture graphic below, in this step, **you'll deploy a number of nested Azure Stack HCI 20H2 nodes**. The minimum number for deployment of a local Azure Stack HCI 20H2 cluster is **2 nodes**, however if your Hyper-V host has enough spare capacity, you could deploy additional nested nodes, and explore more complex scenarios, such as a nested **stretch cluster**.  For the purpose of this step, we'll focus on deploying 4 nodes, however you should make adjustments based on your environment.
+As shown on the architecture graphic below, in this step, **you'll deploy a number of nested Azure Stack HCI 20H2 nodes**. The minimum number for deployment of a local Azure Stack HCI 20H2 cluster is **2 nodes**, however if your Hyper-V host has enough spare capacity, you could deploy additional nested nodes, and explore more complex scenarios, such as a nested **stretch cluster**.  For the purpose of this step, we'll focus on deploying 2 nodes, however you should make adjustments based on your environment.
 
-![Architecture diagram for Azure Stack HCI 20H2 nested](/media/nested_virt_nodes.png "Architecture diagram for Azure Stack HCI 20H2 nested")
+![Architecture diagram for Azure Stack HCI 20H2 nested](/media/nested_virt_nodes_ga.png "Architecture diagram for Azure Stack HCI 20H2 nested")
 
 Create your first nested Azure Stack HCI 20H2 node
 -----------
@@ -39,9 +39,9 @@ In this step, you'll be using Hyper-V Manager to deploy an Azure Stack HCI 20H2 
 ![Specify VM name and location](/media/new_vm_node.png "Specify VM name and location")
 
 7. On the **Specify Generation** page, select **Generation 2** and click **Next**
-8. On the **Assign Memory** page, assign 4GB memory by entering **4096** for Startup memory and leave the the **Use Dynamic Memory for this virtual machine** empty, then click **Next**
+8. On the **Assign Memory** page, assign 24GB memory by entering **24576** for Startup memory and leave the the **Use Dynamic Memory for this virtual machine** empty, then click **Next**
 
-![Assign VM memory](/media/new_vm_node_memory.png "Assign VM memory")
+![Assign VM memory](/media/new_vm_node_memory_ga.png "Assign VM memory")
 
 #### Dynamic Memory and Runtime Memory Resize ####
 When Hyper-V is running inside a virtual machine, the virtual machine must be turned off to adjust its memory. This means that even if dynamic memory is enabled, **the amount of memory will not fluctuate**. For virtual machines without dynamic memory enabled, any attempt to adjust the amount of memory while it's on will fail.  Note that simply enabling nested virtualization will have no effect on dynamic memory or runtime memory resize. The incompatibility only occurs while Hyper-V is running in the VM.
@@ -68,9 +68,9 @@ Your new AZSHCINODE01 virtual machine will now be created.  Once created, we nee
 7. Tick the box for **Enable MAC address spoofing** and also for **Enable this network adapter to be part of a team in the guest operating system**, then click **apply**
 8. Repeat **Steps 4-7** to create an **additional** 2 network adapters all attached to **InternalNAT**
 9.  Once you have **4 network adapters**, click on **Processor**
-10. For **Number of virtual processors**, choose a number appropriate to your underlying hardware. In this case, we'll choose **4** but we can adjust this later, then click **Apply**
+10. For **Number of virtual processors**, choose a number appropriate to your underlying hardware. In this case, we'll choose **16** but you should choose a number appropriate to your physical system size, then click **Apply**
 
-![Configuring the vm settings](/media/new_vm_node_settings.png "Configuring the vm settings")
+![Configuring the vm settings](/media/new_vm_node_settings_ga.png "Configuring the vm settings")
 
 You now need to add additional hard drives to support the Azure Stack HCI 20H2 nodes and cluster.  You need to add a minimum of 2 data disks, but we will add 4 data disks to each node.
 
@@ -84,9 +84,9 @@ You now need to add additional hard drives to support the Azure Stack HCI 20H2 n
 15. On the **Configure Disk** page, ensure **Create a blank virtual hard disk** is selected, set size to **100**, then click **Next**
 16. On the **Completing the New Virtual Hard Disk Wizard** page, review your settings and click **Finish**
 17. Back in the **AZSHCINODE01 settings**, click **Apply**
-18. **Repeat steps 7-13** to add **at least 3 more data disks**
+18. **Repeat steps 11-17** to add **at least 3 more data disks**
 
-![Finished adding additional hard drives to AzSHCINode01](/media/azshci_disks_added.png "Finished adding additional hard drives to AzSHCINode01")
+![Finished adding additional hard drives to AzSHCINode01](/media/azshci_disks_added_ga.png "Finished adding additional hard drives to AzSHCINode01")
 
 19. If you are running on a **Windows 10 Hyper-V host**, you should also **disable automatic checkpoints**. From the **Settings** window, under **Management**, click **Checkpoints** and then if ticked, **untick** the **Enable checkpoints** box, then click **OK**
 
