@@ -20,7 +20,7 @@ Architecture
 
 As shown on the architecture graphic below, the core management infrastructure consists of a Windows Server 2019 domain controller VM, along with a Windows 10 Enterprise VM, which will run the Windows Admin Center.  In this step, you'll deploy both of those key components.
 
-![Architecture diagram for Azure Stack HCI 20H2 nested with management infra highlighted](/media/nested_virt_mgmt.png "Architecture diagram for Azure Stack HCI 20H2 nested with management infra highlighted")
+![Architecture diagram for Azure Stack HCI 20H2 nested with management infra highlighted](/media/nested_virt_mgmt_ga.png "Architecture diagram for Azure Stack HCI 20H2 nested with management infra highlighted")
 
 However, before you deploy your management infrastructure, first, you need to download the necessary software components required to complete this evalution.
 
@@ -90,9 +90,9 @@ In this step, you'll be using Hyper-V Manager to deploy a Windows Server 2019 do
 ![Assign VM memory](/media/new_vm_dynamicmem.png "Assign VM memory")
 
 9. On the **Configure Networking** page, select **InternalNAT** and click **Next**
-10. On the **Connect Virtual Hard Disk** page, change **size** to **30** and click **Next**
+10. On the **Connect Virtual Hard Disk** page, leave the default **size** at **127** and click **Next**
 
-![Connect Virtual Hard Disk](/media/new_vm_vhd.png "Connect Virtual Hard Disk")
+![Connect Virtual Hard Disk](/media/new_vm_vhd_ga.png "Connect Virtual Hard Disk")
 
 11. On the **Installation Options** page, select **Install an operating system from a bootable image file**, and click **Browse**
 12. Navigate to **C:\ISO** and select your **WS2019.iso** file, and click **Open**.  Then click **Next**
@@ -107,7 +107,8 @@ Your new DC01 virtual machine will now be created.  Once created, we need to mak
 
 ![Updating memory for DC01](/media/dynamicmem.png "Updating memory for DC01")
 
-3. If you are running on a **Windows 10 Hyper-V host**, you should **disable automatic checkpoints**. From the **Settings** window, under **Management**, click **Checkpoints** and then if ticked, **untick** the **Enable checkpoints** box, then click **OK**
+3. If you are running on a **Windows 10 Hyper-V host**, you should **disable automatic checkpoints**. From the **Settings** window, under **Management**, click **Checkpoints** and then if ticked, **untick** the **Enable checkpoints** box, then click **Apply**
+4. Finally, under **Automatic Start Action**, select **Always start this virtual machine automatically**, then click **OK**
 
 With the VM configured correctly, in **Hyper-V Manager**, double-click DC01.  This should open the VM Connect window.
 
@@ -129,7 +130,7 @@ Proceed through the process, making the following selections:
 3. On the **Select the operating system** screen, choose **Windows Server 2019 Datacenter Evaluation (Desktop Experience)** and click **Next**
 4. On the **Applicable notices and license terms** screen, read the information, **tick I accept the license terms** and click **Next**
 5. On the **What type of installation do you want** screen, select **Custom: Install Windows only (advanced)** and click **Next**
-6. On the **Where do you want to install Windows?** screen, select the **30GB Drive 0** and click **Next**
+6. On the **Where do you want to install Windows?** screen, select the **127GB Drive 0** and click **Next**
 
 Installation will then begin, and will take a few minutes, automatically rebooting as part of the process.
 
@@ -330,6 +331,14 @@ With MGMT01 up and running, it's time to configure the networking so it can comm
 
 ![Setting static NIC settings](/media/ip_settings.PNG "Setting static NIC settings")
 
+#### Optional - Install the new Microsoft Edge ####
+It's highly recommended to install the new version of the Microsoft Edge browser, as it gives a much smoother browsing experience, and is more efficient with it's use of limited resources, if you've deployed in a memory-constrained environment.
+
+1. Open the existing **Microsoft Edge** browser, and navigate to https://www.microsoft.com/edge
+2. On the landing page, click on **Download** and when prompted, **read the license terms** then click **Accept and download**
+3. Once downloaded, click **Run**
+4. The installation will begin, and take a few moments to download, install and configure.  You can accept the **defaults** for the configuration.
+
 #### Optional - Update your Windows 10 OS ####
 
 With the networking all configured and up and running, it's a good idea to ensure your OS is running the latest security updates and patches.
@@ -358,14 +367,6 @@ Before installing the Windows Admin Center, you'll join MGMT01 to the azshci.loc
 
 This may take a few moments, but should then join the machine to the domain.  **Reboot** the machine when prompted.
 
-#### Optional - Install the new Microsoft Edge ####
-It's highly recommended to install the new version of the Microsoft Edge browser, as it gives a much smoother browsing experience, and is more efficient with it's use of limited resources, if you've deployed in a memory-constrained environment.
-
-1. Open the existing **Microsoft Edge** browser, and navigate to https://www.microsoft.com/edge
-2. On the landing page, click on **Download** and when prompted, **read the license terms** then click **Accept and download**
-3. Once downloaded, click **Run**
-4. The installation will begin, and take a few moments to download, install and configure.  You can accept the **defaults** for the configuration.
-
 ### Install Windows Admin Center on Windows 10 ###
 With the Windows 10 VM now deployed and configured, the final step in the infrastructure preparation, is to install and configure the Windows Admin Center. Earlier in this guide, you should have downloaded the Windows Admin Center files, along with other ISOs.
 
@@ -379,7 +380,7 @@ Navigate to **Hyper-V Manager**, locate **MGMT01** and double-click the VM.  Thi
 
 ![Enhanced Session Mode button](/media/enhanced_session.png "Enhanced Session Mode button")
 
-When prompted, enter your Lab Admin credentials to log into MGMT01.  When on the desktop, **right-click** and select **paste** to transfer the Windows Admin Center executable onto the desktop of MGMT01.
+When prompted, enter your **Lab Admin (azshci.local\labadmin) credentials** to log into MGMT01.  When on the desktop, **right-click** and select **paste** to transfer the Windows Admin Center executable onto the desktop of MGMT01.
 
 To install the Windows Admin Center, simply **double-click** the executable on the desktop, and follow the installation steps, making the following selections:
 
