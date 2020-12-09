@@ -293,16 +293,41 @@ To complete registration, you have 2 options - you can use **Windows Admin Cente
 
 ### Option 1 - Register using Windows Admin Center ###
 
+1. On **MGMT01**, logged in as **azshci\labadmin**, open the Windows Admin Center, and on the **All connections** page, select your azshciclus
+2. When the cluster dashboard has loaded, in the top-right corner, you'll see the **status of the Azure registration/connection**
+
+![Azure registration status in Windows Admin Center](/media/wac_azure_reg_dashboard.png "Azure registration status in Windows Admin Center")
+
+3. Click on **Install PowerShell modules** to trigger Windows Admin Center to download and install the appropriate PowerShell modules to the Azure Stack HCI 20H2 node. This may take a few moments.
+
+![Azure registration status in Windows Admin Center](/media/wac_azure_reg_dashboard_2.png "Azure registration status in Windows Admin Center")
+
+4. Once installed, you can begin the registration process by clicking **Register this cluster**
+5. If you haven't already, you'll be prompted to register Windows Admin Center with an Azure tenant.  Follow the instructions to **Copy the code** and then click on the link to configure device login.
+6. When prompted for credentials, **enter your Azure credentials** for a tenant you'd like to register the Windows Admin Center
+7. Back in Windows Admin Center, you'll notice your tenant information has been added.  You can now click **Connect** to connect Windows Admin Center to Azure
+
+![Connecting Windows Admin Center to Azure](/media/wac_azure_connect.png "Connecting Windows Admin Center to Azure")
+
+8. Click on **Sign in** and when prompted for credentials, **enter your Azure credentials** and you should see a popup that asks for you to accept the permissions, so click **Accept**
+
+![Permissions for Windows Admin Center](/media/wac_azure_permissions.png "Permissions for Windows Admin Center")
+
+9. Back in Windows Admin Center, you may need to refresh the page if your 'Register this cluster' link is not active. Once active, click **Register this cluster** and you should be presented with a window requesting more information.
+10. Choose your **Azure subscription** that you'd like to use to register, along with an **Azure resource group** and **region**, then click **Register**.  This will take a few moments.
+
+![Final step for registering Azure Stack HCI with Windows Admin Center](/media/wac_azure_register.png "Final step for registering Azure Stack HCI with Windows Admin Center")
+
 
 
 ### Register using PowerShell ###
 We're going to perform the registration from the **MGMT01** machine, which we've been using with the Windows Admin Center.
 
-1. On **MGMT01**, open **PowerShell as administrator** and run the following code. This installs the PowerShell Module for Azure Stack HCI 20H2 on the local node.
+1. On **MGMT01**, open **PowerShell as administrator** and run the following code. This first established a remote PowerShell connection to the first nodes of your cluster, then installs the necessary tools and PowerShell Module for Azure Stack HCI 20H2 on that node.
 
 ```powershell
 # Edit your node names here
-$nodes = "AZSHCINODE01","AZSHCINODE02","AZSHCINODE03","AZSHCINODE04"
+$nodes = "AZSHCINODE01","AZSHCINODE02"
 Invoke-Command -ComputerName $nodes -ScriptBlock {
     Install-WindowsFeature RSAT-Azure-Stack-HCI
 }
@@ -315,11 +340,11 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
 Install-Module Az.StackHCI
 ```
 
- **NOTE** - You may recieve a message that **PowerShellGet requires NuGet Provider...** - read the full message, and then click **Yes** to allow the appropriate dependencies to be installed. You may receive a second prompt to **install the modules from the PSGallery** - click **Yes to All** to proceed.
+**NOTE** - You may recieve a message that **PowerShellGet requires NuGet Provider...** - read the full message, and then click **Yes** to allow the appropriate dependencies to be installed. You may receive a second prompt to **install the modules from the PSGallery** - click **Yes to All** to proceed.
 
- In addition, in future releases, installing the Azure PowerShell **Az** modules will include **StackHCI**, however today, you have to install this module specifically, using the command **Install-Module Az.StackHCI**
+In addition, in future releases, installing the Azure PowerShell **Az** modules will include **StackHCI**, however today, you have to install this module specifically, using the command **Install-Module Az.StackHCI**
 
-3. With the Az.StackHCI modules installed, it's now time to register your Azure Stack HCI 20H2 cluster to Azure, however first, it's worth exploring how to check existing registration status, which we'll do remotely, from **MGMT01**.  The following code assumes you left your PowerShell window open from the previous commands.
+3. With the Az.StackHCI modules installed, it's now time to register your Azure Stack HCI 20H2 cluster to Azure, however first, it's worth exploring how to check existing registration status.  The following code assumes you are still in the remote PowerShell session open from the previous commands.
 
 ```powershell
 Invoke-Command -ComputerName AZSHCINODE01 -ScriptBlock {
@@ -331,11 +356,11 @@ Invoke-Command -ComputerName AZSHCINODE01 -ScriptBlock {
 
 As you can see from the result, the cluster is yet to be registered, and the cluster status identifies as **Clustered**. Azure Stack HCI 20H2 needs to register within 30 days of installation per the Azure Online Services Terms. If not clustered after 30 days, the **ClusterStatus** will show **OutOfPolicy**, and if not registered after 30 days, the **RegistrationStatus** will show **OutOfPolicy**.
 
-4. To register the cluster, you'll first need to get your **Azure subscription ID**.  An easy way to do this is to quickly **log into https://portal.azure.com**, and in the **search box** at the top of the screen, search for **subscriptions** and then click on **Subscriptions**
+3. To register the cluster, you'll first need to get your **Azure subscription ID**.  An easy way to do this is to quickly **log into https://portal.azure.com**, and in the **search box** at the top of the screen, search for **subscriptions** and then click on **Subscriptions**
 
-![Azure Subscriptions](/media/azure_subscriptions.png "Azure Subscriptions")
+![Azure Subscriptions](/media/azure_subscriptions_ga.png "Azure Subscriptions")
 
-5. You **subscription** should be shown in the main window.  If you have more than one subscription listed here, click the correct one, and in the new blade, copy the **Subscription ID**.
+1. You **subscription** should be shown in the main window.  If you have more than one subscription listed here, click the correct one, and in the new blade, copy the **Subscription ID**.
 
 **NOTE** - If you don't see your desired subscription, in the top right-corner of the Azure portal, click on your user account, and click **Switch directory**, then select an alternative directory.  Once in the chosen directory, repeat the search for your **Subscription ID** and copy it down.
 
