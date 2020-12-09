@@ -17,7 +17,7 @@ Architecture
 
 As shown on the architecture graphic below, in this step, **you'll deploy a number of nested Azure Stack HCI 20H2 nodes**. The minimum number for deployment of a local Azure Stack HCI 20H2 cluster is **2 nodes**, however if your Hyper-V host has enough spare capacity, you could deploy additional nested nodes, and explore more complex scenarios, such as a nested **stretch cluster**.  For the purpose of this step, we'll focus on deploying 4 nodes, however you should make adjustments based on your environment.
 
-![Architecture diagram for Azure Stack HCI 20H2 nested](/media/nested_virt_nodes.png "Architecture diagram for Azure Stack HCI 20H2 nested")
+![Architecture diagram for Azure Stack HCI 20H2 nested](/media/nested_virt_nodes_ga.png "Architecture diagram for Azure Stack HCI 20H2 nested")
 
 Create your first nested Azure Stack HCI 20H2 node
 -----------
@@ -33,9 +33,10 @@ On your Hyper-V host, **open PowerShell as administrator**.  Make any changes th
 ```powershell
 # Define the characteristics of the VM, and create
 $nodeName = "AZSHCINODE01"
+$newIP = "192.168.0.4"
 New-VM `
     -Name $nodeName  `
-    -MemoryStartupBytes 4GB `
+    -MemoryStartupBytes 24GB `
     -SwitchName "InternalNAT" `
     -Path "C:\VMs\" `
     -NewVHDPath "C:\VMs\$nodeName\Virtual Hard Disks\$nodeName.vhdx" `
@@ -62,7 +63,7 @@ Finally, you need to add some additional network adapters, set the vCPU count, e
 
 ```powershell
 # Set the VM processor count for the VM
-Set-VM -VMname $nodeName -ProcessorCount 4
+Set-VM -VMname $nodeName -ProcessorCount 16
 # Add the virtual network adapters to the VM and configure appropriately
 1..3 | ForEach-Object { 
     Add-VMNetworkAdapter -VMName $nodeName -SwitchName InternalNAT
@@ -81,13 +82,14 @@ Set-VMProcessor -VMName $nodeName -ExposeVirtualizationExtensions $true -Verbose
 
 When those commands have completed, this is what you would see in Hyper-V Manager, in the settings view:
 
-![Finished settings for the AZSHCINODE01 node](/media/azshci_settings_ps.png "Finished settings for the AZSHCINODE01 node")
+![Finished settings for the AZSHCINODE01 node](/media/azshci_settings_ps_ga.png "Finished settings for the AZSHCINODE01 node")
 
 With the VM configured correctly, you can use the following commands to connect to the VM using VM Connect, and at the same time, start the VM.  To boot from the ISO, you'll need to click on the VM and quickly press a key to trigger the boot from the DVD inside the VM.  If you miss the prompt to press a key to boot from CD or DVD, simply reset the VM and try again.
 
 ```powershell
 # Open a VM Connect window, and start the VM
 vmconnect.exe localhost $nodeName
+Start-Sleep -Seconds 5
 Start-VM -Name $nodeName
 ```
 
@@ -103,14 +105,14 @@ Proceed through the process, making the following selections:
 1. On the initial screen, select your **Language to install**, **Time and currency format**, and **Keyboard or input method**, then press **Next**
 2. Click **Install now**
 3. On the **Applicable notices and license terms** screen, read the information, **tick I accept the license terms** and click **Next**
-4. On the **What type of installation do you want** screen, select **Custom: Install the newer version of Azure Stack HCI 20H2 only (advanced)** and click **Next**
-5. On the **Where do you want to install Azure Stack HCI 20H2?** screen, select the **30GB Drive 0** and click **Next**
+4. On the **What type of installation do you want** screen, select **Custom: Install the newer version of Azure Stack only (advanced)** and click **Next**
+5. On the **Where do you want to install Azure Stack HCI?** screen, select the **30GB Drive 0** and click **Next**
 
 Installation will then begin, and will take a few minutes, automatically rebooting as part of the process.
 
 ![Completed setup of the Azure Stack HCI 20H2 OS](/media/azshci_setup_complete.png "Completed setup of the Azure Stack HCI 20H2 OS")
 
-With the installation complete, you'll be prompted to change the password before logging in.  Enter a password and exit to command line. Once complete, you should be at the **command prompt** on the "Welcome to Azure Stack HCI 20H2" screen.  Minimize the VM Connect window.
+With the installation complete, you'll be prompted to change the password before logging in.  Enter a password and exit to command line. Once complete, you should be at the **command prompt** on the "Welcome to Azure Stack HCI" screen.  Minimize the VM Connect window.
 
 #### Configure Azure Stack HCI 20H2 node networking using PowerShell Direct ####
 With the node up and running, it's time to configure the networking with PowerShell Direct, so it can communicate with the rest of the environment.  Open **PowerShell** as an administrator on the Hyper-V host, and run the following:
@@ -118,9 +120,7 @@ With the node up and running, it's time to configure the networking with PowerSh
 ```powershell
 # Define local credentials
 $azsHCILocalCreds = Get-Credential -UserName "Administrator" -Message "Enter the password used when you deployed the Azure Stack HCI 20H2 OS"
-# Define new name and IP
-$nodeName = "AZSHCINODE01"
-$newIP = "192.168.0.4"
+# Refer to earlier in the script for $nodeName and $newIP
 Invoke-Command -VMName $nodeName -Credential $azsHCILocalCreds -ScriptBlock {
     # Set Static IP
     New-NetIPAddress -IPAddress "$using:newIP" -DefaultGateway "192.168.0.1" -InterfaceAlias "Ethernet" -PrefixLength "24" | Out-Null
@@ -134,20 +134,25 @@ Invoke-Command -VMName $nodeName -Credential $azsHCILocalCreds -ScriptBlock {
 To save a later step, you can quickly use PowerShell Direct to join your AZSHCINODE01 to the domain:
 
 ```powershell
-$azsHCILocalCreds = Get-Credential -UserName "Administrator" -Message "Enter the password used when you deployed the Azure Stack HCI 20H2 OS"
 # Define domain-join credentials
 $domainName = "azshci.local"
 $domainAdmin = "$domainName\labadmin"
 $domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the password for the LabAdmin account"
 Invoke-Command -VMName $nodeName -Credential $azsHCILocalCreds -ScriptBlock {
-    # Join the domain and change the name at the same time
-    Add-Computer -DomainName azshci.local -NewName $Using:nodeName -Credential $Using:domainCreds -Force
+    # Change the name
+    Rename-Computer -NewName $Using:nodeName -Force -Restart
 }
 
-Write-Verbose "Rebooting node for changes to take effect" -Verbose
-Stop-VM -Name $nodeName
-Start-Sleep -Seconds 5
-Start-VM -Name $nodeName
+# Test for the node to be back online and responding
+while ((Invoke-Command -VMName $nodeName -Credential $azsHCILocalCreds {"Test"} -ErrorAction SilentlyContinue) -ne "Test") {
+    Start-Sleep -Seconds 1
+}
+Write-Verbose "$nodeName is now online. Proceeding to join the domain...." -Verbose
+
+Invoke-Command -VMName $nodeName -Credential $azsHCILocalCreds -ScriptBlock {
+    # Join the domain
+    Add-Computer -DomainName azshci.local -Credential $Using:domainCreds -Force -Restart
+}
 
 # Test for the node to be back online and responding
 while ((Invoke-Command -VMName $nodeName -Credential $domainCreds {"Test"} -ErrorAction SilentlyContinue) -ne "Test") {
