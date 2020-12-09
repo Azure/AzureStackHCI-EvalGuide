@@ -20,7 +20,7 @@ Architecture
 
 As shown on the architecture graphic below, in this step, you'll take the nodes that you previously deployed, and be **clustering them into an Azure Stack HCI 20H2 cluster**. You'll be focused on **creating a cluster in a single site**, but in later articles, we'll also cover creating a stretch cluster.
 
-![Architecture diagram for Azure Stack HCI 20H2 nested](/media/nested_virt_nodes.png "Architecture diagram for Azure Stack HCI 20H2 nested")
+![Architecture diagram for Azure Stack HCI 20H2 nested](/media/nested_virt_nodes_ga.png "Architecture diagram for Azure Stack HCI 20H2 nested")
 
 Before you begin
 -----------
@@ -48,7 +48,7 @@ Not only does Azure Stack HCI 20H2 support a cluster in a single site (or a **lo
 * If you have 2 Azure Stack HCI 20H2 nodes, you will be able to create a **local cluster**
 * If you have 4 Azure Stack HCI 20H2 nodes, you will have a choice of creating either a **local cluster** or a **stretch cluster**
 
-In this first release of the guide, we'll be focusing on deploying a **local cluster** but guidance for stretch clustering will be added soon, so check back later!
+In this first release of the guide, we'll be focusing on deploying a **local cluster** but if you're interested in deploying a stretch cluster, you can [check out the official docs](https://docs.microsoft.com/en-us/azure-stack/hci/concepts/stretched-clusters "Stretched clusters overview on Microsoft Docs")
 
 Creating a (local) cluster
 -----------
@@ -60,21 +60,21 @@ If you have just 2 nodes, or if your preference is for a cluster running in a si
 
 ### Get started ###
 
-![Choose cluster type in the Create Cluster wizard](/media/wac_cluster_type.png "Choose cluster type in the Create Cluster wizard")
+![Choose cluster type in the Create Cluster wizard](/media/wac_cluster_type_ga.png "Choose cluster type in the Create Cluster wizard")
 
-1. Ensure you select **Azure Stack HCI 20H2**, select **All servers in one site** and cick **Create**
+1. Ensure you select **Azure Stack HCI**, select **All servers in one site** and cick **Create**
 2. On the **Check the prerequisites** page, review the requirements and click **Next**
 3. On the **Add Servers** page, supply a **username**, which should be **azshci\labadmin** and **your-domain-admin-password** and then one by one, enter the node names (or IP addresses if names don't resolve) of your Azure Stack HCI 20H2 nodes, clicking **Add** after each one has been located.  Each node will be validated, and given a **Ready** status when fully validated.  This may take a few moments - once you've added all nodes, click **Next**
 
-![Add servers in the Create Cluster wizard](/media/add_nodes.png "Add servers in the Create Cluster wizard")
+![Add servers in the Create Cluster wizard](/media/add_nodes_ga.png "Add servers in the Create Cluster wizard")
 
 4. On the **Join a domain** page, details should already be in place, as we joined the domain previously, so click **Next**
 
-![Joined the domain in the Create Cluster wizard](/media/wac_domain_joined.png "Joined the domain in the Create Cluster wizard")
+![Joined the domain in the Create Cluster wizard](/media/wac_domain_joined_ga.png "Joined the domain in the Create Cluster wizard")
 
 1. On the **Install features** page, Windows Admin Center will query the nodes for currently installed features, and will request you install required features.  Click **Install features**.  This will take a few moments - once complete, click **Next**
 
-![Installing required features in the Create Cluster wizard](/media/wac_installed_features.png "Installing required features in the Create Cluster wizard")
+![Installing required features in the Create Cluster wizard](/media/wac_installed_features_ga.png "Installing required features in the Create Cluster wizard")
 
 7. On the **Install updates** page, Windows Admin Center will query the nodes for available updates, and will request you install any that are required.  Optionally, click **Install updates**.  This will take a few moments - once complete, click **Next**
 8. On the **Solution updates** page, install any appropriate extensions, and then click **Next**

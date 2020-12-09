@@ -74,6 +74,8 @@ Your new AZSHCINODE01 virtual machine will now be created.  Once created, we nee
 
 You now need to add additional hard drives to support the Azure Stack HCI 20H2 nodes and cluster.  You need to add a minimum of 2 data disks, but we will add 4 data disks to each node.
 
+**IMPORTANT NOTE** - Do NOT create the first data VHDX file, and then copy and paste this file 3 additional times to create your 4 VHDX files. This does not create unique VHDX files, and when starting your VM, you will receive an error.  Follow the steps below to ensure you create 4 (or more) unique VHDX files.
+
 11. Still within **AZSHCINODE01 settings**, click on **SCSI Controller**, then **Hard Drive** and click **Add**
 12. In the **Hard Drive** window, click **New**.  The **New Virtual Hard Disk** wizard opens, then click **Next**
 13. On the **Choose Disk Type** page, ensure **Dynamically expanding** is selected, then click **Next**
@@ -116,14 +118,14 @@ Proceed through the process, making the following selections:
 1. On the initial screen, select your **Language to install**, **Time and currency format**, and **Keyboard or input method**, then press **Next**
 2. Click **Install now**
 3. On the **Applicable notices and license terms** screen, read the information, **tick I accept the license terms** and click **Next**
-4. On the **What type of installation do you want** screen, select **Custom: Install the newer version of Azure Stack HCI 20H2 only (advanced)** and click **Next**
-5. On the **Where do you want to install Azure Stack HCI 20H2?** screen, select the **30GB Drive 0** and click **Next**
+4. On the **What type of installation do you want** screen, select **Custom: Install the newer version of Azure Stack HCI only (advanced)** and click **Next**
+5. On the **Where do you want to install Azure Stack HCI?** screen, select the **30GB Drive 0** and click **Next**
 
 Installation will then begin, and will take a few minutes, automatically rebooting as part of the process.
 
 ![Completed setup of the Azure Stack HCI 20H2 OS](/media/azshci_setup_complete.png "Completed setup of the Azure Stack HCI 20H2 OS")
 
-With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **command prompt** on the "Welcome to Azure Stack HCI 20H2" screen.
+With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **command prompt** on the "Welcome to Azure Stack HCI" screen.
 
 ![Azure Stack HCI 20H2 Welcome Screen](/media/sconfig.png "Azure Stack HCI 20H2 Welcome Screen")
 
