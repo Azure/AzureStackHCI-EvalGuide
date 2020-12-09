@@ -395,7 +395,7 @@ Of these commands, many are optional:
 
 8. Once successfully authenticated, the registration process will begin, and will take a few moments. Once complete, you should see a message indicating success, as per below:
 
-![Register Azure Stack HCI 20H2 with PowerShell](/media/register_azshci.png "Register Azure Stack HCI 20H2 with PowerShell")
+![Register Azure Stack HCI 20H2 with PowerShell](/media/register_azshci_ga.png "Register Azure Stack HCI 20H2 with PowerShell")
 
 **NOTE** - if upon registering, you receive an error similar to that below, please **try a different region**.  You can still proceed to [Step 5](#next-steps) and continue with your evaluation, and it won't affect any functionality.  Just make sure you come back and register later!
 
