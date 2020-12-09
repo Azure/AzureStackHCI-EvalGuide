@@ -318,9 +318,13 @@ To complete registration, you have 2 options - you can use **Windows Admin Cente
 
 ![Final step for registering Azure Stack HCI with Windows Admin Center](/media/wac_azure_register.png "Final step for registering Azure Stack HCI with Windows Admin Center")
 
+11. Once completed, you should see updated status on the Windows Admin Center dashboard, showing that the cluster has been correctly registered.
 
+![Azure registration status in Windows Admin Center](/media/wac_azure_reg_dashboard_3.png "Azure registration status in Windows Admin Center")
 
-### Register using PowerShell ###
+You can now proceed on to [Viewing registration details in the Azure portal](#View-registration-details-in-the-Azure-portal)
+
+### Option 2 - Register using PowerShell ###
 We're going to perform the registration from the **MGMT01** machine, which we've been using with the Windows Admin Center.
 
 1. On **MGMT01**, open **PowerShell as administrator** and run the following code. This first established a remote PowerShell connection to the first nodes of your cluster, then installs the necessary tools and PowerShell Module for Azure Stack HCI 20H2 on that node.
@@ -356,11 +360,11 @@ Invoke-Command -ComputerName AZSHCINODE01 -ScriptBlock {
 
 As you can see from the result, the cluster is yet to be registered, and the cluster status identifies as **Clustered**. Azure Stack HCI 20H2 needs to register within 30 days of installation per the Azure Online Services Terms. If not clustered after 30 days, the **ClusterStatus** will show **OutOfPolicy**, and if not registered after 30 days, the **RegistrationStatus** will show **OutOfPolicy**.
 
-3. To register the cluster, you'll first need to get your **Azure subscription ID**.  An easy way to do this is to quickly **log into https://portal.azure.com**, and in the **search box** at the top of the screen, search for **subscriptions** and then click on **Subscriptions**
+4. To register the cluster, you'll first need to get your **Azure subscription ID**.  An easy way to do this is to quickly **log into https://portal.azure.com**, and in the **search box** at the top of the screen, search for **subscriptions** and then click on **Subscriptions**
 
 ![Azure Subscriptions](/media/azure_subscriptions_ga.png "Azure Subscriptions")
 
-1. You **subscription** should be shown in the main window.  If you have more than one subscription listed here, click the correct one, and in the new blade, copy the **Subscription ID**.
+5. You **subscription** should be shown in the main window.  If you have more than one subscription listed here, click the correct one, and in the new blade, copy the **Subscription ID**.
 
 **NOTE** - If you don't see your desired subscription, in the top right-corner of the Azure portal, click on your user account, and click **Switch directory**, then select an alternative directory.  Once in the chosen directory, repeat the search for your **Subscription ID** and copy it down.
 
@@ -389,7 +393,7 @@ Of these commands, many are optional:
 
 **Register-AzureStackHCI** runs syncronously, with progress reporting, and typically takes 1-2 minutes.  The first time you run it, it may take slightly longer, because it needs to install some dependencies, including additional Azure PowerShell modules.
 
-1. Once dependencies have been installed, you'll receive a popup on **MGMT01** to authenticate to Azure. Provide your **Azure credentials**.
+7. Once dependencies have been installed, you'll receive a popup on **MGMT01** to authenticate to Azure. Provide your **Azure credentials**.
 
 ![Login to Azure](/media/azure_login_reg.png "Login to Azure")
 
@@ -403,7 +407,7 @@ Of these commands, many are optional:
 Register-AzStackHCI : Azure Stack HCI 20H2 is not yet available in region <regionName>
 ```
 
-1. Once the cluster is registered, run the following command on **MGMT01** to check the updated status:
+9. Once the cluster is registered, run the following command on **MGMT01** to check the updated status:
 
 ```powershell
 Invoke-Command -ComputerName AZSHCINODE01 -ScriptBlock {
@@ -414,8 +418,11 @@ Invoke-Command -ComputerName AZSHCINODE01 -ScriptBlock {
 
 You can see the **ConnectionStatus** and **LastConnected** time, which is usually within the last day unless the cluster is temporarily disconnected from the Internet. An Azure Stack HCI 20H2 cluster can operate fully offline for up to 30 consecutive days.
 
-10. You can also **log into https://portal.azure.com** to check the resources created there. In the **search box** at the top of the screen, search for **Resource groups** and then click on **Resource groups**
-11. You should see a new **Resource group** listed, with the name you specified earlier, which in our case, is **AZSHCICLUS_RG**
+### View registration details in the Azure portal ###
+With registration complete, either through Windows Admin Center, or through PowerShell, you should take some time to explore the artifacts that are created in Azure, once registration successfully completes.
+
+1. On **MGMT01**, open the Edge browser and **log into https://portal.azure.com** to check the resources created there. In the **search box** at the top of the screen, search for **Resource groups** and then click on **Resource groups**
+2. You should see a new **Resource group** listed, with the name you specified earlier, which in our case, is **AZSHCICLUS_RG**
 
 ![Registration resource group in Azure](/media/registration_rg_ga.png "Registration resource group in Azure")
 
