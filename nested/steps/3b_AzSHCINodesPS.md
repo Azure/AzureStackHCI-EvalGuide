@@ -15,7 +15,7 @@ Contents
 Architecture
 -----------
 
-As shown on the architecture graphic below, in this step, **you'll deploy a number of nested Azure Stack HCI 20H2 nodes**. The minimum number for deployment of a local Azure Stack HCI 20H2 cluster is **2 nodes**, however if your Hyper-V host has enough spare capacity, you could deploy additional nested nodes, and explore more complex scenarios, such as a nested **stretch cluster**.  For the purpose of this step, we'll focus on deploying 4 nodes, however you should make adjustments based on your environment.
+As shown on the architecture graphic below, in this step, **you'll deploy a number of nested Azure Stack HCI 20H2 nodes**. The minimum number for deployment of a local Azure Stack HCI 20H2 cluster is **2 nodes**, however if your Hyper-V host has enough spare capacity, you could deploy additional nested nodes, and explore more complex scenarios, such as a nested **stretch cluster**.  For the purpose of this step, we'll focus on deploying 2 nodes, however you should make adjustments based on your environment.
 
 ![Architecture diagram for Azure Stack HCI 20H2 nested](/media/nested_virt_nodes_ga.png "Architecture diagram for Azure Stack HCI 20H2 nested")
 
@@ -28,7 +28,7 @@ There are 3 main steps to create the virtualized Azure Stack HCI 20H2 node on ou
 3. Join the domain using SConfig
 
 ### Create the AZSHCINODE01 VM using PowerShell ###
-On your Hyper-V host, **open PowerShell as administrator**.  Make any changes that you require, to the script below, and then run it:
+On your Hyper-V host, **open PowerShell as administrator**.  Make any changes that you require, to the script below, and then run it. You'll notice I'm using 24GB memory for my nodes, but if you're running on a smaller system, adjust accordingly.  If you're deploying nested in Azure, and used the recommended host VM size, you should have 64GB memory available to use across your nested configuration.
 
 ```powershell
 # Define the characteristics of the VM, and create
