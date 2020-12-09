@@ -21,7 +21,7 @@ Architecture
 
 As shown on the architecture graphic below, the core management infrastructure consists of a Windows Server 2019 domain controller VM, along with a Windows 10 Enterprise VM, which will run the Windows Admin Center.  In this step, you'll deploy both of those key components.
 
-![Architecture diagram for Azure Stack HCI 20H2 nested with management infra highlighted](/media/nested_virt_mgmt.png "Architecture diagram for Azure Stack HCI 20H2 nested with management infra highlighted")
+![Architecture diagram for Azure Stack HCI 20H2 nested with management infra highlighted](/media/nested_virt_mgmt_ga.png "Architecture diagram for Azure Stack HCI 20H2 nested with management infra highlighted")
 
 However, before you deploy your management infrastructure, first, you need to download the necessary software components required to complete this evalution.
 
@@ -91,7 +91,7 @@ To optimize the VM's use of available memory, especially on physical systems wit
 # Optionally configure the VM with Dynamic Memory
 Set-VMMemory DC01 -DynamicMemoryEnabled $true -MinimumBytes 1GB -StartupBytes 4GB -MaximumBytes 4GB
 ```
-Once the VM is successfully created, you should connect the Windows Server 2019 ISO file, downloaded earlier, and also disable checkpoints.
+Once the VM is successfully created, you should connect the Windows Server 2019 ISO file, downloaded earlier, disable checkpoints and set VM auto-start.
 
 ```powershell
 # Add the DVD drive, attach the ISO to DC01 and set the DVD as the first boot device
@@ -99,12 +99,15 @@ $DVD = Add-VMDvdDrive -VMName DC01 -Path C:\ISO\WS2019.iso -Passthru
 Set-VMFirmware -VMName DC01 -FirstBootDevice $DVD
 # Disable checkpoints
 Set-VM -VMName DC01 -CheckpointType Disabled
+# Enable Automatic Start for this VM
+Set-VM -VMName DC01 –AutomaticStartAction Start
 ```
 With the VM configured correctly, you can use the following commands to connect to the VM using VM Connect, and at the same time, start the VM.  To boot from the ISO, you'll need to click on the VM and quickly press a key to trigger the boot from the DVD inside the VM.  If you miss the prompt to press a key to boot from CD or DVD, simply reset the VM and try again.
 
 ```powershell
 # Open a VM Connect window, and start the VM
 vmconnect.exe localhost DC01
+Start-Sleep -Seconds 5 # Just gives enough time to see the "Press any key..." message
 Start-VM -Name DC01
 ```
 
@@ -152,6 +155,7 @@ Invoke-Command -VMName "DC01" -Credential $dcCreds -ScriptBlock {
 
 Write-Verbose "Rebooting DC01 for hostname change to take effect" -Verbose
 Stop-VM -Name DC01
+Start-Sleep -Seconds 5
 Start-VM -Name DC01
 
 # Test for the DC01 to be back online and responding
@@ -169,7 +173,6 @@ If you'd like to ensure DC01 is fully updated, you can run the following PowerSh
 **NOTE** the code below is specific to Windows Server 2019.
 
 ```powershell
-$dcCreds = Get-Credential -UserName "Administrator" -Message "Enter the password used when you deployed Windows Server 2019"
 Invoke-Command -VMName "DC01" -Credential $dcCreds -ScriptBlock {
     # Scan for updates
     $ScanResult = Invoke-CimMethod -Namespace "root/Microsoft/Windows/WindowsUpdate" -ClassName "MSFT_WUOperations" `
@@ -183,6 +186,7 @@ Invoke-Command -VMName "DC01" -Credential $dcCreds -ScriptBlock {
 
 Write-Verbose "Rebooting DC01 to finish installing updates" -Verbose
 Stop-VM -Name DC01
+Start-Sleep -Seconds 5
 Start-VM -Name DC01
 
 # Test for the DC01 to be back online and responding
@@ -225,6 +229,7 @@ When the process is completed successfully, you should see a message similar to 
 ```powershell
 Write-Verbose "Rebooting DC01 to finish installing of Active Directory" -Verbose
 Stop-VM -Name DC01
+Start-Sleep -Seconds 5
 Start-VM -Name DC01
 
 # Set updated domain credentials based on previous credentials
@@ -289,7 +294,7 @@ New-VM `
     -SwitchName "InternalNAT" `
     -Path "C:\VMs\" `
     -NewVHDPath "C:\VMs\MGMT01\Virtual Hard Disks\MGMT01.vhdx" `
-    -NewVHDSizeBytes 30GB `
+    -NewVHDSizeBytes 127GB `
     -Generation 2
 ```
 
@@ -313,6 +318,7 @@ With the VM configured correctly, you can use the following commands to connect 
 ```powershell
 # Open a VM Connect window, and start the VM
 vmconnect.exe localhost MGMT01
+Start-Sleep -Seconds 5
 Start-VM -Name MGMT01
 ```
 
@@ -329,7 +335,7 @@ Proceed through the process, making the following selections:
 2. Click **Install now**
 3. On the **Applicable notices and license terms** screen, read the information, **tick I accept the license terms** and click **Next**
 4. On the **What type of installation do you want** screen, select **Custom: Install Windows only (advanced)** and click **Next**
-5. On the **Where do you want to install Windows?** screen, select the **30GB Drive 0** and click **Next**
+5. On the **Where do you want to install Windows?** screen, select the **127GB Drive 0** and click **Next**
 
 Installation will then begin, and will take a few minutes, automatically rebooting as part of the process.
 
@@ -361,11 +367,31 @@ Invoke-Command -VMName "MGMT01" -Credential $w10Creds -ScriptBlock {
 }
 ```
 
+#### Optional - Install the new Microsoft Edge ####
+It's highly recommended to install the new version of the Microsoft Edge browser, as it gives a much smoother browsing experience, and is more efficient with it's use of limited resources, if you've deployed in a memory-constrained environment. Firstly, connect to the MGMT01 VM and log in with your LocalAdmin credentials.
+
+```powershell
+vmconnect.exe localhost MGMT01
+```
+
+This will open the VM Connect window.  You should be presented with a **Connect to MGMT01** screen.  Ensure that the display size is set to **Full Screen** and using the **Show Options** dropdown, ensure that **Save my settings for future connections to this virtual machine** is ticked, then click **Connect**.
+
+![Establish a VM Connect session to MGMT01](/media/connect_to_mgmt01.png "Establish a VM Connect session to MGMT01")
+
+1. Open the existing **Microsoft Edge** browser, and navigate to https://www.microsoft.com/edge
+2. On the landing page, click on **Download** and when prompted, **read the license terms** then click **Accept and download**
+3. Once downloaded, click **Run**
+4. The installation will begin, and take a few moments to download, install and configure.  You can accept the **defaults** for the configuration.
+
 #### Optional - Update your Windows 10 OS ####
 
-It's a good idea to ensure your OS is running the latest security updates and patches.
+It's a good idea to ensure your OS is running the latest security updates and patches.  If you skipped installing Microsoft Edge in the previous step, connect to the MGMT01 VM and log in with your LocalAdmin credentials.
 
-1. On the **Taskbar**, click into the **search box** and enter **Update**
+```powershell
+vmconnect.exe localhost MGMT01
+```
+
+1. Once logged in, on the **Taskbar**, click into the **search box** and enter **Update**
 2. In the results, select **Check for Updates**
 3. In the Updates window within Settings, click **Check for updates**. If any are required, ensure they are downloaded and installed.  This will take a few minutes.
 4. Restart if required
@@ -376,8 +402,6 @@ You can then **close** the VM Connect window, as we will continue configuring MG
 To simplify the domain join of the machine to your sandbox domain environment, use the following PowerShell script:
 
 ```powershell
-# Define local Windows 10 credentials
-$w10Creds = Get-Credential -UserName "LocalAdmin" -Message "Enter the password used when you deployed Windows 10"
 # Define domain-join credentials
 $domainName = "azshci.local"
 $domainAdmin = "$domainName\labadmin"
@@ -389,6 +413,7 @@ Invoke-Command -VMName "MGMT01" -Credential $w10Creds -ScriptBlock {
 
 Write-Verbose "Rebooting MGMT01 for hostname change to take effect" -Verbose
 Stop-VM -Name MGMT01
+Start-Sleep -Seconds 5
 Start-VM -Name MGMT01
 
 # Test for the MGMT01 to be back online and responding
@@ -397,14 +422,6 @@ while ((Invoke-Command -VMName MGMT01 -Credential $domainCreds {"Test"} -ErrorAc
 }
 Write-Verbose "MGMT01 is now online. Proceed to the next step...." -Verbose
 ```
-
-#### Optional - Install the new Microsoft Edge ####
-It's highly recommended to install the new version of the Microsoft Edge browser, as it gives a much smoother browsing experience, and is more efficient with it's use of limited resources, if you've deployed in a memory-constrained environment.
-
-1. Open the existing **Microsoft Edge** browser, and navigate to https://www.microsoft.com/edge
-2. On the landing page, click on **Download** and when prompted, **read the license terms** then click **Accept and download**
-3. Once downloaded, click **Run**
-4. The installation will begin, and take a few moments to download, install and configure.  You can accept the **defaults** for the configuration.
 
 ### Install Windows Admin Center on Windows 10 ###
 With the Windows 10 VM now deployed and configured, the final step in the infrastructure preparation, is to install and configure the Windows Admin Center. Earlier in this guide, you should have downloaded the Windows Admin Center files, along with other ISOs.
@@ -417,9 +434,7 @@ Once located, open a PowerShell console **as administrator** and run the followi
 vmconnect.exe localhost MGMT01
 ```
 
-This will open the VM Connect window.  You should be presented with a **Connect to MGMT01** screen.  Ensure that the display size is set to **Full Screen** and using the **Show Options** dropdown, ensure that **Save my settings for future connections to this virtual machine** is ticked, then click **Connect**.
-
-![Establish a VM Connect session to MGMT01](/media/connect_to_mgmt01.png "Establish a VM Connect session to MGMT01")
+This will open the VM Connect window.  If this is the first time using VM Connect, you should be presented with a **Connect to MGMT01** screen.  Ensure that the display size is set to **Full Screen** and using the **Show Options** dropdown, ensure that **Save my settings for future connections to this virtual machine** is ticked, then click **Connect**.
 
 When prompted, enter your Lab Admin credentials to log into MGMT01.  When on the desktop, **right-click** and select **paste** to transfer the Windows Admin Center executable onto the desktop of MGMT01.
 
