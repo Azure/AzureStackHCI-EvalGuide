@@ -370,6 +370,8 @@ This may take a few moments, but should then join the machine to the domain.  **
 ### Install Windows Admin Center on Windows 10 ###
 With the Windows 10 VM now deployed and configured, the final step in the infrastructure preparation, is to install and configure the Windows Admin Center. Earlier in this guide, you should have downloaded the Windows Admin Center files, along with other ISOs.
 
+**IMPORTANT NOTE** - the next step should be performed by the **azshci.local\labadmin** so please ensure you are logged in with the correct account.
+
 Firstly, navigate to C:\ISO, or wherever you chose to store your ISOs and Windows Admin Center executable.  Select the Windows Admin Center executable, **right-click** and select **copy**.
 
 Navigate to **Hyper-V Manager**, locate **MGMT01** and double-click the VM.  This will open the VM Connect window.  If you haven't set this already, you should be presented with a **Connect to MGMT01** screen.  Ensure that the display size is set to **Full Screen** and using the **Show Options** dropdown, ensure that **Save my settings for future connections to this virtual machine** is ticked, then click **Connect**.

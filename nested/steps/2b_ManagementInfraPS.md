@@ -426,6 +426,8 @@ Write-Verbose "MGMT01 is now online. Proceed to the next step...." -Verbose
 ### Install Windows Admin Center on Windows 10 ###
 With the Windows 10 VM now deployed and configured, the final step in the infrastructure preparation, is to install and configure the Windows Admin Center. Earlier in this guide, you should have downloaded the Windows Admin Center files, along with other ISOs.
 
+**IMPORTANT NOTE** - the next step should be performed by the **azshci.local\labadmin** so please ensure you are logged in with the correct account.
+
 Firstly, navigate to C:\ISO, or wherever you chose to store your ISOs and Windows Admin Center executable.  Select the Windows Admin Center executable, **right-click** and select **copy**.
 
 Once located, open a PowerShell console **as administrator** and run the following:
@@ -436,7 +438,7 @@ vmconnect.exe localhost MGMT01
 
 This will open the VM Connect window.  If this is the first time using VM Connect, you should be presented with a **Connect to MGMT01** screen.  Ensure that the display size is set to **Full Screen** and using the **Show Options** dropdown, ensure that **Save my settings for future connections to this virtual machine** is ticked, then click **Connect**.
 
-When prompted, enter your Lab Admin credentials to log into MGMT01.  When on the desktop, **right-click** and select **paste** to transfer the Windows Admin Center executable onto the desktop of MGMT01.
+When prompted, enter your **Lab Admin (azshci.local\labadmin) credentials** to log into MGMT01.  When on the desktop, **right-click** and select **paste** to transfer the Windows Admin Center executable onto the desktop of MGMT01.
 
 To install the Windows Admin Center, simply **double-click** the executable on the desktop, and follow the installation steps, making the following selections:
 
