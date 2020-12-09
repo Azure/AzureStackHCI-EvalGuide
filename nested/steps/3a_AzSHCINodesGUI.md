@@ -70,7 +70,7 @@ Your new AZSHCINODE01 virtual machine will now be created.  Once created, we nee
 9.  Once you have **4 network adapters**, click on **Processor**
 10. For **Number of virtual processors**, choose a number appropriate to your underlying hardware. In this case, we'll choose **16** but you should choose a number appropriate to your physical system size, then click **Apply**
 
-![Configuring the vm settings](/media/new_vm_node_settings_ga.png "Configuring the vm settings")
+![Configuring the vm settings](/media/new_vm_node_settings.png "Configuring the vm settings")
 
 You now need to add additional hard drives to support the Azure Stack HCI 20H2 nodes and cluster.  You need to add a minimum of 2 data disks, but we will add 4 data disks to each node.
 
