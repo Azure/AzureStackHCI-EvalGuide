@@ -436,10 +436,7 @@ With registration complete, either through Windows Admin Center, or through Powe
 
 ![Application ID in App Registrations in Azure](/media/azure_ad_app_ga.png "Application ID in App Registrations in Azure")
 
-16. Within the application, click on **API permissions**.  From there, you can see the **Configured permissions** which have been created as part of the **Register-AzureStackHCI** you ran earlier.  You can see that a number of services that have been granted appropriate permissions for both billing and cluster management. For reference, the Billing and Census sync APIs are described below:
-
-    * **AzureStackHCI.Billing.Sync** - Allows synchronizing billing information, such as the number of physical processor cores, between the Azure Stack HCI 20H2 cluster and the cloud
-    * **AzureStackHCI.Census.Sync** - Allows synchronizing census metadata, such as hardware vendor and software version, between the Azure Stack HCI 20H2 cluster and the cloud
+1.  Within the application, click on **API permissions**.  From there, you can see the **Configured permissions** which have been created as part of the **Register-AzureStackHCI** you ran earlier.  You can see that a number of services that have been granted appropriate permissions for billing and cluster management.
 
 Optionally, you can click on these services to see more information
 
