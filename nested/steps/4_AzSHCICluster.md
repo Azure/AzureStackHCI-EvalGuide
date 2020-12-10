@@ -285,10 +285,94 @@ When you register your Azure Stack HCI 20H2 cluster, the process creates an Azur
 In addition to creating an Azure resource in your subscription, registering Azure Stack HCI 20H2 creates an app identity, conceptually similar to a user, in your Azure Active Directory tenant. The app identity inherits the cluster name. This identity acts on behalf on the Azure Stack HCI 20H2 cloud service, as appropriate, within your subscription.
 
 #### Understanding required Azure Active Directory permissions ####
-If the user who registers Azure Stack HCI 20H2 is an Azure Active Directory global administrator or has been delegated sufficient permissions, this all happens automatically, and no additional action is required. If not, approval may be needed from your Azure Active Directory global administrator to complete registration. Your global administrator can either explicitly grant consent to the app, or they can delegate permissions so that you can grant consent to the app.
+If the user who registers Azure Stack HCI 20H2 is an Azure Active Directory global administrator or has been delegated sufficient permissions, this all happens automatically, and no additional action is required. If not, approval may be needed from your Azure Active Directory global administrator (or someone with appropriate permissions) to complete registration. Your global administrator can either explicitly grant consent to the app, or they can delegate permissions so that you can grant consent to the app.
 
 ![Azure Active Directory Permissions](/media/aad_permissions.png "Azure Active Directory Permissions")
 
+The user who runs Register-AzStackHCI needs Azure AD permissions to:
+
+* Create/Get/Set/Remove Azure AD applications (New/Get/Set/Remove-AzureADApplication)
+* Create/Get Azure AD service principal (New/Get-New-AzureADServicePrincipal)
+* Manage AD application secrets (New/Get/Remove-AzureADApplicationKeyCredential)
+* Grant consent to use specific application permissions (New/Get/Remove AzureADServiceAppRoleAssignments)
+
+There are three ways in which this can be accomplished.
+
+**Option 1: Allow any user to register applications**
+In Azure Active Directory, navigate to User settings > **App registrations**. Under **Users can register applications**, select **Yes**.
+
+This will allow any user to register applications. However, the user will still require the Azure AD admin to grant consent during cluster registration. Note that this is a tenant level setting, so it may not be suitable for large enterprise customers.
+
+**Option 2: Assign Cloud Application Administration role**
+Assign the built-in "Cloud Application Administration" Azure AD role to the user. This will allow the user to register clusters without the need for additional AD admin consent.
+
+**Option 3: Create a custom AD role and consent policy**
+The most restrictive option is to create a custom AD role with a custom consent policy that delegates tenant-wide admin consent for required permissions to the Azure Stack HCI Service. When assigned this custom role, users are able to both register and grant consent without the need for additional AD admin consent.
+
+**NOTE** - This option requires an Azure AD Premium license and uses custom AD roles and custom consent policy features which are currently in public preview.
+
+If you choose to perform Option 3, you'll need to follow these steps on **MGMT01**, which we'll demonstrate through PowerShell:
+
+1. Firstly, configure the appropriate AzureAD modules, then **Connect to Azure AD**, and when prompted, **log in with your appropriate credentials**
+
+```powershell
+Remove-Module AzureAD -ErrorAction SilentlyContinue
+Import-Module AzureADPreview
+Connect-AzureAD
+```
+
+2. Create a **custom consent policy**:
+
+```powershell
+New-AzureADMSPermissionGrantPolicy -Id "AzSHCI-registration-consent-policy" `
+    -DisplayName "Azure Stack HCI registration admin app consent policy" `
+    -Description "Azure Stack HCI registration admin app consent policy"
+```
+
+3. Add a condition that includes required app permissions for Azure Stack HCI service, which carries the app ID 1322e676-dee7-41ee-a874-ac923822781c. Note that the following permissions are for the GA release of Azure Stack HCI, and will not work with Public Preview unless you have applied the [November 23, 2020 Preview Update (KB4586852)](https://docs.microsoft.com/en-us/azure-stack/hci/release-notes "November 23, 2020 Preview Update (KB4586852)") to every server in your cluster and have downloaded the Az.StackHCI module version 0.4.1 or later.
+
+```powershell
+New-AzureADMSPermissionGrantConditionSet -PolicyId "AzSHCI-registration-consent-policy" `
+    -ConditionSetType "includes" -PermissionType "application" -ResourceApplication "1322e676-dee7-41ee-a874-ac923822781c" `
+    -Permissions "bbe8afc9-f3ba-4955-bb5f-1cfb6960b242", "8fa5445e-80fb-4c71-a3b1-9a16a81a1966", `
+    "493bd689-9082-40db-a506-11f40b68128f", "2344a320-6a09-4530-bed7-c90485b5e5e2"
+```
+
+4. Grant permissions to allow registering Azure Stack HCI, noting the custom consent policy created in Step 2:
+
+```powershell
+$displayName = "Azure Stack HCI Registration Administrator "
+$description = "Custom AD role to allow registering Azure Stack HCI "
+$templateId = (New-Guid).Guid
+$allowedResourceAction =
+@(
+    "microsoft.directory/applications/createAsOwner",
+    "microsoft.directory/applications/delete",
+    "microsoft.directory/applications/standard/read",
+    "microsoft.directory/applications/credentials/update",
+    "microsoft.directory/applications/permissions/update",
+    "microsoft.directory/servicePrincipals/appRoleAssignedTo/update",
+    "microsoft.directory/servicePrincipals/appRoleAssignedTo/read",
+    "microsoft.directory/servicePrincipals/appRoleAssignments/read",
+    "microsoft.directory/servicePrincipals/createAsOwner",
+    "microsoft.directory/servicePrincipals/credentials/update",
+    "microsoft.directory/servicePrincipals/permissions/update",
+    "microsoft.directory/servicePrincipals/standard/read",
+    "microsoft.directory/servicePrincipals/managePermissionGrantsForAll.AzSHCI-registration-consent-policy"
+)
+$rolePermissions = @{'allowedResourceActions' = $allowedResourceAction }
+```
+
+5. Create the new custom AD role:
+
+```powershell
+$customADRole = New-AzureADMSRoleDefinition -RolePermissions $rolePermissions `
+    -DisplayName $displayName -Description $description -TemplateId $templateId -IsEnabled $true
+```
+
+1. Assign the new custom AD role to the user who will register the Azure Stack HCI cluster with Azure by following [these instructions](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-users-assign-role-azure-portal "Guidance on creating a custom Azure AD role").
+
+#### Complete Registration ####
 To complete registration, you have 2 options - you can use **Windows Admin Center**, or you can use **PowerShell**.
 
 ### Option 1 - Register using Windows Admin Center ###
