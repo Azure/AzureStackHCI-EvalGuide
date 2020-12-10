@@ -2,7 +2,7 @@ Deploy management infrastructure with the GUI
 ==============
 Overview
 -----------
-With your Hyper-V host up and running, either in Azure, or on a local physical system, it's now time to deploy the core management infrastructure to support the Azure Stack HCI deployment in a future step.
+With your Hyper-V host up and running, either in Azure, or on a local physical system, it's now time to deploy the core management infrastructure to support the Azure Stack HCI 20H2 deployment in a future step.
 
 ### Important Note ###
 In this step, you'll be using the GUI (Graphical User Interface, such as Hyper-V Manager, Server Manager etc) to create resources.  If you prefer to use PowerShell, which may allow faster completion, head on over to the [PowerShell guide](/nested/steps/2b_ManagementInfraPS.md).
@@ -20,7 +20,7 @@ Architecture
 
 As shown on the architecture graphic below, the core management infrastructure consists of a Windows Server 2019 domain controller VM, along with a Windows 10 Enterprise VM, which will run the Windows Admin Center.  In this step, you'll deploy both of those key components.
 
-![Architecture diagram for Azure Stack HCI nested with management infra highlighted](/media/nested_virt_mgmt.png "Architecture diagram for Azure Stack HCI nested with management infra highlighted")
+![Architecture diagram for Azure Stack HCI 20H2 nested with management infra highlighted](/media/nested_virt_mgmt_ga.png "Architecture diagram for Azure Stack HCI 20H2 nested with management infra highlighted")
 
 However, before you deploy your management infrastructure, first, you need to download the necessary software components required to complete this evalution.
 
@@ -30,7 +30,7 @@ In order to deploy our nested virtual machines on AzSHCIHost001, we'll first nee
 
 * Windows Server 2019 Evaluation
 * Windows 10 Enterprise Evaluation (x64)
-* Azure Stack HCI Public Preview
+* Azure Stack HCI 20H2
 * Windows Admin Center
 
 Before downloading, create a new folder on your AzSHCIHost001 machine, to contain the downloaded ISO files.
@@ -90,9 +90,9 @@ In this step, you'll be using Hyper-V Manager to deploy a Windows Server 2019 do
 ![Assign VM memory](/media/new_vm_dynamicmem.png "Assign VM memory")
 
 9. On the **Configure Networking** page, select **InternalNAT** and click **Next**
-10. On the **Connect Virtual Hard Disk** page, change **size** to **30** and click **Next**
+10. On the **Connect Virtual Hard Disk** page, leave the default **size** at **127** and click **Next**
 
-![Connect Virtual Hard Disk](/media/new_vm_vhd.png "Connect Virtual Hard Disk")
+![Connect Virtual Hard Disk](/media/new_vm_vhd_ga.png "Connect Virtual Hard Disk")
 
 11. On the **Installation Options** page, select **Install an operating system from a bootable image file**, and click **Browse**
 12. Navigate to **C:\ISO** and select your **WS2019.iso** file, and click **Open**.  Then click **Next**
@@ -107,7 +107,8 @@ Your new DC01 virtual machine will now be created.  Once created, we need to mak
 
 ![Updating memory for DC01](/media/dynamicmem.png "Updating memory for DC01")
 
-3. If you are running on a **Windows 10 Hyper-V host**, you should **disable automatic checkpoints**. From the **Settings** window, under **Management**, click **Checkpoints** and then if ticked, **untick** the **Enable checkpoints** box, then click **OK**
+3. If you are running on a **Windows 10 Hyper-V host**, you should **disable automatic checkpoints**. From the **Settings** window, under **Management**, click **Checkpoints** and then if ticked, **untick** the **Enable checkpoints** box, then click **Apply**
+4. Finally, under **Automatic Start Action**, select **Always start this virtual machine automatically**, then click **OK**
 
 With the VM configured correctly, in **Hyper-V Manager**, double-click DC01.  This should open the VM Connect window.
 
@@ -129,7 +130,7 @@ Proceed through the process, making the following selections:
 3. On the **Select the operating system** screen, choose **Windows Server 2019 Datacenter Evaluation (Desktop Experience)** and click **Next**
 4. On the **Applicable notices and license terms** screen, read the information, **tick I accept the license terms** and click **Next**
 5. On the **What type of installation do you want** screen, select **Custom: Install Windows only (advanced)** and click **Next**
-6. On the **Where do you want to install Windows?** screen, select the **30GB Drive 0** and click **Next**
+6. On the **Where do you want to install Windows?** screen, select the **127GB Drive 0** and click **Next**
 
 Installation will then begin, and will take a few minutes, automatically rebooting as part of the process.
 
@@ -330,6 +331,14 @@ With MGMT01 up and running, it's time to configure the networking so it can comm
 
 ![Setting static NIC settings](/media/ip_settings.PNG "Setting static NIC settings")
 
+#### Optional - Install the new Microsoft Edge ####
+It's highly recommended to install the new version of the Microsoft Edge browser, as it gives a much smoother browsing experience, and is more efficient with it's use of limited resources, if you've deployed in a memory-constrained environment.
+
+1. Open the existing **Microsoft Edge** browser, and navigate to https://www.microsoft.com/edge
+2. On the landing page, click on **Download** and when prompted, **read the license terms** then click **Accept and download**
+3. Once downloaded, click **Run**
+4. The installation will begin, and take a few moments to download, install and configure.  You can accept the **defaults** for the configuration.
+
 #### Optional - Update your Windows 10 OS ####
 
 With the networking all configured and up and running, it's a good idea to ensure your OS is running the latest security updates and patches.
@@ -358,16 +367,10 @@ Before installing the Windows Admin Center, you'll join MGMT01 to the azshci.loc
 
 This may take a few moments, but should then join the machine to the domain.  **Reboot** the machine when prompted.
 
-#### Optional - Install the new Microsoft Edge ####
-It's highly recommended to install the new version of the Microsoft Edge browser, as it gives a much smoother browsing experience, and is more efficient with it's use of limited resources, if you've deployed in a memory-constrained environment.
-
-1. Open the existing **Microsoft Edge** browser, and navigate to https://www.microsoft.com/edge
-2. On the landing page, click on **Download** and when prompted, **read the license terms** then click **Accept and download**
-3. Once downloaded, click **Run**
-4. The installation will begin, and take a few moments to download, install and configure.  You can accept the **defaults** for the configuration.
-
 ### Install Windows Admin Center on Windows 10 ###
 With the Windows 10 VM now deployed and configured, the final step in the infrastructure preparation, is to install and configure the Windows Admin Center. Earlier in this guide, you should have downloaded the Windows Admin Center files, along with other ISOs.
+
+**IMPORTANT NOTE** - the next step should be performed by the **azshci.local\labadmin** so please ensure you are logged in with the correct account.
 
 Firstly, navigate to C:\ISO, or wherever you chose to store your ISOs and Windows Admin Center executable.  Select the Windows Admin Center executable, **right-click** and select **copy**.
 
@@ -379,7 +382,7 @@ Navigate to **Hyper-V Manager**, locate **MGMT01** and double-click the VM.  Thi
 
 ![Enhanced Session Mode button](/media/enhanced_session.png "Enhanced Session Mode button")
 
-When prompted, enter your Lab Admin credentials to log into MGMT01.  When on the desktop, **right-click** and select **paste** to transfer the Windows Admin Center executable onto the desktop of MGMT01.
+When prompted, enter your **Lab Admin (azshci.local\labadmin) credentials** to log into MGMT01.  When on the desktop, **right-click** and select **paste** to transfer the Windows Admin Center executable onto the desktop of MGMT01.
 
 To install the Windows Admin Center, simply **double-click** the executable on the desktop, and follow the installation steps, making the following selections:
 
@@ -405,14 +408,14 @@ To install the Windows Admin Center, simply **double-click** the executable on t
 
 Next Steps
 -----------
-In this step, you've successfully created your management infrastructure, including a Windows Server 2019 domain controller and a Windows 10 management VM, complete with Windows Admin Center. You can now proceed to [create your nested Azure Stack HCI nodes with the GUI](/nested/steps/3a_AzSHCINodesGUI.md "Create your nested Azure Stack HCI nodes with the GUI").
+In this step, you've successfully created your management infrastructure, including a Windows Server 2019 domain controller and a Windows 10 management VM, complete with Windows Admin Center. You can now proceed to [create your nested Azure Stack HCI 20H2 nodes with the GUI](/nested/steps/3a_AzSHCINodesGUI.md "Create your nested Azure Stack HCI 20H2 nodes with the GUI").
 
 Product improvements
 -----------
-If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI, Windows Admin Center, or the Azure Arc integration and experience, let us know!  We want to hear from you!  [Head on over to our Azure Stack HCI UserVoice page](https://feedback.azure.com/forums/929833-azure-stack-hci "Azure Stack HCI UserVoice"), where you can share your thoughts and ideas about making the technologies better.  If however, you have an issue that you'd like some help with, read on...
+If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI 20H2, Windows Admin Center, or the Azure Arc integration and experience, let us know!  We want to hear from you!  [Head on over to our Azure Stack HCI 20H2 UserVoice page](https://feedback.azure.com/forums/929833-azure-stack-hci "Azure Stack HCI 20H2 UserVoice"), where you can share your thoughts and ideas about making the technologies better.  If however, you have an issue that you'd like some help with, read on...
 
 Raising issues
 -----------
 If you notice something is wrong with the evaluation guide, such as a step isn't working, or something just doesn't make sense - help us to make this guide better!  Raise an issue in GitHub, and we'll be sure to fix this as quickly as possible!
 
-If however, you're having a problem with Azure Stack HCI **outside** of this evaluation guide, make sure you post to [our Microsoft Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Microsoft Q&A Forum"), where Microsoft experts and valuable members of the Azure Stack HCI community will do their best to help you.
+If however, you're having a problem with Azure Stack HCI 20H2 **outside** of this evaluation guide, make sure you post to [our Microsoft Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Microsoft Q&A Forum"), where Microsoft experts and valuable members of the community will do their best to help you.
