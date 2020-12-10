@@ -375,10 +375,10 @@ $customADRole = New-AzureADMSRoleDefinition -RolePermissions $rolePermissions `
 
 1. Assign the new custom AD role to the user who will register the Azure Stack HCI cluster with Azure by following [these instructions](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-users-assign-role-azure-portal "Guidance on creating a custom Azure AD role").
 
-#### Complete Registration ####
+### Complete Registration ###
 To complete registration, you have 2 options - you can use **Windows Admin Center**, or you can use **PowerShell**.
 
-### Option 1 - Register using Windows Admin Center ###
+#### Option 1 - Register using Windows Admin Center ####
 
 1. On **MGMT01**, logged in as **azshci\labadmin**, open the Windows Admin Center, and on the **All connections** page, select your azshciclus
 2. When the cluster dashboard has loaded, in the top-right corner, you'll see the **status of the Azure registration/connection**
@@ -411,7 +411,7 @@ To complete registration, you have 2 options - you can use **Windows Admin Cente
 
 You can now proceed on to [Viewing registration details in the Azure portal](#View-registration-details-in-the-Azure-portal)
 
-### Option 2 - Register using PowerShell ###
+#### Option 2 - Register using PowerShell ####
 We're going to perform the registration from the **MGMT01** machine, which we've been using with the Windows Admin Center.
 
 1. On **MGMT01**, open **PowerShell as administrator** and run the following code. This first establishes a remote PowerShell connection to the first nodes of your cluster, then installs the necessary tools and PowerShell Module for Azure Stack HCI 20H2 on that node.
