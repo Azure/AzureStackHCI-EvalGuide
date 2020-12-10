@@ -299,14 +299,17 @@ The user who runs Register-AzStackHCI needs Azure AD permissions to:
 There are three ways in which this can be accomplished.
 
 **Option 1: Allow any user to register applications**
+
 In Azure Active Directory, navigate to User settings > **App registrations**. Under **Users can register applications**, select **Yes**.
 
 This will allow any user to register applications. However, the user will still require the Azure AD admin to grant consent during cluster registration. Note that this is a tenant level setting, so it may not be suitable for large enterprise customers.
 
 **Option 2: Assign Cloud Application Administration role**
+
 Assign the built-in "Cloud Application Administration" Azure AD role to the user. This will allow the user to register clusters without the need for additional AD admin consent.
 
 **Option 3: Create a custom AD role and consent policy**
+
 The most restrictive option is to create a custom AD role with a custom consent policy that delegates tenant-wide admin consent for required permissions to the Azure Stack HCI Service. When assigned this custom role, users are able to both register and grant consent without the need for additional AD admin consent.
 
 **NOTE** - This option requires an Azure AD Premium license and uses custom AD roles and custom consent policy features which are currently in public preview.
