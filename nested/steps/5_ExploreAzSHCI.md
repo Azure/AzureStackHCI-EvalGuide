@@ -135,7 +135,7 @@ Get-VM | Stop-VM -Force
 
 3. Once all the VMs are switched off, you can then shut down your Hyper-V host.  If you're running this environment on physical gear on-prem, you're all done, but if you deployed in Azure, visit https://portal.azure.com/, and login with your Azure credentials.  Once logged in, using the search box on the dashboard, enter "azshci" and once the results are returned, click on your AzSHCIHost virtual machine.
 
-![Virtual machine located in Azure](/media/azure_vm_search.png "Virtual machine located in Azure")
+![Virtual machine located in Azure](/media/azure_vm_search_ga.png "Virtual machine located in Azure")
 
 4. Once on the overview blade for your VM, along the **top navigation**, click **Stop**, and then click **OK**.  Your VM will then be deallocated and **compute charges** will cease.
 
