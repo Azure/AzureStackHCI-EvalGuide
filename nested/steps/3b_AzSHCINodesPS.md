@@ -138,25 +138,17 @@ To save a later step, you can quickly use PowerShell Direct to join your AZSHCIN
 $domainName = "azshci.local"
 $domainAdmin = "$domainName\labadmin"
 $domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the password for the LabAdmin account"
-Invoke-Command -VMName $nodeName -Credential $azsHCILocalCreds -ScriptBlock {
-    # Change the name
-    Rename-Computer -NewName $Using:nodeName -Force -Restart
-}
-
-# Test for the node to be back online and responding
-while ((Invoke-Command -VMName $nodeName -Credential $azsHCILocalCreds {"Test"} -ErrorAction SilentlyContinue) -ne "Test") {
-    Start-Sleep -Seconds 1
-}
-Write-Verbose "$nodeName is now online. Proceeding to join the domain...." -Verbose
-
-Invoke-Command -VMName $nodeName -Credential $azsHCILocalCreds -ScriptBlock {
-    # Join the domain
-    Add-Computer -DomainName azshci.local -Credential $Using:domainCreds -Force -Restart
+Invoke-Command -VMName $nodeName -Credential $azsHCILocalCreds -ArgumentList $domainCreds -ScriptBlock {
+    # Change the name and join domain
+    Rename-Computer -NewName $Using:nodeName -LocalCredential $Using:azsHCILocalCreds -Force -Verbose
+    Start-Sleep -Seconds 5
+    Add-Computer -DomainName "azshci.local" -Credential $Using:domainCreds -Force -Options JoinWithNewName,AccountCreate -Restart -Verbose
 }
 
 # Test for the node to be back online and responding
 while ((Invoke-Command -VMName $nodeName -Credential $domainCreds {"Test"} -ErrorAction SilentlyContinue) -ne "Test") {
     Start-Sleep -Seconds 1
+    Write-Host "Waiting for server to come back online"
 }
 Write-Verbose "$nodeName is now online. Proceed to the next step...." -Verbose
 ```
