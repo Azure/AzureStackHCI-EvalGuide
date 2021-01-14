@@ -220,7 +220,7 @@ New-AzVM `
     -Verbose
 
 # Optional Parameter
-# Only used if you have existing Windows Server licenses with Software Assurance (See below)
+# Only used if you have existing Windows Server licenses with Software Assurance (See NOTE 3 below)
 # -LicenseType "Windows_Server"
 ```
 
