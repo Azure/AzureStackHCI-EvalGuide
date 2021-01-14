@@ -219,7 +219,7 @@ New-AzVM `
     -Credential (Get-Credential) `
     -Verbose
 
-# Optional Parameter
+# Optional Parameter - add this parameter to the command above. Don't forget to add ` at the end of the -Verbose line.
 # Only used if you have existing Windows Server licenses with Software Assurance (See NOTE 3 below)
 # -LicenseType "Windows_Server"
 ```
