@@ -217,8 +217,11 @@ New-AzVM `
     -ImageName Win2019Datacenter `
     -Size Standard_D16s_v4 `
     -Credential (Get-Credential) `
-    # -LicenseType "Windows_Server" ` # Only used if you have existing Windows Server licenses with Software Assurance (See below)
     -Verbose
+
+# Optional Parameter
+# Only used if you have existing Windows Server licenses with Software Assurance (See NOTE 3 below)
+# -LicenseType "Windows_Server"
 ```
 
 **NOTE 1** - You'll be prompted to supply a credential for the VM - simply enter a username of your choice, and strong password.
