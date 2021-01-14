@@ -212,7 +212,7 @@ New-AzVM `
     -SubnetName "AzSHCILabSubnet" `
     -SecurityGroupName "AzSHCILabNSG" `
     -PublicIpAddressName "AzSHCILabPubIP" `
-    -DomainNameLabel "$dnsName"
+    -DomainNameLabel "$dnsName" `
     -OpenPorts 3389 `
     -ImageName Win2019Datacenter `
     -Size Standard_D16s_v4 `
