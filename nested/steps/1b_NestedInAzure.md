@@ -219,9 +219,9 @@ New-AzVM `
     -Credential (Get-Credential) `
     -Verbose
 
-# Optional Parameter - add this parameter to the command above. Don't forget to add ` at the end of the -Verbose line.
-# Only used if you have existing Windows Server licenses with Software Assurance (See NOTE 3 below)
-# -LicenseType "Windows_Server"
+# Optional Parameter -> -LicenseType "Windows_Server"
+# Copy and paste the parameter under the command above. Don't forget to add ` at the end of the -Verbose line.
+# Only use this if you have existing Windows Server licenses with Software Assurance (See NOTE 3 below)
 ```
 
 **NOTE 1** - You'll be prompted to supply a credential for the VM - simply enter a username of your choice, and strong password.
