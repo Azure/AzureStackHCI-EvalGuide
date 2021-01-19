@@ -90,9 +90,9 @@ In this step, you'll be using Hyper-V Manager to deploy a Windows Server 2019 do
 ![Assign VM memory](/media/new_vm_dynamicmem.png "Assign VM memory")
 
 9. On the **Configure Networking** page, select **InternalNAT** and click **Next**
-10. On the **Connect Virtual Hard Disk** page, leave the default **size** at **127** and click **Next**
+10. On the **Connect Virtual Hard Disk** page, leave the default **size** at **30** and click **Next**
 
-![Connect Virtual Hard Disk](/media/new_vm_vhd_ga.png "Connect Virtual Hard Disk")
+![Connect Virtual Hard Disk](/media/new_vm_vhd.png "Connect Virtual Hard Disk")
 
 11. On the **Installation Options** page, select **Install an operating system from a bootable image file**, and click **Browse**
 12. Navigate to **C:\ISO** and select your **WS2019.iso** file, and click **Open**.  Then click **Next**
@@ -130,7 +130,7 @@ Proceed through the process, making the following selections:
 3. On the **Select the operating system** screen, choose **Windows Server 2019 Datacenter Evaluation (Desktop Experience)** and click **Next**
 4. On the **Applicable notices and license terms** screen, read the information, **tick I accept the license terms** and click **Next**
 5. On the **What type of installation do you want** screen, select **Custom: Install Windows only (advanced)** and click **Next**
-6. On the **Where do you want to install Windows?** screen, select the **127GB Drive 0** and click **Next**
+6. On the **Where do you want to install Windows?** screen, select the **30GB Drive 0** and click **Next**
 
 Installation will then begin, and will take a few minutes, automatically rebooting as part of the process.
 
@@ -257,9 +257,9 @@ In this step, you'll be using Hyper-V Manager to deploy a Windows 10 Enterprise 
 ![Assign VM memory](/media/new_vm_dynamicmem.png "Assign VM memory")
 
 9. On the **Configure Networking** page, select **InternalNAT** and click **Next**
-10. On the **Connect Virtual Hard Disk** page, change **size** to **30** and click **Next**
+10. On the **Connect Virtual Hard Disk** page, change **size** to **127** and click **Next**
 
-![Connect Virtual Hard Disk](/media/new_vm_mgmt01_vhd.png "Connect Virtual Hard Disk")
+![Connect Virtual Hard Disk](/media/new_vm_mgmt01_vhd_ga.png "Connect Virtual Hard Disk")
 
 11. On the **Installation Options** page, select **Install an operating system from a bootable image file**, and click **Browse**
 12. Navigate to **C:\ISO** and select your **W10.iso** file, and click **Open**.  Then click **Next**
@@ -296,7 +296,7 @@ Proceed through the process, making the following selections:
 2. Click **Install now**
 3. On the **Applicable notices and license terms** screen, read the information, **tick I accept the license terms** and click **Next**
 4. On the **What type of installation do you want** screen, select **Custom: Install Windows only (advanced)** and click **Next**
-5. On the **Where do you want to install Windows?** screen, select the **30GB Drive 0** and click **Next**
+5. On the **Where do you want to install Windows?** screen, select the **127GB Drive 0** and click **Next**
 
 Installation will then begin, and will take a few minutes, automatically rebooting as part of the process.
 
