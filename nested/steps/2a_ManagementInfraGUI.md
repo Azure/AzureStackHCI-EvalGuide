@@ -90,7 +90,7 @@ In this step, you'll be using Hyper-V Manager to deploy a Windows Server 2019 do
 ![Assign VM memory](/media/new_vm_dynamicmem.png "Assign VM memory")
 
 9. On the **Configure Networking** page, select **InternalNAT** and click **Next**
-10. On the **Connect Virtual Hard Disk** page, leave the default **size** at **30** and click **Next**
+10. On the **Connect Virtual Hard Disk** page, set the **size** to **30** and click **Next**
 
 ![Connect Virtual Hard Disk](/media/new_vm_vhd.png "Connect Virtual Hard Disk")
 
@@ -257,7 +257,7 @@ In this step, you'll be using Hyper-V Manager to deploy a Windows 10 Enterprise 
 ![Assign VM memory](/media/new_vm_dynamicmem.png "Assign VM memory")
 
 9. On the **Configure Networking** page, select **InternalNAT** and click **Next**
-10. On the **Connect Virtual Hard Disk** page, change **size** to **127** and click **Next**
+10. On the **Connect Virtual Hard Disk** page, leave the **size** at **127** and click **Next**
 
 ![Connect Virtual Hard Disk](/media/new_vm_mgmt01_vhd_ga.png "Connect Virtual Hard Disk")
 
