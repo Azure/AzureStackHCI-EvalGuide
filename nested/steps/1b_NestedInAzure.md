@@ -253,6 +253,10 @@ New-AzVM -ResourceGroupName $resourceGroupName -Location $locationName -VM $vm -
 # Optional Parameter -> -LicenseType "Windows_Server"
 # Copy and paste the parameter on the end of the New-AzVM command.
 # Only use this if you have existing Windows Server licenses with Software Assurance (See NOTE 3 below)
+
+# Get connection details of the newly created VM
+$getIp = Get-AzPublicIpAddress -Name "AzSHCILabPubIP" -ResourceGroupName $resourceGroupName
+$getIp | Select-Object Name,IpAddress,@{label='FQDN';expression={$_.DnsSettings.Fqdn}}
 ```
 
 **NOTE 1** - You'll be prompted to supply a credential for the VM - simply enter a username of your choice, and strong password.
