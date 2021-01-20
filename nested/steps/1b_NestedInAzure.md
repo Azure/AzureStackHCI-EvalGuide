@@ -237,7 +237,7 @@ $vNet = New-AzVirtualNetwork -Name $networkName -ResourceGroupName $resourceGrou
 $vNic = New-AzNetworkInterface -Name $nicName -ResourceGroupName $resourceGroupName `
     -Location $locationName -SubnetId $vNet.Subnets[0].Id -PublicIpAddressId $publicIp.Id
 
-#Finalize the VM configuration, including size, image and storage
+# Finalize the VM configuration, including size, image and storage
 $vm = New-AzVMConfig -VMName $vmName -VMSize $vmSize
 $vm = Set-AzVMOperatingSystem -VM $vm -Windows -ComputerName $vmName -Credential $credential -ProvisionVMAgent
 $vm = Add-AzVMNetworkInterface -VM $vm -Id $vNic.Id
