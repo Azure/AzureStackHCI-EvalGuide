@@ -255,6 +255,7 @@ New-AzVM -ResourceGroupName $resourceGroupName -Location $locationName -VM $vm -
 # Only use this if you have existing Windows Server licenses with Software Assurance (See NOTE 3 below)
 
 # Get connection details of the newly created VM
+Get-AzVM -ResourceGroupName $resourceGroupName -Name $vm.Name
 $getIp = Get-AzPublicIpAddress -Name "AzSHCILabPubIP" -ResourceGroupName $resourceGroupName
 $getIp | Select-Object Name,IpAddress,@{label='FQDN';expression={$_.DnsSettings.Fqdn}}
 ```
