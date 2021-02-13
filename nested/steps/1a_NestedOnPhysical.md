@@ -13,11 +13,15 @@ In this guide, you'll walk through the steps to stand up an Azure Stack HCI 20H2
 
 Contents
 -----------
-* [Architecture](#architecture)
-* [Will my hardware support this?](#will-my-hardware-support-this)
-* [Get an Azure subscription](#get-an-azure-subscription)
-* [Configuring your Hyper-V host](#configuring-your-hyper-v-host)
-* [Next steps](#next-steps)
+- [Overview](#overview)
+- [Contents](#contents)
+- [Architecture](#architecture)
+- [Will my hardware support this?](#will-my-hardware-support-this)
+- [Get an Azure subscription](#get-an-azure-subscription)
+- [Configuring your Hyper-V host](#configuring-your-hyper-v-host)
+- [Next Steps](#next-steps)
+- [Product improvements](#product-improvements)
+- [Raising issues](#raising-issues)
 
 Architecture
 -----------

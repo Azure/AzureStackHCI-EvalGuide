@@ -1,7 +1,8 @@
 Azure Stack HCI 20H2 - Evaluation Guide
 ==============
 
-## Welcome to the Azure Stack HCI 20H2 Evaluation Guide ##
+Welcome to the Azure Stack HCI 20H2 Evaluation Guide
+-----------
 
 In this guide, we'll walk you experiencing a number of the amazing capabilities within [Azure Stack HCI 20H2](https://azure.microsoft.com/en-us/products/azure-stack/hci/ "link to the Azure Stack HCI 20H2 landing page"), and set the foundation for you to explore in your own time.  You'll cover aspects such as:
 
@@ -10,6 +11,17 @@ In this guide, we'll walk you experiencing a number of the amazing capabilities 
 * Building a Hyperconverged cluster using Windows Admin Center, including configuring a cloud witness
 * Registering Azure Stack HCI 20H2 with Azure
 * and more...!
+
+Contents
+-----------
+- [Welcome to the Azure Stack HCI 20H2 Evaluation Guide](#welcome-to-the-azure-stack-hci-20h2-evaluation-guide)
+- [Contents](#contents)
+- [What is Azure Stack HCI 20H2?](#what-is-azure-stack-hci-20h2)
+- [Why follow this guide?](#why-follow-this-guide)
+- [Start your Azure Stack HCI 20H2 evaluation using nested virtualization](#start-your-azure-stack-hci-20h2-evaluation-using-nested-virtualization)
+- [Product improvements](#product-improvements)
+- [Raising issues](#raising-issues)
+- [Contributions & Legal](#contributions--legal)
 
 What is Azure Stack HCI 20H2?
 -----------

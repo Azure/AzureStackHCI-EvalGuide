@@ -9,11 +9,15 @@ In this step, you'll be using the GUI (Graphical User Interface, such as Hyper-V
 
 Contents
 -----------
-* [Architecture](#architecture)
-* [Download artifacts](#download-artifacts)
-* [Create your domain controller](#create-your-domain-controller)
-* [Create your Windows 10 Management VM](#create-your-windows-10-management-vm)
-* [Next steps](#next-steps)
+- [Overview](#overview)
+- [Contents](#contents)
+- [Architecture](#architecture)
+- [Download artifacts](#download-artifacts)
+- [Create your domain controller](#create-your-domain-controller)
+- [Create your Windows 10 Management VM](#create-your-windows-10-management-vm)
+- [Next Steps](#next-steps)
+- [Product improvements](#product-improvements)
+- [Raising issues](#raising-issues)
 
 Architecture
 -----------
@@ -405,6 +409,8 @@ To install the Windows Admin Center, simply **double-click** the executable on t
 ![Windows Admin Center extensions required](/media/extension_update_needed.png "Windows Admin Center extensions required")
 
 10. Click on the extension, and click **Update**. This will take a few moments, and will reload the page when complete.  With the extensions updated, navigate back to the Windows Admin Center homepage.
+
+**NOTE** - it's critical you update the **Cluster Creation** extension to the very latest version. Ensure you do this before proceeding.
 
 Next Steps
 -----------

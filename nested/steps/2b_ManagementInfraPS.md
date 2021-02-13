@@ -7,11 +7,16 @@ With your Hyper-V host up and running, either in Azure, or on a local physical s
 
 Contents
 -----------
-* [Architecture](#architecture)
-* [Download artifacts](#download-artifacts)
-* [Create your domain controller](#create-your-domain-controller)
-* [Create your Windows 10 Management VM](#create-your-windows-10-management-vm)
-* [Next steps](#next-steps)
+- [Overview](#overview)
+- [Contents](#contents)
+- [Architecture](#architecture)
+- [Download artifacts](#download-artifacts)
+- [Create your domain controller](#create-your-domain-controller)
+- [Create your Windows 10 Management VM](#create-your-windows-10-management-vm)
+- [Next Steps](#next-steps)
+- [Product improvements](#product-improvements)
+- [Raising issues](#raising-issues)
+- [Full Script - Creating your Management infrastructure](#full-script---creating-your-management-infrastructure)
 
 ### Important Note ###
 In this step, you'll be using PowerShell to create resources.  If you prefer to use a GUI (Graphical User Interface, such as Hyper-V Manager, Server Manager etc), which may allow faster completion, head on over to the [GUI guide](/nested/steps/2a_ManagementInfraGUI.md).
@@ -462,6 +467,14 @@ To install the Windows Admin Center, simply **double-click** the executable on t
 
 10. Click on the extension, and click **Update**. This will take a few moments, and will reload the page when complete.  With the extensions updated, navigate back to the Windows Admin Center homepage.
 
+**NOTE** - it's critical you update the **Cluster Creation** extension to the very latest version. Ensure you do this before proceeding.
+
+### Active Windows 10 Evaluation ###
+This step should have happened automatically when your Windows 10 OS has internet connectivity, but just in case, make sure you activate the OS by performing the following steps. Inside your **MGMT01 VM**:
+
+1. Click **Start** and type **activate** - in the results, click on **Activation settings** 
+2. You should see that Windows 10 has been activated, but if not, click on **Activate**. If you run into a problem activating, please raise an issue.
+
 Next Steps
 -----------
 In this step, you've successfully created your management infrastructure, including a Windows Server 2019 domain controller and a Windows 10 management VM, complete with Windows Admin Center. You can now proceed to [create your nested Azure Stack HCI 20H2 nodes with PowerShell](/nested/steps/3b_AzSHCINodesPS.md "Create your nested Azure Stack HCI 20H2 nodes with PowerShell")
@@ -475,3 +488,228 @@ Raising issues
 If you notice something is wrong with the evaluation guide, such as a step isn't working, or something just doesn't make sense - help us to make this guide better!  Raise an issue in GitHub, and we'll be sure to fix this as quickly as possible!
 
 If however, you're having a problem with Azure Stack HCI 20H2 **outside** of this evaluation guide, make sure you post to [our Microsoft Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Microsoft Q&A Forum"), where Microsoft experts and valuable members of the community will do their best to help you.
+
+Full Script - Creating your Management infrastructure
+-----------
+
+```powershell
+#############################################################################
+##### Create DC01 ###########################################################
+#############################################################################
+
+# Define the characteristics of the VM, and create
+New-VM `
+    -Name "DC01" `
+    -MemoryStartupBytes 4GB `
+    -SwitchName "InternalNAT" `
+    -Path "C:\VMs\" `
+    -NewVHDPath "C:\VMs\DC01\Virtual Hard Disks\DC01.vhdx" `
+    -NewVHDSizeBytes 30GB `
+    -Generation 2
+
+# Optionally configure the VM with Dynamic Memory
+Set-VMMemory DC01 -DynamicMemoryEnabled $true -MinimumBytes 1GB -StartupBytes 4GB -MaximumBytes 4GB
+
+# Add the DVD drive, attach the ISO to DC01 and set the DVD as the first boot device
+$DVD = Add-VMDvdDrive -VMName DC01 -Path C:\ISO\WS2019.iso -Passthru
+Set-VMFirmware -VMName DC01 -FirstBootDevice $DVD
+# Disable checkpoints
+Set-VM -VMName DC01 -CheckpointType Disabled
+# Enable Automatic Start for this VM
+Set-VM -VMName DC01 –AutomaticStartAction Start
+
+# Open a VM Connect window, and start the VM
+vmconnect.exe localhost DC01
+Start-Sleep -Seconds 5 # Just gives enough time to see the "Press any key..." message
+Start-VM -Name DC01
+
+#############################################################################
+##### Follow the steps above for initial configuration of the OS ############
+#############################################################################
+
+# Provide a password for the VM that you set in the previous step
+$dcCreds = Get-Credential -UserName "Administrator" -Message "Enter the password used when you deployed Windows Server 2019"
+Invoke-Command -VMName "DC01" -Credential $dcCreds -ScriptBlock {
+    # Configure new IP address for DC01 NIC
+    New-NetIPAddress -IPAddress "192.168.0.2" -DefaultGateway "192.168.0.1" -InterfaceAlias "Ethernet" -PrefixLength "24" | Out-Null
+    Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses ("1.1.1.1")
+    $dcIP = Get-NetIPAddress -AddressFamily IPv4 -InterfaceAlias "Ethernet" | Select-Object IPAddress
+    Write-Verbose "The currently assigned IPv4 address for DC01 is $($dcIP.IPAddress)" -Verbose 
+    # Update Hostname to DC01
+    Write-Verbose "Updating Hostname for DC01" -Verbose
+    Rename-Computer -NewName "DC01"
+}
+
+Write-Verbose "Rebooting DC01 for hostname change to take effect" -Verbose
+Stop-VM -Name DC01
+Start-Sleep -Seconds 5
+Start-VM -Name DC01
+
+# Test for the DC01 to be back online and responding
+while ((Invoke-Command -VMName DC01 -Credential $dcCreds {"Test"} -ErrorAction SilentlyContinue) -ne "Test") {
+    Start-Sleep -Seconds 1
+}
+Write-Verbose "DC01 is now online. Proceed to the next step...." -Verbose
+
+#############################################################################
+##### Once the DC is back online and ready for updates ######################
+#############################################################################
+
+Invoke-Command -VMName "DC01" -Credential $dcCreds -ScriptBlock {
+    # Scan for updates
+    $ScanResult = Invoke-CimMethod -Namespace "root/Microsoft/Windows/WindowsUpdate" -ClassName "MSFT_WUOperations" `
+    -MethodName ScanForUpdates -Arguments @{SearchCriteria = "IsInstalled=0" }
+    # Apply updates (if not empty)
+    if ($ScanResult.Updates) {
+        Invoke-CimMethod -Namespace "root/Microsoft/Windows/WindowsUpdate" -ClassName "MSFT_WUOperations" `
+        -MethodName InstallUpdates -Arguments @{Updates = $ScanResult.Updates }
+    }
+}
+
+Write-Verbose "Rebooting DC01 to finish installing updates" -Verbose
+Stop-VM -Name DC01
+Start-Sleep -Seconds 5
+Start-VM -Name DC01
+
+# Test for the DC01 to be back online and responding
+while ((Invoke-Command -VMName DC01 -Credential $dcCreds {"Test"} -ErrorAction SilentlyContinue) -ne "Test") {
+    Start-Sleep -Seconds 1
+}
+Write-Verbose "DC01 is now online. Proceed to the next step...." -Verbose
+
+#############################################################################
+##### Once the DC is back online and ready for config #######################
+#############################################################################
+
+# Configure Active Directory on DC01
+Invoke-Command -VMName DC01 -Credential $dcCreds -ScriptBlock {
+    # Set the Directory Services Restore Mode password
+    $DSRMPWord = ConvertTo-SecureString -String "Password01" -AsPlainText -Force
+    Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools
+    Install-ADDSForest `
+        -CreateDnsDelegation:$false `
+        -DatabasePath "C:\Windows\NTDS" `
+        -DomainMode 7 `
+        -DomainName "azshci.local" `
+        -ForestMode 7 `
+        -InstallDns:$true `
+        -SafeModeAdministratorPassword $DSRMPWord `
+        -LogPath "C:\Windows\NTDS" `
+        -NoRebootOnCompletion:$true `
+        -SysvolPath "C:\Windows\SYSVOL" `
+        -Force:$true
+}
+
+Write-Verbose "Rebooting DC01 to finish installing of Active Directory" -Verbose
+Stop-VM -Name DC01
+Start-Sleep -Seconds 5
+Start-VM -Name DC01
+
+# Set updated domain credentials based on previous credentials
+$domainName = "azshci.local"
+$domainAdmin = "$domainName\administrator"
+$domainCreds = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $domainAdmin, $dcCreds.Password
+
+# Test for the DC01 to be back online and responding
+while ((Invoke-Command -VMName DC01 -Credential $domainCreds {"Test"} -ErrorAction SilentlyContinue) -ne "Test") {
+    Start-Sleep -Seconds 1
+}
+Write-Verbose "DC01 is now online. Proceed to the next step...." -Verbose
+
+Write-Verbose "Creating new administrative User within the azshci.local domain." -Verbose
+$newUser = "LabAdmin"
+Invoke-Command -VMName DC01 -Credential $domainCreds -ScriptBlock {
+    Write-Verbose "Waiting for AD Web Services to be in a running state" -Verbose
+    $ADWebSvc = Get-Service ADWS | Select-Object *
+    while ($ADWebSvc.Status -ne 'Running') {
+        Start-Sleep -Seconds 1
+    }
+    Do {
+        Start-Sleep -Seconds 30
+        Write-Verbose "Waiting for AD to be Ready for User Creation" -Verbose
+        New-ADUser -Name $using:newUser -AccountPassword $using:domainCreds.Password -Enabled $True
+        $ADReadyCheck = Get-ADUser -Identity $using:newUser
+    }
+    Until ($ADReadyCheck.Enabled -eq "True")
+    Add-ADGroupMember -Identity "Domain Admins" -Members $using:newUser
+    Add-ADGroupMember -Identity "Enterprise Admins" -Members $using:newUser
+    Add-ADGroupMember -Identity "Schema Admins" -Members $using:newUser
+}
+Write-Verbose "$newUser Account Created." -Verbose
+
+#############################################################################
+##### Create MGMT01 #########################################################
+#############################################################################
+
+# Define the characteristics of the VM, and create
+New-VM `
+    -Name "MGMT01" `
+    -MemoryStartupBytes 4GB `
+    -SwitchName "InternalNAT" `
+    -Path "C:\VMs\" `
+    -NewVHDPath "C:\VMs\MGMT01\Virtual Hard Disks\MGMT01.vhdx" `
+    -NewVHDSizeBytes 127GB `
+    -Generation 2
+
+# Optionally configure the VM with Dynamic Memory
+Set-VMMemory MGMT01 -DynamicMemoryEnabled $true -MinimumBytes 2GB -StartupBytes 4GB -MaximumBytes 4GB
+
+# Add the DVD drive, attach the ISO to DC01 and set the DVD as the first boot device
+$DVD = Add-VMDvdDrive -VMName MGMT01 -Path C:\ISO\W10.iso -Passthru
+Set-VMFirmware -VMName MGMT01 -FirstBootDevice $DVD
+# Disable checkpoints
+Set-VM -VMName MGMT01 -CheckpointType Disabled
+
+# Open a VM Connect window, and start the VM
+vmconnect.exe localhost MGMT01
+Start-Sleep -Seconds 5
+Start-VM -Name MGMT01
+
+#############################################################################
+##### Follow the steps above for initial configuration of the OS ############
+#############################################################################
+
+# Define local Windows 10 credentials
+$w10Creds = Get-Credential -UserName "LocalAdmin" -Message "Enter the password used when you deployed Windows 10"
+Invoke-Command -VMName "MGMT01" -Credential $w10Creds -ScriptBlock {
+    # Set Static IP on MGMT01
+    New-NetIPAddress -IPAddress "192.168.0.3" -DefaultGateway "192.168.0.1" -InterfaceAlias "Ethernet" -PrefixLength "24" | Out-Null
+    Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses ("192.168.0.2")
+    $mgmtIP = Get-NetIPAddress -AddressFamily IPv4 -InterfaceAlias "Ethernet" | Select-Object IPAddress
+    Write-Verbose "The currently assigned IPv4 address for MGMT01 is $($mgmtIP.IPAddress)" -Verbose 
+}
+
+vmconnect.exe localhost MGMT01
+
+# Optional - log into the VM and install Microsoft Edge, and update the OS
+
+#############################################################################
+##### Once the OS is back online and ready for config #######################
+#############################################################################
+
+# Define domain-join credentials
+$domainName = "azshci.local"
+$domainAdmin = "$domainName\labadmin"
+$domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the password for the LabAdmin account"
+Invoke-Command -VMName "MGMT01" -Credential $w10Creds -ScriptBlock {
+    # Rename and join domain
+    Add-Computer -DomainName azshci.local -NewName "MGMT01" -Credential $using:domainCreds -Force
+}
+
+Write-Verbose "Rebooting MGMT01 for hostname change to take effect" -Verbose
+Stop-VM -Name MGMT01
+Start-Sleep -Seconds 5
+Start-VM -Name MGMT01
+
+# Test for the MGMT01 to be back online and responding
+while ((Invoke-Command -VMName MGMT01 -Credential $domainCreds {"Test"} -ErrorAction SilentlyContinue) -ne "Test") {
+    Start-Sleep -Seconds 1
+}
+Write-Verbose "MGMT01 is now online. Proceed to the next step...." -Verbose
+
+vmconnect.exe localhost MGMT01
+
+#############################################################################
+##### Follow steps to install Windows Admin Center ##########################
+#############################################################################
+```

@@ -7,13 +7,17 @@ So far, you've deployed your Azure Stack HCI 20H2 nodes in the nested virtualiza
 
 Contents
 -----------
-* [Architecture](#architecture)
-* [Before you begin](#before-you-begin)
-* [Creating a (local) cluster](#creating-a-local-cluster)
-* [Configuring the cluster witness](#configuring-the-cluster-witness)
-* [Connect and Register Azure Stack HCI 20H2 to Azure](#connect-and-register-azure-stack-hci-to-azure)
-* [Register using PowerShell](#register-using-powershell)
-* [Next steps](#next-steps)
+- [Overview](#overview)
+- [Contents](#contents)
+- [Architecture](#architecture)
+- [Before you begin](#before-you-begin)
+- [Creating a (local) cluster](#creating-a-local-cluster)
+- [Configuring the cluster witness](#configuring-the-cluster-witness)
+- [Connect and Register Azure Stack HCI 20H2 to Azure](#connect-and-register-azure-stack-hci-20h2-to-azure)
+- [Next Steps](#next-steps)
+- [Product improvements](#product-improvements)
+- [Raising issues](#raising-issues)
+- [Troubleshooting cluster validation issues](#troubleshooting-cluster-validation-issues)
 
 Architecture
 -----------
@@ -72,13 +76,13 @@ If you have just 2 nodes, or if your preference is for a cluster running in a si
 
 ![Joined the domain in the Create Cluster wizard](/media/wac_domain_joined_ga.png "Joined the domain in the Create Cluster wizard")
 
-1. On the **Install features** page, Windows Admin Center will query the nodes for currently installed features, and will request you install required features.  Click **Install features**.  This will take a few moments - once complete, click **Next**
+5. On the **Install features** page, Windows Admin Center will query the nodes for currently installed features, and will request you install required features.  Click **Install features**.  This will take a few moments - once complete, click **Next**
 
 ![Installing required features in the Create Cluster wizard](/media/wac_installed_features_ga.png "Installing required features in the Create Cluster wizard")
 
-7. On the **Install updates** page, Windows Admin Center will query the nodes for available updates, and will request you install any that are required.  Optionally, click **Install updates**.  This will take a few moments - once complete, click **Next**
-8. On the **Install hardware updates** page, in a nested environment it's likely you'll have no updates, so click **Next**
-9. On the **Restart servers** page, if required, click **Restart servers**
+6. On the **Install updates** page, Windows Admin Center will query the nodes for available updates, and will request you install any that are required.  Optionally, click **Install updates**.  This will take a few moments - once complete, click **Next**
+7. On the **Install hardware updates** page, in a nested environment it's likely you'll have no updates, so click **Next**
+8. On the **Restart servers** page, if required, click **Restart servers**
 
 ![Restart nodes in the Create Cluster wizard](/media/wac_restart_ga.png "Restart nodes in the Create Cluster wizard")
 
@@ -106,7 +110,7 @@ Again, this is just one **example** network configuration for the simple purpose
 
 ![Select management adapter in the Create Cluster wizard](/media/wac_management_nic_ga.png "Select management adapter in the Create Cluster wizard")
 
-1. Then, for each node, **select the highlighted NIC** that will be dedicated for management.  The reason only one NIC is highlighted, is because this is the only one that has an IP address assigned from a previous step. Once you've finished your selections, scroll to the bottom, then click **Apply and test**
+2. Then, for each node, **select the highlighted NIC** that will be dedicated for management.  The reason only one NIC is highlighted, is because this is the only one that has an IP address assigned from a previous step. Once you've finished your selections, scroll to the bottom, then click **Apply and test**
 
 ![Select management adapters in the Create Cluster wizard](/media/wac_singlemgmt_ga.png "Select management adapters in the Create Cluster wizard")
 
@@ -199,12 +203,8 @@ With the cluster successfully created, you're now good to proceed on to configur
 
 ![Storage Spaces Direct enabled in the Create Cluster wizard](/media/wac_s2d_enabled_ga.png "Storage Spaces Direct enabled in the Create Cluster wizard")
 
-6. With Storage Spaces Direct enabled, click **Next: SDN**
-
-Software Defined Networking (SDN) allows you to manage your datacenter network dynamically, providing an automated, centralized way to meet the requirements of your applications and workloads. For the purpose of this nested configuration, we will skip the SDN configuration, however this can be performed later.  You can [read more about SDN in our documentation](https://docs.microsoft.com/en-us/windows-server/networking/sdn/software-defined-networking "SDN in Azure Stack HCI")
-
-7. On the **Define the Network Controller cluster** page, review the different options available, and then click **Skip**
-8. On the **confirmation page**, click on **Go to connections list**
+6. With Storage Spaces Direct enabled, click **Finish**
+7. On the **confirmation page**, click on **Go to connections list**
 
 Configuring the cluster witness
 -----------
@@ -298,29 +298,29 @@ The user who runs Register-AzStackHCI needs Azure AD permissions to:
 
 There are three ways in which this can be accomplished.
 
-**Option 1: Allow any user to register applications**
+#### Option 1: Allow any user to register applications ####
 
 In Azure Active Directory, navigate to User settings > **App registrations**. Under **Users can register applications**, select **Yes**.
 
 This will allow any user to register applications. However, the user will still require the Azure AD admin to grant consent during cluster registration. Note that this is a tenant level setting, so it may not be suitable for large enterprise customers.
 
-**Option 2: Assign Cloud Application Administration role**
+#### Option 2: Assign Cloud Application Administration role ####
 
 Assign the built-in "Cloud Application Administration" Azure AD role to the user. This will allow the user to register clusters without the need for additional AD admin consent.
 
-**Option 3: Create a custom AD role and consent policy**
+#### Option 3: Create a custom AD role and consent policy ####
 
 The most restrictive option is to create a custom AD role with a custom consent policy that delegates tenant-wide admin consent for required permissions to the Azure Stack HCI Service. When assigned this custom role, users are able to both register and grant consent without the need for additional AD admin consent.
 
 **NOTE** - This option requires an Azure AD Premium license and uses custom AD roles and custom consent policy features which are currently in public preview.
 
-If you choose to perform Option 3, you'll need to follow these steps on **MGMT01**, which we'll demonstrate through PowerShell:
+If you choose to perform Option 3, you'll need to follow these steps on **MGMT01**, which we'll demonstrate mainly through PowerShell.
 
 1. Firstly, configure the appropriate AzureAD modules, then **Connect to Azure AD**, and when prompted, **log in with your appropriate credentials**
 
 ```powershell
-Remove-Module AzureAD -ErrorAction SilentlyContinue
-Import-Module AzureADPreview
+Remove-Module AzureAD -ErrorAction SilentlyContinue -Force
+Install-Module AzureADPreview -AllowClobber -Force
 Connect-AzureAD
 ```
 
@@ -373,7 +373,7 @@ $customADRole = New-AzureADMSRoleDefinition -RolePermissions $rolePermissions `
     -DisplayName $displayName -Description $description -TemplateId $templateId -IsEnabled $true
 ```
 
-1. Assign the new custom AD role to the user who will register the Azure Stack HCI cluster with Azure by following [these instructions](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-users-assign-role-azure-portal "Guidance on creating a custom Azure AD role").
+6. Assign the new custom AD role to the user who will register the Azure Stack HCI cluster with Azure by following [these instructions](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-users-assign-role-azure-portal "Guidance on creating a custom Azure AD role").
 
 ### Complete Registration ###
 To complete registration, you have 2 options - you can use **Windows Admin Center**, or you can use **PowerShell**.
@@ -414,17 +414,7 @@ You can now proceed on to [Viewing registration details in the Azure portal](#Vi
 #### Option 2 - Register using PowerShell ####
 We're going to perform the registration from the **MGMT01** machine, which we've been using with the Windows Admin Center.
 
-1. On **MGMT01**, open **PowerShell as administrator** and run the following code. This first establishes a remote PowerShell connection to the first nodes of your cluster, then installs the necessary tools and PowerShell Module for Azure Stack HCI 20H2 on that node.
-
-```powershell
-# Edit your node names here
-$nodes = "AZSHCINODE01","AZSHCINODE02"
-Invoke-Command -ComputerName $nodes -ScriptBlock {
-    Install-WindowsFeature RSAT-Azure-Stack-HCI
-}
-```
-
-2. Next, on **MGMT01**, you'll install the required Az.StackHCI PowerShell module locally
+1. On **MGMT01**, open **PowerShell as administrator** and run the following code to install the PowerShell Module for Azure Stack HCI 20H2 on that machine.
 
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
@@ -435,7 +425,7 @@ Install-Module Az.StackHCI
 
 In addition, in future releases, installing the Azure PowerShell **Az** modules will include **StackHCI**, however today, you have to install this module specifically, using the command **Install-Module Az.StackHCI**
 
-3. With the Az.StackHCI modules installed, it's now time to register your Azure Stack HCI 20H2 cluster to Azure, however first, it's worth exploring how to check existing registration status.  The following code assumes you are still in the remote PowerShell session open from the previous commands.
+2. With the Az.StackHCI modules installed, it's now time to register your Azure Stack HCI 20H2 cluster to Azure, however first, it's worth exploring how to check existing registration status.  The following code assumes you are still in the remote PowerShell session open from the previous commands.
 
 ```powershell
 Invoke-Command -ComputerName AZSHCINODE01 -ScriptBlock {
@@ -447,15 +437,15 @@ Invoke-Command -ComputerName AZSHCINODE01 -ScriptBlock {
 
 As you can see from the result, the cluster is yet to be registered, and the cluster status identifies as **Clustered**. Azure Stack HCI 20H2 needs to register within 30 days of installation per the Azure Online Services Terms. If not clustered after 30 days, the **ClusterStatus** will show **OutOfPolicy**, and if not registered after 30 days, the **RegistrationStatus** will show **OutOfPolicy**.
 
-4. To register the cluster, you'll first need to get your **Azure subscription ID**.  An easy way to do this is to quickly **log into https://portal.azure.com**, and in the **search box** at the top of the screen, search for **subscriptions** and then click on **Subscriptions**
+3. To register the cluster, you'll first need to get your **Azure subscription ID**.  An easy way to do this is to quickly **log into https://portal.azure.com**, and in the **search box** at the top of the screen, search for **subscriptions** and then click on **Subscriptions**
 
 ![Azure Subscriptions](/media/azure_subscriptions_ga.png "Azure Subscriptions")
 
-5. Your **subscription** should be shown in the main window.  If you have more than one subscription listed here, click the correct one, and in the new blade, copy the **Subscription ID**.
+4. Your **subscription** should be shown in the main window.  If you have more than one subscription listed here, click the correct one, and in the new blade, copy the **Subscription ID**.
 
 **NOTE** - If you don't see your desired subscription, in the top right-corner of the Azure portal, click on your user account, and click **Switch directory**, then select an alternative directory.  Once in the chosen directory, repeat the search for your **Subscription ID** and copy it down.
 
-6. With your **Subscription ID** in hand, you can **register using the following Powershell commands**, from your open PowerShell window.
+5. With your **Subscription ID** in hand, you can **register using the following Powershell commands**, from your open PowerShell window.
 
 ```powershell
 $azshciNodeCreds = Get-Credential -UserName "azshci\labadmin" -Message "Enter the Lab Admin password"
@@ -480,11 +470,11 @@ Of these commands, many are optional:
 
 **Register-AzureStackHCI** runs syncronously, with progress reporting, and typically takes 1-2 minutes.  The first time you run it, it may take slightly longer, because it needs to install some dependencies, including additional Azure PowerShell modules.
 
-7. Once dependencies have been installed, you'll receive a popup on **MGMT01** to authenticate to Azure. Provide your **Azure credentials**.
+6. Once dependencies have been installed, you'll receive a popup on **MGMT01** to authenticate to Azure. Provide your **Azure credentials**.
 
 ![Login to Azure](/media/azure_login_reg.png "Login to Azure")
 
-8. Once successfully authenticated, the registration process will begin, and will take a few moments. Once complete, you should see a message indicating success, as per below:
+7. Once successfully authenticated, the registration process will begin, and will take a few moments. Once complete, you should see a message indicating success, as per below:
 
 ![Register Azure Stack HCI 20H2 with PowerShell](/media/register_azshci_ga.png "Register Azure Stack HCI 20H2 with PowerShell")
 
@@ -494,7 +484,7 @@ Of these commands, many are optional:
 Register-AzStackHCI : Azure Stack HCI 20H2 is not yet available in region <regionName>
 ```
 
-9. Once the cluster is registered, run the following command on **MGMT01** to check the updated status:
+8. Once the cluster is registered, run the following command on **MGMT01** to check the updated status:
 
 ```powershell
 Invoke-Command -ComputerName AZSHCINODE01 -ScriptBlock {
