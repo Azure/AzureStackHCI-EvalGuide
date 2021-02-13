@@ -467,6 +467,8 @@ To install the Windows Admin Center, simply **double-click** the executable on t
 
 10. Click on the extension, and click **Update**. This will take a few moments, and will reload the page when complete.  With the extensions updated, navigate back to the Windows Admin Center homepage.
 
+**NOTE** - it's critical you update the **Cluster Creation** extension to the very latest version. Ensure you do this before proceeding.
+
 ### Active Windows 10 Evaluation ###
 This step should have happened automatically when your Windows 10 OS has internet connectivity, but just in case, make sure you activate the OS by performing the following steps. Inside your **MGMT01 VM**:
 
