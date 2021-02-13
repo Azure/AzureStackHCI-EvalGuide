@@ -7,16 +7,21 @@ With all key components deployed, including a management infrastructure, along w
 
 Contents
 -----------
-* [Create volumes for VMs](#create-volumes-for-vms)
-* [Deploy a virtual machine](#deploy-a-virtual-machine)
-* [Shutting down the environment](#shutting-down-the-environment)
-* [Next steps](#next-steps)
+- [Overview](#overview)
+- [Contents](#contents)
+- [Create volumes for VMs](#create-volumes-for-vms)
+- [Deploy a virtual machine](#deploy-a-virtual-machine)
+- [Shutting down the environment](#shutting-down-the-environment)
+- [Congratulations!](#congratulations)
+- [Next steps](#next-steps)
+- [Product improvements](#product-improvements)
+- [Raising issues](#raising-issues)
 
 Create volumes for VMs
 -----------
 In this step, you'll create some volumes on an Azure Stack HCI 20H2 cluster by using Windows Admin Center, and enable data deduplication and compression on volumes.
 
-### Create a three-way mirror volume ###
+### Create a two-way mirror volume ###
 You should be over on **MGMT01**, but if you're not, log into MGMT01, and open the **Windows Admin Center**.  You'll spend your time here for the remainder of the steps documented below.
 
 1. Once logged into the **Windows Admin Center** on **MGMT01**, click on your previously deployed cluster, **azshciclus.azshci.local**
