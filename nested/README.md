@@ -8,6 +8,15 @@ For the purpose of this evaluation guide however, we'll be relying on **nested v
 ### Important Note - Production Deployments ###
 The use of nested virtualization in this evaluation guide is aimed at providing flexibility for deploying Azure Stack HCI 20H2 in a lab, or test environment. For **production** use, **Azure Stack HCI 20H2 should be deployed on validated physical hardware**, of which you can find a vast array of choices on the [Azure Stack HCI 20H2 Catalog](https://aka.ms/azurestackhcicatalog "Azure Stack HCI 20H2 Catalog").
 
+Contents
+-----------
+- [Contents](#contents)
+- [Nested Virtualization](#nested-virtualization)
+- [Deployment Options](#deployment-options)
+- [Deployment Workflow](#deployment-workflow)
+- [Product improvements](#product-improvements)
+- [Raising issues](#raising-issues)
+
 Nested Virtualization
 -----------
 If you're not familiar with Nested Virtualization, at a high level, it allows a virtualization platform, such as Hyper-V, or VMware ESXi, to run virtual machines that, within those virtual machines, run a virtualization platform. It may be easier to think about this in an architectural view.

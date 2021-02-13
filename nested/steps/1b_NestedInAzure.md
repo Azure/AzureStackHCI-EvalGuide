@@ -14,12 +14,17 @@ In this guide, you'll walk through the steps to stand up an Azure Stack HCI 20H2
 
 Contents
 -----------
-* [Architecture](#architecture)
-* [Get an Azure subscription](#get-an-azure-subscription)
-* [Azure VM Size Considerations](#azure-vm-size-considerations)
-* [Deploying the Azure VM](#deploying-the-azure-vm)
-* [Prepare your Azure VM](#prepare-your-azure-vm)
-* [Next steps](#next-steps)
+- [Overview](#overview)
+- [Contents](#contents)
+- [Architecture](#architecture)
+- [Get an Azure subscription](#get-an-azure-subscription)
+- [Azure VM Size Considerations](#azure-vm-size-considerations)
+- [Deploying the Azure VM](#deploying-the-azure-vm)
+- [Prepare your Azure VM](#prepare-your-azure-vm)
+- [Next Steps](#next-steps)
+- [Product improvements](#product-improvements)
+- [Raising issues](#raising-issues)
+- [Full Script - Prepare your VM](#full-script---prepare-your-vm)
 
 Architecture
 -----------
@@ -382,3 +387,26 @@ Raising issues
 If you notice something is wrong with the evaluation guide, such as a step isn't working, or something just doesn't make sense - help us to make this guide better!  Raise an issue in GitHub, and we'll be sure to fix this as quickly as possible!
 
 If however, you're having a problem with Azure Stack HCI 20H2 **outside** of this evaluation guide, make sure you post to [our Microsoft Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Microsoft Q&A Forum"), where Microsoft experts and valuable members of the community will do their best to help you.
+
+Full Script - Prepare your VM
+-----------
+
+```powershell
+# Resize primary partition
+$size = (Get-PartitionSupportedSize -DriveLetter "C")
+Resize-Partition -DriveLetter "C" -Size $size.SizeMax
+
+# Install the Hyper-V role and management tools, including PowerShell
+Install-WindowsFeature -Name Hyper-V -IncludeManagementTools -Restart
+
+# Create a new internal virtual switch on the host
+New-VMSwitch -Name "InternalNAT" -SwitchType Internal
+# Create an IP address for the NAT Gateway
+New-NetIPAddress -IPAddress 192.168.0.1 -PrefixLength 24 -InterfaceAlias "vEthernet (InternalNAT)"
+# Create the new NAT network
+New-NetNat -Name "AzSHCINAT" -InternalIPInterfaceAddressPrefix 192.168.0.0/24
+# Check the NAT configuration
+Get-NetNat
+
+Set-VMhost -EnableEnhancedSessionMode $True
+```
