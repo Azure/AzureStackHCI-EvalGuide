@@ -138,10 +138,10 @@ Again, this is just one **example** network configuration for the simple purpose
 
 | Node | Name | IP Address | Subnet Mask
 | :-- | :-- | :-- | :-- |
-| AZSHCINODE01 | Ethernet 2 | Leave as APIPA | 24
+| AZSHCINODE01 | Ethernet 2 | Leave as APIPA | 16
 | AZSHCINODE01 | Storage 1 | 10.10.10.1 | 24
 | AZSHCINODE01 | Storage 2 | 10.10.11.1 | 24
-| AZSHCINODE02 | Ethernet 2 | Leave as APIPA | 24
+| AZSHCINODE02 | Ethernet 2 | Leave as APIPA | 16
 | AZSHCINODE02 | Storage 1 | 10.10.10.2 | 24
 | AZSHCINODE02 | Storage 2 | 10.10.11.2 | 24
 
