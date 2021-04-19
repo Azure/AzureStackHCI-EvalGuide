@@ -39,6 +39,10 @@ This evaluation guide will walk you through standing up a sandboxed, isolated Az
 
 The important takeaway here is, by following this guide, you'll lay down a solid foundation on to which you can explore additional Azure Stack HCI 20H2 scenarios in the future, so keep checking back for additional scenarios over time.
 
+Interested in AKS on Azure Stack HCI?
+-----------
+If you're interested in evaluating AKS on Azure Stack HCI (AKS-HCI), and you're planning to evaluate all the solutions using nested virtualization in Azure, it's certainly tempting to run AKS-HCI on top of an Azure Stack HCI 20H2 nested cluster in an Azure VM, however we **strongly discourage** this approach due to the performance impact of multiple layers of nested virtualization. The recommended approach to test AKS-HCI in an Azure VM using [the official AKS on Azure Stack HCI eval guide](https://aka.ms/aks-hci-evalonazure "AKS on Azure Stack HCI eval guide").
+
 Start your Azure Stack HCI 20H2 evaluation using nested virtualization
 -----------
 
