@@ -22,7 +22,7 @@ Architecture
 
 As shown on the architecture graphic below, in this step, **you'll deploy a number of nested Azure Stack HCI 20H2 nodes**. The minimum number for deployment of a local Azure Stack HCI 20H2 cluster is **2 nodes**, however if your Hyper-V host has enough spare capacity, you could deploy additional nested nodes, and explore more complex scenarios, such as a nested **stretch cluster**.  For the purpose of this step, we'll focus on deploying 2 nodes, however you should make adjustments based on your environment.
 
-![Architecture diagram for Azure Stack HCI 20H2 nested](/media/nested_virt_nodes_ga.png "Architecture diagram for Azure Stack HCI 20H2 nested")
+![Architecture diagram for Azure Stack HCI 20H2 nested](/archive/media/nested_virt_nodes_ga.png "Architecture diagram for Azure Stack HCI 20H2 nested")
 
 Create your first nested Azure Stack HCI 20H2 node
 -----------
@@ -87,7 +87,7 @@ Set-VMProcessor -VMName $nodeName -ExposeVirtualizationExtensions $true -Verbose
 
 When those commands have completed, this is what you would see in Hyper-V Manager, in the settings view:
 
-![Finished settings for the AZSHCINODE01 node](/media/azshci_settings_ps_ga.png "Finished settings for the AZSHCINODE01 node")
+![Finished settings for the AZSHCINODE01 node](/archive/media/azshci_settings_ps_ga.png "Finished settings for the AZSHCINODE01 node")
 
 With the VM configured correctly, you can use the following commands to connect to the VM using VM Connect, and at the same time, start the VM.  To boot from the ISO, you'll need to click on the VM and quickly press a key to trigger the boot from the DVD inside the VM.  If you miss the prompt to press a key to boot from CD or DVD, simply reset the VM and try again.
 
@@ -98,12 +98,12 @@ Start-Sleep -Seconds 5
 Start-VM -Name $nodeName
 ```
 
-![Booting the VM and triggering the boot from DVD](/media/boot_from_dvd.png "Booting the VM and triggering the boot from DVD")
+![Booting the VM and triggering the boot from DVD](/archive/media/boot_from_dvd.png "Booting the VM and triggering the boot from DVD")
 
 ### Complete the Out of Box Experience (OOBE) ###
 With the VM running, and the boot process initiated, you should be in a position to start the deployment of the Azure Stack HCI 20H2 OS.
 
-![Initiate setup of the Azure Stack HCI 20H2 OS](/media/azshci_setup.png "Initiate setup of the Azure Stack HCI 20H2 OS")
+![Initiate setup of the Azure Stack HCI 20H2 OS](/archive/media/azshci_setup.png "Initiate setup of the Azure Stack HCI 20H2 OS")
 
 Proceed through the process, making the following selections:
 
@@ -115,7 +115,7 @@ Proceed through the process, making the following selections:
 
 Installation will then begin, and will take a few minutes, automatically rebooting as part of the process.
 
-![Completed setup of the Azure Stack HCI 20H2 OS](/media/azshci_setup_complete.png "Completed setup of the Azure Stack HCI 20H2 OS")
+![Completed setup of the Azure Stack HCI 20H2 OS](/archive/media/azshci_setup_complete.png "Completed setup of the Azure Stack HCI 20H2 OS")
 
 With the installation complete, you'll be prompted to change the password before logging in.  Enter a password and exit to command line. Once complete, you should be at the **command prompt** on the "Welcome to Azure Stack HCI" screen.  Minimize the VM Connect window.
 

@@ -13,7 +13,6 @@ Contents
 - [Before you begin](#before-you-begin)
 - [Creating a (local) cluster](#creating-a-local-cluster)
 - [Configuring the cluster witness](#configuring-the-cluster-witness)
-- [Create volumes for VMs](#create-volumes-for-vms)
 - [Next Steps](#next-steps)
 - [Product improvements](#product-improvements)
 - [Raising issues](#raising-issues)
@@ -23,7 +22,7 @@ Architecture
 
 As shown on the architecture graphic below, in this step, you'll take the nodes that were previously deployed, and be **clustering them into an Azure Stack HCI 20H2 cluster**. You'll be focused on **creating a cluster in a single site**.
 
-![Architecture diagram for Azure Stack HCI 20H2 nested](/media/nested_virt_nodes_ga.png "Architecture diagram for Azure Stack HCI 20H2 nested")
+![Architecture diagram for Azure Stack HCI 20H2 nested](/deployment/media/nested_virt_nodes_ga.png "Architecture diagram for Azure Stack HCI 20H2 nested")
 
 Before you begin
 -----------
@@ -48,40 +47,40 @@ Creating a (local) cluster
 -----------
 This section will walk through the key steps for you to set up the Azure Stack HCI 20H2 cluster with the Windows Admin Center
 
-1. Connect to your **HybridHost001**, and open **Windows Admin Center** using the shortcut on your desktop.
+1. Connect to your **AzSHCIHost001**, and open **Windows Admin Center** using the shortcut on your desktop.
 2. Once logged into Windows Admin Center, under **All connections**, click **Add**
 3. On the **Add or create resources popup**, under **Server clusters**, click **Create new** to open the **Cluster Creation wizard**
 
 ### Get started ###
 
-![Choose cluster type in the Create Cluster wizard](/media/wac_cluster_type_ga.png "Choose cluster type in the Create Cluster wizard")
+![Choose cluster type in the Create Cluster wizard](/deployment/media/wac_cluster_type_ga.png "Choose cluster type in the Create Cluster wizard")
 
 1. Ensure you select **Azure Stack HCI**, select **All servers in one site** and cick **Create**
 2. On the **Check the prerequisites** page, review the requirements and click **Next**
-3. On the **Add Servers** page, supply a **username**, which should be **hybrid\azureuser** and **password-you-used-at-VM-deployment-time** and then one by one, enter the node names of your Azure Stack HCI 20H2 nodes (AZSHCINODE01 and AZSHCINODE02), clicking **Add** after each one has been located.  Each node will be validated, and given a **Ready** status when fully validated.  This may take a few moments - once you've added all nodes, click **Next**
+3. On the **Add Servers** page, supply a **username**, which should be **azshci\azureuser** and **password-you-used-at-VM-deployment-time** and then one by one, enter the node names of your Azure Stack HCI 20H2 nodes (AZSHCINODE01 and AZSHCINODE02), clicking **Add** after each one has been located.  Each node will be validated, and given a **Ready** status when fully validated.  This may take a few moments - once you've added all nodes, click **Next**
 
-![Add servers in the Create Cluster wizard](/media/add_nodes_ga.png "Add servers in the Create Cluster wizard")
+![Add servers in the Create Cluster wizard](/deployment/media/add_nodes_ga.png "Add servers in the Create Cluster wizard")
 
 4. On the **Join a domain** page, details should already be in place, as these nodes have already been joined to the domain to save time. If this wasn't the case, WAC would be able to configure this for you. Click **Next**
 
-![Joined the domain in the Create Cluster wizard](/media/wac_domain_joined_ga.png "Joined the domain in the Create Cluster wizard")
+![Joined the domain in the Create Cluster wizard](/deployment/media/wac_domain_joined_ga.png "Joined the domain in the Create Cluster wizard")
 
 1. On the **Install features** page, Windows Admin Center will query the nodes for currently installed features, and will typically request you install required features. In this case, all features have been previously installed to save time, as this would take a few moments. Once reviewed, click **Next**
 
-![Installing required features in the Create Cluster wizard](/media/wac_installed_features_ga.png "Installing required features in the Create Cluster wizard")
+![Installing required features in the Create Cluster wizard](/deployment/media/wac_installed_features_ga.png "Installing required features in the Create Cluster wizard")
 
 6. On the **Install updates** page, Windows Admin Center will query the nodes for available updates, and will request you install any that are required. For the purpose of this guide and to save time, we'll ignore this and click **Next**
 7. On the **Install hardware updates** page, in a nested environment it's likely you'll have no updates, so click **Next**
 8. On the **Restart servers** page, if required, click **Restart servers**
 
-![Restart nodes in the Create Cluster wizard](/media/wac_restart_ga.png "Restart nodes in the Create Cluster wizard")
+![Restart nodes in the Create Cluster wizard](/deployment/media/wac_restart_ga.png "Restart nodes in the Create Cluster wizard")
 
 ### Networking ###
 With the servers configured with the appropriate features, updated and rebooted, you're ready to configure your network.  You have a number of different choices here, so we'll try to explain why we're making each selection, so you can better apply it to your environment further down the road.
 
 Firstly, Windows Admin Center will verify your networking setup - it'll tell you how many NICs are in each node, along with relevant hardware information, MAC address and status information.  Review for accuracy, and then click **Next**
 
-![Verify network in the Create Cluster wizard](/media/wac_verify_network_ga.png "Verify network in the Create Cluster wizard")
+![Verify network in the Create Cluster wizard](/deployment/media/wac_verify_network_ga.png "Verify network in the Create Cluster wizard")
 
 The first key step with setting up the networking with Windows Admin Center, is to choose a management NIC that will be dedicated for management use.  You can choose either a single NIC, or two NICs for redundancy. This step specifically designates 1 or 2 adapters that will be used by the Windows Admin Center to orchestrate the cluster creation flow. It's mandatory to select at least one of the adapters for management, and in a physical deployment, the 1GbE NICs are usually good candidates for this.
 
@@ -98,16 +97,16 @@ Again, this is just one **example** network configuration for the simple purpose
 
 1. Back in the Windows Admin Center, on the **Select the adapters to use for management** page, ensure you select the **One physical network adapters for management** box
 
-![Select management adapter in the Create Cluster wizard](/media/wac_management_nic_ga.png "Select management adapter in the Create Cluster wizard")
+![Select management adapter in the Create Cluster wizard](/deployment/media/wac_management_nic_ga.png "Select management adapter in the Create Cluster wizard")
 
 2. Then, for each node, **select the highlighted NIC** that will be dedicated for management.  The reason only one NIC is highlighted, is because this is the only NICs that has an IP address on the same network as the WAC instance. Once you've finished your selections, scroll to the bottom, then click **Apply and test**. This will take a few moments.
 
-![Select management adapters in the Create Cluster wizard](/media/wac_singlemgmt_ga.png "Select management adapters in the Create Cluster wizard")
+![Select management adapters in the Create Cluster wizard](/deployment/media/wac_singlemgmt_ga.png "Select management adapters in the Create Cluster wizard")
 
 3. Windows Admin Center will then apply the configuration to your NICs. When complete and successful, click **Next**
 4. On the **Virtual Switch** page, you have a number of options
 
-![Select vSwitch in the Create Cluster wizard](/media/wac_vswitches_ga.png "Select vSwitch in the Create Cluster wizard")
+![Select vSwitch in the Create Cluster wizard](/deployment/media/wac_vswitches_ga.png "Select vSwitch in the Create Cluster wizard")
 
 * **Create one virtual switch for compute and storage together** - in this configuration, your Azure Stack HCI 20H2 nodes will create a vSwitch, comprised of multiple NICs, and the bandwidth available across these NICs will be shared by the Azure Stack HCI 20H2 nodes themselves, for storage traffic, and in addition, any VMs you deploy on top of the nodes, will also share this bandwidth.
 * **Create one virtual switch for compute only** - in this configuration, you would leave some NICs dedicated to storage traffic, and have a set of NICs attached to a vSwitch, to which your VMs traffic would be dedicated.
@@ -116,11 +115,11 @@ Again, this is just one **example** network configuration for the simple purpose
 
 1. Select the **Create one virtual switch for compute only**, and select the NIC on each node with the **10.10.13.x IP address**, then click **Next**
 
-![Create single vSwitch for Compute in the Create Cluster wizard](/media/wac_compute_vswitch_ga.png "Create single vSwitch for Compute in the Create Cluster wizard")
+![Create single vSwitch for Compute in the Create Cluster wizard](/deployment/media/wac_compute_vswitch_ga.png "Create single vSwitch for Compute in the Create Cluster wizard")
 
 6. On the **RDMA** page, you're now able to configure the appropriate RDMA settings for your host networks.  If you do choose to tick the box, in a nested environment, you'll be presented with an error, so click **Next**
 
-![Error message when configuring RDMA in a nested environment](/media/wac_enable_rdma.png "Error message when configuring RDMA in a nested environment")
+![Error message when configuring RDMA in a nested environment](/deployment/media/wac_enable_rdma.png "Error message when configuring RDMA in a nested environment")
 
 7. On the **Define networks** page, this is where you can define the specific networks, separate subnets, and optionally apply VLANs.  In this **nested environment**, we now have 3 NICs remaining.  Configure your remaining NICs as follows, by clicking on a field in the table and entering the appropriate information.
 
@@ -137,11 +136,11 @@ Again, this is just one **example** network configuration for the simple purpose
 
 When you click **Apply and test**, Windows Admin Center validates network connectivity between the adapters in the same VLAN and subnet, which may take a few moments.  Once complete, your configuration should look similar to this:
 
-![Define networks in the Create Cluster wizard](/media/wac_define_network_ga.png "Define networks in the Create Cluster wizard")
+![Define networks in the Create Cluster wizard](/deployment/media/wac_define_network_ga.png "Define networks in the Create Cluster wizard")
 
 **NOTE**, You *may* be prompted with a **Credential Security Service Provider (CredSSP)** box - read the information, then click **Yes**
 
-![Validate cluster in the Create Cluster wizard](/media/wac_credssp_ga.png "Validate cluster in the Create Cluster wizard")
+![Validate cluster in the Create Cluster wizard](/deployment/media/wac_credssp_ga.png "Validate cluster in the Create Cluster wizard")
 
 8. Once the networks have been verified, you can optionally review the networking test report, and once complete, click **Next**
 
@@ -156,7 +155,7 @@ With the network configured for the workshop environment, it's time to construct
 
 **NOTE** - Cluster validation is intended to catch hardware or configuration problems before a cluster goes into production. Cluster validation helps to ensure that the Azure Stack HCI 20H2 solution that you're about to deploy is truly dependable. You can also use cluster validation on configured failover clusters as a diagnostic tool. If you're interested in learning more about Cluster Validation, [check out the official docs](https://docs.microsoft.com/en-us/azure-stack/hci/deploy/validate "Cluster validation official documentation").
 
-![Validation complete in the Create Cluster wizard](/media/wac_validated_ga.png "Validation complete in the Create Cluster wizard")
+![Validation complete in the Create Cluster wizard](/deployment/media/wac_validated_ga.png "Validation complete in the Create Cluster wizard")
 
 1. Optionally, if you want to review the validation report, click on **Download report** and open the file in your browser.
 2. Back in the **Validate the cluster** screen, click **Next**
@@ -164,34 +163,34 @@ With the network configured for the workshop environment, it's time to construct
 4. Under **IP address**, click **Assign dynamically using DHCP**
 5. Expand **Advanced** and review the settings, then click **Create cluster**
 
-![Finalize cluster creation in the Create Cluster wizard](/media/wac_create_clus_dhcp_ga.png "Finalize cluster creation in the Create Cluster wizard")
+![Finalize cluster creation in the Create Cluster wizard](/deployment/media/wac_create_clus_dhcp_ga.png "Finalize cluster creation in the Create Cluster wizard")
 
 6. With all settings confirmed, click **Create cluster**. This will take a few moments.  Once complete, click **Next: Storage**
 
-![Cluster creation successful in the Create Cluster wizard](/media/wac_cluster_success_ga.png "Cluster creation successful in the Create Cluster wizard")
+![Cluster creation successful in the Create Cluster wizard](/deployment/media/wac_cluster_success_ga.png "Cluster creation successful in the Create Cluster wizard")
 
 
 With the cluster successfully created, you're now good to proceed on to configuring your storage.  Whilst less important in a fresh nested environment, it's always good to start from a clean slate, so first, you'll clean the drives before configuring storage.
 
 1. On the storage landing page within the Create Cluster wizard, click **Erase Drives**, and when prompted, with **You're about to erase all existing data**, click **Erase drives**.  Once complete, you should have a successful confirmation message, then click **Next**
 
-![Cleaning drives in the Create Cluster wizard](/media/wac_clean_drives_ga.png "Cleaning drives in the Create Cluster wizard")
+![Cleaning drives in the Create Cluster wizard](/deployment/media/wac_clean_drives_ga.png "Cleaning drives in the Create Cluster wizard")
 
 2. On the **Check drives** page, validate that all your drives have been detected, and show correctly.  As these are virtual disks in a nested environment, they won't display as SSD or HDD etc. You should have **4 data drives** per node.  Once verified, click **Next**
 
-![Verified drives in the Create Cluster wizard](/media/wac_check_drives_ga.png "Verified drives in the Create Cluster wizard")
+![Verified drives in the Create Cluster wizard](/deployment/media/wac_check_drives_ga.png "Verified drives in the Create Cluster wizard")
 
 3. Storage Spaces Direct validation tests will then automatically run, which will take a few moments.
 
-![Verifying Storage Spaces Direct in the Create Cluster wizard](/media/wac_validate_storage_ga.png "Verifying Storage Spaces Direct in the Create Cluster wizard")
+![Verifying Storage Spaces Direct in the Create Cluster wizard](/deployment/media/wac_validate_storage_ga.png "Verifying Storage Spaces Direct in the Create Cluster wizard")
 
 4. Once completed, you should see a successful confirmation.  You can scroll through the brief list of tests, or alternatively, click to **Download report** to view more detailed information, then click **Next**
 
-![Storage verified in the Create Cluster wizard](/media/wac_storage_validated_ga.png "Storage verified in the Create Cluster wizard")
+![Storage verified in the Create Cluster wizard](/deployment/media/wac_storage_validated_ga.png "Storage verified in the Create Cluster wizard")
 
 5. The final step with storage, is to **Enable Storage Spaces Direct**, so click **Enable**.  This will take a few moments.
 
-![Storage Spaces Direct enabled in the Create Cluster wizard](/media/wac_s2d_enabled_ga.png "Storage Spaces Direct enabled in the Create Cluster wizard")
+![Storage Spaces Direct enabled in the Create Cluster wizard](/deployment/media/wac_s2d_enabled_ga.png "Storage Spaces Direct enabled in the Create Cluster wizard")
 
 6. With Storage Spaces Direct enabled, click **Next:SDN**
 
@@ -208,30 +207,55 @@ By deploying an Azure Stack HCI 20H2 cluster, you're providing high availability
 
 Quorum is designed to prevent split-brain scenarios which can happen when there is a partition in the network and subsets of nodes cannot communicate with each other. This can cause both subsets of nodes to try to own the workload and write to the same disk which can lead to numerous problems. However, this is prevented with Failover Clustering's concept of quorum which forces only one of these groups of nodes to continue running, so only one of these groups will stay online.
 
-Typically, the recommendation is to utilize a **Cloud Witness**, where an Azure Storage Account is used to help provide quorum, but in the interest of time, we;re going to use a **File Share Witness**.  If you want to learn more about quorum, [check out the official documentation.](https://docs.microsoft.com/en-us/azure-stack/hci/concepts/quorum "Official documentation about Cluster quorum")
+In this step, we're going to utilize a **Cloud witness** to help provide quorum.  If you want to learn more about quorum, [check out the official documentation.](https://docs.microsoft.com/en-us/azure-stack/hci/concepts/quorum "Official documentation about Cluster quorum")
 
-As part of this workshop, we're going to set up cluster quorum, using **Windows Admin Center**.
+As part of this guide, we're going to set up cluster quorum, using **Windows Admin Center**.
 
-1. Firstly, you're going to create a **shared folder** on **HybridHost001** - open **File Explorer** and navigate to **V:\Witness**
-2. **Right-click** on the Witness folder, select **Give access to**, then select **Specific people**
-3. In the **Network access** window, use the drop-down to select **Everyone** and set their permissions to **Read/Write** - this setting is for speed and simplicity. In a production environment, your folder would be shared specifically with the Cluster Object from Active Directory.
+1. If you're not already, ensure you're logged into your **Windows Admin Center** instance, and click on your **azshciclus** cluster that you created earlier
 
-![Granting folder permissions for the file share witness](/media/grant_folder_permissions.png "Granting folder permissions for the file share witness")
+![Connect to your cluster with Windows Admin Center](/deployment/media/wac_azshciclus_ga.png "Connect to your cluster with Windows Admin Center")
 
-4. Once done, click Share, then click **Done** to close the window.
-5. Open your **Windows Admin Center** instance, and click on your **azshciclus** cluster that you created earlier
+2. You may be prompted for credentials, so log in with your **azshci\azureuser** credentials and tick the **Use these credentials for all connections** box. You should then be connected to your **azshciclus cluster**
+3. After a few moments of verification, the **cluster dashboard** will open. 
+4. On the **cluster dashboard**, at the very bottom-left of the window, click on **Settings**
+5. In the **Settings** window, click on **Witness** and under **Witness type**, use the drop-down to select **Cloud witness**
 
-![Connect to your cluster with Windows Admin Center](/media/wac_azshciclus_ga.png "Connect to your cluster with Windows Admin Center")
+![Set up cloud witness in Windows Admin Center](/deployment/media/wac_cloud_witness_new_ga.png "Set up cloud witness in Windows Admin Center")
 
-6. You may be prompted for credentials, so log in with your **hybrid\azureuser** credentials and tick the **Use these credentials for all connections** box. You should then be connected to your **azshciclus cluster**
-7. After a few moments of verification, the **cluster dashboard** will open. 
-8. On the **cluster dashboard**, at the very bottom-left of the window, click on **Settings**
-9. In the **Settings** window, click on **Witness** and under **Witness type**, use the drop-down to select **File Share Witness**
-10. Enter **\\\hybridhost001\witness** for the **File share path** and click **Save**
+6. Open a new tab in your browser, and navigate to **https://portal.azure.com** and login with your Azure credentials
+7. You should already have a subscription from an earlier step, but if not, you should [review those steps and create one, then come back here](/nested/steps/1b_NestedInAzure.md#get-an-azure-subscription)
+8. Once logged into the Azure portal, click on **Create a Resource**, click **Storage**, then **Storage account**
+9. For the **Create storage account** blade, ensure the **correct subscription** is selected, then enter the following:
 
-![Set up file share witness in Windows Admin Center](/media/wac_fs_witness_new_ga.png "Set up file share witness in Windows Admin Center")
+    * Resource Group: **Create new**, then enter **azshcicloudwitness**, and click **OK**
+    * Storage account name: **azshcicloudwitness**
+    * Location: **Select your preferred region**
+    * Performance: **Only standard is supported**
+    * Account kind: **Storage (general purpose v1)** is the best option for cloud witness
+    * Replication: **Locally-redundant storage (LRS)** - Failover Clustering uses the blob file as the arbitration point, which requires some consistency guarantees when reading the data. Therefore you must select Locally-redundant storage for Replication type.
 
-11. Within a few moments, your witness settings should be successfully applied and you have now completed configuring the quorum settings for the **azshciclus** cluster.
+![Set up storage account in Azure](/deployment/media/azure_cloud_witness_ga.png "Set up storage account in Azure")
+
+10. On the **Networking** and **Data protection** pages, accept the defaults and press **Next**
+11. On the **Advanced** page, ensure that **Blob public access** is **disabled**, and **Minimum TLS version** is set to **Version 1.2**
+12. When complete, click **Create** and your deployment will begin.  This should take a few moments.
+13. Once complete, in the **notification**, click on **Go to resource**
+14. On the left-hand navigation, under Settings, click **Access Keys**. When you create a Microsoft Azure Storage Account, it is associated with two Access Keys that are automatically generated - Primary Access key and Secondary Access key. For a first-time creation of Cloud Witness, use the **Primary Access Key**. There is no restriction regarding which key to use for Cloud Witness.
+15. Click on **Show keys** and take a copy of the **Storage account name** and **key1**
+
+![Configure Primary Access key in Azure](/deployment/media/azure_keys_ga.png "Configure Primary Access key in Azure")
+
+16. On the left-hand navigation, under Settings, click **Properties** and make a note of your **blob service endpoint**.
+
+![Blob Service endpoint in Azure](/deployment/media/azure_blob_ga.png "Blob Service endpoint in Azure")
+
+**NOTE** - The required service endpoint is the section of the Blob service URL **after blob.**, i.e. for our configuration, **core.windows.net**
+
+17. With all the information gathered, return to the **Windows Admin Center** and complete the form with your values, then click **Save**
+
+![Providing storage account info in Windows Admin Center](/deployment/media/wac_azure_key_ga.png "Providing storage account info in Windows Admin Center")
+
+18. Within a few moments, your witness settings should be successfully applied and you have now completed configuring the quorum settings for the **azshciclus** cluster.
 
 ### Congratulations! ###
 You've now successfully deployed and configured your Azure Stack HCI 20H2 cluster!

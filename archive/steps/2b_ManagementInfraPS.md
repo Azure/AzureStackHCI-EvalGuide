@@ -26,7 +26,7 @@ Architecture
 
 As shown on the architecture graphic below, the core management infrastructure consists of a Windows Server 2019 domain controller VM, along with a Windows 10 Enterprise VM, which will run the Windows Admin Center.  In this step, you'll deploy both of those key components.
 
-![Architecture diagram for Azure Stack HCI 20H2 nested with management infra highlighted](/media/nested_virt_mgmt_ga.png "Architecture diagram for Azure Stack HCI 20H2 nested with management infra highlighted")
+![Architecture diagram for Azure Stack HCI 20H2 nested with management infra highlighted](/archive/media/nested_virt_mgmt_ga.png "Architecture diagram for Azure Stack HCI 20H2 nested with management infra highlighted")
 
 However, before you deploy your management infrastructure, first, you need to download the necessary software components required to complete this evalution.
 
@@ -61,7 +61,7 @@ Next, in order to download the ISO files, **open your web browser** and follow t
 3. Visit https://azure.microsoft.com/en-us/products/azure-stack/hci/hci-download, complete the registration form, and download the ISO.  Save the file as **AzSHCI.iso** to C:\ISO
 4. Visit https://aka.ms/wacdownload to download the executables for the Windows Admin Center.  Save it as **WindowsAdminCenter.msi**, also in C:\ISO
 
-![All files have been downloaded onto your Hyper-V host](/media/download_files.png "All files have been downloaded onto your Hyper-V host")
+![All files have been downloaded onto your Hyper-V host](/archive/media/download_files.png "All files have been downloaded onto your Hyper-V host")
 
 With all files downloaded, proceed on to creating your management infrastructure.
 
@@ -116,12 +116,12 @@ Start-Sleep -Seconds 5 # Just gives enough time to see the "Press any key..." me
 Start-VM -Name DC01
 ```
 
-![Booting the VM and triggering the boot from DVD](/media/boot_from_dvd.png "Booting the VM and triggering the boot from DVD")
+![Booting the VM and triggering the boot from DVD](/archive/media/boot_from_dvd.png "Booting the VM and triggering the boot from DVD")
 
 ### Complete the Out of Box Experience (OOBE) ###
 With the VM running, and the boot process initiated, you should be in a position to start the deployment of the Windows Server 2019 OS.
 
-![Initiate setup of the Windows Server 2019 OS](/media/ws_setup.png "Initiate setup of the Windows Server 2019 OS")
+![Initiate setup of the Windows Server 2019 OS](/archive/media/ws_setup.png "Initiate setup of the Windows Server 2019 OS")
 
 Proceed through the process, making the following selections:
 
@@ -134,7 +134,7 @@ Proceed through the process, making the following selections:
 
 Installation will then begin, and will take a few minutes, automatically rebooting as part of the process.
 
-![Initiate setup of the Windows Server 2019 OS](/media/ws_install_complete.png "Initiate setup of the Windows Server 2019 OS")
+![Initiate setup of the Windows Server 2019 OS](/archive/media/ws_install_complete.png "Initiate setup of the Windows Server 2019 OS")
 
 With the installation complete, you'll be prompted to change the password before logging in.  Enter a password, and once complete, you should be at the **C:\Users\Administrator** screen.  You can **close** the VM Connect window, as we will continue configuring the domain controller using PowerShell, from AzSHCIHost001.
 
@@ -229,7 +229,7 @@ Invoke-Command -VMName DC01 -Credential $dcCreds -ScriptBlock {
 
 When the process is completed successfully, you should see a message similar to this below. Once validated, you should be able to reboot the domain controller and proceed on through the process.
 
-![Active Directory role successfully install and domain controller configured](/media/dc_created.png "Active Directory role successfully install and domain controller configured")
+![Active Directory role successfully install and domain controller configured](/archive/media/dc_created.png "Active Directory role successfully install and domain controller configured")
 
 ```powershell
 Write-Verbose "Rebooting DC01 to finish installing of Active Directory" -Verbose
@@ -327,12 +327,12 @@ Start-Sleep -Seconds 5
 Start-VM -Name MGMT01
 ```
 
-![Booting the VM and triggering the boot from DVD](/media/boot_from_dvd.png "Booting the VM and triggering the boot from DVD")
+![Booting the VM and triggering the boot from DVD](/archive/media/boot_from_dvd.png "Booting the VM and triggering the boot from DVD")
 
 ### Complete the Out of Box Experience (OOBE) ###
 With the VM running, and the boot process initiated, you should be in a position to start the deployment of the Windows 10 OS.
 
-![Initiate setup of Windows 10](/media/w10_setup.png "Initiate setup of Windows 10")
+![Initiate setup of Windows 10](/archive/media/w10_setup.png "Initiate setup of Windows 10")
 
 Proceed through the process, making the following selections:
 
@@ -381,7 +381,7 @@ vmconnect.exe localhost MGMT01
 
 This will open the VM Connect window.  You should be presented with a **Connect to MGMT01** screen.  Ensure that the display size is set to **Full Screen** and using the **Show Options** dropdown, ensure that **Save my settings for future connections to this virtual machine** is ticked, then click **Connect**.
 
-![Establish a VM Connect session to MGMT01](/media/connect_to_mgmt01.png "Establish a VM Connect session to MGMT01")
+![Establish a VM Connect session to MGMT01](/archive/media/connect_to_mgmt01.png "Establish a VM Connect session to MGMT01")
 
 1. Open the existing **Microsoft Edge** browser, and navigate to https://www.microsoft.com/edge
 2. On the landing page, click on **Download** and when prompted, **read the license terms** then click **Accept and download**
@@ -452,18 +452,18 @@ To install the Windows Admin Center, simply **double-click** the executable on t
 3. On the **Install Windows Admin Center on Windows 10** screen, read the installation information, then click **Next**
 4. On the **Installing Windows Admin Center** screen, tick the **Create a desktop shortcut...** box, and click **Install**. The install process will take a few minutes, and once completed, you should be presented with some certificate information.
 
-![Windows Admin Center installed](/media/wac_installed.png "Windows Admin Center installed")
+![Windows Admin Center installed](/archive/media/wac_installed.png "Windows Admin Center installed")
 
 5. Tick the **Open Windows Admin Center** box, and click **Finish**
 6. Windows Admin Center will now open on https://localhost:port/
 7. Once open, you may receive notifications in the top-right corner, indicating that some extensions may require updating.
 
-![Windows Admin Center extensions available](/media/extension_update.png "Windows Admin Center extensions available")
+![Windows Admin Center extensions available](/archive/media/extension_update.png "Windows Admin Center extensions available")
 
 8. If you do require extension updates, click on the notification, then **Go to Extensions**
 9. On the **Extensions** page, you'll find a list of installed extensions.  Any that require an update will be listed:
 
-![Windows Admin Center extensions required](/media/extension_update_needed.png "Windows Admin Center extensions required")
+![Windows Admin Center extensions required](/archive/media/extension_update_needed.png "Windows Admin Center extensions required")
 
 10. Click on the extension, and click **Update**. This will take a few moments, and will reload the page when complete.  With the extensions updated, navigate back to the Windows Admin Center homepage.
 
