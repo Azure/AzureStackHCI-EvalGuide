@@ -1,0 +1,9 @@
+[ClassVersion("1.0.0.0"), FriendlyName("xCredSSP")]
+class MSFT_xCredSSP : OMI_BaseResource
+{
+    [Key, Description("Specifies the CredSSP role.\nServer   \nClient   \n"), ValueMap{"Server","Client"}, Values{"Server","Client"}] String Role;
+    [Write, Description("An enumerated value that describes if the role is expected to be enabled on the machine.\nPresent {default}  \nAbsent   \n"), ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
+    [Write, Description("Specifies the array of computers that CredSSP client can delegate to.")] String DelegateComputers[];
+    [Write, Description("Specifies if a reboot should be supressed. Default is False")] Boolean SuppressReboot;
+};
+

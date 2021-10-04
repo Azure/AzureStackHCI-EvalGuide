@@ -1,0 +1,11 @@
+[ClassVersion("1.0.0.0"), FriendlyName("xDhcpServerOption")]
+class MSFT_xDhcpServerOption : OMI_BaseResource
+{
+    [Key, Description("ScopeId for which options are set")] String ScopeID;
+    [Write, Description("IP address of DNS Servers")] String DnsServerIPAddress[];
+    [Write, Description("Domain name of DNS Server")] String DnsDomain;
+    [Write, Description("IP address of the router/default gateway.")] String Router[];
+    [Write, Description("Address family type"), ValueMap{"IPv4"}, Values{"IPv4"}] String AddressFamily;
+    [Write, Description("Whether option should be set or removed"), ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
+};
+

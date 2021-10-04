@@ -1,0 +1,36 @@
+ConvertFrom-StringData @'    
+    HyperVModuleNotFound=Hyper-V Module was not found on this system.
+    FoundSetTeam=VM Switch is an embedded team.
+    NoSwitchFound=No VM Switch provided details found.
+    FoundSwitch=Found a VM switch with provided details.
+    FoundExternalSwitch=VM switch is an external switch.
+    InternalPrivateWithAllowManagementOS=AllowManagementOS cannot be specified when the switch type is set to Internal or Private.
+    NetAdapterNameForExternal=For external switch type, NetAdapterName must be specified.
+    NoNetAdapterInternalPrivate=For Internal or Private switch type, NetAdapterName should not be specified.
+    NoSETForInternalPrivate=In this release, TeamingMode and/or LoadBalancingAlgorithm can be set only when Switch type is external.
+    IOVPDTogether=EnablePacketDirect and EnableIoV cannot specified together.
+    IOVMBwithSET=EnableIOV and SET cannot be cannot specified when using MinimumBandwidthMode.
+    PDMBwithSET=EnablePacketDirect and EnableEmbeddedTeaming cannot specified when using MinimumBandwidthMode.
+    FoundIntORPvtSwitch=Found a VM switch of type {0}
+    NeedASET=Multiple Network Adapters specified. We need a SET Team.
+    ReCreateSET=Switch found is not a SET Team. We need to recreate it.
+    CreateSwitch=Creating a new VM switch.
+    SETFoundCheckNetAdapter=SET Team found. Checking network adapter members.
+    SETMembersDontMatch=SET Team members not matching. We need to update the VM Switch.
+    UpdateSETTeam=Updating SET Team.
+    NeedANormalSwitch=A SET team was found. We need a normal switch.
+    RemovingSwitch=Removing VM switch.
+    UpdateSwitch=Updating VM Switch properties.
+    WeShouldNeverReachHere=VM Switch is either internal or private. The control should never reach here.
+    LBDifferent=Load Balancing mode different.
+    TeamingDifferent=Teaming mode is different.
+    NetAdapterDifferent=Network adapter did not match.
+    AllowMgmtOSDifferent=Allow Management OS property does not match.
+    EPDCannotChange=PacketDirect is not enabled and this configuration cannot be updated once switch is created unless we destroy and re-create. Consider doing this manually.
+    IOVCannotChange=IOV is not enabled and this configuration cannot be updated once switch is created unless we destroy and re-create. Consider doing this manually.
+    MBCannotChange=MinimumBandwidthMode is not matching and this configuration cannot be updated once switch is created unless we destroy and re-create. Consider doing this manually.
+    SwitchExistsNoAction=Switch exists. No action needed.
+    SwitchExistsItShouldnot=Switch exists while it should not.
+    SwitchShouldExist=Switch does not exist while it should.
+    SwitchDoesNotExistNoAction=Switch does not exist. No action needed.
+'@

@@ -1,0 +1,7 @@
+[ClassVersion("1.0.0.0"), FriendlyName("xDhcpServerAuthorization")]
+class MSFT_xDhcpServerAuthorization : OMI_BaseResource
+{
+    [Write, Description("DHCP Server FQDN")] String DnsName;
+    [Write, Description("DHCP Server IP Address")] String IPAddress;
+    [Key, Description("Whether the DHCP server should be authorised within Active Directory"), ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
+};

@@ -1,0 +1,16 @@
+
+[ClassVersion("1.0.0.0"), FriendlyName("cShortcut")]
+class cShortcut : OMI_BaseResource
+{
+    [Write, ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
+    [Required] String Target;
+    [Key] String Path;
+    [Write] String Arguments;
+    [Write] String WorkingDirectory;
+    [Write] String Description;
+    [Write] String Icon;
+    [Write] String HotKey;
+    [read] UInt16 HotKeyCode;
+    [Write, ValueMap{"normal","maximized","minimized"}, Values{"normal","maximized","minimized"}] String WindowStyle;
+    [Write] String AppUserModelID;
+};

@@ -1,0 +1,10 @@
+[ClassVersion("1.0.0.0"), FriendlyName("xDhcpServerClass")]
+class MSFT_xDhcpServerClass : OMI_BaseResource
+{
+    [key, Description("Class Name")] String Name;
+    [key, Description("Class Type, Vendor or User"), ValueMap{"Vendor","User"}, Values{"Vendor","User"}] String Type;
+    [key, Description("Class Data, in ASCII format")] String AsciiData;
+    [Write, Description("Class Description")] String Description;
+    [key,   Description("Class address family. Currently needs to be IPv4"), ValueMap{"IPv4"}, Values{"IPv4"}] String AddressFamily;
+    [Key,   Description("Whether the DHCP server Class should exist"), ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
+};
