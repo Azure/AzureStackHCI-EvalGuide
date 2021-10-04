@@ -6,9 +6,7 @@ Welcome to the Azure Stack HCI 20H2 Evaluation Guide
 
 In this guide, we'll walk you experiencing a number of the amazing capabilities within [Azure Stack HCI 20H2](https://azure.microsoft.com/en-us/products/azure-stack/hci/ "link to the Azure Stack HCI 20H2 landing page"), and set the foundation for you to explore in your own time.  You'll cover aspects such as:
 
-* Deploying Azure Stack HCI 20H2 nodes
-* Deploying supporting management infrastructure, including Active Directory domain and management tooling
-* Building a Hyperconverged cluster using Windows Admin Center, including configuring a cloud witness
+* Building a hyperconverged Azure Stack HCI cluster using Windows Admin Center, including configuring a cloud witness
 * Registering Azure Stack HCI 20H2 with Azure
 * and more...!
 
@@ -18,7 +16,8 @@ Contents
 - [Contents](#contents)
 - [What is Azure Stack HCI 20H2?](#what-is-azure-stack-hci-20h2)
 - [Why follow this guide?](#why-follow-this-guide)
-- [Start your Azure Stack HCI 20H2 evaluation using nested virtualization](#start-your-azure-stack-hci-20h2-evaluation-using-nested-virtualization)
+- [Interested in AKS on Azure Stack HCI?](#interested-in-aks-on-azure-stack-hci)
+- [Start your Azure Stack HCI 20H2 evaluation in Azure](#start-your-azure-stack-hci-20h2-evaluation-in-azure)
 - [Product improvements](#product-improvements)
 - [Raising issues](#raising-issues)
 - [Contributions & Legal](#contributions--legal)
@@ -35,22 +34,16 @@ If you're interested in learning more about what Azure Stack HCI 20H2 is, make s
 Why follow this guide?
 -----------
 
-This evaluation guide will walk you through standing up a sandboxed, isolated Azure Stack HCI 20H2 environment using **nested virtualization**, and can run on a **single physical system**, such as a workstation, laptop, or server of you have one, or alternatively, you can run the whole configuration in Azure.  We'll go into more details for this path, shortly.
-
-The important takeaway here is, by following this guide, you'll lay down a solid foundation on to which you can explore additional Azure Stack HCI 20H2 scenarios in the future, so keep checking back for additional scenarios over time.
+This evaluation guide will walk you through standing up a sandboxed, isolated Azure Stack HCI 20H2 environment using **nested virtualization** in a **single Azure VM**. The important takeaway here is, by following this guide, you'll lay down a solid foundation on to which you can explore additional Azure Stack HCI 20H2 scenarios in the future, so keep checking back for additional scenarios over time.
 
 Interested in AKS on Azure Stack HCI?
 -----------
 If you're interested in evaluating AKS on Azure Stack HCI (AKS-HCI), and you're planning to evaluate all the solutions using nested virtualization in Azure, it's certainly tempting to run AKS-HCI on top of an Azure Stack HCI 20H2 nested cluster in an Azure VM, however we **strongly discourage** this approach due to the performance impact of multiple layers of nested virtualization. The recommended approach to test AKS-HCI in an Azure VM using [the official AKS on Azure Stack HCI eval guide](https://aka.ms/aks-hci-evalonazure "AKS on Azure Stack HCI eval guide").
 
-Start your Azure Stack HCI 20H2 evaluation using nested virtualization
+Start your Azure Stack HCI 20H2 evaluation in Azure
 -----------
+If you're ready to begin deploying 
 
-If you have a single physical system, which could be a laptop, desktop, or server, or you have no spare hardware at all, using **nested virtualization** would be a great approach to experiencing Azure Stack HCI 20H2.  You can get more details at the start of the nested path.
-
-![Nested path image](/media/nested.png "Nested virtualization path image")
-
-[**Evaluate Azure Stack HCI 20H2 using Nested Virtualization**](/nested/README.md "Evaluate Azure Stack HCI 20H2 using Nested Virtualization")
 
 ### Important Note - Production Deployments ###
 The use of nested virtualization in this evaluation guide is aimed at providing flexibility for deploying Azure Stack HCI 20H2 in a lab, or test environment. For **production** use, **Azure Stack HCI 20H2 should be deployed on validated physical hardware**, of which you can find a vast array of choices on the [Azure Stack HCI 20H2 Catalog](https://aka.ms/azurestackhcicatalog "Azure Stack HCI 20H2 Catalog").

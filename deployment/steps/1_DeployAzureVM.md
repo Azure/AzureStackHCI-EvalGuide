@@ -1,14 +1,10 @@
-Deploy your Azure VM (Prerequisites)
+Deploy your Azure VM (Prerequisite)
 ==============
 Overview
 -----------
 With the introduction of [nested virtualization support in Azure](https://azure.microsoft.com/en-us/blog/nested-virtualization-in-azure/ "Nested virtualization announcement blog post") back in 2017, Microsoft opened the door to a number of new and interesting scenarios.  Nested virtualization in Azure is particularly useful for validating configurations that would require additional hardware in your environment, such as running Hyper-V hosts and clusters.
 
-In this guide, you'll walk through the steps to stand up an Azure Stack HCI 20H2 and AKS on Azure Stack HCI infrastructure. At a high level, this will consist of the following:
-
-* Deploy an Azure VM, running Windows Server 2019, to act as your main Hyper-V host - this will be automatically configured with the relevant roles and features needed for your workshop. It will also download all required binaries, and deploy 2 Azure Stack HCI 20H2 nodes, ready for clustering.
-* Deploy the AKS on Azure Stack HCI management cluster
-* Deploy the AKS on Azure Stack HCI target clusters, for running workloads
+In this guide, you'll walk through the steps to stand up an Azure Stack HCI 20H2 infrastructure. At a high level, this will consist of deploying an Azure VM, running Windows Server 2019, to act as your main Hyper-V host - this will be automatically configured with the relevant roles and features needed for this guide. It will also download all required binaries, and deploy 2 Azure Stack HCI 20H2 nodes, ready for clustering.
 
 Contents
 -----------
