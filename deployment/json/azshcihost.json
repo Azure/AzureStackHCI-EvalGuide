@@ -322,7 +322,7 @@
         {
             "name": "[variables('publicIpAddressName')]",
             "type": "Microsoft.Network/publicIpAddresses",
-            "apiVersion": "2020-07-01",
+            "apiVersion": "2020-11-01",
             "location": "[resourceGroup().location]",
             "sku": {
                 "name": "[variables('publicIpAddressSku')]"
@@ -336,7 +336,7 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-06-01",
+            "apiVersion": "2021-04-01",
             "name": "[variables('virtualNetworkName')]",
             "properties": {
                 "mode": "Incremental",
@@ -366,7 +366,7 @@
         {
             "name": "[variables('networkInterfaceName')]",
             "type": "Microsoft.Network/networkInterfaces",
-            "apiVersion": "2020-05-01",
+            "apiVersion": "2020-11-01",
             "location": "[resourceGroup().location]",
             "dependsOn": [
                 "[variables('virtualNetworkName')]",
@@ -397,7 +397,7 @@
         {
             "name": "[variables('networkSecurityGroupName')]",
             "type": "Microsoft.Network/networkSecurityGroups",
-            "apiVersion": "2020-05-01",
+            "apiVersion": "2020-11-01",
             "location": "[resourceGroup().location]",
             "properties": {
                 "securityRules": [
@@ -420,7 +420,7 @@
         {
             "name": "[parameters('virtualMachineName')]",
             "type": "Microsoft.Compute/virtualMachines",
-            "apiVersion": "2020-06-01",
+            "apiVersion": "2020-12-01",
             "location": "[resourceGroup().location]",
             "dependsOn": [
                 "[concat('Microsoft.Network/networkInterfaces/', variables('networkInterfaceName'))]"
@@ -485,7 +485,7 @@
                 {
                     "type": "extensions",
                     "name": "InstallWAC",
-                    "apiVersion": "2018-06-01",
+                    "apiVersion": "2021-03-01",
                     "location": "[resourceGroup().location]",
                     "dependsOn": [
                         "[parameters('virtualMachineName')]"
@@ -508,7 +508,7 @@
                 {
                     "type": "extensions",
                     "name": "ConfigureAzSHCIHost",
-                    "apiVersion": "2020-06-01",
+                    "apiVersion": "2021-03-01",
                     "location": "[resourceGroup().location]",
                     "dependsOn": [
                         "[parameters('virtualMachineName')]",
@@ -565,7 +565,7 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-06-01",
+            "apiVersion": "2021-04-01",
             "name": "[concat(variables('virtualNetworkName'),'-UpdateDNS')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Compute/virtualMachines/extensions', parameters('virtualMachineName'), 'ConfigureAzSHCIHost')]"
