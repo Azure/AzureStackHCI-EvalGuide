@@ -3,7 +3,7 @@ Deploy management infrastructure with PowerShell
 Overview
 -----------
 
-With your Hyper-V host up and running, either in Azure, or on a local physical system, it's now time to deploy the core management infrastructure to support the Azure Stack HCI 20H2 deployment in a future step.
+With your Hyper-V host up and running, it's now time to deploy the core management infrastructure to support the Azure Stack HCI 20H2 deployment in a future step.
 
 Contents
 -----------

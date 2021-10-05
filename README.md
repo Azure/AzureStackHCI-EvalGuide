@@ -6,9 +6,10 @@ Welcome to the Azure Stack HCI 20H2 Evaluation Guide
 
 In this guide, we'll walk you experiencing a number of the amazing capabilities within [Azure Stack HCI 20H2](https://azure.microsoft.com/en-us/products/azure-stack/hci/ "link to the Azure Stack HCI 20H2 landing page"), and set the foundation for you to explore in your own time.  You'll cover aspects such as:
 
-* Building a hyperconverged Azure Stack HCI cluster using Windows Admin Center, including configuring a cloud witness
+* Building a hyperconverged Azure Stack HCI cluster using Windows Admin Center
+* Configuring a cloud witness
 * Registering Azure Stack HCI 20H2 with Azure
-* and more...!
+* Creating storage volumes and deploying a VM
 
 Contents
 -----------
@@ -72,7 +73,7 @@ Deployment of Azure Stack HCI 20H2 nested in Azure
 -----------
 For those of you who don't have multiple server-class pieces of hardware to test a full hyperconverged solution, this evaluation guide will detail using **nested virtualization** in Azure to evaluate Azure Stack HCI.
 
-![Architecture diagram for Azure Stack HCI 20H2 nested in Azure](/deployment/media/nested_virt_arch_ga.png "Architecture diagram for Azure Stack HCI 20H2 nested in Azure")
+![Architecture diagram for Azure Stack HCI 20H2 nested in Azure](/deployment/media/nested_virt_arch_ga_oct21.png "Architecture diagram for Azure Stack HCI 20H2 nested in Azure")
 
 In this configuration, you'll take advantage of the nested virtualization support provided within certain Azure VM sizes.  You'll deploy a single Azure VM running Windows Server 2019 to act as your main Hyper-V host - and through PowerShell DSC, this will be automatically configured with the relevant roles and features needed for this guide. It will also download all required binaries, and deploy 2 Azure Stack HCI 20H2 nodes, ready for clustering.
 

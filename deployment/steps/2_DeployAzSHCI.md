@@ -22,7 +22,7 @@ Architecture
 
 As shown on the architecture graphic below, in this step, you'll take the nodes that were previously deployed, and be **clustering them into an Azure Stack HCI 20H2 cluster**. You'll be focused on **creating a cluster in a single site**.
 
-![Architecture diagram for Azure Stack HCI 20H2 nested](/deployment/media/nested_virt_nodes_ga.png "Architecture diagram for Azure Stack HCI 20H2 nested")
+![Architecture diagram for Azure Stack HCI 20H2 nested](/deployment/media/nested_virt_arch_ga_oct21.png "Architecture diagram for Azure Stack HCI 20H2 nested")
 
 Before you begin
 -----------
