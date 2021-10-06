@@ -55,7 +55,7 @@ configuration AzSHCIHost
 
     [System.Management.Automation.PSCredential]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${DomainName}\$($Admincreds.UserName)", $Admincreds.Password)
 
-    $ipConfig = (Get-NetAdapter -Physical | Get-NetIPConfiguration | Where-Object IPv4DefaultGateway)
+    $ipConfig = (Get-NetAdapter -Physical | Where-Object {$_.InterfaceDescription -like "*Hyper-V*" } | Get-NetIPConfiguration | Where-Object IPv4DefaultGateway)
     $netAdapters = Get-NetAdapter -Name ($ipConfig.InterfaceAlias) | Select-Object -First 1
     $InterfaceAlias = $($netAdapters.Name)
 
