@@ -192,26 +192,28 @@ If the error is related to the **AzSHCIHost001/ConfigureAzSHCIHost**, most likel
 
 ```powershell
 # Check for last run
-cd "C:\Packages\Plugins\Microsoft.Powershell.DSC\*\DSCWork\azshcihost.0\AzSHCIHost"
 Get-DscConfigurationStatus
 ```
-![Result of Get-DscConfigurationStatus](/deployment/media/get-dscconfigurationstatus.png "Result of Get-DscConfigurationStatus")
 
-3. As you can see, in this particular case, the PowerShell DSC configuration **status appears to have been successful**, however your results may show a different result. Just for good measure, you can re-apply the configuration by **running the following commands**:
+**NOTE** - if you receive an error message similar to *"Get-DscConfigurationStatus : Cannot invoke the Get-DscConfigurationStatus cmdlet. The `<Some DSC Process`> cmdlet is in progress and must return before Get-DscConfigurationStatus can be invoked"* you will need to **wait** until the current DSC process has completed. Once completed, you should be able to successfully run the command.
+
+3. When you run **Get-DscConfigurationStatus**, if you get a status of **Failure** you can re-run the DSC configuration by **running the following commands**:
 
 ```powershell
 cd "C:\Packages\Plugins\Microsoft.Powershell.DSC\*\DSCWork\azshcihost.0\AzSHCIHost"
+Set-DscLocalConfigurationManager  -Path . -Force
 Start-DscConfiguration -Path . -Wait -Force -Verbose
 ```
 
-4. If all goes well, you should see the DSC configuration reapplied without issues. If you then re-run the following PowerShell command, you should see success:
+4. Depending on where the initial failure happened, your VM may reboot and you will be disconnected. If that's the case, log back into the VM and wait for deployment to complete. See #2 above to check progress.
+5. If all goes well, you should see the DSC configuration reapplied without issues. If you then re-run the following PowerShell command, you should see success:
 
 ```powershell
 # Check for last run
 Get-DscConfigurationStatus
 ```
 
-![Result of Get-DscConfigurationStatus](/deployment/media/get-dscconfigurationstatus2.png "Result of Get-DscConfigurationStatus")
+![Result of Get-DscConfigurationStatus](/deployment/media/get-dscconfigurationstatus.png "Result of Get-DscConfigurationStatus")
 
 **NOTE** - If this doesn't fix your issue, consider redeploying your Azure VM. If the issue persists, please **raise an issue!**
 
