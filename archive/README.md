@@ -37,7 +37,7 @@ Nested Virtualization
 -----------
 If you're not familiar with Nested Virtualization, at a high level, it allows a virtualization platform, such as Hyper-V, or VMware ESXi, to run virtual machines that, within those virtual machines, run a virtualization platform. It may be easier to think about this in an architectural view.
 
-![Nested virtualization architecture](/archive/media_virt.png "Nested virtualization architecture")
+![Nested virtualization architecture](/archive/media/nested_virt.png "Nested virtualization architecture")
 
 As you can see from the graphic, at the base layer, you have your physical hardware, onto which you install a hypervisor. In this case, for our example, we're using Windows Server 2019 with the Hyper-V role enabled.  The hypervisor on the lowest level is considered L0 or the level 0 hypervisor.  On that physical host, you create a virtual machine, and into that virtual machine, you deploy an OS that itself, has a hypervisor enabled.  In this example, that 1st Virtualized Layer is running a **nested** Azure Stack HCI 20H2 operating system. This would be an L1 or level 1 hypervisor.  Finally, in our example, inside the Azure Stack HCI 20H2 OS, you create a virtual machine to run a workload.  This could in fact also contain a hypervisor, which would be known as the L2 or level 2 hypervisor, and so the process continues, with multiple levels of nested virtualization possible.
 
@@ -49,7 +49,7 @@ For those of you who don't have multiple server-class pieces of hardware to test
 
 ### Deployment of Azure Stack HCI 20H2 nested on a physical system ###
 
-![Architecture diagram for Azure Stack HCI 20H2 nested on a physical system](/archive/media_virt_physical_ga.png "Architecture diagram for Azure Stack HCI 20H2 nested on a physical system")
+![Architecture diagram for Azure Stack HCI 20H2 nested on a physical system](/archive/media/nested_virt_physical_ga.png "Architecture diagram for Azure Stack HCI 20H2 nested on a physical system")
 
 In this configuration, you'll again take advantage of nested virtualization, but in this case, you'll deploy the whole solution on a single desktop/laptop/server.  On your physical system, you'll run either Windows Server 2016/2019 or Windows 10 Pro/Enterprise/Education, with the Hyper-V role enabled.  On Hyper-V, you'll deploy a sandbox infrastructure, consisting of a Windows Server 2019 domain controller VM, a management VM running Windows 10 Enterprise, and a nested Azure Stack HCI 20H2 cluster.
 
@@ -64,7 +64,7 @@ This guide will walk you through deploying a sandboxed Azure Stack HCI 20H2 infr
 
 The general flow will be as follows:
 
-![Evaluation guide workflow using nested virtualization](/archive/media/flow_chart_ga.png "Evaluation guide workflow using nested virtualization")
+![Evaluation guide workflow using nested virtualization](/archive/media/flow_chart_ga_oct21.png "Evaluation guide workflow using nested virtualization")
 
 #### Part 1 - Deploy Hyper-V on a physical system ####
 In this step, on your existing system, that's running Windows Server 2016/2019 or Windows 10 Pro/Enterprise/Education, you'll enable the Hyper-V role and create a NAT virtual switch to enable network communication between sandbox VMs, and out to the internet.

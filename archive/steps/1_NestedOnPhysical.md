@@ -28,7 +28,7 @@ Architecture
 
 From an architecture perspective, the following graphic showcases the different layers and interconnections between the different components:
 
-![Architecture diagram for Azure Stack HCI 20H2 nested on a physical system](/media/nested_virt_physical_ga.png "Architecture diagram for Azure Stack HCI 20H2 nested on a physical system")
+![Architecture diagram for Azure Stack HCI 20H2 nested on a physical system](/archive/media/nested_virt_physical_ga.png "Architecture diagram for Azure Stack HCI 20H2 nested on a physical system")
 
 Will my hardware support this?
 -----------
@@ -52,7 +52,7 @@ If you can't run the Windows 10 Insider builds on your AMD-based system, it may 
 ### Verify Hardware Compatibility ###
 After checking the operating system and hardware requirements above, verify hardware compatibility in Windows by opening a PowerShell session or a command prompt (cmd.exe) window, typing **systeminfo**, and then checking the Hyper-V Requirements section. If all listed Hyper-V requirements have a value of **Yes**, your system can run the Hyper-V role. If any item returns No, check the requirements above and make adjustments where possible.
 
-![Hyper-V requirements](/media/systeminfo_upd.png "Hyper-V requirements")
+![Hyper-V requirements](/archive/media/systeminfo_upd.png "Hyper-V requirements")
 
 If you run **systeminfo** on an existing Hyper-V host, the Hyper-V Requirements section reads:
 
@@ -64,7 +64,7 @@ With 16GB memory, running on a laptop, we'll need to ensure that we're taking ad
 
 **NOTE** When you configure your nested Azure Stack HCI 20H2 nodes later, they will **require a minimum of 4GB RAM per node**, otherwise, they won't boot, so on a 16GB system, expect 2-3 nodes plus management infrastructure realistically - if you see the screenshot below, on my 16GB laptop, you'll see 2 Azure Stack HCI 20H2 nodes, with DC01/MGMT01, with a little memory left over for the host.
 
-![Azure Stack HCI 20H2 cluster running on a laptop](/media/azshci_laptop.png "Azure Stack HCI 20H2 cluster running on a laptop")
+![Azure Stack HCI 20H2 cluster running on a laptop](/archive/media/azshci_laptop.png "Azure Stack HCI 20H2 cluster running on a laptop")
 
 Obviously, if you have a larger physical system, such as a workstation, or server, you'll likely have a greater amount of memory available to you, therefore you can adjust the memory levels for the different resources accordingly.
 
@@ -149,7 +149,7 @@ Get-NetNat
 
 The **Get-NetNat** cmdlet gets Network Address Translation (NAT) objects configured on a computer. NAT modifies IP address and port information in packet headers. Your configuration should look similar to the configuration below:
 
-![Result of Get-NetNat PowerShell command](/media/get_net_nat.png "Result of Get-NetNat PowerShell command")
+![Result of Get-NetNat PowerShell command](/archive/media/get_net_nat.png "Result of Get-NetNat PowerShell command")
 
 The final part of the process is to enable Enhanced Session mode.  Enhanced Session mode can be useful to enhance the user experience, particularly when using the Windows 10 Management VM later, when connecting to a VM over VMConnect.  To enable Enhanced Session Mode with PowerShell, run the following on your Hyper-V host:
 
