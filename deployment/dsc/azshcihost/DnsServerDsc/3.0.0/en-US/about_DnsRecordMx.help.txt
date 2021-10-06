@@ -1,0 +1,90 @@
+.NAME
+    DnsRecordMx
+
+.SYNOPSIS
+    The DnsRecordMx DSC resource manages MX DNS records against a specific zone on a Domain Name System (DNS) server.
+
+.DESCRIPTION
+    The DnsRecordMx DSC resource manages MX DNS records against a specific zone on a Domain Name System (DNS) server.
+
+.PARAMETER EmailDomain
+    Key - System.String
+    Everything after the '@' in the email addresses supported by this mail exchanger. It must be a subdomain the zone or the zone itself. To specify all subdomains, use the '' character (i.e.: .contoso.com). (Key Parameter)
+
+.PARAMETER MailExchange
+    Key - System.String
+    FQDN of the server handling email for the specified email domain. When setting the value, this FQDN must resolve to an IP address and cannot reference a CNAME record. (Key Parameter)
+
+.PARAMETER Priority
+    Required - System.UInt16
+    Specifies the priority for this MX record among other MX records that belong to the same email domain, where a lower value has a higher priority. (Mandatory Parameter)
+
+.PARAMETER recordName
+    Write - System.String
+
+.EXAMPLE 1
+
+This configuration will ensure a DNS MX record exists when only the mandatory properties are specified.
+
+Configuration DnsRecordMx_Mandatory_config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsRecordMx 'TestRecord'
+        {
+            ZoneName     = 'contoso.com'
+            EmailDomain  = 'contoso.com'
+            MailExchange = 'mailserver1.contoso.com'
+            Priority     = 20
+            Ensure       = 'Present'
+        }
+    }
+}
+
+.EXAMPLE 2
+
+This configuration will ensure a DNS MX record exists when all properties are specified.
+
+Configuration DnsRecordMx_Full_config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsRecordMx 'TestRecord'
+        {
+            ZoneName     = 'contoso.com'
+            EmailDomain  = 'contoso.com'
+            MailExchange = 'mailserver1.contoso.com'
+            Priority     = 20
+            TimeToLive   = '01:00:00'
+            DnsServer    = 'localhost'
+            Ensure       = 'Present'
+        }
+    }
+}
+
+.EXAMPLE 3
+
+This configuration will ensure a DNS MX record does not exist when mandatory properties are specified.
+
+Note that the 'Priority' property value will be ignored when determining whether the record is to be removed.
+
+Configuration DnsRecordMx_Remove_config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsRecordMx 'TestRecord'
+        {
+            ZoneName     = 'contoso.com'
+            EmailDomain  = 'contoso.com'
+            MailExchange = 'mailserver1.contoso.com'
+            Priority     = 20
+            Ensure       = 'Absent'
+        }
+    }
+}

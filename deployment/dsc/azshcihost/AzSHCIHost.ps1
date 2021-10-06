@@ -38,7 +38,7 @@ configuration AzSHCIHost
     Import-DscResource -ModuleName 'StorageDSC'
     Import-DscResource -ModuleName 'NetworkingDSC'
     Import-DscResource -ModuleName 'xDHCpServer'
-    Import-DscResource -ModuleName 'xDNSServer'
+    Import-DscResource -ModuleName 'DnsServerDsc'
     Import-DscResource -ModuleName 'cChoco'
     Import-DscResource -ModuleName 'DSCR_Shortcut'
     Import-DscResource -ModuleName 'xCredSSP'
@@ -465,9 +465,9 @@ configuration AzSHCIHost
                 DependsOn = "[WindowsFeature]ADDSInstall"
             }
          
-            xADDomain FirstDS {
+            ADDomain FirstDS {
                 DomainName                    = $DomainName
-                DomainAdministratorCredential = $DomainCreds
+                Credential                    = $DomainCreds
                 SafemodeAdministratorPassword = $DomainCreds
                 DatabasePath                  = "$targetADPath" + "\NTDS"
                 LogPath                       = "$targetADPath" + "\NTDS"
@@ -653,7 +653,7 @@ configuration AzSHCIHost
 
         if ($environment -eq "Workgroup") {
 
-            xDnsServerPrimaryZone SetPrimaryDNSZone {
+            DnsServerPrimaryZone SetPrimaryDNSZone {
                 Name          = "$DomainName"
                 Ensure        = 'Present'
                 DependsOn     = "[script]NAT"
@@ -661,10 +661,10 @@ configuration AzSHCIHost
                 DynamicUpdate = 'NonSecureAndSecure'
             }
     
-            xDnsServerPrimaryZone SetReverseLookupZone {
+            DnsServerPrimaryZone SetReverseLookupZone {
                 Name          = '0.168.192.in-addr.arpa'
                 Ensure        = 'Present'
-                DependsOn     = "[xDnsServerPrimaryZone]SetPrimaryDNSZone"
+                DependsOn     = "[DnsServerPrimaryZone]SetPrimaryDNSZone"
                 ZoneFile      = '0.168.192.in-addr.arpa.dns'
                 DynamicUpdate = 'NonSecureAndSecure'
             }
@@ -689,14 +689,14 @@ configuration AzSHCIHost
             {
                 InterfaceAlias           = "$InterfaceAlias"
                 ConnectionSpecificSuffix = "$DomainName"
-                DependsOn                = "[xDnsServerPrimaryZone]SetPrimaryDNSZone"
+                DependsOn                = "[DnsServerPrimaryZone]SetPrimaryDNSZone"
             }
     
             DnsConnectionSuffix AddSpecificSuffixNATNic
             {
                 InterfaceAlias           = "vEthernet `($vSwitchNameHost`)"
                 ConnectionSpecificSuffix = "$DomainName"
-                DependsOn                = "[xDnsServerPrimaryZone]SetPrimaryDNSZone"
+                DependsOn                = "[DnsServerPrimaryZone]SetPrimaryDNSZone"
             }
 
             #### CONFIGURE CREDSSP & WinRM
@@ -963,7 +963,6 @@ configuration AzSHCIHost
                         New-BasicUnattendXML -ComputerName $name -LocalAdministratorPassword $($using:Admincreds).Password -Domain $using:DomainName -Username $using:Admincreds.Username `
                             -Password $($using:Admincreds).Password -JoinDomain $using:DomainName -AutoLogonCount 1 -OutputPath "$using:targetVMPath\$name" -Force `
                             -PowerShellScriptFullPath 'c:\temp\Install-AzsRolesandFeatures.ps1' -ErrorAction Stop
-
 
                         Copy-Item -Path "$using:targetVMPath\$name\Unattend.xml" -Destination $("$driveLetter" + ":" + "\Windows\system32\SysPrep") -Force -ErrorAction Stop
 

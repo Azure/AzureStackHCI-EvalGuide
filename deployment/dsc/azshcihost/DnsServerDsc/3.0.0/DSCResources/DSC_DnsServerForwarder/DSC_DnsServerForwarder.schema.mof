@@ -1,0 +1,9 @@
+[ClassVersion("1.0.0.0"), FriendlyName("DnsServerForwarder")]
+class DSC_DnsServerForwarder : OMI_BaseResource
+{
+    [Key, Description("Specifies the resource is a single instance, the value must be `'Yes'`."), ValueMap{"Yes"}, Values{"Yes"}] String IsSingleInstance;
+    [Write, Description("IP addresses of the forwarders")] String IPAddresses[];
+    [Write, Description("Specifies if you want to use root hint or not.")] Boolean UseRootHint;
+    [Write, Description("Specifies whether to enable the DNS server to reorder forwarders dynamically.")] Boolean EnableReordering;
+    [Write, Description("Specifies the number of seconds that the DNS server waits for a response from the forwarder. The minimum value is 0, and the maximum value is 15.")] UInt32 Timeout;
+};

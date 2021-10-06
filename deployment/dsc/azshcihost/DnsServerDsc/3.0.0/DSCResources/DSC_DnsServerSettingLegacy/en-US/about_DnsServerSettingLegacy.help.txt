@@ -1,0 +1,73 @@
+.NAME
+    DnsServerSettingLegacy
+
+.DESCRIPTION
+    The DnsServerSettingLegacy DSC resource manages the Domain Name System (DNS) server
+    legacy settings.
+
+    If the parameter DnsServer is set to 'localhost' then the resource
+    can normally use the default credentials (SYSTEM) to configure the DNS server
+    settings. If using any other value for the parameter DnsServer make sure
+    that the credential the resource is run as have the correct permissions
+    at the target node and the necessary network traffic is permitted (WsMan
+    protocol). It is possible to run the resource with specific credentials using the
+    built-in parameter PsDscRunAsCredential.
+
+.PARAMETER DnsServer
+    Key - String
+    Specifies the DNS server to connect to, or use 'localhost' for the current node.
+
+.PARAMETER DisjointNets
+    Write - Boolean
+    Indicates whether the default port binding for a socket used to send queries to remote DNS Servers can be overridden.
+
+.PARAMETER NoForwarderRecursion
+    Write - Boolean
+    TRUE if the DNS server does not use recursion when name-resolution through forwarders fails.
+
+.PARAMETER LogLevel
+    Write - UInt32
+    Indicates which policies are activated in the Event Viewer system log.
+
+.EXAMPLE 1
+
+This configuration will manage the DNS server legacy settings on the current
+node.
+
+Configuration DnsServerSettingLegacy_CurrentNode_Config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsServerSettingLegacy 'DnsServerLegacyProperties'
+        {
+            DnsServer            = 'localhost'
+            DisjointNets         = $false
+            NoForwarderRecursion = $true
+            LogLevel             = 50393905
+        }
+    }
+}
+
+.EXAMPLE 2
+
+This configuration will manage the DNS server legacy settings on the current
+node.
+
+Configuration DnsServerSettingLegacy_RemoteNode_Config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsServerSettingLegacy 'DnsServerLegacyProperties'
+        {
+            DnsServer            = 'dns1.company.local'
+            DisjointNets         = $false
+            NoForwarderRecursion = $true
+            LogLevel             = 50393905
+        }
+    }
+}
+

@@ -1,0 +1,45 @@
+.NAME
+    DnsServerSecondaryZone
+
+.DESCRIPTION
+    The DnsServerSecondaryZone DSC resource manages a standalone file-backed
+    secondary zone on a Domain Name System (DNS) server. Secondary zones allow
+    client machine in primary DNS zones to do DNS resolution of machines in the
+    secondary DNS zone.
+
+.PARAMETER Name
+    Key - String
+    Name of the secondary zone
+
+.PARAMETER MasterServers
+    Required - StringArray
+    IP address or DNS name of the secondary DNS servers
+
+.PARAMETER Ensure
+    Write - String
+    Allowed values: Present, Absent
+    Whether the secondary zone should be present or absent.
+
+.PARAMETER Type
+    Read - String
+    Type of the DNS server zone
+
+.EXAMPLE 1
+
+This configuration will manage a secondary standalone DNS zone
+
+Configuration DnsServerSecondaryZone_config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsServerSecondaryZone 'sec'
+        {
+            Ensure        = 'Present'
+            Name          = 'demo.contoso.com'
+            MasterServers = '192.168.10.2'
+        }
+    }
+}
+

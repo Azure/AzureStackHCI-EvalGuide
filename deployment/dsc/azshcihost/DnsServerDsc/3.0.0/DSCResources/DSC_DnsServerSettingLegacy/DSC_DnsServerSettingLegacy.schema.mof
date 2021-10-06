@@ -1,0 +1,8 @@
+[ClassVersion("1.0.0.0"), FriendlyName("DnsServerSettingLegacy")]
+class DSC_DnsServerSettingLegacy : OMI_BaseResource
+{
+    [Key, Description("Specifies the DNS server to connect to, or use 'localhost' for the current node.")] String DnsServer;
+    [Write, Description("Indicates whether the default port binding for a socket used to send queries to remote DNS Servers can be overridden.")] Boolean DisjointNets;
+    [Write, Description("TRUE if the DNS server does not use recursion when name-resolution through forwarders fails.")] Boolean NoForwarderRecursion;
+    [Write, Description("Indicates which policies are activated in the Event Viewer system log.")] UInt32 LogLevel;
+};

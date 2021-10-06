@@ -1,0 +1,11 @@
+[ClassVersion("1.0.0.0"), FriendlyName("DnsServerADZone")]
+class DSC_DnsServerADZone : OMI_BaseResource
+{
+    [Key, Description("Name of the AD DNS zone")] String Name;
+    [Write, Description("AD zone dynamic DNS update option. Defaults to `'Secure'`."), ValueMap{"None","NonSecureAndSecure","Secure"}, Values{"None","NonSecureAndSecure","Secure"}] String DynamicUpdate;
+    [Required, Description("AD zone replication scope option."), ValueMap{"Custom","Domain","Forest","Legacy"}, Values{"Custom","Domain","Forest","Legacy"}] String ReplicationScope;
+    [Write, Description("Name of the directory partition on which to store the zone. Use this parameter when the ReplicationScope parameter has a value of Custom.")] String DirectoryPartitionName;
+    [Write, Description("Specifies a DNS server. If you do not specify this parameter, the command runs on the local system.")] String ComputerName;
+    [Write, Description("Specifies the credential to use to create the AD zone on a remote computer. This parameter can only be used when you also are passing a value for the `ComputerName` parameter."), EmbeddedInstance("MSFT_Credential")] String Credential;
+    [Write, Description("Whether the DNS zone should be available or removed"), ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
+};

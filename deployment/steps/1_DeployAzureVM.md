@@ -192,6 +192,7 @@ If the error is related to the **AzSHCIHost001/ConfigureAzSHCIHost**, most likel
 
 ```powershell
 # Check for last run
+cd "C:\Packages\Plugins\Microsoft.Powershell.DSC\*\DSCWork\azshcihost.0\AzSHCIHost"
 Get-DscConfigurationStatus
 ```
 ![Result of Get-DscConfigurationStatus](/deployment/media/get-dscconfigurationstatus.png "Result of Get-DscConfigurationStatus")

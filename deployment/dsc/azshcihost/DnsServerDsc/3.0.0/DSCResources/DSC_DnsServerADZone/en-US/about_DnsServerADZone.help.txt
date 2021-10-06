@@ -1,0 +1,86 @@
+.NAME
+    DnsServerADZone
+
+.DESCRIPTION
+    The DnsServerADZone DSC resource manages an AD integrated zone on a Domain Name System (DNS) server.
+
+.PARAMETER Name
+    Key - String
+    Name of the AD DNS zone
+
+.PARAMETER DynamicUpdate
+    Write - String
+    Allowed values: None, NonSecureAndSecure, Secure
+    AD zone dynamic DNS update option. Defaults to 'Secure'.
+
+.PARAMETER ReplicationScope
+    Required - String
+    Allowed values: Custom, Domain, Forest, Legacy
+    AD zone replication scope option.
+
+.PARAMETER DirectoryPartitionName
+    Write - String
+    Name of the directory partition on which to store the zone. Use this parameter when the ReplicationScope parameter has a value of Custom.
+
+.PARAMETER ComputerName
+    Write - String
+    Specifies a DNS server. If you do not specify this parameter, the command runs on the local system.
+
+.PARAMETER Credential
+    Write - Instance
+    Specifies the credential to use to create the AD zone on a remote computer. This parameter can only be used when you also are passing a value for the ComputerName parameter.
+
+.PARAMETER Ensure
+    Write - String
+    Allowed values: Present, Absent
+    Whether the DNS zone should be available or removed
+
+.EXAMPLE 1
+
+This configuration will manage an AD integrated DNS forward lookup zone
+
+Configuration DnsServerADZone_forward_config
+{
+    param
+    (
+        [System.Management.Automation.PSCredential]
+        $Credential
+    )
+
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+
+        DnsServerADZone 'AddForwardADZone'
+        {
+            Name             = 'MyDomainName.com'
+            DynamicUpdate    = 'Secure'
+            ReplicationScope = 'Forest'
+            ComputerName     = 'MyDnsServer.MyDomain.com'
+            Credential       = $Credential
+            Ensure           = 'Present'
+        }
+    }
+}
+
+.EXAMPLE 2
+
+This configuration will manage an AD integrated DNS reverse lookup zone
+
+Configuration DnsServerADZone_reverse_config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsServerADZone 'addReverseADZone'
+        {
+            Name             = '1.168.192.in-addr.arpa'
+            DynamicUpdate    = 'Secure'
+            ReplicationScope = 'Forest'
+            Ensure           = 'Present'
+        }
+    }
+}
+

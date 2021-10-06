@@ -1,0 +1,54 @@
+.NAME
+    DnsServerConditionalForwarder
+
+.DESCRIPTION
+    The DnsServerConditionalForwarder DSC resource manages a conditional forwarder on a Domain Name System (DNS) server.
+
+    You can manage the master servers, forwarder time-out, recursion, recursion scope, and directory partition name for a conditional forwarder zone.
+
+.PARAMETER Ensure
+    Write - String
+    Allowed values: Present, Absent
+    Ensure whether the zone is absent or present.
+
+.PARAMETER Name
+    Key - String
+    The name of the zone to manage.
+
+.PARAMETER MasterServers
+    Write - StringArray
+    The IP addresses the forwarder should use. Mandatory if Ensure is present.
+
+.PARAMETER ReplicationScope
+    Write - String
+    Allowed values: None, Custom, Domain, Forest, Legacy
+    Whether the conditional forwarder should be replicated in AD, and the scope of that replication. Default is None.
+
+.PARAMETER DirectoryPartitionName
+    Write - String
+    The name of the directory partition to use when the ReplicationScope is Custom. This value is ignored for all other replication scopes.
+
+.PARAMETER ZoneType
+    Read - String
+    The zone type
+
+.EXAMPLE 1
+
+This configuration will manage a DNS server conditional forwarder
+
+Configuration DnsServerConditionalForwarder_config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsServerConditionalForwarder 'Forwarder1'
+        {
+            Name             = 'London'
+            MasterServers    = @('10.0.1.10', '10.0.2.10')
+            ReplicationScope = 'Forest'
+            Ensure           = 'Present'
+        }
+    }
+}
+
