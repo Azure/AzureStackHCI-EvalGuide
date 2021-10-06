@@ -42,7 +42,7 @@ configuration AzSHCIHost
     Import-DscResource -ModuleName 'cChoco'
     Import-DscResource -ModuleName 'DSCR_Shortcut'
     Import-DscResource -ModuleName 'xCredSSP'
-    Import-DscResource -ModuleName 'xActiveDirectory'
+    Import-DscResource -ModuleName 'ActiveDirectoryDsc'
 
     $aszhciHostsMofUri = "https://raw.githubusercontent.com/Azure/AzureStackHCI-EvalGuide/october_2021/deployment/helpers/Install-AzsRolesandFeatures.ps1"
     $updateAdUri = "https://raw.githubusercontent.com/Azure/AzureStackHCI-EvalGuide/october_2021/deployment/helpers/Update-AD.ps1"
