@@ -123,7 +123,7 @@
                 "Disabled"
             ],
             "metadata": {
-                "description": "Choose whether you wish to enable DHCP in the environment for AKS-HCI testing. If you choose Disabled, it can be enabled after deployment."
+                "description": "Choose whether you wish to enable DHCP in the environment. If you choose Disabled, it can be enabled after deployment."
             }
         },
         "customRdpPort": {
