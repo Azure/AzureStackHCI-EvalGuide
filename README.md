@@ -95,10 +95,10 @@ This guide will walk you through deploying a sandboxed infrastructure - the gene
 Get started
 -----------
 
-* [**Part 1** - Complete the prerequisites - deploy your Azure VM](/steps/1_DeployAzureVM.md "Complete the prerequisites - deploy your Azure VM")
-* [**Part 2** - Configure your Azure Stack HCI 20H2 Cluster](/steps/2_DeployAzSHCI.md "Configure your Azure Stack HCI 20H2 Cluster")
-* [**Part 3** - Integrate Azure Stack HCI 20H2 with Azure](/steps/3_AzSHCIIntegration.md "Integrate Azure Stack HCI 20H2 with Azure")
-* [**Part 4** - Explore Azure Stack HCI Management](/steps/4_ExploreAzSHCI.md "Explore Azure Stack HCI Management")
+* [**Part 1** - Complete the prerequisites - deploy your Azure VM](/deployment/steps/1_DeployAzureVM.md "Complete the prerequisites - deploy your Azure VM")
+* [**Part 2** - Configure your Azure Stack HCI 20H2 Cluster](/deployment/steps/2_DeployAzSHCI.md "Configure your Azure Stack HCI 20H2 Cluster")
+* [**Part 3** - Integrate Azure Stack HCI 20H2 with Azure](/deployment/steps/3_AzSHCIIntegration.md "Integrate Azure Stack HCI 20H2 with Azure")
+* [**Part 4** - Explore Azure Stack HCI Management](/deployment/steps/4_ExploreAzSHCI.md "Explore Azure Stack HCI Management")
 
 Product improvements
 -----------
