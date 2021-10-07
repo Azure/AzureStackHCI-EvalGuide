@@ -37,7 +37,7 @@ if (-not ($AzureStackHCIClusterObject)) {
 else {
     $AzureStackHCIClusterObject | Set-ADComputer -PrincipalsAllowedToDelegateToAccount $targetHostObject
     $AzureStackHCIClusterObject | Move-AdObject -TargetPath $dn
-}    
+}
 
 #read OU DACL
 $acl = Get-Acl -Path "AD:\$dn"

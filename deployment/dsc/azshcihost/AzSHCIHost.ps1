@@ -999,6 +999,28 @@ configuration AzSHCIHost
             }
         }
 
+        #### Update AD with Cluster Info ####
+
+        script "UpdateAD" {
+            GetScript  = {
+                $result = Test-Path -Path "$using:sourcePath\UpdateAD.txt"
+                return @{ 'Result' = $result }
+            }
+
+            SetScript  = {
+                Set-Location "$using:sourcePath\"
+                .\Update-AD.ps1
+                New-item -Path "$using:sourcePath\" -Name "UpdateAD.txt" -ItemType File -Force
+            }
+
+            TestScript = {
+                # Create and invoke a scriptblock using the $GetScript automatic variable, which contains a string representation of the GetScript.
+                $state = [scriptblock]::Create($GetScript).Invoke()
+                return $state.Result
+            }
+            DependsOn  = "[script]UnattendXML for $vmname"
+        }
+
         #### INSTALL CHOCO, DEPLOY EDGE and Shortcuts
 
         cChocoInstaller InstallChoco {
