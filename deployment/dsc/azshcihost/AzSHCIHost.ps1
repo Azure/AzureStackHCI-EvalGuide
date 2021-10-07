@@ -55,7 +55,7 @@ configuration AzSHCIHost
 
     [System.Management.Automation.PSCredential]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${DomainName}\$($Admincreds.UserName)", $Admincreds.Password)
 
-    $ipConfig = (Get-NetAdapter -Physical | Where-Object {$_.InterfaceDescription -like "*Hyper-V*" } | Get-NetIPConfiguration | Where-Object IPv4DefaultGateway)
+    $ipConfig = (Get-NetAdapter -Physical | Where-Object { $_.InterfaceDescription -like "*Hyper-V*" } | Get-NetIPConfiguration | Where-Object IPv4DefaultGateway)
     $netAdapters = Get-NetAdapter -Name ($ipConfig.InterfaceAlias) | Select-Object -First 1
     $InterfaceAlias = $($netAdapters.Name)
 
@@ -669,6 +669,15 @@ configuration AzSHCIHost
                 DynamicUpdate = 'NonSecureAndSecure'
             }
         }
+        elseif ($environment -eq "AD Domain") {
+
+            DnsServerPrimaryZone SetReverseLookupZone {
+                Name      = '0.168.192.in-addr.arpa'
+                Ensure    = 'Present'
+                DependsOn = "[ADDomain]FirstDS"
+                ZoneFile  = '0.168.192.in-addr.arpa.dns'
+            }
+        }
 
         #### FINALIZE DHCP
 
@@ -867,6 +876,7 @@ configuration AzSHCIHost
             }
 
             for ($k = 1; $k -le 1; $k++) {
+                $ipAddress = $('192.168.0.' + ($i + 1))
                 $mgmtNicName = "$vmname-Management$k"
                 xVMNetworkAdapter "New Network Adapter $mgmtNicName $vmname DHCP"
                 {
@@ -874,6 +884,12 @@ configuration AzSHCIHost
                     Name       = $mgmtNicName
                     SwitchName = $vSwitchNameHost
                     VMName     = $vmname
+                    NetworkSetting = xNetworkSettings {
+                        IpAddress      = $ipAddress
+                        Subnet         = "255.255.0.0"
+                        DefaultGateway = "192.168.0.1"
+                        DnsServer      = "192.168.0.1"
+                    }
                     Ensure     = 'Present'
                     DependsOn  = "[xVMHyperV]VM-$vmname"
                 }

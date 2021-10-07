@@ -127,7 +127,7 @@ As it stands, this is the way that the Windows Admin Center approaches the netwo
 #### Network Setup Overview ####
 Each of your Azure Stack HCI 20H2 nodes should have 4 NICs.  For this simple evaluation, you'll dedicate the NICs in the following way:
 
-* 1 NIC will be dedicated to management. This NIC will reside on the 192.168.0.0/24 subnet. No virtual switch will be attached to this NIC.
+* 1 NIC will be dedicated to management. This NIC will reside on the 192.168.0.0/16 subnet. No virtual switch will be attached to this NIC.
 * 1 NIC will be dedicated to VM traffic. A virtual switch will be attached to this NIC and the Azure Stack HCI 20H2 host will no longer use this NIC for it's own traffic.
 * 2 NICs will be dedicated to storage traffic. They will reside on 2 separate subnets, 10.10.11.0/24 and 10.10.12.0/24. No virtual switches will be attached to these NICs.
 
@@ -198,10 +198,10 @@ With the network configured for the workshop environment, it's time to construct
 1. Optionally, if you want to review the validation report, click on **Download report** and open the file in your browser.
 2. Back in the **Validate the cluster** screen, click **Next**
 3. On the **Create the cluster** page, enter your **cluster name** as **AZSHCICLUS** (IMPORTANT - make sure you use AZSHCICLUS as the name of the cluster as we pre-created the AD object in Active Directory to reflect this name)
-4. Under **IP address**, click **Assign dynamically using DHCP**
+4. Under **IP address**, click **Specify one or more static addresses**, and enter **192.168.0.4** and click **Add**
 5. Expand **Advanced** and review the settings, then click **Create cluster**
 
-![Finalize cluster creation in the Create Cluster wizard](/deployment/media/wac_create_clus_dhcp_ga.png "Finalize cluster creation in the Create Cluster wizard")
+![Finalize cluster creation in the Create Cluster wizard](/deployment/media/wac_create_clus_static_ga.png "Finalize cluster creation in the Create Cluster wizard")
 
 6. With all settings confirmed, click **Create cluster**. This will take a few moments.  Once complete, click **Next: Storage**
 
