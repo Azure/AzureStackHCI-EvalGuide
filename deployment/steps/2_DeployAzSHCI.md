@@ -11,6 +11,7 @@ Contents
 - [Contents](#contents)
 - [Architecture](#architecture)
 - [Before you begin](#before-you-begin)
+- [Allow popups in Edge browser](#allow-popups-in-edge-browser)
 - [Creating a (local) cluster](#creating-a-local-cluster)
 - [Configuring the cluster witness](#configuring-the-cluster-witness)
 - [Next Steps](#next-steps)
@@ -26,9 +27,46 @@ As shown on the architecture graphic below, in this step, you'll take the nodes 
 
 Before you begin
 -----------
-With Windows Admin Center, you now have the ability to construct Azure Stack HCI 20H2 clusters from the vanilla nodes.  There are no additional extensions to install, the workflow is built in and ready to go.
+With Windows Admin Center, you now have the ability to construct Azure Stack HCI 20H2 clusters from the vanilla nodes.  There are no additional extensions to install, the workflow is built in and ready to go, however, it's worth checking to ensure that your Cluster Creation extension is fully up to date and making a few changes to the Edge browser.
 
-Here are the major steps in the Create Cluster wizard in Windows Admin Center:
+### Set Microsoft Edge as default browser ###
+
+To streamline things later, we'll set Microsoft Edge as the default browser over Internet Explorer.
+
+1. Inside your **AzSHCIHost001 VM**, click on Start, then type "**default browser**" (without quotes) and then under **Best match**, select **Choose a default web browser**
+
+![Set the default browser](/deployment/media/default_browser.png "Set the default browser")
+
+2. In the **Default apps** settings view, under **Web browser**, click on **Internet Explorer**
+3. In the **Choose an app** popup, select **Microsoft Edge** then **close the Settings window**
+
+Allow popups in Edge browser
+-----------
+To give the optimal experience with Windows Admin Center, you should enable **Microsoft Edge** to allow popups for Windows Admin Center.
+
+1. Still inside your **AzSHCIHost001 VM**, double-click the **Microsoft Edge icon** on your desktop
+2. Navigate to **edge://settings/content/popups**
+3. Click the slider button to **disable** pop-up blocking
+4. Close the **settings tab**.
+
+### Configure Windows Admin Center ###
+
+Your Azure VM deployment automatically installed the latest version of Windows Admin Center, however there are some additional configuration steps that must be performed before you can use it to deploy Azure Stack HCI.
+
+1. **Double-click the Windows Admin Center** shortcut on the desktop.
+2. Once Windows Admin Center is open, you may receive notifications in the top-right corner, indicating that some extensions are updating automatically. **Let these finish updating before proceeding**. Windows Admin Center may refresh automatically during this process.
+3. Once complete, navigate to **Settings**, then **Extensions**
+4. Click on **Installed extensions** and you should see **Cluster Creation** listed as installed
+
+![Installed extensions in Windows Admin Center](/deployment/media/installed_extensions_cluster.png "Installed extensions in Windows Admin Center")
+
+____________
+
+**NOTE** - Ensure that your Cluster Creation extension is the **latest available version**. If the **Status** is **Installed**, you have the latest version. If the **Status** shows **Update available (1.#.#)**, ensure you apply this update and refresh before proceeding.
+
+_____________
+
+You're now ready to begin deployment of your Azure Stack HCI cluster with Windows Admin Center. Here are the major steps in the Create Cluster wizard in Windows Admin Center:
 
 * **Get Started** - ensures that each server meets the prerequisites for and features needed for cluster join
 * **Networking** - assigns and configures network adapters and creates the virtual switches for each server
@@ -70,8 +108,8 @@ This section will walk through the key steps for you to set up the Azure Stack H
 ![Installing required features in the Create Cluster wizard](/deployment/media/wac_installed_features_ga.png "Installing required features in the Create Cluster wizard")
 
 6. On the **Install updates** page, Windows Admin Center will query the nodes for available updates, and will request you install any that are required. For the purpose of this guide and to save time, we'll ignore this and click **Next**
-7. On the **Install hardware updates** page, in a nested environment it's likely you'll have no updates, so click **Next**
-8. On the **Restart servers** page, if required, click **Restart servers**
+7. On the **Install hardware updates** page, in a nested environment this doesn't apply, so click **Next**
+8. On the **Restart servers** page, if required, click **Restart servers**, otherwise, click **Next: Networking**
 
 ![Restart nodes in the Create Cluster wizard](/deployment/media/wac_restart_ga.png "Restart nodes in the Create Cluster wizard")
 
@@ -229,19 +267,18 @@ As part of this guide, we're going to set up cluster quorum, using **Windows Adm
 
     * Resource Group: **Create new**, then enter **azshcicloudwitness**, and click **OK**
     * Storage account name: **azshcicloudwitness**
-    * Location: **Select your preferred region**
+    * Region: **Select your preferred region**
     * Performance: **Only standard is supported**
-    * Account kind: **Storage (general purpose v1)** is the best option for cloud witness
-    * Replication: **Locally-redundant storage (LRS)** - Failover Clustering uses the blob file as the arbitration point, which requires some consistency guarantees when reading the data. Therefore you must select Locally-redundant storage for Replication type.
+    * Redundancy: **Locally-redundant storage (LRS)** - Failover Clustering uses the blob file as the arbitration point, which requires some consistency guarantees when reading the data. Therefore you must select Locally-redundant storage for Replication type.
 
 ![Set up storage account in Azure](/deployment/media/azure_cloud_witness_ga.png "Set up storage account in Azure")
 
-10. On the **Networking** and **Data protection** pages, accept the defaults and press **Next**
-11. On the **Advanced** page, ensure that **Blob public access** is **disabled**, and **Minimum TLS version** is set to **Version 1.2**
-12. When complete, click **Create** and your deployment will begin.  This should take a few moments.
-13. Once complete, in the **notification**, click on **Go to resource**
-14. On the left-hand navigation, under Settings, click **Access Keys**. When you create a Microsoft Azure Storage Account, it is associated with two Access Keys that are automatically generated - Primary Access key and Secondary Access key. For a first-time creation of Cloud Witness, use the **Primary Access Key**. There is no restriction regarding which key to use for Cloud Witness.
-15. Click on **Show keys** and take a copy of the **Storage account name** and **key1**
+1.  On the **Advanced** page, ensure that **Enable blob public access** is **unchecked**, and **Minimum TLS version** is set to **Version 1.2**
+2.  On the **Networking**, **Data protection** and **Tags** pages, accept the defaults and press **Next**
+3.  When complete, click **Create** and your deployment will begin.  This should take a few moments.
+4.  Once complete, in the **notification**, click on **Go to resource**
+5.  On the left-hand navigation, under Settings, click **Access Keys**. When you create a Microsoft Azure Storage Account, it is associated with two Access Keys that are automatically generated - Primary Access key and Secondary Access key. For a first-time creation of Cloud Witness, use the **Primary Access Key**. There is no restriction regarding which key to use for Cloud Witness.
+6.  Click on **Show keys** and take a copy of the **Storage account name** and **key1**
 
 ![Configure Primary Access key in Azure](/deployment/media/azure_keys_ga.png "Configure Primary Access key in Azure")
 

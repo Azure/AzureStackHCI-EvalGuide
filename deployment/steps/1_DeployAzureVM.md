@@ -205,8 +205,11 @@ Set-DscLocalConfigurationManager  -Path . -Force
 Start-DscConfiguration -Path . -Wait -Force -Verbose
 ```
 
-4. Depending on where the initial failure happened, your VM may reboot and you will be disconnected. If that's the case, log back into the VM and wait for deployment to complete. See #2 above to check progress.
-5. If all goes well, you should see the DSC configuration reapplied without issues. If you then re-run the following PowerShell command, you should see success:
+4. Depending on where the initial failure happened, your VM may reboot and you will be disconnected. If that's the case, log back into the VM and wait for deployment to complete. See #2 above to check progress. Generally speaking, once you see the **Edge** and **Windows Admin Center** icons on your desktop, the process has completed.
+
+![Edge and Windows Admin Center icons](/deployment/media/deployment_complete.png "Edge and Windows Admin Center icons")
+
+5. If all goes well, you should see the DSC configuration reapplied without issues. If you then re-run the following PowerShell command, you should see success, with over **100 resources** deployed/configured.
 
 ```powershell
 # Check for last run
