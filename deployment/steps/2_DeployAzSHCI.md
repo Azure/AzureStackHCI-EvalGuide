@@ -198,7 +198,7 @@ With the network configured for the workshop environment, it's time to construct
 1. Optionally, if you want to review the validation report, click on **Download report** and open the file in your browser.
 2. Back in the **Validate the cluster** screen, click **Next**
 3. On the **Create the cluster** page, enter your **cluster name** as **AZSHCICLUS** (IMPORTANT - make sure you use AZSHCICLUS as the name of the cluster as we pre-created the AD object in Active Directory to reflect this name)
-4. Under **IP address**, click **Specify one or more static addresses**, and enter **192.168.0.4** and click **Add**
+4. Under **IP address**, click **Specify one or more static addresses**, and enter **192.168.0.4**
 5. Expand **Advanced** and review the settings, then click **Create cluster**
 
 ![Finalize cluster creation in the Create Cluster wizard](/deployment/media/wac_create_clus_static_ga.png "Finalize cluster creation in the Create Cluster wizard")
