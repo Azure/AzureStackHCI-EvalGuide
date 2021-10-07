@@ -11,7 +11,7 @@ $msiArgs = @("/i", "C:\WAC\WindowsAdminCenter.msi", "/qn", "/L*v", "log.txt", "S
 Start-Process msiexec.exe -Wait -ArgumentList $msiArgs
 
 # Update WAC Extensions
-Import-Module "$env:ProgramFiles\windows admin center\PowerShell\Modules\ExtensionTools" -Verbose
+Import-Module "$env:ProgramFiles\Windows Admin Center\PowerShell\Modules\ExtensionTools\ExtensionTools.psm1"
 
 # Specify the WAC gateway
 $WAC = "https://$env:COMPUTERNAME"
