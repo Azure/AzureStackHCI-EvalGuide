@@ -1057,8 +1057,6 @@ configuration AzSHCIHost
                 ForEach ($extension in $state.extensions) {    
                     Update-Extension $state.wac -ExtensionId $extension.Id -Verbose | Out-File -Append -FilePath $logFile -Force
                 }
-                # Delete log files older than 30 days
-                Get-ChildItem -Path "C:\Users\Public\WACUpdateLog*" -Recurse -Include @("*.log") | Where-Object { $_.CreationTime -lt (Get-Date).AddDays(-30) } | Remove-Item
             }
         }
 
