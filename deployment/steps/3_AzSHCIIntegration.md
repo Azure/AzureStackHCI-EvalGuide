@@ -9,7 +9,7 @@ Contents
 -----------
 - [Overview](#overview)
 - [Contents](#contents)
-- [Prerequisites for registration](#prerequisites-for-registration)
+- [Prerequisites for cluster registration](#prerequisites-for-cluster-registration)
 - [Complete Registration](#complete-registration)
 - [Next Steps](#next-steps)
 - [Product improvements](#product-improvements)
@@ -19,7 +19,7 @@ Azure Stack HCI 20H2 is delivered as an Azure service and needs to register with
 
 **NOTE** - After registering your Azure Stack HCI 20H2 cluster, the **first 60 days usage will be free**.
 
-Prerequisites for registration
+Prerequisites for cluster registration
 -----------
 
 Firstly, **you need an Azure Stack HCI 20H2 cluster**, which we've just created, so you're good there.
@@ -28,24 +28,85 @@ Your nodes need to have **internet connectivity** in order to register and commu
 
 You'll need an **Azure subscription**, along with appropriate **Azure Active Directory permissions** to complete the registration process. If you don't already have them, you'll need to ask your Azure AD administrator to grant permissions or delegate them to you.  You can learn more about this below.
 
-### What happens when you register Azure Stack HCI 20H2? ###
-When you register your Azure Stack HCI 20H2 cluster, the process creates an Azure Resource Manager (ARM) resource to represent the on-prem cluster. This resource is provisioned by an Azure resource provider (RP) and placed inside a resource group, within your chosen Azure subscription.  If these Azure concepts are new to you, you can check out an [overview of them, and more, here](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview "Azure Resource Manager overview").
+For the simplest registration experience, have an **Azure AD admin** (Owner or User Access Administrator with Contributor role) complete the registration process using either Windows Admin Center or PowerShell.
 
-![ARM architecture for Azure Stack HCI 20H2](/deployment/media/azure_arm.png "ARM architecture for Azure Stack HCI 20H2")
+### Understanding Azure subscription permissions
 
-In addition to creating an Azure resource in your subscription, registering Azure Stack HCI 20H2 creates an app identity, conceptually similar to a user, in your Azure Active Directory tenant. The app identity inherits the cluster name. This identity acts on behalf on the Azure Stack HCI 20H2 cloud service, as appropriate, within your subscription.
+If you don’t already have an Azure account, [create one](https://azure.microsoft.com/).
+
+You can use an existing subscription of any type:
+- Free account with Azure credits [for students](https://azure.microsoft.com/free/students/) or [Visual Studio subscribers](https://azure.microsoft.com/pricing/member-offers/credit-for-visual-studio-subscribers/)
+- [Pay-as-you-go](https://azure.microsoft.com/pricing/purchase-options/pay-as-you-go/) subscription with credit card
+- Subscription obtained through an Enterprise Agreement (EA)
+- Subscription obtained through the Cloud Solution Provider (CSP) program
+
+The user registering the cluster must have Azure subscription permissions to:
+
+- Register a resource provider
+- Create/Get/Delete Azure resources and resource groups
+
+If your Azure subscription is through an EA or CSP, the easiest way is to ask your Azure subscription admin to assign a built-in "Owner" role to your subscription, or a "User Access Administrator" role along with a "Contributor" role.
+
+#### Optional - Create a Custom Azure Role ####
+
+**Your admins may prefer a more restrictive option than using Owner, or Contributor**. In this case, it's possible to create a custom Azure role specific for Azure Stack HCI registration by following these steps:
+
+1. Create a json file called **CustomHCIRole.json** with following content. Make sure to change <subscriptionID> to your Azure subscription ID. To get your subscription ID, visit [portal.azure.com](https://portal.azure.com), navigate to Subscriptions, and copy/paste your ID from the list.
+
+   ```json
+   {
+     "Name": "Azure Stack HCI registration role",
+     "Id": null,
+     "IsCustom": true,
+     "Description": "Custom Azure role to allow subscription-level access to register Azure Stack HCI",
+     "Actions": [
+       "Microsoft.Resources/subscriptions/resourceGroups/write",
+       "Microsoft.Resources/subscriptions/resourceGroups/read",
+       "Microsoft.Resources/subscriptions/resourceGroups/delete",
+       "Microsoft.AzureStackHCI/register/action",
+       "Microsoft.AzureStackHCI/Unregister/Action",
+       "Microsoft.AzureStackHCI/clusters/*",
+       "Microsoft.Authorization/roleAssignments/write",
+       "Microsoft.HybridCompute/register/action",
+       "Microsoft.GuestConfiguration/register/action"
+     ],
+     "NotActions": [
+     ],
+   "AssignableScopes": [
+       "/subscriptions/<subscriptionId>"
+     ]
+   }
+   ```
+
+2. Create the custom role:
+
+   ```powershell
+   New-AzRoleDefinition -InputFile <path to CustomHCIRole.json>
+   ```
+
+3. Assign the custom role to the user:
+
+   ```powershell
+   $user = Get-AzAdUser -DisplayName <userdisplayname>
+   $role = Get-AzRoleDefinition -Name "Azure Stack HCI registration role"
+   New-AzRoleAssignment -ObjectId $user.Id -RoleDefinitionId $role.Id -Scope /subscriptions/<subscriptionid>
+   ```
 
 ### Understanding required Azure Active Directory permissions ###
-If the user who registers Azure Stack HCI 20H2 is an Azure Active Directory global administrator or has been delegated sufficient permissions, this all happens automatically, and no additional action is required. If not, approval may be needed from your Azure Active Directory global administrator (or someone with appropriate permissions) to complete registration. Your global administrator can either explicitly grant consent to the app, or they can delegate permissions so that you can grant consent to the app.
+In addition to creating an Azure resource in your subscription, registering Azure Stack HCI creates an app identity in your Azure AD tenant. This identity is conceptually similar to a user. The app identity inherits the cluster name. This identity acts on behalf on the Azure Stack HCI cloud service, as appropriate, within your subscription.
+
+If the user who registers the cluster is an Azure AD administrator or has sufficient permissions, this all happens automatically. No additional action is required. Otherwise, you might need approval from your Azure AD administrator to complete registration. Your administrator can either explicitly grant consent to the app, or they can delegate permissions so that you can grant consent to the app:
 
 ![Azure Active Directory Permissions](/deployment/media/aad_permissions.png "Azure Active Directory Permissions")
 
 The user who runs Register-AzStackHCI needs Azure AD permissions to:
 
-* Create/Get/Set/Remove Azure AD applications (New/Get/Set/Remove-AzureADApplication)
-* Create/Get Azure AD service principal (New/Get-New-AzureADServicePrincipal)
-* Manage AD application secrets (New/Get/Remove-AzureADApplicationKeyCredential)
-* Grant consent to use specific application permissions (New/Get/Remove AzureADServiceAppRoleAssignments)
+The user who runs `Register-AzStackHCI` needs Azure AD permissions to:
+
+- Create (`New-Remove-AzureADApplication`), get (`Get-Remove-AzureADApplication`), set (`Set-Remove-AzureADApplication`), or remove (`Remove-AzureADApplication`) Azure AD applications.
+- Create (`New-Get-AzureADServicePrincipal`) or get (`Get-AzureADServicePrincipal`) the Azure AD service principal.
+- Manage Active Directory application secrets (`New-Remove-AzureADApplicationKeyCredential`, `Get-Remove-AzureADApplicationKeyCredential`, or `Remove-AzureADApplicationKeyCredential`).
+- Grant consent to use specific application permissions (`New-AzureADApplicationKeyCredential`, `Get-AzureADApplicationKeyCredential`, or `Remove-AzureADServiceAppRoleAssignments`).
 
 There are three ways in which this can be accomplished.
 
@@ -67,11 +128,11 @@ The most restrictive option is to create a custom AD role with a custom consent 
 
 If you choose to perform Option 3, you'll need to follow these steps on **AzSHCIHost001**, which we'll demonstrate mainly through PowerShell.
 
-1. Firstly, configure the appropriate AzureAD modules, then **Connect to Azure AD**, and when prompted, **log in with your appropriate credentials**
+1. Firstly, configure the appropriate AzureAD modules, then **Connect to Azure AD**, and when prompted, **log in with your appropriate credentials**.
 
 ```powershell
 Remove-Module AzureAD -ErrorAction SilentlyContinue -Force
-Install-Module AzureADPreview -AllowClobber -Force
+Install-Module AzureAD -AllowClobber -Force
 Connect-AzureAD
 ```
 
