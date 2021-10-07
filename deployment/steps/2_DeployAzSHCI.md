@@ -299,7 +299,7 @@ You've now successfully deployed and configured your Azure Stack HCI 20H2 cluste
 
 Next Steps
 -----------
-In this step, you've successfully created a nested Azure Stack HCI 20H2 cluster using Windows Admin Center. With this complete, you can now [Integrate Azure Stack HCI 20H2 with Azure](/steps/3_AzSHCIIntegration.md "Integrate Azure Stack HCI 20H2 with Azure")
+In this step, you've successfully created a nested Azure Stack HCI 20H2 cluster using Windows Admin Center. With this complete, you can now [Integrate Azure Stack HCI 20H2 with Azure](/deployment/steps/3_AzSHCIIntegration.md "Integrate Azure Stack HCI 20H2 with Azure")
 
 Product improvements
 -----------
