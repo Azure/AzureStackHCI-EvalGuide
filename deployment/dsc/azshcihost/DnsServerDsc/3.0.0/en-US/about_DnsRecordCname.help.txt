@@ -1,0 +1,16 @@
+.NAME
+    DnsRecordCname
+
+.SYNOPSIS
+    The DnsRecordCname DSC resource manages CNAME DNS records against a specific zone on a Domain Name System (DNS) server.
+
+.DESCRIPTION
+    The DnsRecordCname DSC resource manages CNAME DNS records against a specific zone on a Domain Name System (DNS) server.
+
+.PARAMETER Name
+    Key - System.String
+    Specifies the name of a DNS server resource record object. (Key Parameter)
+
+.PARAMETER HostNameAlias
+    Key - System.String
+    Specifies a a canonical name target for a CNAME record. This must be a fully qualified domain name (FQDN). (Key Parameter)

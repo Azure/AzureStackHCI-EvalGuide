@@ -1,0 +1,85 @@
+.NAME
+    DnsServerEDns
+
+.SYNOPSIS
+    The DnsServerEDns DSC resource manages extension mechanisms for DNS (EDNS)
+    on a Microsoft Domain Name System (DNS) server.
+
+.DESCRIPTION
+    The DnsServerEDns DSC resource manages extension mechanisms for DNS (EDNS)
+    on a Microsoft Domain Name System (DNS) server.
+
+.PARAMETER DnsServer
+    Key - System.String
+    The host name of the Domain Name System (DNS) server, or use 'localhost'
+    for the current node.
+
+.PARAMETER CacheTimeout
+    Write - System.String
+    Specifies the number of seconds that the DNS server caches EDNS information.
+
+.PARAMETER EnableProbes
+    Write - Nullable[System.Boolean]
+    Specifies whether to enable the server to probe other servers to determine
+    whether they support EDNS.
+
+.PARAMETER EnableReception
+    Write - Nullable[System.Boolean]
+    Specifies whether the DNS server accepts queries that contain an EDNS record.
+
+.EXAMPLE 1
+
+This configuration will change the cache timeout for
+extension mechanisms for DNS (EDNS) on the DNS server.
+
+Configuration DnsServerEDns_SetCacheTimeout_Config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsServerEDns 'SetCacheTimeout'
+        {
+            DnsServer    = 'localhost'
+            CacheTimeout = '00:15:00'
+        }
+    }
+}
+
+.EXAMPLE 2
+
+This configuration will enable probes for the extension mechanisms for DNS
+(EDNS) on the DNS server.
+
+Configuration DnsServerEDns_EnableProbes_Config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsServerEDns 'EnableProbes'
+        {
+            DnsServer    = 'localhost'
+            EnableProbes = $true
+        }
+    }
+}
+
+.EXAMPLE 3
+
+This configuration will allow to accepts queries for the extension mechanisms
+for DNS (EDNS) on the DNS server.
+
+Configuration DnsServerEDns_EnableReception_Config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsServerEDns 'EnableReception'
+        {
+            DnsServer       = 'localhost'
+            EnableReception = $true
+        }
+    }
+}

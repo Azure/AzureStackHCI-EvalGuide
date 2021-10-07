@@ -1,0 +1,34 @@
+.NAME
+    DnsServerZoneTransfer
+
+.DESCRIPTION
+    The DnsServerZoneTransfer DSC resource manages the replication settings of DNS Server zone data between servers.
+
+.PARAMETER Name
+    Key - String
+    Name of the DNS zone
+
+.PARAMETER Type
+    Required - String
+    Allowed values: None, Any, Named, Specific
+    Type of transfer allowed
+
+.PARAMETER SecondaryServer
+    Write - StringArray
+    IP address or DNS name of DNS servers where zone information can be transferred
+
+.EXAMPLE 1
+
+This configuration will manage a DNS zone transfer
+
+Configuration DnsServerZoneTransfer_config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    DnsServerZoneTransfer 'TransferToAnyServer'
+    {
+        Name = 'demo.contoso.com'
+        Type = 'Any'
+    }
+}
+

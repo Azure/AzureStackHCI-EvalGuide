@@ -1,0 +1,25 @@
+TOPIC
+    about_DnsServerDsc
+
+SHORT DESCRIPTION
+    DSC resources for the management and configuration of Windows Server DNS Server.
+
+LONG DESCRIPTION
+    This module contains DSC resources for the management and configuration of Windows Server DNS Server.
+
+EXAMPLES
+    PS C:\> Get-DscResource -Module DnsServerDsc
+
+NOTE:
+    Thank you to the DSC Community contributors who contributed to this module by
+    writing code, sharing opinions, and provided feedback.
+
+TROUBLESHOOTING NOTE:
+    Go to the Github repository for read about issues, submit a new issue, and read
+    about new releases. https://github.com/dsccommunity/DnsServerDsc
+
+SEE ALSO
+    - https://github.com/dsccommunity/DnsServerDsc
+
+KEYWORDS
+    DSC, DscResource, DNS

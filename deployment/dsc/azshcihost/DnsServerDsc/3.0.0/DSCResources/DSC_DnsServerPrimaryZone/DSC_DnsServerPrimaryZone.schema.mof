@@ -1,0 +1,8 @@
+[ClassVersion("1.0.0.0"), FriendlyName("DnsServerPrimaryZone")]
+class DSC_DnsServerPrimaryZone : OMI_BaseResource
+{
+    [Key, Description("Name of the DNS Server primary zone")] String Name;
+    [Write, Description("Name of the DNS Server primary zone file. If not specified, defaults to 'ZoneName.dns'.")] String ZoneFile;
+    [Write, Description("Primary zone dynamic DNS update option. Defaults to `'None'`."), ValueMap{"None","NonSecureAndSecure"}, Values{"None","NonSecureAndSecure"}] String DynamicUpdate;
+    [Write, Description("Whether the DNS zone should be present or absent"), ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
+};

@@ -1,0 +1,143 @@
+.NAME
+    DnsRecordPtr
+
+.SYNOPSIS
+    The DnsRecordPtr DSC resource manages PTR DNS records against a specific zone on a Domain Name System (DNS) server.
+
+.DESCRIPTION
+    The DnsRecordPtr DSC resource manages PTR DNS records against a specific zone on a Domain Name System (DNS) server.
+
+.PARAMETER IpAddress
+    Key - System.String
+    Specifies the IP address to which the record is associated (Can be either IPv4 or IPv6. (Key Parameter)
+
+.PARAMETER Name
+    Key - System.String
+    Specifies the FQDN of the host when you add a PTR resource record. (Key Parameter)
+
+.PARAMETER recordHostName
+    Write - System.String
+
+.EXAMPLE 1
+
+This configuration will ensure a DNS PTR record exists when only the mandatory properties are specified.
+
+Configuration DnsRecordPtr_Mandatory_config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsRecordPtr 'TestRecord'
+        {
+            ZoneName  = '0.168.192.in-addr.arpa'
+            IpAddress = '192.168.0.9'
+            Name      = 'quarks.contoso.com'
+            Ensure    = 'Present'
+        }
+    }
+}
+
+.EXAMPLE 2
+
+This configuration will ensure a DNS PTR record exists when all properties are specified.
+
+Configuration DnsRecordPtr_Full_config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsRecordPtr 'TestRecord'
+        {
+            ZoneName  = '0.168.192.in-addr.arpa'
+            IpAddress = '192.168.0.9'
+            Name      = 'quarks.contoso.com'
+            TimeToLive = '01:00:00'
+            DnsServer = 'localhost'
+            Ensure    = 'Present'
+        }
+    }
+}
+
+.EXAMPLE 3
+
+This configuration will ensure a DNS PTR record does not exist when mandatory properties are specified.
+
+Configuration DnsRecordPtr_Remove_config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsRecordPtr 'TestRecord'
+        {
+            ZoneName  = '0.168.192.in-addr.arpa'
+            IpAddress = '192.168.0.9'
+            Name      = 'quarks.contoso.com'
+            Ensure    = 'Absent'
+        }
+    }
+}
+
+.EXAMPLE 4
+
+This configuration will ensure a DNS PTR record exists for an IPv6 address when only the mandatory properties are specified.
+
+Configuration DnsRecordPtr_Mandatory_v6_config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsRecordPtr 'TestRecord'
+        {
+            ZoneName  = '0.0.d.f.ip6.arpa'
+            IpAddress = 'fd00::515c:0:0:d59'
+            Name      = 'quarks.contoso.com'
+            Ensure    = 'Present'
+        }
+    }
+}
+
+.EXAMPLE 5
+
+This configuration will ensure a DNS PTR record exists for an IPv6 address when all properties are specified.
+
+Configuration DnsRecordPtr_Full_v6_config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsRecordPtr 'TestRecord'
+        {
+            ZoneName  = '0.0.d.f.ip6.arpa'
+            IpAddress = 'fd00::515c:0:0:d59'
+            Name      = 'quarks.contoso.com'
+            TimeToLive = '01:00:00'
+            DnsServer = 'localhost'
+            Ensure    = 'Present'
+        }
+    }
+}
+
+.EXAMPLE 6
+
+This configuration will ensure a DNS PTR record does not exist for an IPv6 address when mandatory properties are specified.
+
+Configuration DnsRecordPtr_Remove_v6_config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsRecordPtr 'TestRecord'
+        {
+            ZoneName  = '0.0.d.f.ip6.arpa'
+            IpAddress = 'fd00::515c:0:0:d59'
+            Name      = 'quarks.contoso.com'
+            Ensure    = 'Absent'
+        }
+    }
+}

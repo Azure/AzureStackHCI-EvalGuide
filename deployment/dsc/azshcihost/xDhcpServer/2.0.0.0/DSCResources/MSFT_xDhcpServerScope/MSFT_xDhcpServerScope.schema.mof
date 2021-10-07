@@ -1,0 +1,15 @@
+[ClassVersion("1.0.0.0"), FriendlyName("xDhcpServerScope")]
+class MSFT_xDhcpServerScope : OMI_BaseResource
+{
+    [Key, Description("ScopeId for the given scope")] String ScopeId;
+    [Required, Description("Name of DHCP Scope")] String Name;
+    [Required, Description("Subnet mask for the scope specified in IP address format")] String SubnetMask;
+    [Required, Description("Starting address to set for this scope")] String IPStartRange;
+    [Required, Description("Ending address to set for this scope")] String IPEndRange;
+    [Write, Description("Description of DHCP Scope")] String Description;
+    [Write, Description("Time interval for which an IP address should be leased")] String LeaseDuration;
+    [Write, Description("Whether scope should be active or inactive"), ValueMap{"Active","Inactive"}, Values{"Active","Inactive"}] String State;
+    [Write, Description("Address family type"), ValueMap{"IPv4"}, Values{"IPv4"}] String AddressFamily;
+    [Write, Description("Whether scope should be set or removed"), ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
+};
+

@@ -1,0 +1,12 @@
+.NAME
+    DnsRecordCnameScoped
+
+.SYNOPSIS
+    The DnsRecordCnameScoped DSC resource manages CNAME DNS records against a specific zone and zone scope on a Domain Name System (DNS) server.
+
+.DESCRIPTION
+    The DnsRecordCnameScoped DSC resource manages CNAME DNS records against a specific zone and zone scope on a Domain Name System (DNS) server.
+
+.PARAMETER ZoneScope
+    Key - System.String
+    Specifies the name of a zone scope. (Key Parameter)

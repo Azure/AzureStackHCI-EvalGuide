@@ -1,0 +1,8 @@
+[ClassVersion("1.0.0.0"), FriendlyName("DnsServerZoneAging")]
+class DSC_DnsServerZoneAging : OMI_BaseResource
+{
+    [Key, Description("Name of the DNS forward or reverse lookup zone.")] String Name;
+    [Required, Description("Option to enable scavenge stale resource records on the zone.")] Boolean Enabled;
+    [Write, Description("Refresh interval for record scavenging in hours. Default value is `168`, 7 days.")] UInt32 RefreshInterval;
+    [Write, Description("No-refresh interval for record scavenging in hours. Default value is `168`, 7 days.")] UInt32 NoRefreshInterval;
+};

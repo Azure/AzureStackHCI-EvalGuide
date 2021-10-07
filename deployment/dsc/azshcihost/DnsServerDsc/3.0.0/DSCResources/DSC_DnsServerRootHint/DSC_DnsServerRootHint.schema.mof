@@ -1,0 +1,6 @@
+[ClassVersion("1.0.0.0"), FriendlyName("DnsServerRootHint")]
+class DSC_DnsServerRootHint : OMI_BaseResource
+{
+    [Key, Description("Specifies the resource is a single instance, the value must be `'Yes'`."), ValueMap{"Yes"}, Values{"Yes"}] String IsSingleInstance;
+    [Required, Description("A hashtable that defines the name server. Key and value must be strings."), EmbeddedInstance("MSFT_KeyValuePair")] String NameServer[];
+};

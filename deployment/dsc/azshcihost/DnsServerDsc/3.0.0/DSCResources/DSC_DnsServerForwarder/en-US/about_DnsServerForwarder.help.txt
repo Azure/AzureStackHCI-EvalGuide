@@ -1,0 +1,147 @@
+.NAME
+    DnsServerForwarder
+
+.DESCRIPTION
+    The DnsServerForwarder DSC resource manages the DNS forwarder list of a
+    Domain Name System (DNS) server. If the parameter EnableReordering is set
+    to $false then the preferred forwarder can be put in the series of forwarder
+    IP addresses.
+
+.PARAMETER IsSingleInstance
+    Key - String
+    Allowed values: Yes
+    Specifies the resource is a single instance, the value must be 'Yes'.
+
+.PARAMETER IPAddresses
+    Write - StringArray
+    IP addresses of the forwarders
+
+.PARAMETER UseRootHint
+    Write - Boolean
+    Specifies if you want to use root hint or not.
+
+.PARAMETER EnableReordering
+    Write - Boolean
+    Specifies whether to enable the DNS server to reorder forwarders dynamically.
+
+.PARAMETER Timeout
+    Write - UInt32
+    Specifies the number of seconds that the DNS server waits for a response from the forwarder. The minimum value is 0, and the maximum value is 15.
+
+.EXAMPLE 1
+
+This configuration will set the DNS forwarders
+
+Configuration DnsServerForwarder_set_config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+
+        DnsServerForwarder 'SetForwarders'
+        {
+            IsSingleInstance = 'Yes'
+            IPAddresses      = @('192.168.0.10', '192.168.0.11')
+            UseRootHint      = $false
+        }
+    }
+}
+
+.EXAMPLE 2
+
+This configuration will remove all the DNS forwarders
+
+Configuration DnsServerForwarder_remove_config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsServerForwarder 'SetForwarders'
+        {
+            IsSingleInstance = 'Yes'
+            IPAddresses      = @()
+            UseRootHint      = $false
+        }
+    }
+}
+
+.EXAMPLE 3
+
+This configuration will remove all the DNS forwarders
+
+Configuration DnsServerForwarder_SetUseRootHint_Config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsServerForwarder 'SetUseRootHints'
+        {
+            IsSingleInstance = 'Yes'
+            UseRootHint      = $true
+        }
+    }
+}
+
+.EXAMPLE 4
+
+This configuration will set the DNS forwarders and enable dynamic reordering.
+
+Configuration DnsServerForwarder_EnableReordering_Config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsServerForwarder 'SetUseRootHints'
+        {
+            IsSingleInstance = 'Yes'
+            IPAddresses      = @('192.168.0.10', '192.168.0.11')
+            UseRootHint      = $false
+            EnableReordering = $true
+        }
+    }
+}
+
+.EXAMPLE 5
+
+This configuration will set the DNS forwarders and disable dynamic reordering.
+
+Configuration DnsServerForwarder_DisableReordering_Config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsServerForwarder 'SetUseRootHints'
+        {
+            IsSingleInstance = 'Yes'
+            IPAddresses      = @('192.168.0.10', '192.168.0.11')
+            UseRootHint      = $false
+            EnableReordering = $false
+        }
+    }
+}
+
+.EXAMPLE 6
+
+This configuration will set the DNS forwarders and disable dynamic reordering.
+
+Configuration DnsServerForwarder_SetTimeout_Config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsServerForwarder 'SetUseRootHints'
+        {
+            IsSingleInstance = 'Yes'
+            IPAddresses      = @('192.168.0.10', '192.168.0.11')
+            UseRootHint      = $false
+            Timeout          = 10
+        }
+    }
+}
+

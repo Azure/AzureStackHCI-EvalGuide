@@ -1,0 +1,79 @@
+.NAME
+    DnsRecordNsScoped
+
+.SYNOPSIS
+    The DnsRecordNsScoped DSC resource manages NS DNS records against a specific zone and zone scope on a Domain Name System (DNS) server.
+
+.DESCRIPTION
+    The DnsRecordNsScoped DSC resource manages NS DNS records against a specific zone and zone scope on a Domain Name System (DNS) server.
+
+.PARAMETER ZoneScope
+    Key - System.String
+    Specifies the name of a zone scope. (Key Parameter)
+
+.EXAMPLE 1
+
+This configuration will ensure a DNS NS record exists when only the mandatory properties are specified.
+
+Configuration DnsRecordNsScoped_Mandatory_config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsRecordNsScoped 'TestRecord'
+        {
+            ZoneName   = 'contoso.com'
+            ZoneScope  = 'external'
+            DomainName = 'contoso.com'
+            NameServer = 'ns.contoso.com'
+            Ensure     = 'Present'
+        }
+    }
+}
+
+.EXAMPLE 2
+
+This configuration will ensure a DNS NS record exists when all properties are specified.
+
+Configuration DnsRecordNsScoped_Full_config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsRecordNsScoped 'TestRecord'
+        {
+            ZoneName   = 'contoso.com'
+            ZoneScope  = 'external'
+            DomainName = 'contoso.com'
+            NameServer = 'ns.contoso.com'
+            TimeToLive = '01:00:00'
+            DnsServer  = 'localhost'
+            Ensure     = 'Present'
+        }
+    }
+}
+
+.EXAMPLE 3
+
+This configuration will ensure a DNS NS record does not exist when mandatory properties are specified.
+
+Note that not all mandatory properties are necessarily key properties. Non-key property values will be ignored when determining whether the record is to be removed.
+
+Configuration DnsRecordNsScoped_Remove_config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsRecordNsScoped 'TestRecord'
+        {
+            ZoneName   = 'contoso.com'
+            ZoneScope  = 'external'
+            DomainName = 'contoso.com'
+            NameServer = 'ns.contoso.com'
+            Ensure     = 'Absent'
+        }
+    }
+}

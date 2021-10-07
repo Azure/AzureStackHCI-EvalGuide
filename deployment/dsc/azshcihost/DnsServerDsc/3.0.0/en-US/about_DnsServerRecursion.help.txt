@@ -1,0 +1,52 @@
+.NAME
+    DnsServerRecursion
+
+.SYNOPSIS
+    The DnsServerRecursion DSC resource manages recursion settings on a Microsoft
+    Domain Name System (DNS) server.
+
+.DESCRIPTION
+    The DnsServerRecursion DSC resource manages recursion settings on a Microsoft
+    Domain Name System (DNS) server. Recursion occurs when a DNS server queries
+    other DNS servers on behalf of a requesting client, and then sends the answer
+    back to the client.
+
+    The property SecureResponse that can be set by the cmdlet Set-DnsServerRecursion
+    changes the same value as EnablePollutionProtection in the resource DnsServerCache
+    does. Use the property EnablePollutionProtection in the resource DnsServerCache
+    to enforce pollution protection.
+
+.PARAMETER DnsServer
+    Key - System.String
+    The host name of the Domain Name System (DNS) server, or use 'localhost'
+    for the current node.
+
+.PARAMETER Enable
+    Write - Nullable[System.Boolean]
+    Specifies whether the server enables recursion.
+
+.PARAMETER AdditionalTimeout
+    Write - Nullable[System.UInt32]
+    Specifies the time interval, in seconds, that a DNS server waits as it uses
+    recursion to get resource records from a remote DNS server. Valid values are
+    in the range of 1 second to 15 seconds. See recommendation in the documentation
+    of https://docs.microsoft.com/en-us/powershell/module/dnsserver/set-dnsserverrecursion.
+
+.PARAMETER RetryInterval
+    Write - Nullable[System.UInt32]
+    Specifies elapsed seconds before a DNS server retries a recursive lookup.
+    Valid values are in the range of 1 second to 15 seconds. The
+    recommendation is that in general this value should not be change. However,
+    under a few circumstances it can be considered changing the value. For
+    example, if a DNS server contacts a remote DNS server over a slow link and
+    retries the lookup before it gets a response, it could help to raise the
+    retry interval to be slightly longer than the observed response time.
+    See recommendation in the documentation of https://docs.microsoft.com/en-us/powershell/module/dnsserver/set-dnsserverrecursion.
+
+.PARAMETER Timeout
+    Write - Nullable[System.UInt32]
+    Specifies the number of seconds that a DNS server waits before it stops
+    trying to contact a remote server. The valid value is in the range of 1
+    second to 15 seconds. Recommendation is to increase this value when
+    recursion occurs over a slow link. See recommendation in the documentation
+    of https://docs.microsoft.com/en-us/powershell/module/dnsserver/set-dnsserverrecursion.

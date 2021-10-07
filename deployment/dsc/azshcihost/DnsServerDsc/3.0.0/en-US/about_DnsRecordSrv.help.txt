@@ -1,0 +1,112 @@
+.NAME
+    DnsRecordSrv
+
+.SYNOPSIS
+    The DnsRecordSrv DSC resource manages SRV DNS records against a specific zone on a Domain Name System (DNS) server.
+
+.DESCRIPTION
+    The DnsRecordSrv DSC resource manages SRV DNS records against a specific zone on a Domain Name System (DNS) server.
+
+.PARAMETER SymbolicName
+    Key - System.String
+    Service name for the SRV record. eg: xmpp, ldap, etc. (Key Parameter)
+
+.PARAMETER Protocol
+    Key - System.String
+    Allowed values: TCP, UDP
+    Service transmission protocol ('TCP' or 'UDP') (Key Parameter)
+
+.PARAMETER Port
+    Key - System.UInt16
+    The TCP or UDP port on which the service is found (Key Parameter)
+
+.PARAMETER Target
+    Key - System.String
+    Specifies the Target Hostname or IP Address. (Key Parameter)
+
+.PARAMETER Priority
+    Required - System.UInt16
+    Specifies the Priority value of the SRV record. (Mandatory Parameter)
+
+.PARAMETER Weight
+    Required - System.UInt16
+    Specifies the weight of the SRV record. (Mandatory Parameter)
+
+.EXAMPLE 1
+
+This configuration will ensure a DNS SRV record exists for
+XMPP that points to chat.contoso.com with a priority
+of 10, weight of 20.
+
+Configuration DnsRecordSrv_config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsRecordSrv 'TestRecord'
+        {
+            ZoneName     = 'contoso.com'
+            SymbolicName = 'xmpp'
+            Protocol     = 'tcp'
+            Port         = 5222
+            Target       = 'chat.contoso.com'
+            Priority     = 10
+            Weight       = 20
+            Ensure       = 'Present'
+        }
+    }
+}
+
+.EXAMPLE 2
+
+This configuration will ensure a DNS SRV record exists for
+XMPP that points to chat.contoso.com with a priority of 20,
+weight of 50 and TTL of 5 hours.
+
+Configuration DnsRecordSrv_full_config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsRecordSrv 'TestRecord Full'
+        {
+            ZoneName     = 'contoso.com'
+            SymbolicName = 'xmpp'
+            Protocol     = 'tcp'
+            Port         = 5222
+            Target       = 'chat.contoso.com'
+            Priority     = 20
+            Weight       = 50
+            TimeToLive   = '05:00:00'
+            Ensure       = 'Present'
+        }
+    }
+}
+
+.EXAMPLE 3
+
+This configuration will remove a specified DNS SRV record. Note that
+Priority and Weight are mandatory attributes, but their values are not
+used to determine which record to remove.
+
+Configuration DnsRecordSrv_Remove_config
+{
+    Import-DscResource -ModuleName 'DnsServerDsc'
+
+    Node localhost
+    {
+        DnsRecordSrv 'RemoveTestRecord'
+        {
+            ZoneName     = 'contoso.com'
+            SymbolicName = 'xmpp'
+            Protocol     = 'tcp'
+            Port         = 5222
+            Target       = 'chat.contoso.com'
+            Priority     = 0
+            Weight       = 0
+            Ensure       = 'Absent'
+        }
+    }
+}
