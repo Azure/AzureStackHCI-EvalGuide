@@ -192,7 +192,7 @@ Complete Registration
 
 To complete registration, you have 2 options - you can use **Windows Admin Center**, or you can use **PowerShell**. For this lab, it's recommended to use the PowerShell approach, due to a few unpredictible erros in the lab environment, likely due to WAC installed on the domain controller.
 
-#### Option 1 - Register using PowerShell ####
+### Option 1 - Register using PowerShell ###
 We're going to perform the registration from the **AzSHCIHost001** machine, which we've been using with the Windows Admin Center.
 
 1. On **AzSHCIHost001**, open **PowerShell ISE as administrator**
@@ -280,7 +280,7 @@ Invoke-Command -ComputerName AZSHCINODE01 -ScriptBlock {
 
 You can see the **ConnectionStatus** and **LastConnected** time, which is usually within the last day unless the cluster is temporarily disconnected from the Internet. An Azure Stack HCI 20H2 cluster can operate fully offline for up to 30 consecutive days.
 
-#### Option 2 - Register using Windows Admin Center ####
+### Option 2 - Register using Windows Admin Center ###
 
 1. On **AzSHCIHost001**, logged in as **azshci\azureuser**, open the Windows Admin Center, and on the **All connections** page, select your azshciclus
 2. When the cluster dashboard has loaded, in the top-right corner, you'll see the **status of the Azure registration/connection**
