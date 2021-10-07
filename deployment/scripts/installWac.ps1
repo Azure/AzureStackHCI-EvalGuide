@@ -10,7 +10,7 @@ Invoke-WebRequest -UseBasicParsing -Uri 'https://aka.ms/WACDownload' -OutFile "C
 $msiArgs = @("/i", "C:\WAC\WindowsAdminCenter.msi", "/qn", "/L*v", "log.txt", "SME_PORT=443", "SSL_CERTIFICATE_OPTION=generate")
 Start-Process msiexec.exe -Wait -ArgumentList $msiArgs
 
-<# Update WAC Extensions
+# Update WAC Extensions
 Import-Module "$env:ProgramFiles\windows admin center\PowerShell\Modules\ExtensionTools" -Verbose
 
 # Specify the WAC gateway
@@ -21,4 +21,4 @@ $extensions = Get-Extension $WAC | Where-Object { $_.isLatestVersion -like 'Fals
 
 ForEach ($extension in $extensions) {    
     Update-Extension $WAC -ExtensionId $extension.Id -Verbose | out-file -append C:\Users\Public\WACUpdateLog$(get-date -f MM-dd-yyyy_HH_mm).txt
-} #>
+}
