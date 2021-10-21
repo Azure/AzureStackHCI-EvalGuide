@@ -246,7 +246,7 @@ configuration AzSHCIHost
             }
 
             SetScript  = {
-                $ssuSearchString = "Servicing Stack Update for Azure Stack HCI, version 20H2 for x64-based Systems"
+                $ssuSearchString = "Servicing Stack Update for Azure Stack HCI, version 21H2 for x64-based Systems"
                 $ssuID = "Azure Stack HCI"
                 $ssuUpdate = Get-MSCatalogUpdate -Search $ssuSearchString | Where-Object Products -eq $ssuID | Select-Object -First 1
                 $ssuUpdate | Save-MSCatalogUpdate -Destination $using:ssuPath
@@ -267,7 +267,7 @@ configuration AzSHCIHost
             }
 
             SetScript  = {
-                $cuSearchString = "Cumulative Update for Azure Stack HCI, version 20H2"
+                $cuSearchString = "Cumulative Update for Azure Stack HCI, version 21H2"
                 $cuID = "Azure Stack HCI"
                 $cuUpdate = Get-MSCatalogUpdate -Search $cuSearchString | Where-Object Products -eq $cuID | Where-Object Title -like "*$($cuSearchString)*" | Select-Object -First 1
                 $cuUpdate | Save-MSCatalogUpdate -Destination $using:cuPath

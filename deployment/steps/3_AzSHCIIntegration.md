@@ -239,7 +239,7 @@ Register-AzStackHCI `
     -Region "EastUS" `
     -EnvironmentName "AzureCloud" `
     -ComputerName "AZSHCINODE01.azshci.local" `
-    –Credential $azshciNodeCreds `
+    –Credential $azshciNodeCreds
 ```
 
 Of these commands, many are optional:
@@ -299,17 +299,13 @@ You can see the **ConnectionStatus** and **LastConnected** time, which is usuall
 ![Permissions for Windows Admin Center](/deployment/media/wac_azure_permissions.png "Permissions for Windows Admin Center")
 
 8. Back in Windows Admin Center, you may need to refresh the page if your 'Register this cluster' link is not active. Once active, click **Register this cluster** and you should be presented with a window requesting more information.
-9.  Choose your **Azure subscription** that you'd like to use to register, along with an **Azure resource group** and **region**, then click **Register**.  This will take a few moments.
+9.  Choose your **Azure subscription** that you'd like to use to register, along with an **Azure resource group** and **region**. You can also expand **advanced** to see that **Enable Azure **Arc**** enabled by default. Click **Register**.  This will take a few moments.
 
-![Final step for registering Azure Stack HCI with Windows Admin Center](/deployment/media/wac_azure_register.png "Final step for registering Azure Stack HCI with Windows Admin Center")
+![Final step for registering Azure Stack HCI with Windows Admin Center](/deployment/media/wac_azure_register_21H2.png "Final step for registering Azure Stack HCI with Windows Admin Center")
 
 10. Once completed, you should see updated status on the Windows Admin Center dashboard, showing that the cluster has been correctly registered.
 
 ![Azure registration status in Windows Admin Center](/deployment/media/wac_azure_reg_dashboard_3.png "Azure registration status in Windows Admin Center")
-
-**NOTE** - If you receive an error message like the one below, this can be ignored, your cluster will still be registered successfully.
-
-![Azure Arc Registration issue in Windows Admin Center](/deployment/media/wac_azure_arc_register_error.png "Azure Arc Registration issue in Windows Admin Center")
 
 You can now proceed on to [Viewing registration details in the Azure portal](#View-registration-details-in-the-Azure-portal)
 
@@ -324,7 +320,7 @@ With registration complete, either through Windows Admin Center, or through Powe
 12. Click on the **AZSHCICLUS_RG** resource group, and in the central pane, you'll see that a record with the name **azshciclus** has been created inside the resource group
 13. Click on the **azihciclus** record, and you'll be taken to the new Azure Stack HCI Resource Provider, which shows information about all of your clusters, including details on the currently selected cluster
 
-![Overview of the recently registered cluster in the Azure portal](/deployment/media/azure_portal_hcicluster.png "Overview of the recently registered cluster in the Azure portal")
+![Overview of the recently registered cluster in the Azure portal](/deployment/media/azure_portal_hcicluster_21H2.png "Overview of the recently registered cluster in the Azure portal")
 
 **NOTE** - If when you ran **Register-AzureStackHCI**, you don't have appropriate permissions in Azure Active Directory, to grant admin consent, you will need to work with your Azure Active Directory administrator to complete registration later. You can exit and leave the registration in status "**pending admin consent**," i.e. partially completed. Once consent has been granted, **simply re-run Register-AzureStackHCI** to complete registration.
 
