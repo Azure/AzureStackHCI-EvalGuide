@@ -753,9 +753,18 @@ configuration AzSHCIHost
                 
                 $scratchPath = "$using:targetVMPath\Scratch"
                 New-Item -ItemType Directory -Path "$scratchPath" -Force | Out-Null
+                
+                # Determine if any SSUs are available
+                $ssu = Test-Path -Path "$using:ssuPath\*" -Include "*.msu"
 
-                Convert-WindowsImage -SourcePath $using:azsHCIISOLocalPath -SizeBytes 100GB -VHDPath $using:azsHciVhdPath `
-                    -VHDFormat VHDX -VHDType Dynamic -VHDPartitionStyle GPT -Package $using:ssuPath -TempDirectory $using:targetVMPath -Verbose
+                if ($ssu) {
+                    Convert-WindowsImage -SourcePath $using:azsHCIISOLocalPath -SizeBytes 100GB -VHDPath $using:azsHciVhdPath `
+                        -VHDFormat VHDX -VHDType Dynamic -VHDPartitionStyle GPT -Package $using:ssuPath -TempDirectory $using:targetVMPath -Verbose
+                }
+                else {
+                    Convert-WindowsImage -SourcePath $using:azsHCIISOLocalPath -SizeBytes 100GB -VHDPath $using:azsHciVhdPath `
+                        -VHDFormat VHDX -VHDType Dynamic -VHDPartitionStyle GPT -TempDirectory $using:targetVMPath -Verbose
+                }
 
                 <#
                 Convert-Wim2Vhd -DiskLayout UEFI -SourcePath $using:azsHCIISOLocalPath -Path $using:azsHciVhdPath `
