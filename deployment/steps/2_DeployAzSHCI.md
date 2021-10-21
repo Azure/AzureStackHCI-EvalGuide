@@ -1,9 +1,9 @@
-Configure your Azure Stack HCI 20H2 Cluster
+Configure your Azure Stack HCI 21H2 Cluster
 ==============
 Overview
 -----------
 
-So far, you've deployed your Azure VM, that has all the relevant roles and features enabled, including Hyper-V, AD Domain Services, DNS and DHCP. The VM deployment also orchestrated the download of all required binaries, as well as creating and deploying 2 Azure Stack HCI 20H2 nodes, which you'll be configuring in this step.
+So far, you've deployed your Azure VM, that has all the relevant roles and features enabled, including Hyper-V, AD Domain Services, DNS and DHCP. The VM deployment also orchestrated the download of all required binaries, as well as creating and deploying 2 Azure Stack HCI 21H2 nodes, which you'll be configuring in this step.
 
 Contents
 -----------
@@ -21,13 +21,13 @@ Contents
 Architecture
 -----------
 
-As shown on the architecture graphic below, in this step, you'll take the nodes that were previously deployed, and be **clustering them into an Azure Stack HCI 20H2 cluster**. You'll be focused on **creating a cluster in a single site**.
+As shown on the architecture graphic below, in this step, you'll take the nodes that were previously deployed, and be **clustering them into an Azure Stack HCI 21H2 cluster**. You'll be focused on **creating a cluster in a single site**.
 
-![Architecture diagram for Azure Stack HCI 20H2 nested](/deployment/media/nested_virt_arch_ga_oct21.png "Architecture diagram for Azure Stack HCI 20H2 nested")
+![Architecture diagram for Azure Stack HCI 21H2 nested](/deployment/media/nested_virt_arch_ga_oct21.png "Architecture diagram for Azure Stack HCI 21H2 nested")
 
 Before you begin
 -----------
-With Windows Admin Center, you now have the ability to construct Azure Stack HCI 20H2 clusters from the vanilla nodes.  There are no additional extensions to install, the workflow is built in and ready to go, however, it's worth checking to ensure that your Cluster Creation extension is fully up to date and making a few changes to the Edge browser.
+With Windows Admin Center, you now have the ability to construct Azure Stack HCI 21H2 clusters from the vanilla nodes.  There are no additional extensions to install, the workflow is built in and ready to go, however, it's worth checking to ensure that your Cluster Creation extension is fully up to date and making a few changes to the Edge browser.
 
 ### Set Microsoft Edge as default browser ###
 
@@ -74,16 +74,16 @@ You're now ready to begin deployment of your Azure Stack HCI cluster with Window
 * **Storage** - Configures Storage Spaces Direct
 
 ### Decide on cluster type ###
-Not only does Azure Stack HCI 20H2 support a cluster in a single site (or a **local cluster** as we'll refer to it going forward) consisting of between 2 and 16 nodes, but, also supports a **Stretch Cluster**, where a single cluster can have nodes distrubuted across two sites.
+Not only does Azure Stack HCI 21H2 support a cluster in a single site (or a **local cluster** as we'll refer to it going forward) consisting of between 2 and 16 nodes, but, also supports a **Stretch Cluster**, where a single cluster can have nodes distrubuted across two sites.
 
-* If you have 2 Azure Stack HCI 20H2 nodes, you will be able to create a **local cluster**
-* If you have 4 Azure Stack HCI 20H2 nodes, you will have a choice of creating either a **local cluster** or a **stretch cluster**
+* If you have 2 Azure Stack HCI 21H2 nodes, you will be able to create a **local cluster**
+* If you have 4 Azure Stack HCI 21H2 nodes, you will have a choice of creating either a **local cluster** or a **stretch cluster**
 
 In this workshop, we'll be focusing on deploying a **local cluster** but if you're interested in deploying a stretch cluster, you can [check out the official docs](https://docs.microsoft.com/en-us/azure-stack/hci/concepts/stretched-clusters "Stretched clusters overview on Microsoft Docs")
 
 Creating a (local) cluster
 -----------
-This section will walk through the key steps for you to set up the Azure Stack HCI 20H2 cluster with the Windows Admin Center
+This section will walk through the key steps for you to set up the Azure Stack HCI 21H2 cluster with the Windows Admin Center
 
 1. Connect to your **AzSHCIHost001**, and open **Windows Admin Center** using the shortcut on your desktop.
 2. Once logged into Windows Admin Center, under **All connections**, click **Add**
@@ -95,7 +95,7 @@ This section will walk through the key steps for you to set up the Azure Stack H
 
 1. Ensure you select **Azure Stack HCI**, select **All servers in one site** and cick **Create**
 2. On the **Check the prerequisites** page, review the requirements and click **Next**
-3. On the **Add Servers** page, supply a **username**, which should be **azshci\azureuser** and **password-you-used-at-VM-deployment-time** and then one by one, enter the node names of your Azure Stack HCI 20H2 nodes (AZSHCINODE01 and AZSHCINODE02), clicking **Add** after each one has been located.  Each node will be validated, and given a **Ready** status when fully validated.  This may take a few moments - once you've added all nodes, click **Next**
+3. On the **Add Servers** page, supply a **username**, which should be **azshci\azureuser** and **password-you-used-at-VM-deployment-time** and then one by one, enter the node names of your Azure Stack HCI 21H2 nodes (AZSHCINODE01 and AZSHCINODE02), clicking **Add** after each one has been located.  Each node will be validated, and given a **Ready** status when fully validated.  This may take a few moments - once you've added all nodes, click **Next**
 
 ![Add servers in the Create Cluster wizard](/deployment/media/add_nodes_ga.png "Add servers in the Create Cluster wizard")
 
@@ -125,10 +125,10 @@ The first key step with setting up the networking with Windows Admin Center, is 
 As it stands, this is the way that the Windows Admin Center approaches the network configuration, however, if you were not using the Windows Admin Center, through PowerShell, there are a number of different ways to configure the network to meet your needs. We will work through the Windows Admin Center approach in this guide.
 
 #### Network Setup Overview ####
-Each of your Azure Stack HCI 20H2 nodes should have 4 NICs.  For this simple evaluation, you'll dedicate the NICs in the following way:
+Each of your Azure Stack HCI 21H2 nodes should have 4 NICs.  For this simple evaluation, you'll dedicate the NICs in the following way:
 
 * 1 NIC will be dedicated to management. This NIC will reside on the 192.168.0.0/16 subnet. No virtual switch will be attached to this NIC.
-* 1 NIC will be dedicated to VM traffic. A virtual switch will be attached to this NIC and the Azure Stack HCI 20H2 host will no longer use this NIC for it's own traffic.
+* 1 NIC will be dedicated to VM traffic. A virtual switch will be attached to this NIC and the Azure Stack HCI 21H2 host will no longer use this NIC for it's own traffic.
 * 2 NICs will be dedicated to storage traffic. They will reside on 2 separate subnets, 10.10.11.0/24 and 10.10.12.0/24. No virtual switches will be attached to these NICs.
 
 Again, this is just one **example** network configuration for the simple purpose of evaluation.
@@ -146,7 +146,7 @@ Again, this is just one **example** network configuration for the simple purpose
 
 ![Select vSwitch in the Create Cluster wizard](/deployment/media/wac_vswitches_ga.png "Select vSwitch in the Create Cluster wizard")
 
-* **Create one virtual switch for compute and storage together** - in this configuration, your Azure Stack HCI 20H2 nodes will create a vSwitch, comprised of multiple NICs, and the bandwidth available across these NICs will be shared by the Azure Stack HCI 20H2 nodes themselves, for storage traffic, and in addition, any VMs you deploy on top of the nodes, will also share this bandwidth.
+* **Create one virtual switch for compute and storage together** - in this configuration, your Azure Stack HCI 21H2 nodes will create a vSwitch, comprised of multiple NICs, and the bandwidth available across these NICs will be shared by the Azure Stack HCI 21H2 nodes themselves, for storage traffic, and in addition, any VMs you deploy on top of the nodes, will also share this bandwidth.
 * **Create one virtual switch for compute only** - in this configuration, you would leave some NICs dedicated to storage traffic, and have a set of NICs attached to a vSwitch, to which your VMs traffic would be dedicated.
 * **Create two virtual switches** - in this configuration, you can create separate vSwitches, each attached to different sets of underlying NICs.  This may be useful if you wish to dedicate a set of underlying NICs to VM traffic, and another set to storage traffic, but wish to have vNICs used for storage communication instead of the underlying NICs.
 * You also have a check-box for **Skip virtual switch creation** - if you want to define things later, that's fine too
@@ -191,7 +191,7 @@ With the network configured for the workshop environment, it's time to construct
 
 2. Cluster validation will then start, and will take a few moments to complete - once completed, you should see a successful message.
 
-**NOTE** - Cluster validation is intended to catch hardware or configuration problems before a cluster goes into production. Cluster validation helps to ensure that the Azure Stack HCI 20H2 solution that you're about to deploy is truly dependable. You can also use cluster validation on configured failover clusters as a diagnostic tool. If you're interested in learning more about Cluster Validation, [check out the official docs](https://docs.microsoft.com/en-us/azure-stack/hci/deploy/validate "Cluster validation official documentation").
+**NOTE** - Cluster validation is intended to catch hardware or configuration problems before a cluster goes into production. Cluster validation helps to ensure that the Azure Stack HCI 21H2 solution that you're about to deploy is truly dependable. You can also use cluster validation on configured failover clusters as a diagnostic tool. If you're interested in learning more about Cluster Validation, [check out the official docs](https://docs.microsoft.com/en-us/azure-stack/hci/deploy/validate "Cluster validation official documentation").
 
 ![Validation complete in the Create Cluster wizard](/deployment/media/wac_validated_ga.png "Validation complete in the Create Cluster wizard")
 
@@ -241,7 +241,7 @@ With Storage configured, for the purpose of this lab, we will skip the SDN confi
 
 Configuring the cluster witness
 -----------
-By deploying an Azure Stack HCI 20H2 cluster, you're providing high availability for workloads. These resources are considered highly available if the nodes that host resources are up; however, the cluster generally requires more than half the nodes to be running, which is known as having quorum.
+By deploying an Azure Stack HCI 21H2 cluster, you're providing high availability for workloads. These resources are considered highly available if the nodes that host resources are up; however, the cluster generally requires more than half the nodes to be running, which is known as having quorum.
 
 Quorum is designed to prevent split-brain scenarios which can happen when there is a partition in the network and subsets of nodes cannot communicate with each other. This can cause both subsets of nodes to try to own the workload and write to the same disk which can lead to numerous problems. However, this is prevented with Failover Clustering's concept of quorum which forces only one of these groups of nodes to continue running, so only one of these groups will stay online.
 
@@ -295,20 +295,20 @@ As part of this guide, we're going to set up cluster quorum, using **Windows Adm
 18. Within a few moments, your witness settings should be successfully applied and you have now completed configuring the quorum settings for the **azshciclus** cluster.
 
 ### Congratulations! ###
-You've now successfully deployed and configured your Azure Stack HCI 20H2 cluster!
+You've now successfully deployed and configured your Azure Stack HCI 21H2 cluster!
 
 Next Steps
 -----------
-In this step, you've successfully created a nested Azure Stack HCI 20H2 cluster using Windows Admin Center. With this complete, you can now [Integrate Azure Stack HCI 20H2 with Azure](/deployment/steps/3_AzSHCIIntegration.md "Integrate Azure Stack HCI 20H2 with Azure")
+In this step, you've successfully created a nested Azure Stack HCI 21H2 cluster using Windows Admin Center. With this complete, you can now [Integrate Azure Stack HCI 21H2 with Azure](/deployment/steps/3_AzSHCIIntegration.md "Integrate Azure Stack HCI 21H2 with Azure")
 
 Product improvements
 -----------
 If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI, Windows Admin Center, or the Azure Arc integration and experience, let us know! We want to hear from you!
 
-For **Azure Stack HCI**, [Head on over to the Azure Stack HCI 20H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 20H2 Q&A"), where you can share your thoughts and ideas about making the technologies better and raise an issue if you're having trouble with the technology.
+For **Azure Stack HCI**, [Head on over to the Azure Stack HCI 21H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 21H2 Q&A"), where you can share your thoughts and ideas about making the technologies better and raise an issue if you're having trouble with the technology.
 
 Raising issues
 -----------
 If you notice something is wrong with this guide, such as a step isn't working, or something just doesn't make sense - help us to make this guide better!  Raise an issue in GitHub, and we'll be sure to fix this as quickly as possible!
 
-If you're having an issue with Azure Stack HCI 20H2 **outside** of this guide, [head on over to the Azure Stack HCI 20H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 20H2 Q&A"), where Microsoft experts and valuable members of the community will do their best to help you.
+If you're having an issue with Azure Stack HCI 21H2 **outside** of this guide, [head on over to the Azure Stack HCI 21H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 21H2 Q&A"), where Microsoft experts and valuable members of the community will do their best to help you.
