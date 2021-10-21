@@ -1,9 +1,9 @@
-Integrate Azure Stack HCI 20H2 with Azure
+Integrate Azure Stack HCI 21H2 with Azure
 ==============
 Overview
 -----------
 
-With your Azure Stack HCI 20H2 cluster deployed successfully, you need to register this cluster to unlock full functionality.
+With your Azure Stack HCI 21H2 cluster deployed successfully, you need to register this cluster to unlock full functionality.
 
 Contents
 -----------
@@ -15,16 +15,16 @@ Contents
 - [Product improvements](#product-improvements)
 - [Raising issues](#raising-issues)
 
-Azure Stack HCI 20H2 is delivered as an Azure service and needs to register within 30 days of installation per the Azure Online Services Terms.  With our cluster configured, we'll now register your Azure Stack HCI 20H2 cluster with **Azure Arc** for monitoring, support, billing, and hybrid services. Upon registration, an Azure Resource Manager resource is created to represent each on-premises Azure Stack HCI 20H2 cluster, effectively extending the Azure management plane to Azure Stack HCI 20H2. Information is periodically synced between the Azure resource and the on-premises cluster.  One great aspect of Azure Stack HCI 20H2, is that the Azure Arc registration is a native capability of Azure Stack HCI 20H2, so there is no agent required.
+Azure Stack HCI 21H2 is delivered as an Azure service and needs to register within 30 days of installation per the Azure Online Services Terms.  With our cluster configured, we'll now register your Azure Stack HCI 21H2 cluster with **Azure Arc** for monitoring, support, billing, and hybrid services. Upon registration, an Azure Resource Manager resource is created to represent each on-premises Azure Stack HCI 21H2 cluster, effectively extending the Azure management plane to Azure Stack HCI 21H2. Information is periodically synced between the Azure resource and the on-premises cluster.  One great aspect of Azure Stack HCI 21H2, is that the Azure Arc registration is a native capability of Azure Stack HCI 21H2, so there is no agent required.
 
-**NOTE** - After registering your Azure Stack HCI 20H2 cluster, the **first 60 days usage will be free**.
+**NOTE** - After registering your Azure Stack HCI 21H2 cluster, the **first 60 days usage will be free**.
 
 Prerequisites for cluster registration
 -----------
 
-Firstly, **you need an Azure Stack HCI 20H2 cluster**, which we've just created, so you're good there.
+Firstly, **you need an Azure Stack HCI 21H2 cluster**, which we've just created, so you're good there.
 
-Your nodes need to have **internet connectivity** in order to register and communicate with Azure.  If you've been running nested in Azure, you should have this already set up correctly, but if you're running nested on a local physical machine, make any necessary adjustments to your InternalNAT switch to allow internet connections through to your nested Azure Stack HCI 20H2 nodes.
+Your nodes need to have **internet connectivity** in order to register and communicate with Azure.  If you've been running nested in Azure, you should have this already set up correctly, but if you're running nested on a local physical machine, make any necessary adjustments to your InternalNAT switch to allow internet connections through to your nested Azure Stack HCI 21H2 nodes.
 
 You'll need an **Azure subscription**, along with appropriate **Azure Active Directory permissions** to complete the registration process. If you don't already have them, you'll need to ask your Azure AD administrator to grant permissions or delegate them to you.  You can learn more about this below.
 
@@ -197,7 +197,7 @@ We're going to perform the registration from the **AzSHCIHost001** machine, whic
 
 1. On **AzSHCIHost001**, open **PowerShell ISE as administrator**
 2. In the file menu, click **Open** and navigate to **V:\Source** and open **Register-AzSHCI**
-3. When the script file opens, select and run the following code to install the PowerShell Module for Azure Stack HCI 20H2 on that machine.
+3. When the script file opens, select and run the following code to install the PowerShell Module for Azure Stack HCI 21H2 on that machine.
 
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
@@ -208,7 +208,7 @@ Install-Module Az.StackHCI
 
 In addition, in future releases, installing the Azure PowerShell **Az** modules will include **StackHCI**, however today, you have to install this module specifically, using the command **Install-Module Az.StackHCI**
 
-4. With the Az.StackHCI modules installed, it's now time to register your Azure Stack HCI 20H2 cluster to Azure, however first, it's worth exploring how to check existing registration status.  The following code assumes you are still in the remote PowerShell session open from the previous commands.
+4. With the Az.StackHCI modules installed, it's now time to register your Azure Stack HCI 21H2 cluster to Azure, however first, it's worth exploring how to check existing registration status.  The following code assumes you are still in the remote PowerShell session open from the previous commands.
 
 ```powershell
 Invoke-Command -ComputerName AZSHCINODE01 -ScriptBlock {
@@ -216,9 +216,9 @@ Invoke-Command -ComputerName AZSHCINODE01 -ScriptBlock {
 }
 ```
 
-![Check the registration status of the Azure Stack HCI 20H2 cluster](/deployment/media/reg_check.png "Check the registration status of the Azure Stack HCI 20H2 cluster")
+![Check the registration status of the Azure Stack HCI 21H2 cluster](/deployment/media/reg_check.png "Check the registration status of the Azure Stack HCI 21H2 cluster")
 
-As you can see from the result, the cluster is yet to be registered, and the cluster status identifies as **Clustered**. Azure Stack HCI 20H2 needs to register within 30 days of installation per the Azure Online Services Terms. If not clustered after 30 days, the **ClusterStatus** will show **OutOfPolicy**, and if not registered after 30 days, the **RegistrationStatus** will show **OutOfPolicy**.
+As you can see from the result, the cluster is yet to be registered, and the cluster status identifies as **Clustered**. Azure Stack HCI 21H2 needs to register within 30 days of installation per the Azure Online Services Terms. If not clustered after 30 days, the **ClusterStatus** will show **OutOfPolicy**, and if not registered after 30 days, the **RegistrationStatus** will show **OutOfPolicy**.
 
 5. To register the cluster, you'll first need to get your **Azure subscription ID**.  An easy way to do this is to quickly **log into https://portal.azure.com**, and in the **search box** at the top of the screen, search for **subscriptions** and then click on **Subscriptions**
 
@@ -239,13 +239,13 @@ Register-AzStackHCI `
     -Region "EastUS" `
     -EnvironmentName "AzureCloud" `
     -ComputerName "AZSHCINODE01.azshci.local" `
-    –Credential $azshciNodeCreds `
+    –Credential $azshciNodeCreds
 ```
 
 Of these commands, many are optional:
 
-* **-ResourceName** - If not declared, the Azure Stack HCI 20H2 cluster name is used
-* **-ResourceGroupName** - If not declared, the Azure Stack HCI 20H2 cluster plus the suffix "-rg" is used
+* **-ResourceName** - If not declared, the Azure Stack HCI 21H2 cluster name is used
+* **-ResourceGroupName** - If not declared, the Azure Stack HCI 21H2 cluster plus the suffix "-rg" is used
 * **-Region** - If not declared, "EastUS" will be used.  Additional regions are supported, with the longer term goal to integrate with Azure Arc in all Azure regions.
 * **-EnvironmentName** - If not declared, "AzureCloud" will be used, but allowed values will include additional environments in the future
 * **-ComputerName** - This is used when running the commands remotely against a cluster.  Just make sure you're using a domain account that has admin privilege on the nodes and cluster
@@ -259,12 +259,12 @@ Of these commands, many are optional:
 
 9. Once successfully authenticated, the registration process will begin, and will take a few moments. Once complete, you should see a message indicating success, as per below:
 
-![Register Azure Stack HCI 20H2 with PowerShell](/deployment/media/register_azshci_ga.png "Register Azure Stack HCI 20H2 with PowerShell")
+![Register Azure Stack HCI 21H2 with PowerShell](/deployment/media/register_azshci_ga.png "Register Azure Stack HCI 21H2 with PowerShell")
 
 **NOTE** - if upon registering, you receive an error similar to that below, please **try a different region**.  You can still proceed to [Step 5](#next-steps) and continue with your evaluation, and it won't affect any functionality.  Just make sure you come back and register later!
 
 ```
-Register-AzStackHCI : Azure Stack HCI 20H2 is not yet available in region <regionName>
+Register-AzStackHCI : Azure Stack HCI 21H2 is not yet available in region <regionName>
 ```
 
 **NOTE** - if upon registering, you receive an error stating "Azure Arc integration isn't available for the version of Azure Stack HCI installed on node(s)", this can be safely ignored
@@ -278,7 +278,7 @@ Invoke-Command -ComputerName AZSHCINODE01 -ScriptBlock {
 ```
 ![Check updated registration status with PowerShell](/deployment/media/registration_status.png "Check updated registration status with PowerShell")
 
-You can see the **ConnectionStatus** and **LastConnected** time, which is usually within the last day unless the cluster is temporarily disconnected from the Internet. An Azure Stack HCI 20H2 cluster can operate fully offline for up to 30 consecutive days.
+You can see the **ConnectionStatus** and **LastConnected** time, which is usually within the last day unless the cluster is temporarily disconnected from the Internet. An Azure Stack HCI 21H2 cluster can operate fully offline for up to 30 consecutive days.
 
 ### Option 2 - Register using Windows Admin Center ###
 
@@ -299,17 +299,13 @@ You can see the **ConnectionStatus** and **LastConnected** time, which is usuall
 ![Permissions for Windows Admin Center](/deployment/media/wac_azure_permissions.png "Permissions for Windows Admin Center")
 
 8. Back in Windows Admin Center, you may need to refresh the page if your 'Register this cluster' link is not active. Once active, click **Register this cluster** and you should be presented with a window requesting more information.
-9.  Choose your **Azure subscription** that you'd like to use to register, along with an **Azure resource group** and **region**, then click **Register**.  This will take a few moments.
+9.  Choose your **Azure subscription** that you'd like to use to register, along with an **Azure resource group** and **region**. You can also expand **advanced** to see that **Enable Azure **Arc**** enabled by default. Click **Register**.  This will take a few moments.
 
-![Final step for registering Azure Stack HCI with Windows Admin Center](/deployment/media/wac_azure_register.png "Final step for registering Azure Stack HCI with Windows Admin Center")
+![Final step for registering Azure Stack HCI with Windows Admin Center](/deployment/media/wac_azure_register_21H2.png "Final step for registering Azure Stack HCI with Windows Admin Center")
 
 10. Once completed, you should see updated status on the Windows Admin Center dashboard, showing that the cluster has been correctly registered.
 
 ![Azure registration status in Windows Admin Center](/deployment/media/wac_azure_reg_dashboard_3.png "Azure registration status in Windows Admin Center")
-
-**NOTE** - If you receive an error message like the one below, this can be ignored, your cluster will still be registered successfully.
-
-![Azure Arc Registration issue in Windows Admin Center](/deployment/media/wac_azure_arc_register_error.png "Azure Arc Registration issue in Windows Admin Center")
 
 You can now proceed on to [Viewing registration details in the Azure portal](#View-registration-details-in-the-Azure-portal)
 
@@ -324,25 +320,25 @@ With registration complete, either through Windows Admin Center, or through Powe
 12. Click on the **AZSHCICLUS_RG** resource group, and in the central pane, you'll see that a record with the name **azshciclus** has been created inside the resource group
 13. Click on the **azihciclus** record, and you'll be taken to the new Azure Stack HCI Resource Provider, which shows information about all of your clusters, including details on the currently selected cluster
 
-![Overview of the recently registered cluster in the Azure portal](/deployment/media/azure_portal_hcicluster.png "Overview of the recently registered cluster in the Azure portal")
+![Overview of the recently registered cluster in the Azure portal](/deployment/media/azure_portal_hcicluster_21H2.png "Overview of the recently registered cluster in the Azure portal")
 
 **NOTE** - If when you ran **Register-AzureStackHCI**, you don't have appropriate permissions in Azure Active Directory, to grant admin consent, you will need to work with your Azure Active Directory administrator to complete registration later. You can exit and leave the registration in status "**pending admin consent**," i.e. partially completed. Once consent has been granted, **simply re-run Register-AzureStackHCI** to complete registration.
 
 ### Congratulations! ###
-You've now successfully registered your Azure Stack HCI 20H2 cluster!
+You've now successfully registered your Azure Stack HCI 21H2 cluster!
 
 Next Steps
 -----------
-In this step, you've successfully registered your Azure Stack HCI 20H2 cluster. With this complete, you can now move on to [Explore the management of your Azure Stack HCI 20H2 environment](/deployment/steps/4_ExploreAzSHCI.md "Explore the management of your Azure Stack HCI 20H2 environment")
+In this step, you've successfully registered your Azure Stack HCI 21H2 cluster. With this complete, you can now move on to [Explore the management of your Azure Stack HCI 21H2 environment](/deployment/steps/4_ExploreAzSHCI.md "Explore the management of your Azure Stack HCI 21H2 environment")
 
 Product improvements
 -----------
 If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI, Windows Admin Center, or the Azure Arc integration and experience, let us know! We want to hear from you!
 
-For **Azure Stack HCI**, [Head on over to the Azure Stack HCI 20H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 20H2 Q&A"), where you can share your thoughts and ideas about making the technologies better and raise an issue if you're having trouble with the technology.
+For **Azure Stack HCI**, [Head on over to the Azure Stack HCI 21H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 21H2 Q&A"), where you can share your thoughts and ideas about making the technologies better and raise an issue if you're having trouble with the technology.
 
 Raising issues
 -----------
 If you notice something is wrong with this guide, such as a step isn't working, or something just doesn't make sense - help us to make this guide better!  Raise an issue in GitHub, and we'll be sure to fix this as quickly as possible!
 
-If you're having an issue with Azure Stack HCI 20H2 **outside** of this guide, [head on over to the Azure Stack HCI 20H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 20H2 Q&A"), where Microsoft experts and valuable members of the community will do their best to help you.
+If you're having an issue with Azure Stack HCI 21H2 **outside** of this guide, [head on over to the Azure Stack HCI 21H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 21H2 Q&A"), where Microsoft experts and valuable members of the community will do their best to help you.

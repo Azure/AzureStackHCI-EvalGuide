@@ -4,7 +4,7 @@ Overview
 -----------
 With the introduction of [nested virtualization support in Azure](https://azure.microsoft.com/en-us/blog/nested-virtualization-in-azure/ "Nested virtualization announcement blog post") back in 2017, Microsoft opened the door to a number of new and interesting scenarios.  Nested virtualization in Azure is particularly useful for validating configurations that would require additional hardware in your environment, such as running Hyper-V hosts and clusters.
 
-In this guide, you'll walk through the steps to stand up an Azure Stack HCI 20H2 infrastructure. At a high level, this will consist of deploying an Azure VM, running Windows Server 2019, to act as your main Hyper-V host - this will be automatically configured with the relevant roles and features needed for this guide. It will also download all required binaries, and deploy 2 Azure Stack HCI 20H2 nodes, ready for clustering.
+In this guide, you'll walk through the steps to stand up an Azure Stack HCI 21H2 infrastructure. At a high level, this will consist of deploying an Azure VM, running Windows Server 2019, to act as your main Hyper-V host - this will be automatically configured with the relevant roles and features needed for this guide. It will also download all required binaries, and deploy 2 Azure Stack HCI 21H2 nodes, ready for clustering.
 
 Contents
 -----------
@@ -29,7 +29,7 @@ From an architecture perspective, the following graphic showcases the different 
 
 ![Architecture diagram for Azure Stack HCI in Azure](/deployment/media/nested_virt_arch_ga_oct21.png "Architecture diagram for Azure Stack HCI in Azure")
 
-The outer box represents the Azure Resource Group, which will contain all of the artifacts deployed in Azure, including the virtual machine itself, and accompaying network adapter, storage and so on. You'll deploy an Azure VM running Windows Server 2019 Datacenter. On top of this, you'll run a **2-node Azure Stack HCI 20H2 cluster**.
+The outer box represents the Azure Resource Group, which will contain all of the artifacts deployed in Azure, including the virtual machine itself, and accompaying network adapter, storage and so on. You'll deploy an Azure VM running Windows Server 2019 Datacenter. On top of this, you'll run a **2-node Azure Stack HCI 21H2 cluster**.
 
 Important Note
 -----------
@@ -37,7 +37,7 @@ The steps outlined in this guide are **specific to running inside an Azure VM**,
 
 Get an Azure subscription
 -----------
-To evaluate Azure Stack HCI 20H2 in Azure, you'll need an Azure subscription.  If you already have one provided by your company, you can skip this step, but if not, you have a couple of options.
+To evaluate Azure Stack HCI 21H2 in Azure, you'll need an Azure subscription.  If you already have one provided by your company, you can skip this step, but if not, you have a couple of options.
 
 The first option would apply to Visual Studio subscribers, where you can use Azure at no extra charge. With your monthly Azure DevTest individual credit, Azure is your personal sandbox for dev/test. You can provision virtual machines, cloud services, and other Azure resources. Credit amounts vary by subscription level, but if you manage your AzSHCIHost VM run-time efficiently, you can test the scenario well within your subscription limits.
 
@@ -48,9 +48,9 @@ You can also use this same Azure subscription to integrate with Azure Arc, once 
 Azure VM Size Considerations
 -----------
 
-Now, before you deploy the VM in Azure, it's important to choose a **size** that's appropriate for your needs for this workshop, along with a preferred region. It's highly recommended to choose a VM size that has **at least 64GB memory**. This deployment, by default, recommends using a **Standard_E16s_v4**, which is a memory-optimized VM size, with 16 vCPUs, 128 GiB memory, and no temporary SSD storage. The OS drive will be the default 127 GiB in size and the Azure VM deployment will add an additional 8 data disks (32 GiB each by default), so you'll have around 256GiB to deploy Azure Stack HCI 20H2. You can also make this larger after deployment, if you wish.
+Now, before you deploy the VM in Azure, it's important to choose a **size** that's appropriate for your needs for this workshop, along with a preferred region. It's highly recommended to choose a VM size that has **at least 64GB memory**. This deployment, by default, recommends using a **Standard_E16s_v4**, which is a memory-optimized VM size, with 16 vCPUs, 128 GiB memory, and no temporary SSD storage. The OS drive will be the default 127 GiB in size and the Azure VM deployment will add an additional 8 data disks (32 GiB each by default), so you'll have around 256GiB to deploy Azure Stack HCI 21H2. You can also make this larger after deployment, if you wish.
 
-This is just one VM size that we recommend - you can adjust accordingly to suit your needs, even after deployment. The point here is, think about how large an Azure Stack HCI 20H2 infrastructure you'd like to deploy inside this Azure VM, and select an Azure VM size from there. Some potential examples would be:
+This is just one VM size that we recommend - you can adjust accordingly to suit your needs, even after deployment. The point here is, think about how large an Azure Stack HCI 21H2 infrastructure you'd like to deploy inside this Azure VM, and select an Azure VM size from there. Some potential examples would be:
 
 **D-series VMs (General purpose) with at least 64GB memory**
 
@@ -88,7 +88,7 @@ For reference, the Standard_E8s_v4 VM size costs approximately US $0.50 per hour
 
 Deploying the Azure VM
 -----------
-The guidance below provides a simple template-based option for deploying the Azure VM. The template deployment will be automated to the point of which you can proceed immediately to start creating your Azure Stack HCI 20H2 cluster, and progress through your workshop.
+The guidance below provides a simple template-based option for deploying the Azure VM. The template deployment will be automated to the point of which you can proceed immediately to start creating your Azure Stack HCI 21H2 cluster, and progress through your workshop.
 
 ### Deployment detail ###
 As part of the deployment, the following steps will be **automated for you**:
@@ -101,10 +101,10 @@ As part of the deployment, the following steps will be **automated for you**:
 6. The DHCP role and accompanying management tools will be installed and DHCP fully configured. DHCP Scope will be **enabled**
 7. Windows Admin Center will be installed and pre-installed extensions updated
 8. The Microsoft Edge browser will be installed
-9. The Azure Stack HCI 20H2 binaries will be downloaded
-10. 2 x Azure Stack HCI 20H2 nodes will be created and deployed, ready to start cluster creation
+9. The Azure Stack HCI 21H2 binaries will be downloaded
+10. 2 x Azure Stack HCI 21H2 nodes will be created and deployed, ready to start cluster creation
 
-This automated deployment **should take around 50 minutes**, due to the image creation of the Azure Stack HCI 20H2 nodes - these are created, **offline patched** and deployed, which takes time.
+This automated deployment **should take around 50 minutes**, due to the image creation of the Azure Stack HCI 21H2 nodes - these are created, **offline patched** and deployed, which takes time.
 
 ### Creating the VM with an Azure Resource Manager JSON Template ###
 To keep things simple, and graphical, we'll show you how to deploy your VM via an Azure Resource Manager template.  To simplify things further, we'll use the following buttons.
@@ -145,7 +145,7 @@ If your Azure VM fails to deploy successfully, and the error relates to the **Az
 Access your Azure VM
 -----------
 
-With your Azure VM (HybridHost001) successfully deployed and configured, you're ready to connect to the VM to start the deployment of the Azure Stack HCI 20H2.
+With your Azure VM (HybridHost001) successfully deployed and configured, you're ready to connect to the VM to start the deployment of the Azure Stack HCI 21H2.
 
 ### Connect to your Azure VM ###
 Firstly, you'll need to connect into the VM, with the easiest approach being via Remote Desktop.  If you're not already logged into the Azure portal, visit https://portal.azure.com/, and login with the same credentials used earlier.  Once logged in, using the search box on the dashboard, enter "**azshcihost**" and once the results are returned, **click on your AzSHCIHost001 virtual machine**.
@@ -169,15 +169,15 @@ Accept any certificate prompts, and within a few moments, you should be successf
 
 Please Read - Finish Setup
 -----------
-Once the Azure VM deployment process has completed, your Azure Stack HCI 20H2 nodes are still processing changes, including adding roles and features inside the nested hosts. Please allow ~5 minutes for this process to complete and stabilize.
+Once the Azure VM deployment process has completed, your Azure Stack HCI 21H2 nodes are still processing changes, including adding roles and features inside the nested hosts. Please allow ~5 minutes for this process to complete and stabilize.
 
 You can then optionally shut down your Azure VM, should you wish to continue your evaluation on another day.
 
 Next Steps
 -----------
-In this step, you've successfully created and automatically configured your Azure VM, which will serve as the host for your Azure Stack HCI 20H2. You're now ready to move on to the next step.
+In this step, you've successfully created and automatically configured your Azure VM, which will serve as the host for your Azure Stack HCI 21H2. You're now ready to move on to the next step.
 
-* [**Part 2** - Configure your Azure Stack HCI 20H2 Cluster](/deployment/steps/2_DeployAzSHCI.md "Configure your Azure Stack HCI 20H2 Cluster")
+* [**Part 2** - Configure your Azure Stack HCI 21H2 Cluster](/deployment/steps/2_DeployAzSHCI.md "Configure your Azure Stack HCI 21H2 Cluster")
 
 Troubleshooting
 -----------
@@ -224,10 +224,10 @@ Product improvements
 -----------
 If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI, Windows Admin Center, or the Azure Arc integration and experience, let us know! We want to hear from you!
 
-For **Azure Stack HCI**, [Head on over to the Azure Stack HCI 20H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 20H2 Q&A"), where you can share your thoughts and ideas about making the technologies better and raise an issue if you're having trouble with the technology.
+For **Azure Stack HCI**, [Head on over to the Azure Stack HCI 21H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 21H2 Q&A"), where you can share your thoughts and ideas about making the technologies better and raise an issue if you're having trouble with the technology.
 
 Raising issues
 -----------
 If you notice something is wrong with this guide, such as a step isn't working, or something just doesn't make sense - help us to make this guide better!  Raise an issue in GitHub, and we'll be sure to fix this as quickly as possible!
 
-If you're having an issue with Azure Stack HCI 20H2 **outside** of this guide, [head on over to the Azure Stack HCI 20H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 20H2 Q&A"), where Microsoft experts and valuable members of the community will do their best to help you.
+If you're having an issue with Azure Stack HCI 21H2 **outside** of this guide, [head on over to the Azure Stack HCI 21H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 21H2 Q&A"), where Microsoft experts and valuable members of the community will do their best to help you.
