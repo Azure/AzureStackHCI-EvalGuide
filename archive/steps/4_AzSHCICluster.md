@@ -228,7 +228,7 @@ As part of this guide, we're going to set up cluster quorum, using **Windows Adm
 ![Set up cloud witness in Windows Admin Center](/archive/media/wac_cloud_witness_new_ga.png "Set up cloud witness in Windows Admin Center")
 
 6. Open a new tab in your browser, and navigate to **https://portal.azure.com** and login with your Azure credentials
-7. You should already have a subscription from an earlier step, but if not, you should [review those steps and create one, then come back here](/nested/steps/1b_NestedInAzure.md#get-an-azure-subscription)
+7. You should already have a subscription from an earlier step, but if not, you should [review those steps and create one, then come back here](/archive/steps/1b_NestedInAzure.md#get-an-azure-subscription)
 8. Once logged into the Azure portal, click on **Create a Resource**, click **Storage**, then **Storage account**
 9. For the **Create storage account** blade, ensure the **correct subscription** is selected, then enter the following:
 
@@ -526,11 +526,13 @@ You've now successfully deployed, configured and registered your Azure Stack HCI
 
 Next Steps
 -----------
-In this step, you've successfully created a nested Azure Stack HCI 20H2 cluster using Windows Admin Center.  With this complete, you can now [Explore the management of your Azure Stack HCI 20H2 environment](/nested/steps/5_ExploreAzSHCI.md "Explore the management of your Azure Stack HCI 20H2 environment")
+In this step, you've successfully created a nested Azure Stack HCI 20H2 cluster using Windows Admin Center.  With this complete, you can now [Explore the management of your Azure Stack HCI 20H2 environment](/archive/steps/5_ExploreAzSHCI.md "Explore the management of your Azure Stack HCI 20H2 environment")
 
 Product improvements
 -----------
-If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI 20H2, Windows Admin Center, or the Azure Arc integration and experience, let us know!  We want to hear from you!  [Head on over to our Azure Stack HCI 20H2 UserVoice page](https://feedback.azure.com/forums/929833-azure-stack-hci "Azure Stack HCI 20H2 UserVoice"), where you can share your thoughts and ideas about making the technologies better.  If however, you have an issue that you'd like some help with, read on...
+If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI, Windows Admin Center, or the Azure Arc integration and experience, let us know! We want to hear from you!
+
+For **Azure Stack HCI**, [Head on over to the Azure Stack HCI 21H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 21H2 Q&A"), where you can share your thoughts and ideas about making the technologies better and raise an issue if you're having trouble with the technology.
 
 Raising issues
 -----------

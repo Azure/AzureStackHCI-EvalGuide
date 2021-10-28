@@ -47,7 +47,7 @@ The following items will need to be enabled in the system BIOS:
 ### Important note for systems with AMD CPUs ###
 For those of you wanting to evaluate Azure Stack HCI 20H2 in a nested configuration, with **AMD-based systems**, the only way this is currently possible is to use **Windows 10 Insider Build 19636 or newer** as your Hyper-V host. Your system should have AMD's 1st generation Ryzen/Epyc or newer CPUs. You can get more information on [nested virtualization on AMD here](https://techcommunity.microsoft.com/t5/virtualization/amd-nested-virtualization-support/ba-p/1434841 "Nested virtualization on AMD-based systems").
 
-If you can't run the Windows 10 Insider builds on your AMD-based system, it may be a better approach to [deploy in Azure instead](/nested/steps/1b_NestedInAzure.md "Deploy in Azure").  We'll be sure to update this guidance as and when new updates to nested virtualization support become available.
+If you can't run the Windows 10 Insider builds on your AMD-based system, it may be a better approach to [deploy in Azure instead](/archive/steps/1b_NestedInAzure.md "Deploy in Azure").  We'll be sure to update this guidance as and when new updates to nested virtualization support become available.
 
 ### Verify Hardware Compatibility ###
 After checking the operating system and hardware requirements above, verify hardware compatibility in Windows by opening a PowerShell session or a command prompt (cmd.exe) window, typing **systeminfo**, and then checking the Hyper-V Requirements section. If all listed Hyper-V requirements have a value of **Yes**, your system can run the Hyper-V role. If any item returns No, check the requirements above and make adjustments where possible.
@@ -68,12 +68,12 @@ With 16GB memory, running on a laptop, we'll need to ensure that we're taking ad
 
 Obviously, if you have a larger physical system, such as a workstation, or server, you'll likely have a greater amount of memory available to you, therefore you can adjust the memory levels for the different resources accordingly.
 
-If your physical system doesn't meet these recommended requirements, you're still free to test, and see if you can proceed with lower numbers, but it may be a better approach to [deploy in Azure instead](/nested/steps/1b_NestedInAzure.md "Deploy in Azure")
+If your physical system doesn't meet these recommended requirements, you're still free to test, and see if you can proceed with lower numbers, but it may be a better approach to [deploy in Azure instead](/archive/steps/1b_NestedInAzure.md "Deploy in Azure")
 
 #### Reducing memory consumption ####
 To reduce the memory requirements of the configuration, you could choose not to deploy in a sandbox envinronment.  By removing the domain controller and management virtual machines, you could free up additional memory that could be used for the nested Azure Stack HCI 20H2 nodes themselves.  However, this will require you to have an existing domain environment accessible, and an alternative location, potentially on the host itself, to install the Windows Admin Center.  This approach will **not** be covered as part of these initial guides, but may be evaluated for later versions.
 
-If you do want to skip deployment of the management infrastructure, install the Windows Admin Center, and jump ahead to [deploy your nested Azure Stack HCI 20H2 nodes](/nested/steps/3a_AzSHCINodesGUI.md "deploying your Azure Stack HCI 20H2 nodes").  Bear in mind, you may need to modify certain steps to account for the different management environment.
+If you do want to skip deployment of the management infrastructure, install the Windows Admin Center, and jump ahead to [deploy your nested Azure Stack HCI 20H2 nodes](/archive/steps/3a_AzSHCINodesGUI.md "deploying your Azure Stack HCI 20H2 nodes").  Bear in mind, you may need to modify certain steps to account for the different management environment.
 
 Get an Azure subscription
 -----------
@@ -161,12 +161,14 @@ Next Steps
 -----------
 In this step, you've successfully configured your Hyper-V host, and the required core networking to support the nested scenario.  You're now ready to start creating your virtual machines as part of deploying your management infrastructure. You have 2 choices on how to proceed, either a more graphical way, using a GUI (Graphical User Interface, such as Hyper-V Manager, Server Manager etc), or via PowerShell.  Make your choice below:
 
-* [**Part 2a** - Deploy your management infrastructure with the GUI](/nested/steps/2a_ManagementInfraGUI.md "Deploy your management infrastructure with the GUI")
-* [**Part 2b** - Deploy your management infrastructure with PowerShell](/nested/steps/2b_ManagementInfraPS.md "Deploy your management infrastructure with PowerShell")
+* [**Part 2a** - Deploy your management infrastructure with the GUI](/archive/steps/2a_ManagementInfraGUI.md "Deploy your management infrastructure with the GUI")
+* [**Part 2b** - Deploy your management infrastructure with PowerShell](/archive/steps/2b_ManagementInfraPS.md "Deploy your management infrastructure with PowerShell")
 
 Product improvements
 -----------
-If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI 20H2, Windows Admin Center, or the Azure Arc integration and experience, let us know!  We want to hear from you!  [Head on over to our Azure Stack HCI 20H2 UserVoice page](https://feedback.azure.com/forums/929833-azure-stack-hci "Azure Stack HCI 20H2 UserVoice"), where you can share your thoughts and ideas about making the technologies better.  If however, you have an issue that you'd like some help with, read on...
+If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI, Windows Admin Center, or the Azure Arc integration and experience, let us know! We want to hear from you!
+
+For **Azure Stack HCI**, [Head on over to the Azure Stack HCI 21H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 21H2 Q&A"), where you can share your thoughts and ideas about making the technologies better and raise an issue if you're having trouble with the technology.
 
 Raising issues
 -----------

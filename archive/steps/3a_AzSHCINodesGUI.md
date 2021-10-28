@@ -214,11 +214,13 @@ You have now created your first Azure Stack HCI 20H2 node, inside a VM, running 
 
 Next Steps
 -----------
-In this step, you've successfully created your nested Azure Stack HCI 20H2 nodes.  You can now proceed to [create your Azure Stack HCI 20H2 cluster](/nested/steps/4_AzSHCICluster.md "Create your Azure Stack HCI 20H2 cluster")
+In this step, you've successfully created your nested Azure Stack HCI 20H2 nodes.  You can now proceed to [create your Azure Stack HCI 20H2 cluster](/archive/steps/4_AzSHCICluster.md "Create your Azure Stack HCI 20H2 cluster")
 
 Product improvements
 -----------
-If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI 20H2, Windows Admin Center, or the Azure Arc integration and experience, let us know!  We want to hear from you!  [Head on over to our Azure Stack HCI 20H2 UserVoice page](https://feedback.azure.com/forums/929833-azure-stack-hci "Azure Stack HCI 20H2 UserVoice"), where you can share your thoughts and ideas about making the technologies better.  If however, you have an issue that you'd like some help with, read on...
+If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI, Windows Admin Center, or the Azure Arc integration and experience, let us know! We want to hear from you!
+
+For **Azure Stack HCI**, [Head on over to the Azure Stack HCI 21H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 21H2 Q&A"), where you can share your thoughts and ideas about making the technologies better and raise an issue if you're having trouble with the technology.
 
 Raising issues
 -----------

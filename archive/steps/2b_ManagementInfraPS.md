@@ -19,7 +19,7 @@ Contents
 - [Full Script - Creating your Management infrastructure](#full-script---creating-your-management-infrastructure)
 
 ### Important Note ###
-In this step, you'll be using PowerShell to create resources.  If you prefer to use a GUI (Graphical User Interface, such as Hyper-V Manager, Server Manager etc), which may allow faster completion, head on over to the [GUI guide](/nested/steps/2a_ManagementInfraGUI.md).
+In this step, you'll be using PowerShell to create resources.  If you prefer to use a GUI (Graphical User Interface, such as Hyper-V Manager, Server Manager etc), which may allow faster completion, head on over to the [GUI guide](/archive/steps/2a_ManagementInfraGUI.md).
 
 Architecture
 -----------
@@ -477,11 +477,13 @@ This step should have happened automatically when your Windows 10 OS has interne
 
 Next Steps
 -----------
-In this step, you've successfully created your management infrastructure, including a Windows Server 2019 domain controller and a Windows 10 management VM, complete with Windows Admin Center. You can now proceed to [create your nested Azure Stack HCI 20H2 nodes with PowerShell](/nested/steps/3b_AzSHCINodesPS.md "Create your nested Azure Stack HCI 20H2 nodes with PowerShell")
+In this step, you've successfully created your management infrastructure, including a Windows Server 2019 domain controller and a Windows 10 management VM, complete with Windows Admin Center. You can now proceed to [create your nested Azure Stack HCI 20H2 nodes with PowerShell](/archive/steps/3b_AzSHCINodesPS.md "Create your nested Azure Stack HCI 20H2 nodes with PowerShell")
 
 Product improvements
 -----------
-If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI 20H2, Windows Admin Center, or the Azure Arc integration and experience, let us know!  We want to hear from you!  [Head on over to our Azure Stack HCI 20H2 UserVoice page](https://feedback.azure.com/forums/929833-azure-stack-hci "Azure Stack HCI 20H2 UserVoice"), where you can share your thoughts and ideas about making the technologies better.  If however, you have an issue that you'd like some help with, read on...
+If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI, Windows Admin Center, or the Azure Arc integration and experience, let us know! We want to hear from you!
+
+For **Azure Stack HCI**, [Head on over to the Azure Stack HCI 21H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 21H2 Q&A"), where you can share your thoughts and ideas about making the technologies better and raise an issue if you're having trouble with the technology.
 
 Raising issues
 -----------
