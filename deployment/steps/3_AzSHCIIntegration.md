@@ -118,13 +118,13 @@ This will allow any user to register applications. However, the user will still 
 
 #### Option 2: Assign Cloud Application Administration role ####
 
-Assign the built-in "Cloud Application Administration" Azure AD role to the user. This will allow the user to register clusters without the need for additional AD admin consent.
+Assign the built-in "Cloud Application Administration" Azure AD role to the user. This will allow the user to register clusters without the need for additional Azure AD admin consent.
 
-#### Option 3: Create a custom AD role and consent policy ####
+#### Option 3: Create a custom Azure AD role and consent policy ####
 
-The most restrictive option is to create a custom AD role with a custom consent policy that delegates tenant-wide admin consent for required permissions to the Azure Stack HCI Service. When assigned this custom role, users are able to both register and grant consent without the need for additional AD admin consent.
+The most restrictive option is to create a custom Azure AD role with a custom consent policy that delegates tenant-wide admin consent for required permissions to the Azure Stack HCI Service. When assigned this custom role, users are able to both register and grant consent without the need for additional Azure AD admin consent.
 
-**NOTE** - This option requires an Azure AD Premium license and uses custom AD roles and custom consent policy features which are currently in public preview.
+**NOTE** - This option requires an Azure AD Premium license and uses custom Azure AD roles and custom consent policy features which are currently in public preview.
 
 If you choose to perform Option 3, you'll need to follow these steps on **AzSHCIHost001**, which we'll demonstrate mainly through PowerShell.
 
