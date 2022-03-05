@@ -178,14 +178,14 @@ $allowedResourceAction =
 $rolePermissions = @{'allowedResourceActions' = $allowedResourceAction }
 ```
 
-5. Create the new custom AD role:
+5. Create the new custom Azure AD role:
 
 ```powershell
 $customADRole = New-AzureADMSRoleDefinition -RolePermissions $rolePermissions `
     -DisplayName $displayName -Description $description -TemplateId $templateId -IsEnabled $true
 ```
 
-6. Assign the new custom AD role to the user who will register the Azure Stack HCI cluster with Azure by following [these instructions](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-users-assign-role-azure-portal "Guidance on creating a custom Azure AD role").
+6. Assign the new custom Azure AD role to the user who will register the Azure Stack HCI cluster with Azure by following [these instructions](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-users-assign-role-azure-portal "Guidance on creating a custom Azure AD role").
 
 Complete Registration
 -----------
