@@ -274,7 +274,7 @@ As part of this guide, we're going to set up cluster quorum, using **Windows Adm
 ![Set up storage account in Azure](/deployment/media/azure_cloud_witness_ga.png "Set up storage account in Azure")
 
 1.  On the **Advanced** page, ensure that **Enable blob public access** is **unchecked**, and **Minimum TLS version** is set to **Version 1.2**
-2.  On the **Networking**, **Data protection** and **Tags** pages, accept the defaults and press **Next**
+2.  On the **Networking**, **Data protection**, **Encryption** and **Tags** pages, accept the defaults and press **Next**
 3.  When complete, click **Create** and your deployment will begin.  This should take a few moments.
 4.  Once complete, in the **notification**, click on **Go to resource**
 5.  On the left-hand navigation, under Settings, click **Access Keys**. When you create a Microsoft Azure Storage Account, it is associated with two Access Keys that are automatically generated - Primary Access key and Secondary Access key. For a first-time creation of Cloud Witness, use the **Primary Access Key**. There is no restriction regarding which key to use for Cloud Witness.
