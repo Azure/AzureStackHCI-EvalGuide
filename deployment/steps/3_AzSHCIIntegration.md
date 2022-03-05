@@ -99,8 +99,6 @@ If the user who registers the cluster is an Azure AD administrator or has suffic
 
 ![Azure Active Directory Permissions](/deployment/media/aad_permissions.png "Azure Active Directory Permissions")
 
-The user who runs Register-AzStackHCI needs Azure AD permissions to:
-
 The user who runs `Register-AzStackHCI` needs Azure AD permissions to:
 
 - Create (`New-Remove-AzureADApplication`), get (`Get-Remove-AzureADApplication`), set (`Set-Remove-AzureADApplication`), or remove (`Remove-AzureADApplication`) Azure AD applications.
