@@ -103,9 +103,9 @@ The user who runs Register-AzStackHCI needs Azure AD permissions to:
 
 The user who runs `Register-AzStackHCI` needs Azure AD permissions to:
 
-- Create (`New-Remove-AzureADApplication`), get (`Get-Remove-AzureADApplication`), set (`Set-Remove-AzureADApplication`), or remove (`Remove-AzureADApplication`) Azure AD applications.
-- Create (`New-Get-AzureADServicePrincipal`) or get (`Get-AzureADServicePrincipal`) the Azure AD service principal.
-- Manage Active Directory application secrets (`New-Remove-AzureADApplicationKeyCredential`, `Get-Remove-AzureADApplicationKeyCredential`, or `Remove-AzureADApplicationKeyCredential`).
+- Create (`New-AzureADApplication`), get (`Get-AzureADApplication`), set (`Set-AzureADApplication`), or remove (`Remove-AzureADApplication`) Azure AD applications.
+- Create (`New-AzureADServicePrincipal`) or get (`Get-AzureADServicePrincipal`) the Azure AD service principal.
+- Manage Active Directory application secrets (`New-AzureADApplicationKeyCredential`, `Get-AzureADApplicationKeyCredential`, or `Remove-AzureADApplicationKeyCredential`).
 - Grant consent to use specific application permissions (`New-AzureADApplicationKeyCredential`, `Get-AzureADApplicationKeyCredential`, or `Remove-AzureADServiceAppRoleAssignments`).
 
 There are three ways in which this can be accomplished.
