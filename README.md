@@ -102,8 +102,8 @@ Get started
 * [**Part 3** - Integrate Azure Stack HCI 21H2 with Azure](/deployment/steps/3_AzSHCIIntegration.md "Integrate Azure Stack HCI 21H2 with Azure")
 * [**Part 4** - Explore Azure Stack HCI Management](/deployment/steps/4_ExploreAzSHCI.md "Explore Azure Stack HCI Management")
 
-Rocket to HCI Deployment Experience
-![](./deployment/media/rocket_to_hci.png)
+## Rocket to HCI Deployment Experience ## 
+
 -----------
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FAzStackHCISandbox%2Fmain%2Fjson%2Fazuredeploy.json)
@@ -114,6 +114,7 @@ For your first step, simply click on the "Deploy to Azure" button above and you 
 You will need to supply the Resource Group and the Admin Password still, but this is a fairly easy process.
 
 Hit Review+Create and jump to the "After Deployment Section"
+
 ![](./deployment/media/CustomDeployment_Step3.png)
 
 
@@ -133,14 +134,11 @@ Go grab a coffee or lunch, the components need a few minutes to download, but on
 
 Now that the Azure Resource is completed, you are ready to begin deploying the HCI cluster. The Azure VM that you just deployed is only a Nested Host, to contain all the components neccesary for this 2 node HCI cluster.
 
-#
-### Important ###
+>**Important** 
 The HCI Sandbox was meant to help you understand Software Defined Networking in Azure Stack HCI, but if you DO NOT want to deploy SDN or you WANT to DEPLOY AKS on HCI, you will need to EDIT the Config file BEFORE deployment. This can be done by using notepad or ISE to edit line 47 of the Config file. 
-You will need to UPDATE the line "Configure NC= $True" to "ConfigureNC=$false" 
-
+You will need to UPDATE the line "ProvisionNC= $True" to "ProvisionNC=$false" 
 This is the neccesary step to be able to Install AKS on the HCI Sandbox.
 
-#
 
 You have 2 main options for deploying the HCI cluster:
 
@@ -153,7 +151,7 @@ You have 2 main options for deploying the HCI cluster:
 
 
 
-### Important ###
+>**Important** 
 If you find during the installation that something went wrong, please run the Installation Script in a PowerShell window, as this is the only way to understand the issue. If you have an issue during installation, file an Issue in GitHub for this Repo, and provide the Error Details from this process. 
 #
 
@@ -196,10 +194,13 @@ Add the Hyper-Converged Cluster *AzStackCluster* to *Windows Admin Center* with 
 
 **Azure Stack HCI Sandbox (2/7/2021)**
 
-![Photo of Fully Deployed ASHCI-Sandbox](deployment/media/AzSHCISandbox.png)
+
 
 The Azure Stack HCI Sandbox is a series of scripts that creates a [HyperConverged](https://docs.microsoft.com/en-us/windows-server/hyperconverged/) environment using four nested Hyper-V Virtual Machines. The purpose of the SDN Sandbox is to provide operational training on Microsoft SDN as well as provide a development environment for DevOPs to assist in the creation and
 validation of SDN features without the time consuming process of setting up physical servers and network routers\switches.
+
+![Photo of Fully Deployed ASHCI-Sandbox](deployment/media/AzSHCISandbox.png)
+
 
 >**SDN Sandbox is not a production solution!** SDN Sandbox's scripts have been modified to work in a limited resource environment. Because of this, it is not fault tolerant, is not designed to be highly available, and lacks the nimble speed of a **real** Microsoft SDN deployment.
 
