@@ -63,7 +63,7 @@ Nested Virtualization
 -----------
 If you're not familiar with Nested Virtualization, at a high level, it allows a virtualization platform, such as Hyper-V, or VMware ESXi, to run virtual machines that, within those virtual machines, run a virtualization platform. It may be easier to think about this in an architectural view.
 
-![Nested virtualization architecture](/deployment/media/nested_virt.png "Nested virtualization architecture")
+![Nested virtualization architecture](/deployment/media/nested.png "Nested virtualization architecture")
 
 As you can see from the graphic, at the base layer, you have your physical hardware, onto which you install a hypervisor. In this case, for our example, we're using Windows Server 2019 with the Hyper-V role enabled.  The hypervisor on the lowest level is considered L0 or the level 0 hypervisor.  On that physical host, you create a virtual machine, and into that virtual machine, you deploy an OS that itself, has a hypervisor enabled.  In this example, that 1st Virtualized Layer is running a **nested** Azure Stack HCI 21H2 operating system. This would be an L1 or level 1 hypervisor.  Finally, in our example, inside the Azure Stack HCI 21H2 OS, you create a virtual machine to run a workload.  This could in fact also contain a hypervisor, which would be known as the L2 or level 2 hypervisor, and so the process continues, with multiple levels of nested virtualization possible.
 
@@ -73,7 +73,7 @@ Deployment of Azure Stack HCI 21H2 nested in Azure
 -----------
 For those of you who don't have multiple server-class pieces of hardware to test a full hyperconverged solution, this evaluation guide will detail using **nested virtualization** in Azure to evaluate Azure Stack HCI.
 
-![Architecture diagram for Azure Stack HCI 21H2 nested in Azure](/deployment/media/nested_virt_arch_ga_oct21.png "Architecture diagram for Azure Stack HCI 21H2 nested in Azure")
+![Architecture diagram for Azure Stack HCI 21H2 nested in Azure](/deployment/media/nested_virt_arch_ga.png "Architecture diagram for Azure Stack HCI 21H2 nested in Azure")
 
 In this configuration, you'll take advantage of the nested virtualization support provided within certain Azure VM sizes.  You'll deploy a single Azure VM running Windows Server 2019 to act as your main Hyper-V host - and through PowerShell DSC, this will be automatically configured with the relevant roles and features needed for this guide. It will also download all required binaries, and deploy 2 Azure Stack HCI 21H2 nodes, ready for clustering.
 
