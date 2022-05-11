@@ -572,10 +572,11 @@ configuration AzSHCIHost
         if ($environment -eq "AD Domain") {
 
             xDhcpServerAuthorization "Authorize DHCP" {
+                IsSingleInstance='Yes' 
                 Ensure    = 'Present'
                 DependsOn = @('[WindowsFeature]Install DHCPServer')
                 DnsName   = [System.Net.Dns]::GetHostByName($env:computerName).hostname
-                IPAddress = '192.168.0.1'
+                IPAddress = '192.168.0.1'      
             }
         }
 
