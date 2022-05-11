@@ -1027,7 +1027,7 @@ configuration AzSHCIHost
                 $state = [scriptblock]::Create($GetScript).Invoke()
                 return $state.Result
             }
-            DependsOn  = "[script]UnattendXML for $vmname"
+            DependsOn  = "[script]UnattendXML for $vmname", '[ADDomain]FirstDS'  
         }
 
         #### Update WAC Extensions ####
