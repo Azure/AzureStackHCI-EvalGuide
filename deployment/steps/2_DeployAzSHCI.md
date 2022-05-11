@@ -282,7 +282,7 @@ As part of this guide, we're going to set up cluster quorum, using **Windows Adm
 
 ![Configure Primary Access key in Azure](/deployment/media/azure_keys_ga.png "Configure Primary Access key in Azure")
 
-16. On the left-hand navigation, under Settings, click **Properties** and make a note of your **blob service endpoint**.
+16. On the left-hand navigation, under Settings, click **Endpoints** and make a note of your **blob service endpoint**.
 
 ![Blob Service endpoint in Azure](/deployment/media/azure_blob_ga.png "Blob Service endpoint in Azure")
 
