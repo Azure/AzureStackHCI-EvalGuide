@@ -186,7 +186,7 @@ Using RDP, log into the 'Admincenter' virtual machine with your creds: User: Con
 
 Launch the link to Windows Admin Center
 
-Add the Hyper-Converged Cluster *AzStackCluster* to *Windows Admin Center* with *Network Controller*: [https://nc01.contosoc.com](https://nc01.contosoc.com) and you're off and ready to go!
+Add the Hyper-Converged Cluster *AzStackCluster* to *Windows Admin Center* with *Network Controller*: [https://nc01.contoso.com](https://nc01.contosoc.com) and you're off and ready to go!
 
     
 

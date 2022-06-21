@@ -27,7 +27,7 @@ Architecture
 
 From an architecture perspective, the following graphic showcases the different layers and interconnections between the different components:
 
-![Architecture diagram for Azure Stack HCI in Azure](/deployment/media/nested_virt_arch_ga_oct21.png "Architecture diagram for Azure Stack HCI in Azure")
+![Architecture diagram for Azure Stack HCI in Azure](/deployment/media/nested_virt_akshci_ga.png "Architecture diagram for Azure Stack HCI in Azure")
 
 The outer box represents the Azure Resource Group, which will contain all of the artifacts deployed in Azure, including the virtual machine itself, and accompaying network adapter, storage and so on. You'll deploy an Azure VM running Windows Server 2019 Datacenter. On top of this, you'll run a **2-node Azure Stack HCI 21H2 cluster**.
 
