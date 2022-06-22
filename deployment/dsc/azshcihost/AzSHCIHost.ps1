@@ -48,12 +48,21 @@ configuration AzSHCIHost
     $updateAdUri = "https://raw.githubusercontent.com/Azure/AzureStackHCI-EvalGuide/main/deployment/helpers/Update-AD.ps1"
     $regHciUri = "https://raw.githubusercontent.com/Azure/AzureStackHCI-EvalGuide/main/deployment/helpers/Register-AzSHCI.ps1"
 
+    $defaultpassword = "Password01" | ConvertTo-SecureString -asPlainText -Force
+    $defaultusername = "Administrator"
+    [PSCredential] $defaultcred = New-Object System.Management.Automation.PSCredential($defaultusername,$defaultpassword)
+
     if ($enableDHCP -eq "Enabled") {
         $dhcpStatus = "Active"
     }
     else { $dhcpStatus = "Inactive" }
 
+    if ($Admincreds -ne "Null"){
     [System.Management.Automation.PSCredential]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${DomainName}\$($Admincreds.UserName)", $Admincreds.Password)
+    }
+    else {
+        [System.Management.Automation.PSCredential]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${DomainName}\$($defaultcred.UserName)", $defaultcred.Password)
+    }
 
     $ipConfig = (Get-NetAdapter -Physical | Where-Object { $_.InterfaceDescription -like "*Hyper-V*" } | Get-NetIPConfiguration | Where-Object IPv4DefaultGateway)
     $netAdapters = Get-NetAdapter -Name ($ipConfig.InterfaceAlias) | Select-Object -First 1
