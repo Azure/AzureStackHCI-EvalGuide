@@ -1139,3 +1139,16 @@ configuration AzSHCIHost
         }
     }
 }
+
+$cd = @{
+    AllNodes = @(    
+        @{  
+            NodeName = "TargetServer"
+            PsDscAllowPlainTextPassword = $true
+            PSDscAllowDomainUser = $true
+        }
+    ) 
+}
+
+AzSHCIHost -MyCredential $AdminCreds -ConfigurationData $cd
+
