@@ -1150,5 +1150,5 @@ $cd = @{
     ) 
 }
 
-AzSHCIHost -MyCredential $AdminCreds -ConfigurationData $cd
+AzSHCIHost -AdminCreds $AdminCreds -ConfigurationData $cd
 
