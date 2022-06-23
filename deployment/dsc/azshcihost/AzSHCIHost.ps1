@@ -1130,15 +1130,3 @@ configuration AzSHCIHost
         }
     }
 }
-
-
-$cd = @{
-    AllNodes = @(    
-        @{  
-            NodeName = "TargetServer"
-            PSDscAllowDomainUser = $true
-        }
-    ) 
-}
-
-AzSHCIHost -ConfigurationData $cd
