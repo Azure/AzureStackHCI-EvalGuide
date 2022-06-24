@@ -1130,3 +1130,15 @@ configuration AzSHCIHost
         }
     }
 }
+
+$Configdata=@{
+    allnodes=@(
+        @{
+            nodename="AzSHCIHost"
+            PSDSCAllowPlainTextPassword=$true
+            PSDSCAllowDomainUser=$true
+            
+        }
+    )
+    }
+    AzSHCIHost -ConfigurationData $configdata 
