@@ -300,8 +300,8 @@
     },
     "variables": {
         "dataDisksCount": 8,
-        "dscUri": "https://github.com/Azure/AzureStackHCI-EvalGuide/raw/main/deployment/dsc/azshcihost.zip",
-        "artifactsLocation": "https://raw.githubusercontent.com/Azure/AzureStackHCI-EvalGuide/main/deployment/",
+        "dscUri": "https://github.com/Azure/AzureStackHCI-EvalGuide/raw/21H2/deployment/dsc/azshcihost.zip",
+        "artifactsLocation": "https://raw.githubusercontent.com/Azure/AzureStackHCI-EvalGuide/21H2/deployment/",
         "randomGUID": "[substring(uniqueString(subscription().subscriptionId, resourceGroup().id, parameters('virtualMachineName')),0,6)]",
         "dnsNameForPublicIP": "[toLower(concat(parameters('virtualMachineName'), variables('randomGUID')))]",
         "environment": "AD Domain",
