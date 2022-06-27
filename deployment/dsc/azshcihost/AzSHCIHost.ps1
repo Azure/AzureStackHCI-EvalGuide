@@ -37,7 +37,7 @@ configuration AzSHCIHost
     Import-DscResource -ModuleName 'cHyper-v'
     Import-DscResource -ModuleName 'StorageDSC'
     Import-DscResource -ModuleName 'NetworkingDSC'
-    Import-DscResource -ModuleName 'xDHCpServer' -ModuleVersion 3.0.0 
+    Import-DscResource -ModuleName 'xDHCpServer' 
     Import-DscResource -ModuleName 'DnsServerDsc'
     Import-DscResource -ModuleName 'cChoco'
     Import-DscResource -ModuleName 'DSCR_Shortcut'
@@ -705,7 +705,42 @@ configuration AzSHCIHost
             AddressFamily = 'IPv4'
             DependsOn     = @("[WindowsFeature]Install DHCPServer", "[IPAddress]New IP for vEthernet $vSwitchNameHost")
         }
+        
+        DHCPScopeOption "ScopeOptionGateway" { 
+            Ensure             = 'Present' 
+            OptionId           =  3
+            ScopeID            = '192.168.0.0' 
+            AddressFamily      = 'IPv4'
+            Value              = '192.168.0.1'
+            VendorClass        = ''
+            UserClass          = ''
+            DependsOn          = "[xDhcpServerScope]AzSHCIDhcpScope"
+        }
+        
+        DhcpScopeOptionValue 'ScopeOptionDNS'
+        {
+            OptionId      = 6
+            Value         = @('192.168.0.1')
+            ScopeId       = '192.168.0.0'
+            VendorClass   = ''
+            UserClass     = ''
+            AddressFamily = 'IPv4'
+            DependsOn          = @("[DhcpScopeOptionValue] 'ScopeOptionGateway'", [xDhcpServerScope] "AzSHCIDhcpScope" )
+        }
 
+         # Setting scope DNS domain name
+        DhcpScopeOptionValue 'ScopeOptionDNSDomainName'
+        {
+            OptionId      = 15
+            Value         = "$DomainName"
+            ScopeId       = '192.168.0.0'
+            VendorClass   = ''
+            UserClass     = ''
+            AddressFamily = 'IPv4'
+            DependsOn          = @("[DhcpScopeOptionValue] 'ScopeOptionGateway'", [xDhcpServerScope] "AzSHCIDhcpScope", [DhcpScopeOptionValue] 'ScopeOptionDNS' )
+        }
+
+<#
         xDhcpServerOption "AzSHCIDhcpServerOption" { 
             Ensure             = 'Present' 
             ScopeID            = '192.168.0.0' 
@@ -715,7 +750,7 @@ configuration AzSHCIHost
             Router             = '192.168.0.1'
             DependsOn          = "[xDhcpServerScope]AzSHCIDhcpScope"
         }
-
+#>
         if ($environment -eq "Workgroup") {
 
             DnsServerPrimaryZone SetPrimaryDNSZone {
