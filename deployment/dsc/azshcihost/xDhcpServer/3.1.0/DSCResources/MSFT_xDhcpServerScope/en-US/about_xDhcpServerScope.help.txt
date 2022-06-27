@@ -1,0 +1,86 @@
+.NAME
+    xDhcpServerScope
+
+.DESCRIPTION
+    The xDhcpServerScope DSC resource manages IP address scopes. An IP-address
+    scope is a consecutive range of possible IP addresses that the DHCP server
+    can lease to clients on a subnet.
+
+    ## Requirements
+
+    - Target machine must be running Windows Server 2012 R2 or later.
+    - Target machine must be running at minimum Windows PowerShell 5.0.
+
+.PARAMETER ScopeId
+    Key - String
+    ScopeId for the given scope
+
+.PARAMETER Name
+    Required - String
+    Name of DHCP Scope
+
+.PARAMETER SubnetMask
+    Required - String
+    Subnet mask for the scope specified in IP address format
+
+.PARAMETER IPStartRange
+    Required - String
+    Starting address to set for this scope
+
+.PARAMETER IPEndRange
+    Required - String
+    Ending address to set for this scope
+
+.PARAMETER Description
+    Write - String
+    Description of DHCP Scope
+
+.PARAMETER LeaseDuration
+    Write - String
+    Time interval for which an IP address should be leased
+
+.PARAMETER State
+    Write - String
+    Allowed values: Active, Inactive
+    Whether scope should be active or inactive
+
+.PARAMETER AddressFamily
+    Write - String
+    Allowed values: IPv4
+    Address family type
+
+.PARAMETER Ensure
+    Write - String
+    Allowed values: Present, Absent
+    Whether scope should be set or removed
+
+.EXAMPLE 1
+
+This example creates a new DHCP Server scope, or if the scope already exist
+it changes an existing scope.
+
+configuration Example
+{
+    Import-DscResource -ModuleName 'PSDscResources' -ModuleVersion '2.12.0.0'
+    Import-DscResource -moduleName 'xDhcpServer'
+
+    WindowsFeature 'DHCP'
+    {
+        Name   = 'DHCP'
+        Ensure = 'Present'
+    }
+
+    xDhcpServerScope 'Scope'
+    {
+        Ensure        = 'Present'
+        ScopeId       = '192.168.1.0'
+        IPStartRange  = '192.168.1.1'
+        IPEndRange    = '192.168.1.254'
+        Name          = 'ContosoScope'
+        SubnetMask    = '255.255.255.0'
+        LeaseDuration = ((New-TimeSpan -Hours 8).ToString())
+        State         = 'Active'
+        AddressFamily = 'IPv4'
+    }
+}
+

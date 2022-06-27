@@ -1,0 +1,21 @@
+.NAME
+    DhcpServerBinding
+
+.DESCRIPTION
+    The DhcpServerBinding DSC resource manages network bindings on the server
+    level.
+
+    ## Requirements
+
+    - Target machine must be running Windows Server 2012 R2 or later.
+    - Target machine must be running at minimum Windows PowerShell 5.0.
+
+.PARAMETER InterfaceAlias
+    Key - String
+    Specifies the alias name for the network interface to manage.
+
+.PARAMETER Ensure
+    Write - String
+    Allowed values: Present, Absent
+    Specifies if the interface alias should be set or removed. Defaults to 'Present'.
+

@@ -706,7 +706,7 @@ configuration AzSHCIHost
             DependsOn     = @("[WindowsFeature]Install DHCPServer", "[IPAddress]New IP for vEthernet $vSwitchNameHost")
         }
         
-        DHCPScopeOption "ScopeOptionGateway" { 
+        DhcpScopeOptionValue "ScopeOptionGateway" { 
             Ensure             = 'Present' 
             OptionId           =  3
             ScopeID            = '192.168.0.0' 

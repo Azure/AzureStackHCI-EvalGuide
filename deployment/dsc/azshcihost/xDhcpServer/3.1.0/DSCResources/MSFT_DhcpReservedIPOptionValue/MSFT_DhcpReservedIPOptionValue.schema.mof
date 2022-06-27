@@ -1,0 +1,11 @@
+[ClassVersion("1.0.0.0"), FriendlyName("DhcpReservedIPOptionValue")]
+class MSFT_DhcpReservedIPOptionValue : OMI_BaseResource
+{
+    [Key,        Description("Reserved IP to set the option value.")] String ReservedIP;
+    [Key,        Description("Option ID, specify an integer between 1 and 255.")] UInt32 OptionId;
+    [Write,      Description("Option data value. Could be an array of string for a multivalued option.")] String Value[];
+    [Key,        Description("Vendor class. Use an empty string for default vendor class.")] String VendorClass;
+    [Key,        Description("User class. Use an empty string for default user class.")] String UserClass;
+    [Key,        Description("Address family. Currently needs to be IPv4."), ValueMap{"IPv4"}, Values{"IPv4"}] String AddressFamily;
+    [Write,      Description("Whether the DHCP option should exist."), ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
+};

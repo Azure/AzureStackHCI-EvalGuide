@@ -1,0 +1,95 @@
+.NAME
+    DhcpPolicyOptionValue
+
+.DESCRIPTION
+    The DhcpPolicyOptionValue DSC resource manages option values at policy level.
+
+    ## Requirements
+
+    - Target machine must be running Windows Server 2012 R2 or later.
+    - Target machine must be running at minimum Windows PowerShell 5.0.
+
+.PARAMETER OptionId
+    Key - UInt32
+    Option ID, specify an integer between 1 and 255.
+
+.PARAMETER PolicyName
+    Key - String
+    Policy Name.
+
+.PARAMETER Value
+    Write - StringArray
+    Option data value. Could be an array of string for a multivalued option.
+
+.PARAMETER ScopeId
+    Write - String
+    Scope ID to get policy values from. Do not use it to get an option from server level.
+
+.PARAMETER VendorClass
+    Key - String
+    Vendor class. Use an empty string for default vendor class.
+
+.PARAMETER AddressFamily
+    Key - String
+    Allowed values: IPv4
+    Address family. Currently needs to be IPv4.
+
+.PARAMETER Ensure
+    Write - String
+    Allowed values: Present, Absent
+    Whether the DHCP option should exist.
+
+.EXAMPLE 1
+
+This example sets an option ID 8 (cookie servers) on a policy at scope level.
+
+configuration Example
+{
+    Import-DscResource -ModuleName 'PSDscResources' -ModuleVersion '2.12.0.0'
+    Import-DscResource -moduleName 'xDhcpServer'
+
+    WindowsFeature 'DHCP'
+    {
+        Name   = 'DHCP'
+        Ensure = 'Present'
+    }
+
+    DhcpPolicyOptionValue 'PolicyOptionValue_ID-008-scope'
+    {
+        OptionId      = 8
+        Value         = '1.1.1.1'
+        ScopeId       = '192.168.0.0'
+        VendorClass   = ''
+        AddressFamily = 'IPv4'
+        PolicyName    = 'TestPolicy'
+        Ensure        = 'Present'
+    }
+}
+
+.EXAMPLE 2
+
+This example sets an option ID 8 (cookie servers) on a policy at server level.
+
+configuration Example
+{
+    Import-DscResource -ModuleName 'PSDscResources' -ModuleVersion '2.12.0.0'
+    Import-DscResource -moduleName 'xDhcpServer'
+
+    WindowsFeature 'DHCP'
+    {
+        Name   = 'DHCP'
+        Ensure = 'Present'
+    }
+
+    DhcpPolicyOptionValue 'PolicyOptionValue_ID-008'
+    {
+        OptionId      = 8
+        Value         = '1.1.1.1'
+        ScopeId       = ''
+        VendorClass   = ''
+        AddressFamily = 'IPv4'
+        PolicyName    = 'TestPolicy'
+        Ensure        = 'Present'
+    }
+}
+
