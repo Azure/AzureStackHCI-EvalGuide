@@ -499,6 +499,7 @@
                             "fileUris": [
                                 "[uri(variables('artifactsLocation'), concat('scripts/installWac.ps1'))]"
                             ]
+                        
                         },
                         "protectedSettings": {
                             "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File installWac.ps1', ' -userName ', parameters('adminUsername'))]"
@@ -508,7 +509,7 @@
                 {
                     "type": "extensions",
                     "name": "ConfigureAzSHCIHost",
-                    "apiVersion": "2021-03-01",
+                    "apiVersion": "2021-11-01",
                     "location": "[resourceGroup().location]",
                     "dependsOn": [
                         "[parameters('virtualMachineName')]",
