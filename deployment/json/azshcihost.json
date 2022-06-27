@@ -442,7 +442,7 @@
                         "publisher": "MicrosoftWindowsServer",
                         "offer": "WindowsServer",
                         "sku": "[if(equals(parameters('virtualMachineGeneration'), 'Generation 2'), '2019-datacenter-gensecond', '2019-Datacenter')]",
-                        "version": "latest"
+                        "version": "17763.3131.220505"
                     },
                     "osDisk": {
                         "createOption": "FromImage",
