@@ -790,7 +790,8 @@ configuration AzSHCIHost
             GetScript  = { @{} 
             }
             TestScript = { $false }
-            DependsOn  = "[xDhcpServerOption]AzSHCIDhcpServerOption"
+            #DependsOn  = "[xDhcpServerOption]AzSHCIDhcpServerOption"
+            DependsOn  = "[xDhcpServerScope] 'AzSHCIDhcpScope'" 
         }
 
         if ($environment -eq "Workgroup") {
