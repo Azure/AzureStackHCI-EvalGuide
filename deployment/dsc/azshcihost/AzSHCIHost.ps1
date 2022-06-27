@@ -37,7 +37,7 @@ configuration AzSHCIHost
     Import-DscResource -ModuleName 'cHyper-v'
     Import-DscResource -ModuleName 'StorageDSC'
     Import-DscResource -ModuleName 'NetworkingDSC'
-    Import-DscResource -ModuleName 'xDHCpServer'
+    Import-DscResource -ModuleName 'xDHCpServer' -ModuleVersion 3.0.0 
     Import-DscResource -ModuleName 'DnsServerDsc'
     Import-DscResource -ModuleName 'cChoco'
     Import-DscResource -ModuleName 'DSCR_Shortcut'
@@ -706,7 +706,7 @@ configuration AzSHCIHost
             DependsOn     = @("[WindowsFeature]Install DHCPServer", "[IPAddress]New IP for vEthernet $vSwitchNameHost")
         }
 
-        DhcpServerOption "AzSHCIDhcpServerOption" { 
+        xDhcpServerOption "AzSHCIDhcpServerOption" { 
             Ensure             = 'Present' 
             ScopeID            = '192.168.0.0' 
             DnsDomain          = "$DomainName"
