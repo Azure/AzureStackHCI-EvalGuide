@@ -705,18 +705,19 @@ configuration AzSHCIHost
             AddressFamily = 'IPv4'
             DependsOn     = @("[WindowsFeature]Install DHCPServer", "[IPAddress]New IP for vEthernet $vSwitchNameHost")
         }
-        <#
-        DhcpScopeOptionValue "ScopeOptionGateway" { 
-            Ensure             = 'Present' 
-            OptionId           =  3
-            ScopeID            = '192.168.0.0' 
-            AddressFamily      = 'IPv4'
-            Value              = '192.168.0.1'
-            VendorClass        = ''
-            UserClass          = ''
+            # Setting scope gateway
+        DhcpScopeOptionValue 'ScopeOptionGateway'
+        {
+            OptionId      = 3
+            Value         = '192.168.0.1'
+            ScopeId       = '192.168.0.0'
+            VendorClass   = ''
+            UserClass     = ''
+            AddressFamily = 'IPv4'
             DependsOn          = "[xDhcpServerScope]AzSHCIDhcpScope"
         }
-        
+
+        # Setting scope DNS servers
         DhcpScopeOptionValue 'ScopeOptionDNS'
         {
             OptionId      = 6
@@ -725,10 +726,10 @@ configuration AzSHCIHost
             VendorClass   = ''
             UserClass     = ''
             AddressFamily = 'IPv4'
-            DependsOn          = @("[DhcpScopeOptionValue] 'ScopeOptionGateway'", [xDhcpServerScope] "AzSHCIDhcpScope" )
+            DependsOn          = "[DhcpScopeOptionValue] 'ScopeOptionGateway'" 
         }
 
-         # Setting scope DNS domain name
+        # Setting scope DNS domain name
         DhcpScopeOptionValue 'ScopeOptionDNSDomainName'
         {
             OptionId      = 15
@@ -737,9 +738,8 @@ configuration AzSHCIHost
             VendorClass   = ''
             UserClass     = ''
             AddressFamily = 'IPv4'
-            DependsOn          = @("[DhcpScopeOptionValue] 'ScopeOptionGateway'", [xDhcpServerScope] "AzSHCIDhcpScope", [DhcpScopeOptionValue] 'ScopeOptionDNS' )
+            DependsOn          = "[DhcpScopeOptionValue] 'ScopeOptionDNS'"
         }
-#>
 
 <#
         xDhcpServerOption "AzSHCIDhcpServerOption" { 
@@ -790,8 +790,8 @@ configuration AzSHCIHost
             GetScript  = { @{} 
             }
             TestScript = { $false }
-            #DependsOn  = "[xDhcpServerOption]AzSHCIDhcpServerOption"
-            DependsOn  = "[xDhcpServerScope] 'AzSHCIDhcpScope'" 
+            DependsOn  = "[DhcpScopeOptionValue] 'ScopeOptionDNSDomainName'"
+            #DependsOn  = "[xDhcpServerScope] 'AzSHCIDhcpScope'" 
         }
 
         if ($environment -eq "Workgroup") {
