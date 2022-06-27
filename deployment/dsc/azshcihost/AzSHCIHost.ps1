@@ -705,7 +705,7 @@ configuration AzSHCIHost
             AddressFamily = 'IPv4'
             DependsOn     = @("[WindowsFeature]Install DHCPServer", "[IPAddress]New IP for vEthernet $vSwitchNameHost")
         }
-        
+        <#
         DhcpScopeOptionValue "ScopeOptionGateway" { 
             Ensure             = 'Present' 
             OptionId           =  3
@@ -739,6 +739,7 @@ configuration AzSHCIHost
             AddressFamily = 'IPv4'
             DependsOn          = @("[DhcpScopeOptionValue] 'ScopeOptionGateway'", [xDhcpServerScope] "AzSHCIDhcpScope", [DhcpScopeOptionValue] 'ScopeOptionDNS' )
         }
+#>
 
 <#
         xDhcpServerOption "AzSHCIDhcpServerOption" { 
