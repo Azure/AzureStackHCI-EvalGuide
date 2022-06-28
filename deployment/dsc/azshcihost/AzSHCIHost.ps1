@@ -53,8 +53,8 @@ configuration AzSHCIHost
     }
     else { $dhcpStatus = "Inactive" }
 
-    #[System.Management.Automation.PSCredential]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${DomainName}\$($Admincreds.UserName)", $Admincreds.Password)
     [System.Management.Automation.PSCredential]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${DomainName}\$($Admincreds.UserName)", $Admincreds.Password)
+
     $ipConfig = (Get-NetAdapter -Physical | Where-Object { $_.InterfaceDescription -like "*Hyper-V*" } | Get-NetIPConfiguration | Where-Object IPv4DefaultGateway)
     $netAdapters = Get-NetAdapter -Name ($ipConfig.InterfaceAlias) | Select-Object -First 1
     $InterfaceAlias = $($netAdapters.Name)
@@ -385,70 +385,6 @@ configuration AzSHCIHost
             TaskPath = '\Microsoft\Windows\Server Manager'
         }
 
-
-        Script Shortcuts {
-            SetScript  = {   
-                $WshShell = New-Object -comObject WScript.Shell
-                $dt = "C:\Users\Public\Desktop\"
-
-                $links = @(
-                    @{site = "%windir%\system32\WindowsPowerShell\v1.0\PowerShell_ISE.exe"; name = "PowerShell ISE"; icon = "%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell_ise.exe, 0" },
-                    @{site = "%SystemRoot%\system32\ServerManager.exe"; name = "Server Manager"; icon = "%SystemRoot%\system32\ServerManager.exe, 0" },
-                    @{site = "%SystemRoot%\system32\gpmc.msc"; name = "Group Policy Management"; icon = "%SystemRoot%\system32\gpoadmin.dll, 0" },
-                    @{site = "%SystemRoot%\system32\dsa.msc"; name = "AD Users and Computers"; icon = "%SystemRoot%\system32\dsadmin.dll, 0" },
-                    @{site = "%SystemRoot%\system32\domain.msc"; name = "AD Domains and Trusts"; icon = "%SystemRoot%\system32\domadmin.dll, 0" },
-                    @{site = "%SystemRoot%\system32\dnsmgmt.msc"; name = "DNS"; icon = "%SystemRoot%\system32\dnsmgr.dll, 0" },
-                    @{site = "%windir%\system32\services.msc"; name = "Services"; icon = "%windir%\system32\filemgmt.dll, 0" }
-                )
-
-                foreach ($link in $links) {
-                    $Shortcut = $WshShell.CreateShortcut("$($dt)$($link.name).lnk")
-                    $Shortcut.TargetPath = $link.site
-                    $Shortcut.IconLocation = $link.icon
-                    $Shortcut.Save()
-                }
-            }
-            GetScript  = { @{ } }
-            TestScript = { 
-                return $false
-            }
-        }
-        #### Enable TLS 1.2 
-        Script EnableTLS12 {
-            SetScript  = {
-                New-Item 'HKLM:\SOFTWARE\WOW6432Node\Microsoft\.NETFramework\v4.0.30319' -Force | Out-Null
-                
-                New-ItemProperty -path 'HKLM:\SOFTWARE\WOW6432Node\Microsoft\.NETFramework\v4.0.30319' -name 'SystemDefaultTlsVersions' -value '1' -PropertyType 'DWord' -Force | Out-Null
-                
-                New-ItemProperty -path 'HKLM:\SOFTWARE\WOW6432Node\Microsoft\.NETFramework\v4.0.30319' -name 'SchUseStrongCrypto' -value '1' -PropertyType 'DWord' -Force | Out-Null
-                
-                New-Item 'HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319' -Force | Out-Null
-                
-                New-ItemProperty -path 'HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319' -name 'SystemDefaultTlsVersions' -value '1' -PropertyType 'DWord' -Force | Out-Null
-                
-                New-ItemProperty -path 'HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319' -name 'SchUseStrongCrypto' -value '1' -PropertyType 'DWord' -Force | Out-Null
-                
-                New-Item 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Server' -Force | Out-Null
-                
-                New-ItemProperty -path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Server' -name 'Enabled' -value '1' -PropertyType 'DWord' -Force | Out-Null
-                
-                New-ItemProperty -path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Server' -name 'DisabledByDefault' -value 0 -PropertyType 'DWord' -Force | Out-Null
-                
-                New-Item 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client' -Force | Out-Null
-                
-                New-ItemProperty -path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client' -name 'Enabled' -value '1' -PropertyType 'DWord' -Force | Out-Null
-                
-                New-ItemProperty -path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Client' -name 'DisabledByDefault' -value 0 -PropertyType 'DWord' -Force | Out-Null
-                Write-Host 'TLS 1.2 has been enabled.'
-            }
-
-            GetScript  = { @{ } }
-            TestScript = { 
-                $test = Get-ItemProperty -path 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.2\Server' -ErrorAction Ignore
-                return ($test -ine $null)
-            }
-        }
-
         #### CUSTOM FIREWALL BASED ON ARM TEMPLATE ####
 
         if ($customRdpPort -ne "3389") {
@@ -705,44 +641,7 @@ configuration AzSHCIHost
             AddressFamily = 'IPv4'
             DependsOn     = @("[WindowsFeature]Install DHCPServer", "[IPAddress]New IP for vEthernet $vSwitchNameHost")
         }
-<#        
-            # Setting scope gateway
-        DhcpScopeOptionValue 'ScopeOptionGateway'
-        {
-            OptionId      = 3
-            Value         = '192.168.0.1'
-            ScopeId       = '192.168.0.0'
-            VendorClass   = ''
-            UserClass     = ''
-            AddressFamily = 'IPv4'
-            DependsOn          = "[xDhcpServerScope]AzSHCIDhcpScope"
-        }
 
-        # Setting scope DNS servers
-        DhcpScopeOptionValue 'ScopeOptionDNS'
-        {
-            OptionId      = 6
-            Value         = @('192.168.0.1')
-            ScopeId       = '192.168.0.0'
-            VendorClass   = ''
-            UserClass     = ''
-            AddressFamily = 'IPv4'
-            DependsOn          = @("[xDhcpServerScope]AzSHCIDhcpScope","[DhcpScopeOptionValue] 'ScopeOptionGateway'" )
-        }
-
-        # Setting scope DNS domain name
-        DhcpScopeOptionValue 'ScopeOptionDNSDomainName'
-        {
-            OptionId      = 15
-            Value         = $DomainName
-            ScopeId       = '192.168.0.0'
-            VendorClass   = ''
-            UserClass     = ''
-            AddressFamily = 'IPv4'
-            DependsOn          = @("[xDhcpServerScope]AzSHCIDhcpScope","[DhcpScopeOptionValue] 'ScopeOptionGateway'","[DhcpScopeOptionValue] 'ScopeOptionDNS'")
-        }
-
-#>
         xDhcpServerOption "AzSHCIDhcpServerOption" { 
             Ensure             = 'Present' 
             ScopeID            = '192.168.0.0' 
@@ -791,8 +690,7 @@ configuration AzSHCIHost
             GetScript  = { @{} 
             }
             TestScript = { $false }
-            #DependsOn  = @("[xDhcpServerScope]AzSHCIDhcpScope","[DhcpScopeOptionValue] 'ScopeOptionGateway'","[DhcpScopeOptionValue] 'ScopeOptionDNS'", "[DhcpScopeOptionValue] 'ScopeOptionDNSDomainName'")
-            DependsOn  = "[xDhcpServerScope] 'AzSHCIDhcpScope'" 
+            DependsOn  = "[xDhcpServerOption]AzSHCIDhcpServerOption"
         }
 
         if ($environment -eq "Workgroup") {
@@ -1232,18 +1130,4 @@ configuration AzSHCIHost
         }
     }
 }
-<#
-$Configdata=@{
-    allnodes=@(
-        @{
-            nodename="AzSHCIHost"
-            PSDSCAllowPlainTextPassword=$true
-            PSDSCAllowDomainUser=$true
-            
-        }
-    )
-    }
-    
-    AzSHCIHost -ConfigurationData $configdata 
 
-#>
