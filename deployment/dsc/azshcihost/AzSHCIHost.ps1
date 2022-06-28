@@ -663,7 +663,7 @@ configuration AzSHCIHost
             VendorClass   = ''
             UserClass     = ''
             AddressFamily = 'IPv4'
-            DependsOn          = "[xDhcpServerScope]AzSHCIDhcpScope", "[DhcpScopeOptionValue] 'ScopeOptionGateway'"
+            DependsOn          = "[DhcpScopeOptionValue] 'ScopeOptionGateway'"
         }
 
     # Setting scope DNS domain name
@@ -675,7 +675,7 @@ configuration AzSHCIHost
             VendorClass   = ''
             UserClass     = ''
             AddressFamily = 'IPv4'
-            DependsOn          = "[xDhcpServerScope]AzSHCIDhcpScope", "[DhcpScopeOptionValue] 'ScopeOptionDNS'"
+            DependsOn          ="[DhcpScopeOptionValue] 'ScopeOptionDNS'"
         }
 <#
         xDhcpServerOption "AzSHCIDhcpServerOption" { 
@@ -727,7 +727,7 @@ configuration AzSHCIHost
             GetScript  = { @{} 
             }
             TestScript = { $false }
-            DependsOn  = "[DhcpScopeOptionValue] 'ScopeOptionDNSDomainName'", "[DhcpScopeOptionValue] 'ScopeOptionDNS'", "[DhcpScopeOptionValue] 'ScopeOptionGateway'"
+            DependsOn  = "[DhcpScopeOptionValue] 'ScopeOptionDNSDomainName'"
         }
 
         if ($environment -eq "Workgroup") {
