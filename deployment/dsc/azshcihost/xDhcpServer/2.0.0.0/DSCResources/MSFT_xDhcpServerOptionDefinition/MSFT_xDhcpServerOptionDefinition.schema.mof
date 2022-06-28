@@ -1,0 +1,12 @@
+[ClassVersion("1.0.0.0"), FriendlyName("xDhcpServerOptionDefinition")]
+class MSFT_xDhcpServerOptionDefinition : OMI_BaseResource
+{
+    [Key, Description("Option ID, specify a number between 1 and 255.")] uint32 OptionId;
+    [Key, Description("Vendor class. Use an empty string for standard option class.")] String VendorClass;
+    [Required, Description("Option name.")] String Name;
+    [Required, Description("Option data type."),ValueMap{"Byte","Word","Dword","DwordDword","IPv4Address","String","BinaryData","EncapsulatedData"},Values{"Byte","Word","Dword","DwordDword","IPv4Address","String","BinaryData","EncapsulatedData"}] string Type;
+    [Write, Description("Whether option is multivalued or not.")] Boolean Multivalued;
+    [Write, Description("Option description.")] String Description;
+    [Key, Description("Class address family. Currently needs to be IPv4."), ValueMap{"IPv4"}, Values{"IPv4"}] String AddressFamily;
+    [Write, Description("Whether the DHCP server class should exist."), ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
+};

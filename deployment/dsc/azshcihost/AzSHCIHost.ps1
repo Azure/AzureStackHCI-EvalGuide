@@ -37,7 +37,7 @@ configuration AzSHCIHost
     Import-DscResource -ModuleName 'cHyper-v'
     Import-DscResource -ModuleName 'StorageDSC'
     Import-DscResource -ModuleName 'NetworkingDSC'
-    Import-DscResource -ModuleName 'xDHCpServer' 
+    Import-DscResource -ModuleName 'xDHCpServer' -ModuleVersion 2.0.0.0
     Import-DscResource -ModuleName 'DnsServerDsc'
     Import-DscResource -ModuleName 'cChoco'
     Import-DscResource -ModuleName 'DSCR_Shortcut'
@@ -636,7 +636,7 @@ configuration AzSHCIHost
         if ($environment -eq "AD Domain") {
 
             xDhcpServerAuthorization "Authorize DHCP" {
-                IsSingleInstance='Yes' 
+                #IsSingleInstance='Yes' 
                 Ensure    = 'Present'
                 DependsOn = @('[WindowsFeature]Install DHCPServer')
                 DnsName   = [System.Net.Dns]::GetHostByName($env:computerName).hostname
@@ -742,7 +742,7 @@ configuration AzSHCIHost
             DependsOn          = @("[xDhcpServerScope]AzSHCIDhcpScope","[DhcpScopeOptionValue] 'ScopeOptionGateway'","[DhcpScopeOptionValue] 'ScopeOptionDNS'")
         }
 
-
+#>
         xDhcpServerOption "AzSHCIDhcpServerOption" { 
             Ensure             = 'Present' 
             ScopeID            = '192.168.0.0' 
@@ -752,7 +752,7 @@ configuration AzSHCIHost
             Router             = '192.168.0.1'
             DependsOn          = "[xDhcpServerScope]AzSHCIDhcpScope"
         }
-#>
+
         if ($environment -eq "Workgroup") {
 
             DnsServerPrimaryZone SetPrimaryDNSZone {
@@ -780,7 +780,7 @@ configuration AzSHCIHost
                 ZoneFile  = '0.168.192.in-addr.arpa.dns'
             }
         }
-<#
+
         #### FINALIZE DHCP
 
         Script SetDHCPDNSSetting {
@@ -791,10 +791,10 @@ configuration AzSHCIHost
             GetScript  = { @{} 
             }
             TestScript = { $false }
-            DependsOn  = @("[xDhcpServerScope]AzSHCIDhcpScope","[DhcpScopeOptionValue] 'ScopeOptionGateway'","[DhcpScopeOptionValue] 'ScopeOptionDNS'", "[DhcpScopeOptionValue] 'ScopeOptionDNSDomainName'")
-            #DependsOn  = "[xDhcpServerScope] 'AzSHCIDhcpScope'" 
+            #DependsOn  = @("[xDhcpServerScope]AzSHCIDhcpScope","[DhcpScopeOptionValue] 'ScopeOptionGateway'","[DhcpScopeOptionValue] 'ScopeOptionDNS'", "[DhcpScopeOptionValue] 'ScopeOptionDNSDomainName'")
+            DependsOn  = "[xDhcpServerScope] 'AzSHCIDhcpScope'" 
         }
-#>
+
         if ($environment -eq "Workgroup") {
 
             DnsConnectionSuffix AddSpecificSuffixHostNic
