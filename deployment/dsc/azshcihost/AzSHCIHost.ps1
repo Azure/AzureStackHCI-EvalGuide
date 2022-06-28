@@ -705,6 +705,7 @@ configuration AzSHCIHost
             AddressFamily = 'IPv4'
             DependsOn     = @("[WindowsFeature]Install DHCPServer", "[IPAddress]New IP for vEthernet $vSwitchNameHost")
         }
+<#        
             # Setting scope gateway
         DhcpScopeOptionValue 'ScopeOptionGateway'
         {
@@ -741,7 +742,7 @@ configuration AzSHCIHost
             DependsOn          = @("[xDhcpServerScope]AzSHCIDhcpScope","[DhcpScopeOptionValue] 'ScopeOptionGateway'","[DhcpScopeOptionValue] 'ScopeOptionDNS'")
         }
 
-<#
+
         xDhcpServerOption "AzSHCIDhcpServerOption" { 
             Ensure             = 'Present' 
             ScopeID            = '192.168.0.0' 
@@ -779,7 +780,7 @@ configuration AzSHCIHost
                 ZoneFile  = '0.168.192.in-addr.arpa.dns'
             }
         }
-
+<#
         #### FINALIZE DHCP
 
         Script SetDHCPDNSSetting {
@@ -793,7 +794,7 @@ configuration AzSHCIHost
             DependsOn  = @("[xDhcpServerScope]AzSHCIDhcpScope","[DhcpScopeOptionValue] 'ScopeOptionGateway'","[DhcpScopeOptionValue] 'ScopeOptionDNS'", "[DhcpScopeOptionValue] 'ScopeOptionDNSDomainName'")
             #DependsOn  = "[xDhcpServerScope] 'AzSHCIDhcpScope'" 
         }
-
+#>
         if ($environment -eq "Workgroup") {
 
             DnsConnectionSuffix AddSpecificSuffixHostNic
