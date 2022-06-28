@@ -37,7 +37,7 @@ configuration AzSHCIHost
     Import-DscResource -ModuleName 'cHyper-v'
     Import-DscResource -ModuleName 'StorageDSC'
     Import-DscResource -ModuleName 'NetworkingDSC'
-    Import-DscResource -ModuleName 'xDHCpServer' -ModuleVersion 2.0.0.0
+    Import-DscResource -ModuleName 'xDHCpServer' -ModuleVersion 3.0.0
     Import-DscResource -ModuleName 'DnsServerDsc'
     Import-DscResource -ModuleName 'cChoco'
     Import-DscResource -ModuleName 'DSCR_Shortcut'
@@ -572,7 +572,7 @@ configuration AzSHCIHost
         if ($environment -eq "AD Domain") {
 
             xDhcpServerAuthorization "Authorize DHCP" {
-                #IsSingleInstance='Yes' 
+                IsSingleInstance='Yes' 
                 Ensure    = 'Present'
                 DependsOn = @('[WindowsFeature]Install DHCPServer')
                 DnsName   = [System.Net.Dns]::GetHostByName($env:computerName).hostname
