@@ -1,7 +1,0 @@
-[ClassVersion("1.0.0.0"), FriendlyName("DhcpServerBinding")]
-class MSFT_DhcpServerBinding : OMI_BaseResource
-{
-    [Key, Description("Specifies the alias name for the network interface to manage.")] String InterfaceAlias;
-    [Write, Description("Specifies if the interface alias should be set or removed. Defaults to 'Present'."), ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
-};
-

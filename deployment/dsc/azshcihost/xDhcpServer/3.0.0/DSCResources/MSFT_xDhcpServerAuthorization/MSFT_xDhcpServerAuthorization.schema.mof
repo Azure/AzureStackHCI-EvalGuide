@@ -1,8 +1,0 @@
-[ClassVersion("1.0.0.0"), FriendlyName("xDhcpServerAuthorization")]
-class MSFT_xDhcpServerAuthorization : OMI_BaseResource
-{
-    [Key, Description("Specifies the resource is a single instance, the value must be 'Yes'."), ValueMap{"Yes"}, Values{"Yes"}] String IsSingleInstance;
-    [Required, Description("Whether the DHCP server should be authorized within Active Directory"), ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
-    [Write, Description("DHCP Server FQDN")] String DnsName;
-    [Write, Description("DHCP Server IP Address")] String IPAddress;
-};

@@ -1,9 +1,0 @@
-[ClassVersion("1.0.0.0"), FriendlyName("DhcpServerExclusionRange")]
-class MSFT_DhcpServerExclusionRange : OMI_BaseResource
-{
-    [Required, Description("Specifies the identifier (ID) of the IPv4 scope from which the IP addresses are being excluded")] String ScopeId;
-    [Key, Description("Specifies the starting IP address of the range being excluded")] String IPStartRange;
-    [Key, Description("The end IP address of the range being excluded")] String IPEndRange;
-    [Write, Description("Address family type"), ValueMap{"IPv4"}, Values{"IPv4"}] String AddressFamily;
-    [Write, Description("Whether the exclusion range should be set or removed"), ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
-};
