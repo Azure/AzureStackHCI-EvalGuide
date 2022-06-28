@@ -733,7 +733,7 @@ configuration AzSHCIHost
         DhcpScopeOptionValue 'ScopeOptionDNSDomainName'
         {
             OptionId      = 15
-            Value         = "$DomainName"
+            Value         = $DomainName
             ScopeId       = '192.168.0.0'
             VendorClass   = ''
             UserClass     = ''
