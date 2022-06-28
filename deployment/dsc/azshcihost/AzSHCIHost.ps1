@@ -43,6 +43,7 @@ configuration AzSHCIHost
     Import-DscResource -ModuleName 'DSCR_Shortcut'
     Import-DscResource -ModuleName 'xCredSSP'
     Import-DscResource -ModuleName 'ActiveDirectoryDsc'
+    #Import-DscResource -ModuleName 'MSCatalog'
 
     $aszhciHostsMofUri = "https://raw.githubusercontent.com/Azure/AzureStackHCI-EvalGuide/main/deployment/helpers/Install-AzsRolesandFeatures.ps1"
     $updateAdUri = "https://raw.githubusercontent.com/Azure/AzureStackHCI-EvalGuide/main/deployment/helpers/Update-AD.ps1"
@@ -238,7 +239,7 @@ configuration AzSHCIHost
             }
             DependsOn  = "[File]Source"
         }
-
+<#
         script "Download AzSHCI SSU" {
             GetScript  = {
                 $result = Test-Path -Path "$using:ssuPath\*" -Include "*.msu"
@@ -280,7 +281,7 @@ configuration AzSHCIHost
             }
             DependsOn  = "[File]CU"
         }
-
+#>
         #### SET WINDOWS DEFENDER EXCLUSION FOR VM STORAGE ####
 
         Script defenderExclusions {
@@ -816,7 +817,8 @@ configuration AzSHCIHost
                 $state = [scriptblock]::Create($GetScript).Invoke()
                 return $state.Result
             }
-            DependsOn  = "[file]VM-Base", "[script]Download AzureStack HCI bits", "[script]Download AzSHCI SSU", "[script]Download AzSHCI CU"
+            #DependsOn  = "[file]VM-Base", "[script]Download AzureStack HCI bits", "[script]Download AzSHCI SSU", "[script]Download AzSHCI CU"
+            DependsOn  = "[file]VM-Base", "[script]Download AzureStack HCI bits"
         }
 
         for ($i = 1; $i -lt $azsHostCount + 1; $i++) {
