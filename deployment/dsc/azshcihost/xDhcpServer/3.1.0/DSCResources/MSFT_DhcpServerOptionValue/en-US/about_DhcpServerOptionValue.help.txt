@@ -1,0 +1,63 @@
+.NAME
+    DhcpServerOptionValue
+
+.DESCRIPTION
+    The DhcpServerOptionValue DSC resource manages option values at server level.
+
+    ## Requirements
+
+    - Target machine must be running Windows Server 2012 R2 or later.
+    - Target machine must be running at minimum Windows PowerShell 5.0.
+
+.PARAMETER OptionId
+    Key - UInt32
+    Option ID, specify an integer between 1 and 255.
+
+.PARAMETER Value
+    Write - StringArray
+    Option data value. Could be an array of string for a multivalued option.
+
+.PARAMETER VendorClass
+    Key - String
+    Vendor class. Use an empty string for default vendor class.
+
+.PARAMETER UserClass
+    Key - String
+    User class. Use an empty string for default user class.
+
+.PARAMETER AddressFamily
+    Key - String
+    Allowed values: IPv4
+    Address family. Currently needs to be IPv4.
+
+.PARAMETER Ensure
+    Write - String
+    Allowed values: Present, Absent
+    Whether the DHCP option should exist.
+
+.EXAMPLE 1
+
+This example sets an option ID 8 (cookie servers) on a server level.
+
+configuration Example
+{
+    Import-DscResource -ModuleName 'PSDscResources' -ModuleVersion '2.12.0.0'
+    Import-DscResource -moduleName 'xDhcpServer'
+
+    WindowsFeature 'DHCP'
+    {
+        Name   = 'DHCP'
+        Ensure = 'Present'
+    }
+
+    DhcpServerOptionValue 'ServerOptionValue_ID-008'
+    {
+        OptionId      = 8
+        Value         = '1.1.1.1'
+        VendorClass   = ''
+        UserClass     = ''
+        AddressFamily = 'IPv4'
+        Ensure        = 'Present'
+    }
+}
+

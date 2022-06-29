@@ -247,7 +247,7 @@ configuration AzSHCIHost
             }
 
             SetScript  = {
-                Install-Module -Name MSCatalog
+                #Install-Module -Name MSCatalog
                 $ssuSearchString = "Servicing Stack Update for Azure Stack HCI, version 21H2 for x64-based Systems"
                 $ssuID = "Azure Stack HCI"
                 $ssuUpdate = Get-MSCatalogUpdate -Search $ssuSearchString | Where-Object Products -eq $ssuID | Select-Object -First 1
@@ -574,7 +574,7 @@ configuration AzSHCIHost
         if ($environment -eq "AD Domain") {
 
             xDhcpServerAuthorization "Authorize DHCP" {
-                #IsSingleInstance='Yes' 
+                IsSingleInstance='Yes' 
                 Ensure    = 'Present'
                 DependsOn = @('[WindowsFeature]Install DHCPServer')
                 DnsName   = [System.Net.Dns]::GetHostByName($env:computerName).hostname
@@ -789,7 +789,7 @@ configuration AzSHCIHost
 
             SetScript  = {
                 # Create Azure Stack HCI Host Image from ISO
-                Install-Module -Name Convert-WindowsImage -Force
+                #Install-Module -Name Convert-WindowsImage
                 $scratchPath = "$using:targetVMPath\Scratch"
                 New-Item -ItemType Directory -Path "$scratchPath" -Force | Out-Null
                 

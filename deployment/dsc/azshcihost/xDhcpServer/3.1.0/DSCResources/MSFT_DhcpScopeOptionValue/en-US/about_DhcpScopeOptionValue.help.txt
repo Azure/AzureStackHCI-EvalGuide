@@ -1,0 +1,90 @@
+.NAME
+    DhcpScopeOptionValue
+
+.DESCRIPTION
+    The DhcpScopeOptionValue DSC resource manages option values on scope level.
+
+    ## Requirements
+
+    - Target machine must be running Windows Server 2012 R2 or later.
+    - Target machine must be running at minimum Windows PowerShell 5.0.
+
+.PARAMETER ScopeId
+    Key - String
+    Scope ID to set the option.
+
+.PARAMETER OptionId
+    Key - UInt32
+    Option ID, specify an integer between 1 and 255.
+
+.PARAMETER Value
+    Write - StringArray
+    Option data value.
+
+.PARAMETER VendorClass
+    Key - String
+    Vendor class. Use an empty string for default vendor class.
+
+.PARAMETER UserClass
+    Key - String
+    User class. Use an empty string for default user class.
+
+.PARAMETER AddressFamily
+    Key - String
+    Allowed values: IPv4
+    Address family. Currently needs to be IPv4.
+
+.PARAMETER Ensure
+    Write - String
+    Allowed values: Present, Absent
+    Whether the DHCP option should exist.
+
+.EXAMPLE 1
+
+This example shows how to substitute the xDhcpServerOption resource, setting the gateway (option 3), DNS Servers (option 6) and domain name (Option 15).
+
+configuration Example
+{
+    Import-DscResource -ModuleName 'PSDscResources' -ModuleVersion '2.12.0.0'
+    Import-DscResource -moduleName 'xDhcpServer'
+
+    WindowsFeature 'DHCP'
+    {
+        Name   = 'DHCP'
+        Ensure = 'Present'
+    }
+
+    # Setting scope gateway
+    DhcpScopeOptionValue 'ScopeOptionGateway'
+    {
+        OptionId      = 3
+        Value         = '1.1.1.1'
+        ScopeId       = '1.1.1.0'
+        VendorClass   = ''
+        UserClass     = ''
+        AddressFamily = 'IPv4'
+    }
+
+    # Setting scope DNS servers
+    DhcpScopeOptionValue 'ScopeOptionDNS'
+    {
+        OptionId      = 6
+        Value         = @('1.1.1.1', '2.2.2.2')
+        ScopeId       = '1.1.1.0'
+        VendorClass   = ''
+        UserClass     = ''
+        AddressFamily = 'IPv4'
+    }
+
+    # Setting scope DNS domain name
+    DhcpScopeOptionValue 'ScopeOptionDNSDomainName'
+    {
+        OptionId      = 15
+        Value         = 'contoso.com'
+        ScopeId       = '1.1.1.0'
+        VendorClass   = ''
+        UserClass     = ''
+        AddressFamily = 'IPv4'
+    }
+}
+
