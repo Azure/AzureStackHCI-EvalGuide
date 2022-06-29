@@ -789,7 +789,7 @@ configuration AzSHCIHost
 
             SetScript  = {
                 # Create Azure Stack HCI Host Image from ISO
-                
+                Install-Module -Name Convert-WindowsImage -Force
                 $scratchPath = "$using:targetVMPath\Scratch"
                 New-Item -ItemType Directory -Path "$scratchPath" -Force | Out-Null
                 
