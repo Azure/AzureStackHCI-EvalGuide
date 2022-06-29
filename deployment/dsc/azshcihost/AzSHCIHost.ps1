@@ -43,7 +43,7 @@ configuration AzSHCIHost
     Import-DscResource -ModuleName 'DSCR_Shortcut'
     Import-DscResource -ModuleName 'xCredSSP'
     Import-DscResource -ModuleName 'ActiveDirectoryDsc'
-    #Import-DscResource -ModuleName 'MSCatalog'
+    
 
     $aszhciHostsMofUri = "https://raw.githubusercontent.com/Azure/AzureStackHCI-EvalGuide/main/deployment/helpers/Install-AzsRolesandFeatures.ps1"
     $updateAdUri = "https://raw.githubusercontent.com/Azure/AzureStackHCI-EvalGuide/main/deployment/helpers/Update-AD.ps1"
@@ -65,7 +65,8 @@ configuration AzSHCIHost
         LocalConfigurationManager {
             RebootNodeIfNeeded = $true
             ActionAfterReboot  = 'ContinueConfiguration'
-            ConfigurationMode  = 'ApplyOnly'
+            ConfigurationMode  = 'ApplyAndAutoCorrect'
+            AllowModuleOverwrite = $True
         }
         
         #### CREATE STORAGE SPACES V: & VM FOLDER ####
