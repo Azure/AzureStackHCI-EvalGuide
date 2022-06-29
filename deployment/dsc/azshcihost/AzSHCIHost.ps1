@@ -43,7 +43,7 @@ configuration AzSHCIHost
     Import-DscResource -ModuleName 'DSCR_Shortcut'
     Import-DscResource -ModuleName 'xCredSSP'
     Import-DscResource -ModuleName 'ActiveDirectoryDsc'
-    Import-DscResource -ModuleName 'MSCatalog'
+    #Import-DscResource -ModuleName 'MSCatalog'
 
     $aszhciHostsMofUri = "https://raw.githubusercontent.com/Azure/AzureStackHCI-EvalGuide/main/deployment/helpers/Install-AzsRolesandFeatures.ps1"
     $updateAdUri = "https://raw.githubusercontent.com/Azure/AzureStackHCI-EvalGuide/main/deployment/helpers/Update-AD.ps1"
@@ -67,7 +67,7 @@ configuration AzSHCIHost
             ActionAfterReboot  = 'ContinueConfiguration'
             ConfigurationMode  = 'ApplyOnly'
         }
-
+        
         #### CREATE STORAGE SPACES V: & VM FOLDER ####
 
         Script StoragePool {
@@ -247,6 +247,7 @@ configuration AzSHCIHost
             }
 
             SetScript  = {
+                Install-Module -Name MSCatalog
                 $ssuSearchString = "Servicing Stack Update for Azure Stack HCI, version 21H2 for x64-based Systems"
                 $ssuID = "Azure Stack HCI"
                 $ssuUpdate = Get-MSCatalogUpdate -Search $ssuSearchString | Where-Object Products -eq $ssuID | Select-Object -First 1
