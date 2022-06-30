@@ -441,8 +441,8 @@
                     "imageReference": {
                         "publisher": "MicrosoftWindowsServer",
                         "offer": "WindowsServer",
-                        "sku": "2019-Datacenter",
-                        "version": "17763.3131.220505"
+                        "sku": "2022-Datacenter",
+                        "version": "latest"
                     },
                     "osDisk": {
                         "createOption": "FromImage",
