@@ -768,13 +768,13 @@ configuration AzSHCIHost
 
             Script ConfigureWinRM {
                 SetScript  = {
-                    Set-Item WSMan:\localhost\Client\TrustedHosts "*.$Using:DomainName" -Force
+                    Set-Item WSMan:\localhost\Client\TrustedHosts "*" -Force
                 }
                 TestScript = {
-                    (Get-Item WSMan:\localhost\Client\TrustedHosts).Value -contains "*.$Using:DomainName"
+                    (Get-Item WSMan:\localhost\Client\TrustedHosts).Value -contains "*"
                 }
                 GetScript  = {
-                    @{Ensure = if ((Get-Item WSMan:\localhost\Client\TrustedHosts).Value -contains "*.$Using:DomainName") { 'Present' } Else { 'Absent' } }
+                    @{Ensure = if ((Get-Item WSMan:\localhost\Client\TrustedHosts).Value -contains "*") { 'Present' } Else { 'Absent' } }
                 }
                 DependsOn  = "[xCredSSP]Client"
             }
