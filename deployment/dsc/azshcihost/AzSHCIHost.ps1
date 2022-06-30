@@ -69,6 +69,22 @@ configuration AzSHCIHost
             AllowModuleOverwrite = $True
         }
         
+          #### CONFIGURE WinRM
+
+          Script ConfigureTrustedHosts {
+            SetScript  = {
+                Set-Item WSMan:\localhost\Client\TrustedHosts "*" -Force
+            }
+            TestScript = {
+                (Get-Item WSMan:\localhost\Client\TrustedHosts).Value -contains "*"
+            }
+            GetScript  = {
+                @{Ensure = if ((Get-Item WSMan:\localhost\Client\TrustedHosts).Value -contains "*") { 'Present' } Else { 'Absent' } }
+            }
+            
+        }
+    
+
         #### CREATE STORAGE SPACES V: & VM FOLDER ####
 
         Script StoragePool {
