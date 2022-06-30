@@ -248,7 +248,8 @@ configuration AzSHCIHost
             }
 
             SetScript  = {
-                #Install-Module -Name MSCatalog
+                Import-Module -Name MSCatalog -Verbose -Force 
+                #Install-Module -Name MSCatalog -Force 
                 $ssuSearchString = "Servicing Stack Update for Azure Stack HCI, version 21H2 for x64-based Systems"
                 $ssuID = "Azure Stack HCI"
                 $ssuUpdate = Get-MSCatalogUpdate -Search $ssuSearchString | Where-Object Products -eq $ssuID | Select-Object -First 1
@@ -790,6 +791,7 @@ configuration AzSHCIHost
 
             SetScript  = {
                 # Create Azure Stack HCI Host Image from ISO
+                Import-module -name Convert-WindowsImage -force -Verbose 
                 #Install-Module -Name Convert-WindowsImage
                 $scratchPath = "$using:targetVMPath\Scratch"
                 New-Item -ItemType Directory -Path "$scratchPath" -Force | Out-Null
