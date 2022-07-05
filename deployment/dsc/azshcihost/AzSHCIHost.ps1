@@ -264,8 +264,8 @@ configuration AzSHCIHost
             }
 
             SetScript  = {
-                Import-Module -Name MSCatalog -Verbose -Force 
-                #Install-Module -Name MSCatalog -Force 
+                Install-Module -Name MSCatalog -Repository PSGallery
+                Import-Module -Name MSCatalog
                 $ssuSearchString = "Servicing Stack Update for Azure Stack HCI, version 21H2 for x64-based Systems"
                 $ssuID = "Azure Stack HCI"
                 $ssuUpdate = Get-MSCatalogUpdate -Search $ssuSearchString | Where-Object Products -eq $ssuID | Select-Object -First 1
