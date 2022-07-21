@@ -37,7 +37,7 @@ configuration AzSHCIHost
     Import-DscResource -ModuleName 'cHyper-v'
     Import-DscResource -ModuleName 'StorageDSC'
     Import-DscResource -ModuleName 'NetworkingDSC'
-    Import-DscResource -ModuleName 'xDHCpServer' 
+    Import-DscResource -ModuleName 'xDHCpServer' -ModuleVersion 2.0.0.0
     Import-DscResource -ModuleName 'DnsServerDsc'
     Import-DscResource -ModuleName 'cChoco'
     Import-DscResource -ModuleName 'DSCR_Shortcut'
@@ -264,7 +264,7 @@ configuration AzSHCIHost
             }
 
             SetScript  = {
-                Install-Module -Name MSCatalog -Repository PSGallery
+                Install-Module -Name MSCatalog -Repository PSGallery -RequiredVersion 
                 Import-Module -Name MSCatalog
                 $ssuSearchString = "Servicing Stack Update for Azure Stack HCI, version 21H2 for x64-based Systems"
                 $ssuID = "Azure Stack HCI"
@@ -592,7 +592,7 @@ configuration AzSHCIHost
         if ($environment -eq "AD Domain") {
 
             xDhcpServerAuthorization "Authorize DHCP" {
-                IsSingleInstance='Yes' 
+                #IsSingleInstance='Yes' 
                 Ensure    = 'Present'
                 DependsOn = @('[WindowsFeature]Install DHCPServer')
                 DnsName   = [System.Net.Dns]::GetHostByName($env:computerName).hostname
@@ -661,6 +661,7 @@ configuration AzSHCIHost
             AddressFamily = 'IPv4'
             DependsOn     = @("[WindowsFeature]Install DHCPServer", "[IPAddress]New IP for vEthernet $vSwitchNameHost")
         }
+       <# 
         # Setting scope gateway
         DhcpScopeOptionValue 'ScopeOptionGateway'
         {
@@ -696,7 +697,8 @@ configuration AzSHCIHost
             AddressFamily = 'IPv4'
             DependsOn    ="[xDhcpServerScope]AzSHCIDhcpScope"
         }
-<#
+#>        
+
         xDhcpServerOption "AzSHCIDhcpServerOption" { 
             Ensure             = 'Present' 
             ScopeID            = '192.168.0.0' 
@@ -706,7 +708,7 @@ configuration AzSHCIHost
             Router             = '192.168.0.1'
             DependsOn          = "[xDhcpServerScope]AzSHCIDhcpScope"
         }
-#>
+
 
         if ($environment -eq "Workgroup") {
 
