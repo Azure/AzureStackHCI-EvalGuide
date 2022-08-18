@@ -1,6 +1,12 @@
 Azure Stack HCI 21H2 - Evaluation Guide
 ==============
 
+## Important Update ##
+------
+This guide is currently not fully functional. For the time being please refer to [Evaluate Azure Stack HCI ](https://aka.ms/evaluate-hci  "link to the Evaluate Azure Stack HCI 21H2 landing page") in the mean time. This guide will be updated to the 22H2 Release very close to the Public Preview Release Date. Stay Tuned. 
+
+-----
+
 Welcome to the Azure Stack HCI 21H2 Evaluation Guide
 -----------
 
