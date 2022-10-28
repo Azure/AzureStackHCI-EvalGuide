@@ -1,3 +1,25 @@
+## Breaking News ##
+![](media/archcibox_full.png)
+
+Newly announced at Microsoft Ignite 2022 is a new partnership with the Arc Jumpstart team. Now you can build out the next generation of HCI-Sandbox in the newly announced Public Preview of [Jumpstart HCIBox](https://github.com/microsoft/azure_arc/blob/main/docs/azure_jumpstart_hcibox/_index.md).  
+
+This new solution builds upon HCI-Sandbox but offers a few additonal features like:
+* Automated Deployment of Azure Stack HCI Environment
+* Automated Registration of Azure Stack HCI Cluster
+* Automated Deployment of Azure Kubernetes Service
+* Automated Deployment of Azure Arc Connected Resource Bridge for Virtual Machine Deployment via Azure
+
+Please feel free to use this new Evaluation of Azure Stack HCI as it will be the new offering.
+
+![](media/microsoft-azure-stack-HCI-logo.png)
+
+
+
+
+
+
+
+
 Azure Stack HCI 21H2 - Evaluation Guide
 ==============
 
