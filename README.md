@@ -1,7 +1,7 @@
 ## Breaking News ##
 ![](media/archcibox_full.png)
 
-Newly announced at Microsoft Ignite 2022 is a new partnership with the Arc Jumpstart team. Now you can build out the next generation of HCI-Sandbox in the newly announced Public Preview of [Jumpstart HCIBox](https://github.com/microsoft/azure_arc/blob/main/docs/azure_jumpstart_hcibox/_index.md).  
+Newly announced at Microsoft Ignite 2022 is a new partnership with the Arc Jumpstart team. Now you can build out the next generation of HCI-Sandbox in the newly announced Public Preview of [Jumpstart HCIBox]([https://github.com/microsoft/azure_arc/blob/main/docs/azure_jumpstart_hcibox/_index.md](https://aka.ms/JumpstartHCIBox)).  
 
 This new solution builds upon HCI-Sandbox but offers a few additonal features like:
 * Automated Deployment of Azure Stack HCI Environment
